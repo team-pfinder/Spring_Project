@@ -1,2 +1,4 @@
 // fetch 후에 pull 받으면
 // 자기 이름 적어서 commit하고 push 해주세요
+
+권소윤
