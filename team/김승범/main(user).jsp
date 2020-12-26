@@ -16,15 +16,31 @@
 	<div>
 		<table>
 			<caption>오늘의 공간</caption>
+			<!-- 공간사진 -->
 			<tr>
-				<th>1번 게시물</th>
-				<th>2번 게시물</th>
-				<th>3번 게시물</th>
+				<th colspan="2"><img src="<%=cp%>/images/todaysPlace01.PNG"/></th>
+				<th colspan="2"><img src="<%=cp%>/images/todaysPlace02.PNG"/></th>
+				<th colspan="2"><img src="<%=cp%>/images/todaysPlace03.PNG"/></th>
 			</tr>
+			<!-- 공간제목 -->
+			<!-- 왼쪽정렬 중간크기 -->
 			<tr>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
+				<th colspan="2">Mango_Studio</th>	
+				<th colspan="2">성수로운공간</th>
+				<th colspan="2">홍대 호리존 스튜디오 비주얼하이브</th>
+			</tr>
+			<!-- 공간위치 -->
+			<!-- 왼쪽정렬 작은크기 -->
+			<tr>
+				<td colspan="2">[서교동]</td>
+				<td colspan="2">[송정동]</td>
+				<td colspan="2">[창천동]</td>
+			</tr>
+			<!-- 공간가격, 정보 -->
+			<tr>
+				<td>80,000 원/패키지</td><td>[최대 8인] [0]</td>
+				<td>100,000 원/패키지</td><td>[최대 30인] [0]</td>
+				<td>30,000 원/패키지</td><td>[최대 10인] [0]</td>
 			</tr>
 		</table>
 	</div>
@@ -42,23 +58,21 @@
 	<div>
 		<table>
 			<caption>
-				이용자 리뷰<br>				<!-- 큰폰트 -->
-				생생한 후기를 만나보세요.	<!-- 작은폰트, 회색폰트 -->
+				이용자 리뷰<br>
+				<!-- 큰폰트 -->
+				생생한 후기를 만나보세요.
+				<!-- 작은폰트, 회색폰트 -->
 			</caption>
+
 			<tr>
-				<th>1번 리뷰</th>
-				<th>2번 리뷰</th>
-				<th>3번 리뷰</th>
+				<th colspan="2"><img src="<%=cp%>/images/reviewPlace01.png" /></th>
+				<th colspan="2"><img src="<%=cp%>/images/reviewPlace02.png" /></th>
+				<th colspan="2"><img src="<%=cp%>/images/reviewPlace03.png" /></th>
 			</tr>
-			<tr>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-			</tr>
-			
+
 		</table>
 	</div>
-	
+
 </body>
 </html>
 
