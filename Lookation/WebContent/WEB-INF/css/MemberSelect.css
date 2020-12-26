@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+*
+{
+	font-size: 18px;
+	color: #343;
+	font-family: 맑은 고딕;
+	font-weight: bold;
+}
+
+input
+{
+	border-radius: 4px;
+}
+
+input:focus
+{
+	background-color: #efe;
+}
+
+button:hover
+{
+	color: orange;
+}
+
+.table
+{
+	border-collapse: collapse;
+}
+
+.table ht, .table td
+{
+	border: 1px solid gray;
+	border-left: 0px;
+	border-right: 0px;
+	
+	padding: 3px;
+	line-height: 150%;
+	text-align: center;
+}
+
+.table th
+{
+	font-weight: bold;
+	background-color: #EEE;
+}
+
+/* 활성 버튼 */
+.btn01
+{
+	font-size: 10pt;
+	color: blue;
+	width: 45px;
+	height: 30px;
+}
+
+/* 비활성 버튼 */
+.btn02
+{
+	font-size: 10pt;
+	color: gray;
+	width: 45px;
+	height: 30px;
+}
+
+.btn02:hover
+{
+	color: gray;
+}
+
+.errMsg
+{
+	font-size: small;
+	color: red;
+	display: none;
+}
+
+/* 번호 */
+.numTh
+{
+	width: 50px;
+}
+
+/* 이름 */
+.nameTh
+{
+	width: 100px;
+}
+
+/* 전화번호 */
+.telTh
+{
+	width: 150px;
+}
+
+.txtScore
+{
+	width: 100px;
+	text-align: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
