@@ -63,6 +63,7 @@
 
 <br><br>
 
+<!-- 패키지 선택은 라디오버튼 형식으로.. -->
 <!-- 2. 패키지 추가하기 -->
 <!--    → LocationPackageInsert.jsp로 이동 -->
 <input type="button" style="width:120pt;" value="패키지 추가"> <!-- onclick="function()" -->

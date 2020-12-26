@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -74,7 +74,7 @@ String cp = request.getContextPath();
 				<td>4</td>
 				<td>380,000</td>
 				<td>-</td>
-				<td>환불신청</td>
+				<td>이용완료</td>
 			</tr>
 		</tbody>
 	</table>

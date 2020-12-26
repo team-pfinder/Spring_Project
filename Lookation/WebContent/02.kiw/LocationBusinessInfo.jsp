@@ -119,7 +119,7 @@
 
 <div id="LocationBusinessMain">
 
-	주종목 *<br><br> <!-- bold, font-size 1~2pt up -->
+	주업태 *<br><br> <!-- bold, font-size 1~2pt up -->
 	<input type="text" id="LocationBusinessMain" name="LocationBusinessMain" style="width: 300pt;">
 	<span>최소 5자, 최대 30자</span> <!-- 글자 크기 작게 -->
 	<!-- 입력 전 default 내용 : 주업태를 입력하세요.  -->

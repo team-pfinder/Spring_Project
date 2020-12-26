@@ -13,6 +13,7 @@
 </head>
 <body>
 
+<!-- include 스크립릿 으로 불러와서 사용하기 -->
 <div>
 	<table>
 		<tr>
