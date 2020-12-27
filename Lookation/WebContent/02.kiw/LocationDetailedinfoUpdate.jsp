@@ -15,13 +15,13 @@
 
 <!-- 헤더 -->
 <div>
-	<h1>상세 정보</h1>	<!-- 가운데 정렬 -->
+	<h1>상세 정보 수정</h1>	<!-- 가운데 정렬 -->
 </div>
 <%-- <img src="<!-- 뒤로가는 화살표 버튼 -->"> --%>
 <br><br>
 
 <div>
-	<h1>공간의 상세 정보를 입력하세요.</h1>
+	<h1>공간의 상세 정보를 수정하세요.</h1>
 	<hr>	
 </div>
 
@@ -97,7 +97,7 @@
 
 <!-- 다음 버튼 (자세한 설명은 LocationBasicInfo.jsp 참조) -->
 <input type="button" id="LocationDetailedInfoSave" style="width: 150pt;"
-	value="다음"> <!-- onclick="function()" submit → LocationPacakgeForm.jsp -->
+	value="다음"> <!-- onclick="function()" submit → LocationPacakgeFormUpdate.jsp -->
 
 <!-- 취소 버튼 -->
 <input type="button" id="LocationDetailedInfoCancel" style="width: 150pt;"

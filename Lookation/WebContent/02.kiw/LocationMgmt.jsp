@@ -50,6 +50,12 @@
 						</tr>
 						<tr>
 							<td>
+								<!-- 4. 검수상태 : 회색폰트, 텍스트박스형태 안보이도록 -->
+								<input type="text" name="LocationInspection" value="검수상태 <%-- <%=%> --%>" readonly="readonly">
+							</td>
+						</tr>
+						<tr>
+							<td>
 								<!-- 4. 공간정보 수정 -->
 								<input type="button" name="LocationUpdateBtn" value="공간정보수정"> <!-- onclick="func()" -->
 								<!-- 5. 공간 삭제 -->

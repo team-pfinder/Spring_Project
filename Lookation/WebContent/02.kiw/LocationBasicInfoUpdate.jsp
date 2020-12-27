@@ -8,22 +8,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LocationBasicInfo.jsp</title>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/sb-admin-2.min.css">
+<title>LocationBasicInfoUpdate.jsp</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 
 <!-- 헤더 -->
 <div>
-	<h1>기본 정보</h1>	<!-- 가운데 정렬 -->
+	<h1>기본 정보 수정</h1>	<!-- 가운데 정렬 -->
 </div>
 <%-- <img src="<!-- 뒤로가는 화살표 버튼 -->"> --%>
 <br><br>
 
 <div>
-	<h1>등록할 공간의 기본 정보를 입력하세요.</h1>
+	<h1>기본 정보를 수정하세요.</h1>
 	<hr>	
 </div>
+
 
 <br><br>
 
@@ -44,7 +45,10 @@
 <br><br><br>
 
 
-<!-- 2. 공간 유형 -->
+<!-- 2. 공간 유형 --><!-- ※ 변경불가 항목 : 공간 유형, 주소, 상세주소 -->
+
+<!-- 선택했던 공간유형을 불러와 해당 옵션을 selected 된 상태로 
+	 default 값을 두고, disabled 시킨다. -->
 
 <div id="LocationType">
 
@@ -55,8 +59,8 @@
 		<option value="클럽">클럽</option>
 		<option value="엠티장소">엠티장소</option>
 		<option value="워크샵장소">워크샵장소</option>
-		<option value="워크샵장소">루프탑</option>
-		<option value="워크샵장소">브라이덜샤워</option>
+		<option value="루프탑">루프탑</option>
+		<option value="브라이덜샤워">브라이덜샤워</option>
 	</select>
 	<br><br>
 	<span>※ 검수 후에는 유형변경이 불가합니다.</span> <!-- 붉은색 글자 -->
@@ -66,7 +70,7 @@
 
 <br><br><br>
 
-<!-- 4. 공간 한줄 소개 -->
+<!-- 3. 공간 한줄 소개 -->
 
 <div id="LocationOneLineComment">
 
@@ -80,7 +84,7 @@
 
 <br><br><br>
 
-<!-- 5. 공간 소개 -->
+<!-- 4. 공간 소개 -->
 
 <div id="LocationComment">
 
@@ -95,7 +99,7 @@
 <br><br><br>
 
 
-<!-- 6. 시설안내 -->
+<!-- 5. 시설안내 -->
 
 <div id="LocationFacilityInfo">
 
@@ -118,7 +122,7 @@
 <br><br><br>
 
 
-<!-- 7. 예약 시 주의사항 -->
+<!-- 6. 예약 시 주의사항 -->
 
 <div id="LocationPrecautions">
 	
@@ -141,7 +145,7 @@
 <br><br><br>
 
 
-<!-- 8. 대표이미지 -->
+<!-- 7. 대표이미지 -->
 <div id="LocationThumbnail">
 
 	대표이미지 *<br><br> <!-- bold, font-size 1~2pt up -->
@@ -161,7 +165,11 @@
 
 <br><br><br>
 
-<!-- 9. 주소 -->
+<!-- 8. 주소 --><!-- ※ 변경불가 항목 : 공간 유형, 주소, 상세주소 -->
+
+<!-- 등록했던 주소, 상세주소 정보를 불러와 
+	 해당 텍스트를 disabled 시킨상태를 default로 둔다.-->
+
 	
 <div id="LocationAddr">
 	주소 *<br><br> <!-- bold, font-size 1~2pt up -->
@@ -198,13 +206,13 @@
 						그리고 입력하는 textbox로 입력커서가 이동한다. 
 						또한 다음페이지로 submit 되지 않는다.
 						
-						※ 다음 버튼 이동 순서
 						※ xxxUpdate.jsp 다음버튼 이동 순서 
-						   기본정보 → 연락처정보 → 사업자정보
-						   → 이용정보  → 상세정보  → 패키지정보 -->
-						
+						   기본정보수정 → 연락처정보수정 → 사업자정보수정 (조회만가능, 모두 readonly)
+						   → 이용정보수정  → 상세정보수정  → 패키지정보수정 -->
+						   
 <input type="button" id="LocationBasicInfoSave" style="width: 150pt;"
-	value="다음"> <!-- onclick="function()" submit → LocationContact.jsp-->
+	value="다음"> <!-- onclick="function()" 
+					   submit → LocationContactUpdate.jsp -->
 
 <!-- 취소 버튼 -->
 <input type="button" id="LocationBasicInfoCancel" style="width: 150pt;"
@@ -213,6 +221,5 @@
 
 
 <br><br><br><br><br><br><br><br><br>
-
 </body>
 </html>

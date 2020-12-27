@@ -16,19 +16,24 @@
 
 <!-- 헤더 -->
 <div>
-	<h1>사업자 정보</h1>	<!-- 가운데 정렬 -->
+	<h1>사업자 정보 수정</h1>	<!-- 가운데 정렬 -->
 </div>
 <%-- <img src="<!-- 뒤로가는 화살표 버튼 -->"> --%>
 <br><br>
 
 <div>
-	<h1>등록할 공간의 사업자 정보를 입력하세요.</h1>
+	<h1>등록된 사업자 정보는 조회만 가능합니다.</h1>
 	<hr>	
 </div>
 
 <br><br>
+<!-- ※ 변경불가 항목 : 사업자 정보는 모두 변경할 수 없다.(readonly 처리) -->
 
-<!-- 1. 상호명 -->
+<!-- 등록했던 사업자 정보를 모두 불러와 
+	 해당 텍스트를 readonly 시킨상태를 default로 둔다.-->
+	 
+	 
+<!-- 1. 상호명 --><!-- ※ 변경불가 항목 -->
 
 <div id="LocationBusinessName">
 
@@ -41,7 +46,7 @@
 
 <br><br><br>
 
-<!-- 2. 대표자명 -->
+<!-- 2. 대표자명 --><!-- ※ 변경불가 항목 -->
 
 <div id="LocationRepresentative">
 
@@ -54,7 +59,7 @@
 
 <br><br><br>
 
-<!-- 3. 사업자등록번호 -->
+<!-- 3. 사업자등록번호 --><!-- ※ 변경불가 항목 -->
 
 <div id="LocationBusinessRegNum">
 
@@ -67,7 +72,7 @@
 
 <br><br><br>
 
-<!-- 4. 사업자 등록증 -->
+<!-- 4. 사업자 등록증 --><!-- ※ 변경불가 항목 -->
 <div id="LocationBusinessReg">
 
 	사업자 등록증 *<br><br> <!-- bold, font-size 1~2pt up -->
@@ -87,7 +92,7 @@
 
 <br><br><br>
 
-<!-- 5. 사업자 유형 -->
+<!-- 5. 사업자 유형 --><!-- ※ 변경불가 항목 -->
 
 <div id="LocationBusinessType">
 	<form>
@@ -102,7 +107,7 @@
 
 <br><br><br>
 
-<!-- 6. 주종목 -->
+<!-- 6. 주종목 --><!-- ※ 변경불가 항목 -->
 
 <div id="LocationBusinessMainEvent">
 
@@ -115,7 +120,7 @@
 
 <br><br><br>
 
-<!-- 7. 주업태 -->
+<!-- 7. 주업태 --><!-- ※ 변경불가 항목 -->
 
 <div id="LocationBusinessMain">
 
@@ -128,7 +133,7 @@
 
 <br><br><br>
 
-<!-- 8. 주소 -->
+<!-- 8. 주소 --><!-- ※ 변경불가 항목 -->
 	
 <div id="LocationBusinessAddr">
 	주소 *<br><br> <!-- bold, font-size 1~2pt up -->
@@ -160,7 +165,7 @@
 
 <!-- 다음 버튼 (자세한 설명은 LocationBasicInfo.jsp 참조) -->
 <input type="button" id="LocationBusinessInfoSave" style="width: 150pt;"
-	value="다음"> <!-- onclick="function()" submit → LocationUsingInfo.jsp -->
+	value="다음"> <!-- onclick="function()" submit → LocationUsingInfoUpdate.jsp -->
 
 <!-- 취소 버튼 -->
 <input type="button" id="LocationBusinessInfoCancel" style="width: 150pt;"
