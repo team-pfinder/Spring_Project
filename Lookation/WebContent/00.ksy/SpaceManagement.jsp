@@ -7,46 +7,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>SpaceManagement.jsp</title>
-<link rel="stylesheet" type="text/css" href="css/main.css">
+	
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="user/css/animate.css">
+    <link rel="stylesheet" href="user/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="user/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="user/css/magnific-popup.css">
+    <link rel="stylesheet" href="user/css/ionicons.min.css">
+    <link rel="stylesheet" href="user/css/flaticon.css">
+    <link rel="stylesheet" href="user/css/icomoon.css">
+    <link rel="stylesheet" href="user/css/style.css">
+
 </head>
 <body>
-
-<!-- include 스크립릿 으로 불러와서 사용하기 -->
-<div>
-	<table>
-		<tr>
-			<th><img src="<%=cp %>/images/logo.png" height="80px" /></th>
-			<th><input type="text" style="width: 700px; height: 50px; font-size: 30px"/></th>
-            <th><img src="<%=cp %>/images/search.png" height="40px" /></th>
-		</tr>
-	</table>
-	<hr>
-</div>
-
-<!-- 
-	#jsp
-		정책 내용 추가 필요...
 	
- -->
-
+	<!-- include 필요 -->
+	<div class="container pt-5">
+		<div class="row justify-content-between">
+			<div class="col">
+				<a class="navbar-brand" href="user/index.html">LOOK<span>ATION</span></a>
+			</div>
+		</div>
+	</div>
 
 <div>
 	
 	<span>공간 관리 정책</span>
-	<pre>
+	<p>
 	정책 복붙 해야할까...
-	</pre>
+	</p>
 	<br>
 	
 	<span>이전 공간관리</span>
-	<pre>
+	<p>
 	
-	</pre>
+	</p>
 	<br>
 	
 </div>
+
+	<script src="user/js/jquery.min.js"></script>
+	<script src="user/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="user/js/popper.min.js"></script>
+	<script src="user/js/bootstrap.min.js"></script>
+	<script src="user/js/jquery.easing.1.3.js"></script>
+	<script src="user/js/jquery.waypoints.min.js"></script>
+	<script src="user/js/jquery.stellar.min.js"></script>
+	<script src="user/js/jquery.animateNumber.min.js"></script>
+	<script src="user/js/owl.carousel.min.js"></script>
+	<script src="user/js/jquery.magnific-popup.min.js"></script>
+	<script src="user/js/scrollax.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="user/js/google-map.js"></script>
+	<script src="user/js/main.js"></script>
 
 </body>
 </html>
