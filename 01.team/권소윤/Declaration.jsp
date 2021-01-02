@@ -4,7 +4,6 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
-	// 받아온 정보를 넘겨주는 구문
 %>
 <!DOCTYPE html>
 <html>
@@ -25,27 +24,9 @@
     <link rel="stylesheet" href="user/css/style.css">
 
 <script type="text/javascript">
-
-	function declaration()
-	{
-		alert("호출 확인");
-	}
-	
-	function resetForm()
-	{
-		alert("호출 확인");
-	}
-
 </script>
 </head>
 <body>
-	<!-- 이용자/호스트가 블라인드 게시글에 접근하였을 때... -->
-	<!-- 
-		#js
-		리스트로 되돌아가는 함수 정의 필요
-		button id, class 정의 필요
-		
-	-->
 
 	<div class="container pt-5">
 		<div class="row justify-content-between">
@@ -55,30 +36,54 @@
 		</div>
 	</div>
 
-<div style="margin: 0 auto;">
-	<!-- 신고버튼을 눌렀을 때 초기화면 -->
-	<!--
-		#jsp
-	 	textbox, textarea, button의 id, class 통일하여 재작성 필요
-	 	form의 id, action, method 작성 필요
-	 	리뷰 및 QNA 상세정보를 받아온 후, Declaration_host.jsp 파일로 넘겨준다.
-	 	필요한 정보 : 컨텐츠정보, 신고자정보, 신고일자, 피신고자정보 + 신고 사유
-	 	
-	 	#js
-	 	신고하기 / 다시작성 클릭 시 동작하는 함수 편집 필요
-	 	이용자 닉네임은 받아와야 하는 값이기 때문에 reset 되어도 남아있어야 하기 때문에
-	 	함수로 처리..해야겠죠? 아닌가...
-	 	
-	 -->
-	<form>	<!-- Declaration_host.jsp로 데이터가 전송 -->
-		<span>이용자 닉네임</span><br>
-		<input type="text"><br><br>
-		<span>신고 사유</span> <br>
-		<textarea rows="3" cols="30"></textarea><br>
-		<br>
-		<button type="button" onclick="declaration()" class="btn-primary">신고하기</button>
-		<button type="button" onclick="resetForm()" class="btn-warning">다시작성</button>
-	</form>
+<div class="container">
+	<div class="box">
+		<!-- 이용자 → 호스트 : 공간게시물 신고 폼 -->
+		<form>
+			호스트 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="hostName" class="txt"><br>
+			신고하려는 공간 <input id="placeCode" value="이전페이지에서 받아온 공간제목"><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<select>
+				<option>==[신고유형]==</option>
+				<option>부적절한 언행 사용</option>
+				<option>허위매물</option>
+				<option>광고</option>
+				<option>호스트 서비스 미충족</option>
+				<option>강압적 추가 결제 유도</option>
+				<option>기타</option>
+			</select><br>
+			신고사유<br>
+			<textarea rows="3" cols="40" placeholder="자세한 신고사유를 작성하세요."></textarea><br>
+			<p>※ 신고 내용을 허위로 작성할 경우, 해당 신고는 반려처리됩니다.<br>
+			허위 신고의 경우 횟수가 잦거나, 정도가 심한 경우에는 블랙리스트 처리될 수 있으며,<br>
+			법적 제재를 받으실 수 있습니다.</p>
+			<button type="button" class="btn btn-primary">신고하기</button>
+			<button type="button" class="btn btn-secondary">다시작성</button>
+		</form>
+		
+		<!-- 호스트 → 이용자 : 예약 신고 폼 -->
+		<form>
+			이용자 &nbsp;&nbsp;&nbsp;
+			<input type="text" id="userName" class="txt"><br>
+			예약번호 <input type="text" id="reservationCode" value="이전페이지에서 받아온 예약번호"><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<select>
+				<option>==[신고유형]==</option>
+				<option>부적절한 언행 사용</option>
+				<option>기물파손</option>
+				<option>광고</option>
+				<option>기타</option>
+			</select><br>
+			신고사유<br>
+			<textarea rows="3" cols="40" placeholder="자세한 신고사유를 작성하세요."></textarea><br>
+			<p>※ 신고 내용을 허위로 작성할 경우, 해당 신고는 반려처리됩니다.<br>
+			허위 신고의 경우 횟수가 잦거나, 정도가 심한 경우에는 블랙리스트 처리될 수  있으며,<br>
+			법적 제재를 받으실 수 있습니다.</p>
+			<button type="button" class="btn btn-primary">신고하기</button>
+			<button type="button" class="btn btn-secondary">다시작성</button>
+		</form>
+	</div>
 </div>
 
 	<script src="user/js/jquery.min.js"></script>
