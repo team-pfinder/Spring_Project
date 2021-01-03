@@ -10,38 +10,19 @@
 <meta charset="UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-
-<title>BlackListManager.jsp</title>
-
-  <!-- Custom fonts for this template-->
-    <link href="admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
-
-<script type="text/javascript">
-
-	function blackList()
-	{
-		alert("블랙리스트 해제 함수 호출 근데 이거 자스로 하는건가 ㅎ");
-	}
-
-</script>
-
+<%@ include file="../includes/includes_admin.jsp" %>
+<title>userReview.jsp</title>
 </head>
 <body id="page-top">
+
+	<!-- Header --> <!-- 경로 변경 필요 -->
+	<%@ include file="/includes/adminHeader.jsp" %>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-         <!-- Sidebar -->
-   <%@ include file="Admin_Sidebar.jsp" %>
+   <!-- Sidebar -->
+   <%@ include file="../includes/Admin_Sidebar.jsp" %>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -255,156 +236,70 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
+                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">블랙리스트관리</h1>
-                    <p class="mb-4">블랙리스트를 관리할 수 있는 페이지...
-                    지금 하나도 모르겠어서 눈물이 차올라서 고갤들어...흐르지 못하게 또 살짝 웃어...</a>.</p>
-					
-					
+                    <h1 class="h3 mb-2 text-gray-800">리뷰조회</h1>
+                    <p class="mb-4">온 리뷰를 조회할 수 있읍니다.
+                     검색을 통해 특정 이용자리뷰를 조회할 수 있읍니다.</p>
+
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">신고처리plz</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Review</h6>
                         </div>
                         <div class="card-body">
-                        <select>
-							<option>==[선택]==</option>
-							<option>이용자</option>
-							<option>호스트</option>
-						</select>
                             <div class="table-responsive">
-                            <br>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <tr>
-										<th>분류</th>
-										<th>ID</th>
-										<th>전환일</th>
-										<th>해제일</th>
-										<th>기간설정</th>
-									</tr>
-									
-									<tr>
-										<td>이용자</td>
-										<td>test1@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>이용자</td>
-										<td>test2@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>호스트</td>
-										<td>test3@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>호스트</td>
-										<td>test4@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>이용자</td>
-										<td>test5@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>호스트</td>
-										<td>test6@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
+                                    <thead>
+                                    	<tr>
+                                    		<th>리뷰번호</th>
+                                    		<th>닉네임</th>
+                                    		<th>이메일</th>
+                                    		<th>공간명</th>
+                                    		<th>리뷰내용</th>
+                                    	</tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                    	<tr>
+	                                    	<td>5</td>
+	                                    	<td>닉네임5</td>
+	                                    	<td>test5@test.com</td>
+	                                    	<td>홍대파티룸</td>
+	                                    	<td>분위기 짱짱입니다. 이용 잘하고 갑니다.</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>4</td>
+	                                    	<td>닉네임4</td>
+	                                    	<td>test4@test.com</td>
+	                                    	<td>건대파티룸</td>
+	                                    	<td>사진이랑 좀 다르네여. 직원분도 불친절 어쩌고...</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>3</td>
+	                                    	<td>닉네임3</td>
+	                                    	<td>test3@test.com</td>
+	                                    	<td>인계동파티룸</td>
+	                                    	<td>찾기 힘든곳에 있었는데 호스트분이 친절하게 잘 알려주셔서
+	                                    	쉽게 찾을 수 있었습니다. 친절함 굿굿</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>5</td>
+	                                    	<td>닉네임2</td>
+	                                    	<td>test2@test.com</td>
+	                                    	<td>이태원루프탑</td>
+	                                    	<td>파티하기 되게 좋았어요. 뷰도 좋고 어쩌고</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>1</td>
+	                                    	<td>닉네임1</td>
+	                                    	<td>test1@test.com</td>
+	                                    	<td>건대파티룸</td>
+	                                    	<td>분위기 짱짱입니다. 이용 잘하고 갑니다.</td>
+                                    	</tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -456,26 +351,5 @@
             </div>
         </div>
     </div>
-
-
-
-
- <!-- Bootstrap core JavaScript-->
-    <script src="admin/vendor/jquery/jquery.min.js"></script>
-    <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="admin/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="admin/vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="admin/js/demo/chart-area-demo.js"></script>
-    <script src="admin/js/demo/chart-pie-demo.js"></script>
-
 </body>
 </html>
