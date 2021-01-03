@@ -11,17 +11,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <%@ include file="../includes/includes_admin.jsp" %>
-<title>BlindList.jsp</title>
-
-<script type="text/javascript">
-
-	function blindCancel()
-	{
-		alert("블라인드 해제 처리");
-	}
-
-</script>
-
+<title>qnaReview.jsp</title>
 </head>
 <body id="page-top">
 
@@ -250,41 +240,65 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">블라인드 관리</h1>
-                    <p class="mb-4">블라인드 관리 근데 해제 시켜줄 일이 있으려나...?</p>
+                    <h1 class="h3 mb-2 text-gray-800">Q&A조회</h1>
+                    <p class="mb-4">온 QNA를 조회할 수 있읍니다.
+                     검색을 통해 특정 이용자QNA를 조회할 수 있읍니다.</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">블라인드 리스트</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Q&A</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
-	                                    <tr>
-											<th>분류</th>
-											<th>회원번호</th>
-											<th>게시물번호</th>
-											<th>게시물</th>
-											<th>블라인드처리일자</th>
-											<th>블라인드처리사유</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>공간게시글</td>
-											<td>786</td>
-											<td>3939</td>
-											<td>홍대파티룸</td>
-											<td>2020-12-26</td>
-											<td>탈퇴</td>
-											<td>
-												<button type="button" onclick="blindCancel()" class="btn-primary">블라인드 해제</button>
-											</td>
-									</tr>
-									</tbody>
+                                    	<tr>
+                                    		<th>Q&A번호</th>
+                                    		<th>닉네임</th>
+                                    		<th>이메일</th>
+                                    		<th>공간명</th>
+                                    		<th>Q&A내용</th>
+                                    	</tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                    	<tr>
+	                                    	<td>5</td>
+	                                    	<td>알 수 없음</td>
+	                                    	<td>test5@test.com</td>
+	                                    	<td>홍대파티룸</td>
+	                                    	<td>★홍$대#카&지@노☆...</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>4</td>
+	                                    	<td></td>
+	                                    	<td>test4@test.com</td>
+	                                    	<td>홍대파티룸</td>
+	                                    	<td>브라이덜 샤워할건데 혹시 가능한가요?</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>3</td>
+	                                    	<td>닉네임3</td>
+	                                    	<td>test3@test.com</td>
+	                                    	<td>인계동파티룸</td>
+	                                    	<td>코로난데 혹시 영업 계속 하시나요?</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>5</td>
+	                                    	<td>닉네임2</td>
+	                                    	<td>test2@test.com</td>
+	                                    	<td>인사동파티룸</td>
+	                                    	<td>혹시 배달음식 가능한가요?</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td>1</td>
+	                                    	<td>닉네임1</td>
+	                                    	<td>test1@test.com</td>
+	                                    	<td>건대파티룸</td>
+	                                    	<td>사진이 좀 흐릿해서 그러는데 뫄뫄 있는거 확실한가요?</td>
+                                    	</tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
