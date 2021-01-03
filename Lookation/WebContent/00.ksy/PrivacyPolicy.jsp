@@ -2,29 +2,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-	String cp = request.getContextPath();
+String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>PrivacyPolicy.jsp</title>
-	
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="user/css/animate.css">
-    <link rel="stylesheet" href="user/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="user/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="user/css/magnific-popup.css">
-    <link rel="stylesheet" href="user/css/ionicons.min.css">
-    <link rel="stylesheet" href="user/css/flaticon.css">
-    <link rel="stylesheet" href="user/css/icomoon.css">
-    <link rel="stylesheet" href="user/css/style.css">
+
+
+<%@ include file="../includes/includes_home.jsp"%>
 
 </head>
 <body>
-	
+
 	<!-- include 필요 -->
 	<div class="container pt-5">
 		<div class="row justify-content-between">
@@ -34,42 +27,46 @@
 		</div>
 	</div>
 
-<div>
-	<span>개인정보처리방침</span>
-	<p>
-	회원탈퇴 시, 개인정보는 즉시 파기된다.
-	파기되는 개인정보 : 이메일, 비밀번호, 이름, 연락처, 계좌번호
-	어쩌고
-	저
-	쩌
-	고
-	구
-	시
-	렁
-	</p>
-	<br>
+	<section class="hero-wrap hero-wrap-2"
+		style="background-image: url('images/bg_3.jpg');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-end">
+				<div class="col-md-9 ftco-animate pb-5">
+					<p class="breadcrumbs mb-2">
+						<span class="mr-2"><a href="index.html">Home <i
+								class="ion-ios-arrow-forward"></i></a></span> <span>About us <i
+							class="ion-ios-arrow-forward"></i></span>
+					</p>
+					<h1 class="mb-0 bread">개인정보처리방침</h1>
+				</div>
+			</div>
+		</div>
+	</section>
 
-	<span>이전 처리방침</span>
-	<p>
-	</p>
-	<br>
-</div>
 
-	<script src="user/js/jquery.min.js"></script>
-	<script src="user/js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="user/js/popper.min.js"></script>
-	<script src="user/js/bootstrap.min.js"></script>
-	<script src="user/js/jquery.easing.1.3.js"></script>
-	<script src="user/js/jquery.waypoints.min.js"></script>
-	<script src="user/js/jquery.stellar.min.js"></script>
-	<script src="user/js/jquery.animateNumber.min.js"></script>
-	<script src="user/js/owl.carousel.min.js"></script>
-	<script src="user/js/jquery.magnific-popup.min.js"></script>
-	<script src="user/js/scrollax.min.js"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-	<script src="user/js/google-map.js"></script>
-	<script src="user/js/main.js"></script>
+	<div class="container" style="margin: 10% 10% 10% 10%;">
+		<div>
+			Lookation(이하 "회사")는 정보통신망이용촉진 및 정보보호 등에 관한 법률(이하 '정보통신망법') 등
+			에 따라 회원의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여
+			다음과 같이 개인정보처리방침을 수립하고, 공개한다.
+		</div>
+		<br>
+		<div>
+			<p style="font-weight: bold;">제 1 조 (개인정보 수집 항목 및 방법)</p>
+			1. 회사는 이용자/호스트 회원 가입 시 아래와 같은 개인정보를 수집한다.<br>
+				- 이용자는 회원가입하는 과정에서 성명, 이메일 주소, 휴대폰 번호 (필수적 수집정보)를 수집한다.<br>
+				- 마일리지를 충전/환전하고, 예약하는 과정에서 예약정보(성명, 이메일주소, 휴대폰번호), 결제정보
+				(계좌번호)를 수집한다.<br>
+				- 호스트 회원의 경우, 회원가입 직후 공간 등록 과정에서 필수항목으로 어쩌고...<br>
+		</div>
+		
+		후략...
+		
+	</div>
+
+	<%@ include file="../includes/includes_home_end.jsp"%>
 
 </body>
 </html>

@@ -9,11 +9,87 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 
-<%@ include file="../includes/includes_admin.jsp" %>
-<title>DeclarationList.jsp</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<%@ include file="../includes/includes_admin.jsp"%>
+<title>userReview.jsp</title>
+<style type="text/css">
+	table 
+	{
+		text-align: center;
+	}
+	
+	.modal_wrap{
+        display: none;
+        width: 500px;
+        height: 500px;
+        position: absolute;
+        top:50%;
+        left: 50%;
+        margin: -250px 0 0 -250px;
+        background:#eee;
+        z-index: 2;
+    }
+    .black_bg{
+        display: none;
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color:rgba(0, 0,0, 0.5);
+        top:0;
+        left: 0;
+        z-index: 1;
+    }
+    .modal_close{
+        width: 26px;
+        height: 26px;
+        position: absolute;
+        top: -30px;
+        right: 0;
+    }
+    .modal_close> a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        background:url(https://img.icons8.com/metro/26/000000/close-window.png);
+        text-indent: -9999px;
+    }
+
+</style>
+
+<script type="text/javascript">
+	
+	/* 모달창 버튼 하나만 먹는 문제 발생중...ㅠ 하나하나마다 모달창 만들어줘야하는거같아서 눈물 머금고 일단 보류 */
+	window.onload = function()
+	{
+		function onClick()
+		{
+			document.querySelector('.modal_wrap').style.display = 'block';
+			document.querySelector('.black_bg').style.display = 'block';
+		}
+		function offClick()
+		{
+			document.querySelector('.modal_wrap').style.display = 'none';
+			document.querySelector('.black_bg').style.display= 'none';
+		}
+		
+		document.getElementById('modal_btn').addEventListener('click', onClick);
+		document.querySelector('.modal_close').addEventListener('click', offClick);
+	}
+	
+	function deleteReview()
+	{
+		alert("게시글 삭제 function 작동 부릉부릉 =3");
+	}
+        
+    </script>
 
 </head>
 <body id="page-top">
+
+	<!-- Header -->
+	<!-- 경로 변경 필요 -->
+	<%-- <%@ include file="../includes/adminHeader.jsp"%> --%>
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -230,67 +306,86 @@ String cp = request.getContextPath();
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="h3 mb-2 text-gray-800">신고처리내역리스트</h1>
-					<p class="mb-4">
-						이제까지 관리자가 처리한 신고내역을 확인할 수 있는 로그리스트... 지금 하나도 모르겠어서 눈물이 차올라서
-						고갤들어...흐르지 못하게 또 살짝 웃어...</a>.
-					</p>
-
+					<h1 class="h3 mb-2 text-gray-800">리뷰조회</h1>
+					<p class="mb-4">온 리뷰를 조회할 수 있읍니다. 검색을 통해 특정 이용자리뷰를 조회할 수 있읍니다.</p>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">신고처리LOG</h6>
+							<h6 class="m-0 font-weight-bold text-primary">Review</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<br>
 								<table class="table table-bordered" id="dataTable" width="100%"
 									cellspacing="0">
-									<tr>
-										<th>컨텐츠정보</th>
-										<th>신고사유</th>
-										<th>피신고자정보</th>
-										<th>신고자정보</th>
-										<th>신고일자</th>
-										<th>처리결과</th>
-									</tr>
+									<thead>
+										<tr>
+											<th>리뷰번호</th>
+											<th>닉네임</th>
+											<th>이메일</th>
+											<th>공간코드</th>
+											<th>리뷰내용</th>
+											<th>처리</th>
+										</tr>
+									</thead>
 
-									<tr>
-										<td>컨텐츠정보2</td>
-										<td>신고사유2</td>
-										<td>피신고자정보2</td>
-										<td>신고자정보2</td>
-										<td>신고일자2</td>
-										<td>처리결과2</td>
-									</tr>
-
-									<tr>
-										<td>컨텐츠정보3</td>
-										<td>신고사유3</td>
-										<td>피신고자정보3</td>
-										<td>신고자정보3</td>
-										<td>신고일자3</td>
-										<td>처리결과3</td>
-									</tr>
-
-									<tr>
-										<td>컨텐츠정보4</td>
-										<td>신고사유4</td>
-										<td>피신고자정보4</td>
-										<td>신고자정보4</td>
-										<td>신고일자4</td>
-										<td>처리결과4</td>
-									</tr>
-
-									<tr>
-										<td>컨텐츠정보5</td>
-										<td>신고사유5</td>
-										<td>피신고자정보5</td>
-										<td>신고자정보5</td>
-										<td>신고일자5</td>
-										<td>처리결과5</td>
-									</tr>
+									<tbody>
+										<tr>
+											<td><input type="checkbox"> 5</td>
+											<td>닉네임5</td>
+											<td>test5@test.com</td>
+											<td>P05005</td>
+											<td>분위기 짱짱입니다. 이용 잘하고 갑니다.</td>
+											<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"> 4</td>
+											<td>닉네임4</td>
+											<td>test4@test.com</td>
+											<td>P03003</td>
+											<td>사진이랑 좀 다르네여. 직원분도 불친절...</td>
+											<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"> 3</td>
+											<td>닉네임3</td>
+											<td>test3@test.com</td>
+											<td>P00123</td>
+											<td>찾기 힘든곳에 있었는데 호스트분이 친절...</td>
+											<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"> 2</td>
+											<td>닉네임2</td>
+											<td>test2@test.com</td>
+											<td>P03005</td>
+											<td>파티하기 되게 좋았어요. 뷰도 좋고...</td>
+											<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"> 1</td>
+											<td>닉네임1</td>
+											<td>test1@test.com</td>
+											<td>P05004</td>
+											<td>분위기 짱짱입니다. 이용 잘하고 갑니다.</td>
+											<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
@@ -301,6 +396,23 @@ String cp = request.getContextPath();
 
 			</div>
 			<!-- End of Main Content -->
+			
+			<!-- Modal -->
+			<div class="black_bg"></div>
+			<div class="modal_wrap">
+				<div class="modal_close"><a href="#">close</a></div>
+				<div>
+					<br>
+					<h2>전문보기</h2>
+					<p style="text-align: right; font-size: small;">작성일자</p>
+					<hr>
+					<br>
+					<p>
+					불러온 리뷰 내용이 담김 <br>
+					사진이 첨부된 리뷰의 경우에는 사진도 여기서 볼 수 있음
+					</p>
+				</div>
+			</div>
 
 			<!-- Footer -->
 			<footer class="sticky-footer bg-white">
@@ -345,6 +457,5 @@ String cp = request.getContextPath();
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

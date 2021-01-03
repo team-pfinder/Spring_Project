@@ -2,29 +2,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-	String cp = request.getContextPath();
+String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>TermsofUse.jsp</title>
-	
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="user/css/animate.css">
-    <link rel="stylesheet" href="user/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="user/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="user/css/magnific-popup.css">
-    <link rel="stylesheet" href="user/css/ionicons.min.css">
-    <link rel="stylesheet" href="user/css/flaticon.css">
-    <link rel="stylesheet" href="user/css/icomoon.css">
-    <link rel="stylesheet" href="user/css/style.css">
+
+
+<%@ include file="../includes/includes_home.jsp"%>
 
 </head>
 <body>
-	
+
 	<!-- include 필요 -->
 	<div class="container pt-5">
 		<div class="row justify-content-between">
@@ -34,40 +27,47 @@
 		</div>
 	</div>
 
-<div>
-	
-	<span>이용약관</span>
-	<p>
-	이용약관 어쩌고저쩌고
-	이용약관 어쩌고저쩌고
-	이용약관 어쩌고저쩌고
-	</p>
-	<br>
-	
-	<span>이전 이용약관</span>
-	<p>
-	이용약관 어쩌고저쩌고
-	이용약관 어쩌고저쩌고
-	이용약관 어쩌고저쩌고
-	</p>
-	<br>
-</div>
+	<section class="hero-wrap hero-wrap-2"
+		style="background-image: url('images/bg_3.jpg');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-end">
+				<div class="col-md-9 ftco-animate pb-5">
+					<p class="breadcrumbs mb-2">
+						<span class="mr-2"><a href="index.html">Home <i
+								class="ion-ios-arrow-forward"></i></a></span> <span>About us <i
+							class="ion-ios-arrow-forward"></i></span>
+					</p>
+					<h1 class="mb-0 bread">이용약관</h1>
+				</div>
+			</div>
+		</div>
+	</section>
 
-	<script src="user/js/jquery.min.js"></script>
-	<script src="user/js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="user/js/popper.min.js"></script>
-	<script src="user/js/bootstrap.min.js"></script>
-	<script src="user/js/jquery.easing.1.3.js"></script>
-	<script src="user/js/jquery.waypoints.min.js"></script>
-	<script src="user/js/jquery.stellar.min.js"></script>
-	<script src="user/js/jquery.animateNumber.min.js"></script>
-	<script src="user/js/owl.carousel.min.js"></script>
-	<script src="user/js/jquery.magnific-popup.min.js"></script>
-	<script src="user/js/scrollax.min.js"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-	<script src="user/js/google-map.js"></script>
-	<script src="user/js/main.js"></script>
+
+	<div class="container" style="margin: 10% 10% 10% 10%;">
+		<div>
+			<p style="font-weight: bold;">제 1 조 (목적)</p>
+			이 약관은 주식회사 Lookation가 제공하는 Lookation(http://www.lookation.com)온라인 서비스
+			(이하 "서비스")의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을
+			목적으로 한다.
+		</div>
+		<br>
+		<div>
+			<p style="font-weight: bold;">제 2 조 (정의)</p>
+			이 약관에서 사용하는 용어의 정의는 다음과 같다.
+				1. "서비스"라 함은 유휴 공간(이하 "공간") 정보의 공유 및 예약을 위하여 "회사"가 Lookation을 통해
+				제공하는 온라인 서비스를 일컫는다.
+				2. "사이트"라 함은 "회사"가 "서비스"를 운영하는 웹사이트를 의미한다.
+				현재는 https://www.lookation.com 이다.
+		</div>
+		
+		후략...
+		
+	</div>
+
+	<%@ include file="../includes/includes_home_end.jsp"%>
 
 </body>
 </html>

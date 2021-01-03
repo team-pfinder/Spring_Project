@@ -3,35 +3,99 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-
 %>
-
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 
-<%@ include file= "../includes/includes_admin.jsp" %>
-<title>BlackListManager.jsp</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<%@ include file="../includes/includes_admin.jsp" %>
+<title>qnaReview.jsp</title>
+
+<style type="text/css">
+	table 
+	{
+		text-align: center;
+	}
+	
+	.modal_wrap{
+        display: none;
+        width: 500px;
+        height: 500px;
+        position: absolute;
+        top:50%;
+        left: 50%;
+        margin: -250px 0 0 -250px;
+        background:#eee;
+        z-index: 2;
+    }
+    .black_bg{
+        display: none;
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color:rgba(0, 0,0, 0.5);
+        top:0;
+        left: 0;
+        z-index: 1;
+    }
+    .modal_close{
+        width: 26px;
+        height: 26px;
+        position: absolute;
+        top: -30px;
+        right: 0;
+    }
+    .modal_close> a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        background:url(https://img.icons8.com/metro/26/000000/close-window.png);
+        text-indent: -9999px;
+    }
+
+</style>
 
 <script type="text/javascript">
-
-	function blackList()
+	
+	/* 모달창 버튼 하나만 먹는 문제 발생중...ㅠ 하나하나마다 모달창 만들어줘야하는거같아서 눈물 머금고 일단 보류 */
+	window.onload = function()
 	{
-		alert("블랙리스트 해제 함수 호출 근데 이거 자스로 하는건가 ㅎ");
+		function onClick()
+		{
+			document.querySelector('.modal_wrap').style.display = 'block';
+			document.querySelector('.black_bg').style.display = 'block';
+		}
+		function offClick()
+		{
+			document.querySelector('.modal_wrap').style.display = 'none';
+			document.querySelector('.black_bg').style.display= 'none';
+		}
+		
+		document.getElementById('modal_btn').addEventListener('click', onClick);
+		document.querySelector('.modal_close').addEventListener('click', offClick);
 	}
-
-</script>
+	
+	function deleteReview()
+	{
+		alert("게시글 삭제 function 작동 부릉부릉 =3");
+	}
+        
+    </script>
 
 </head>
 <body id="page-top">
+
+	<!-- Header --> <!-- 경로 변경 필요 -->
+	<%-- <%@ include file="../includes/adminHeader.jsp" %> --%>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-	<!-- Sidebar -->
-    
-    <%@ include file= "../includes/Admin_Sidebar.jsp" %>
+   <!-- Sidebar -->
+   <%@ include file="../includes/Admin_Sidebar.jsp" %>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -245,157 +309,90 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
+                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">블랙리스트관리</h1>
-                    <p class="mb-4">블랙리스트를 관리할 수 있는 페이지...
-                    지금 하나도 모르겠어서 눈물이 차올라서 고갤들어...흐르지 못하게 또 살짝 웃어...</a>.</p>
-					
-					
+                    <h1 class="h3 mb-2 text-gray-800">Q&A조회</h1>
+                    <p class="mb-4">온 QNA를 조회할 수 있읍니다.
+                     검색을 통해 특정 이용자QNA를 조회할 수 있읍니다.</p>
+
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">신고처리plz</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Q&A</h6>
                         </div>
                         <div class="card-body">
-                        <select>
-							<option>==[선택]==</option>
-							<option>이용자</option>
-							<option>호스트</option>
-						</select>
                             <div class="table-responsive">
-                            <br>
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <tr>
-										<th>분류</th>
-										<th>ID</th>
-										<th>전환일</th>
-										<th>해제일</th>
-										<th>기간설정</th>
-										<th></th>
-									</tr>
-									
-									<tr>
-										<td>이용자</td>
-										<td>test1@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>이용자</td>
-										<td>test2@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>호스트</td>
-										<td>test3@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>호스트</td>
-										<td>test4@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>이용자</td>
-										<td>test5@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
-									
-									<tr>
-										<td>호스트</td>
-										<td>test6@test.com</td>
-										<td>2020-12-26</td>
-										<td>2021-03-26</td>
-										<td>
-											<select>
-												<option>==[기간설정]==</option>
-												<option>3개월</option>
-												<option>6개월</option>
-												<option>9개월</option>
-												<option>12개월</option>
-												<option>영구정지</option>
-											</select>
-										</td>
-										<td>
-											<button type="button" onclick="blackList()" class="btn-primary">블랙리스트 해제</button>
-										</td>
-									</tr>
+                                    <thead>
+                                    	<tr>
+                                    		<th>Q&A번호</th>
+                                    		<th>닉네임</th>
+                                    		<th>이메일</th>
+                                    		<th>공간코드</th>
+                                    		<th>Q&A내용</th>
+                                    		<th>처리</th>
+                                    	</tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                    	<tr>
+	                                    	<td><input type="checkbox"> 5</td>
+	                                    	<td>알 수 없음</td>
+	                                    	<td>test5@test.com</td>
+	                                    	<td>P05005</td>
+	                                    	<td>★홍$대#카&지@노☆...</td>
+	                                    	<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td><input type="checkbox"> 4</td>
+	                                    	<td>닉네임4</td>
+	                                    	<td>test4@test.com</td>
+	                                    	<td>P05005</td>
+	                                    	<td>브라이덜 샤워할건데 혹시 가능한가요?</td>
+	                                    	<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td><input type="checkbox"> 3</td>
+	                                    	<td>닉네임3</td>
+	                                    	<td>test3@test.com</td>
+	                                    	<td>P03002</td>
+	                                    	<td>코로난데 혹시 영업 계속 하시나요?</td>
+	                                    	<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td><input type="checkbox"> 2</td>
+	                                    	<td>닉네임2</td>
+	                                    	<td>test2@test.com</td>
+	                                    	<td>P05001</td>
+	                                    	<td>혹시 배달음식 가능한가요?</td>
+	                                    	<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+                                    	</tr>
+                                    	<tr>
+	                                    	<td><input type="checkbox"> 1</td>
+	                                    	<td>닉네임1</td>
+	                                    	<td>test1@test.com</td>
+	                                    	<td>P05003</td>
+	                                    	<td>사진이 좀 흐릿해서 그러는데 뫄뫄 있는거 확실한가요?</td>
+	                                    	<td>
+												<button type="button" class="btn btn-primary" id="modal_btn">상세보기</button>
+												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+											</td>
+                                    	</tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -406,6 +403,22 @@
 
             </div>
             <!-- End of Main Content -->
+            
+            <!-- Modal -->
+			<div class="black_bg"></div>
+			<div class="modal_wrap">
+				<div class="modal_close"><a href="#">close</a></div>
+				<div>
+					<br>
+					<h2>전문보기</h2>
+					<p style="text-align: right; font-size: small;">작성일자</p>
+					<hr>
+					<br>
+					<p>
+					불러온 qna 내용이 담김
+					</p>
+				</div>
+			</div>
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
@@ -447,6 +460,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>

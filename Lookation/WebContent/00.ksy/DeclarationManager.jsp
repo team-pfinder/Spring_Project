@@ -12,6 +12,14 @@
 <%@ include file="../includes/includes_admin.jsp" %>
 <title>DeclarationManager.jsp</title>
 
+<style type="text/css">
+
+	table
+	{
+		text-align: center;
+	}
+
+</style>
 
 <script type="text/javascript">
 
@@ -26,12 +34,6 @@
 	{
 		alert("신고 반려 프로세스");
 		
-		// 신고 처리 사유를 작성하는 페이지 또는 텍스트박스 필요
-	}
-	
-	function process3()
-	{
-		alert("허위 신고 처리 프로세스");
 		// 신고 처리 사유를 작성하는 페이지 또는 텍스트박스 필요
 	}
 
@@ -264,73 +266,72 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">신고처리</h1>
                     <p class="mb-4">이용자와 호스트가 신고한 내용들을 볼 수 있는 페이지.
-                    지금 하나도 모르겠어서 눈물이 차올라서 고갤들어...흐르지 못하게 또 살짝 웃어...</a>.</p>
+                    신고처리가 되면...ajax 처리를 통해서...바로...볼 수 있다...신고완료 리스트...</p>
 					
 					
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">신고처리plz</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">신고처리리스트</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <tr>
-										<th>컨텐츠정보</th>
-										<th>신고사유</th>
-										<th>피신고자정보</th>
-										<th>신고자정보</th>
-										<th>신고일자</th>
-										<th></th>
+                                	<thead>
+	                                    <tr>
+											<th>컨텐츠정보</th>
+											<th>신고사유</th>
+											<th>피신고자정보</th>
+											<th>신고자정보</th>
+											<th>신고일자</th>
+											<th>신고처리결과</th>	<!-- 처리 했으면 처리결과를 보여주고 처리안했으면 버튼이 노출되게..할 수 있나? -->
+										</tr>
+									</thead>
+									
+									<tbody>
+										<tr>
+											<td>컨텐츠정보1</td>
+											<td>신고사유1</td>
+											<td>피신고자정보1</td>
+											<td>신고자정보1</td>
+											<td>신고일자1</td>
+											<td>
+												<button type="button" onclick="process1()" class="btn btn-primary">신고처리</button>
+												<button type="button" onclick="process2()" class="btn btn-secondary">신고반려</button>
+											</td>
+										</tr>
+										<tr>
+											<td>컨텐츠정보2</td>
+											<td>신고사유2</td>
+											<td>피신고자정보2</td>
+											<td>신고자정보2</td>
+											<td>신고일자2</td>
+											<td>
+												<button type="button" onclick="process1()" class="btn btn-primary">신고처리</button>
+												<button type="button" onclick="process2()" class="btn btn-secondary">신고반려</button>
+											</td>
+										</tr>
+										<tr>
+											<td>컨텐츠정보3</td>
+											<td>신고사유3</td>
+											<td>피신고자정보3</td>
+											<td>신고자정보3</td>
+											<td>신고일자3</td>
+											<td>
+												신고반려
+											</td>
+										</tr>
+										<tr>
+											<td>컨텐츠정보4</td>
+											<td>신고사유4</td>
+											<td>피신고자정보4</td>
+											<td>신고자정보4</td>
+											<td>신고일자4</td>
+											<td>
+												신고인정
+											</td>
 									</tr>
-									<tr>
-										<td>컨텐츠정보1</td>
-										<td>신고사유1</td>
-										<td>피신고자정보1</td>
-										<td>신고자정보1</td>
-										<td>신고일자1</td>
-										<td>
-											<button type="button" onclick="process1()" class="btn-primary">신고처리</button>
-											<button type="button" onclick="process2()" class="btn-secondary">신고반려</button>
-											<button type="button" onclick="process3()" class="btn-warning">허위신고</button>
-										</td>
-									</tr>
-									<tr>
-										<td>컨텐츠정보2</td>
-										<td>신고사유2</td>
-										<td>피신고자정보2</td>
-										<td>신고자정보2</td>
-										<td>신고일자2</td>
-										<td>
-											<button type="button" onclick="process1()" class="btn-primary">신고처리</button>
-											<button type="button" onclick="process2()" class="btn-secondary">신고반려</button>
-											<button type="button" onclick="process3()" class="btn-warning">허위신고</button>
-										</td>
-									</tr>
-									<tr>
-										<td>컨텐츠정보3</td>
-										<td>신고사유3</td>
-										<td>피신고자정보3</td>
-										<td>신고자정보3</td>
-										<td>신고일자3</td>
-										<td>
-											<button type="button" onclick="process1()" class="btn-primary">신고처리</button>
-											<button type="button" onclick="process2()" class="btn-secondary">신고반려</button>
-											<button type="button" onclick="process3()" class="btn-warning">허위신고</button>
-										</td>
-									</tr>
-									<tr>
-										<td>컨텐츠정보4</td>
-										<td>신고사유4</td>
-										<td>피신고자정보4</td>
-										<td>신고자정보4</td>
-										<td>신고일자4</td>
-										<td>
-											<button type="button" onclick="process1()" class="btn-primary">신고처리</button>
-											<button type="button" onclick="process2()" class="btn-secondary">신고반려</button>
-											<button type="button" onclick="process3()" class="btn-warning">허위신고</button>
-										</td>
-									</tr>
+									</tbody>
                                 </table>
                             </div>
                         </div>
