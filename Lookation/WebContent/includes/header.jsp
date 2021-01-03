@@ -6,8 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>header.jsp</title>
+
 </head>
 <body>
+
 
 <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">

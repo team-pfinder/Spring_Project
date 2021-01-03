@@ -8,7 +8,9 @@
 	</section>
 	<section name="PreferencesImportWizard">
 		<item key="" value="C:\Users\Bum\Desktop\GitHub\FullstackStudy\webApp.epf"/>
+		<item key="" value="C:\Users\Bum\Desktop\GitHub\FullstackStudy\frameworkApp.epf"/>
 		<list key="WizardPreferencesExportPage1.STORE_DESTINATION_NAMES_ID">
+			<item value="C:\Users\Bum\Desktop\GitHub\FullstackStudy\frameworkApp.epf"/>
 			<item value="C:\Users\Bum\Desktop\GitHub\FullstackStudy\webApp.epf"/>
 		</list>
 	</section>

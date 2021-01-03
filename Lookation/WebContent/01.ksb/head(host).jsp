@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>head(user).jsp</title>
+<title>head(host).jsp</title>
 
 <%@ include file="../includes/includes_home.jsp"%>
 <script type="text/javascript"
@@ -20,42 +20,68 @@
 		$("ul.sub").hide();
 		$("#menu li").hover(function()
 		{
-		    $("ul:not(:animated)",this).slideDown("fast");
+			//$("ul:not(:animated)",this).slideDown("fast");
+			$("ul:not(:animated)",this).fadeIn("fast");
 		},
 		function()
 		{
-			$("ul",this).slideUp("fast");
+			//$("ul",this).slideUp("fast");
+			$("ul",this).fadeOut("fast");
 		});
 	});
 </script>
 
 <style type="text/css">
 /* 불릿 제거, 들여쓰기, 밑, 위 여유공간 */
-ul.sub {
+ul.sub 
+{
+    width:130px;
+    
 	text-align: center;
 	list-style: none;
 	padding-left: 0px;
 	padding-top: 10px;
 	padding-bottom: 50px;
+	
+	position: absolute;
+	display:none;
 }
 
-#menu {
+li.nav-item
+{
+	text-align: center;
+    width:130px;
+}
+
+#menu 
+{
 	font-size: 14px;
 	font-weight: 500;
 	color: #fdbe34;
 }
 
-#menuWhite {
+#menuWhite 
+{
 	font-size: 14px;
 	font-weight: 500;
 	color: #fdbe34;
 	color: #ffffff;
 }
+
+.back-default 
+{
+	background: #f6f6f6;
+}
+
+.navbar
+{
+	margin-bottom: 0px;
+}
 </style>
 
 </head>
 
-<body>
+<body class="back-default">
 	<div class="container pt-5">
 		<div class="row justify-content-between">
 			<!-- 좌상단 -->
@@ -95,25 +121,25 @@ ul.sub {
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav mr-auto" id="menu">
 					<li class="nav-item"><a href="#" class="nav-link">바로가기</a>
-						<ul class="sub">
+						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
 							<li><a href="#">공간 등록하기</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">마이페이지</a>
-						<ul class="sub">
+						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
 							<li><a href="#">공간 관리</a></li>
 							<li><a href="#">예약 리스트 관리</a></li>
 							<li><a href="#">답글 관리</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">고객지원</a>
-						<ul class="sub">
+						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
 							<li><a href="#">도움말</a></li>
 							<li><a href="#">FAQ</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">dummy</a>
-						<ul class="sub">
+						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
 							<li><a href="#">dummy</a></li>
 							<li><a href="#">dummy</a></li>
 							<li><a href="#">dummy</a></li>
