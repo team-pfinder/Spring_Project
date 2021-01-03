@@ -9,9 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예약 신청화면</title>
-<meta charset="utf-8">
-
+<title>예약 신청화면.jsp</title>
 <%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
 <%@ include file="../includes/includes_home.jsp" %>
 </head>
@@ -62,16 +60,6 @@
 </nav>
 <!-- END nav -->
 
-<!-- <section class="ftco-section bg-primary">
-  	<div class="container">
-  		<div class="row">
-      		<div class="col-md-9 ftco-animate pb-5">
-        		<h1 class="mb-4">예약 신청</h1>더 굵고 크게 / 밑으로 정렬
-      		</div>
-    	</div>
-    </div>
-</section> -->
-
 <section class="hero-wrap hero-wrap-2" style="background-image: url('<%=cp%>/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
   	<div class="overlay"></div>
   	<div class="container">
@@ -88,142 +76,199 @@
 <section class="ftco-section ftco-degree-bg">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-8 ftco-animate">
+			<div class="col-lg-8 contact-wrap w-100 p-md-5 p-4">
 				<p>
-					<img src="<%=cp%>/images/image_1.jpg" alt="" class="img-fluid">
+					<img src="<%=cp%>/images/image_1.jpg" alt="템플릿 이미지" class="img-fluid">
 				</p>
 
 
 				<h2 class="mb-3 font-weight-bold">파파존스 호러존 스튜디오</h2><hr>
-				<p>공간설명이 들어갈 자리입니다.</p>
-				<p>공간유형 : 파티룸</p>
-				<p>예약 인원 : 최소 1명 ~ 최대 8명</p>
+				
+				<div class="form-inline form-group">
+					<p class="col-md-2">공간설명</p>
+					<p class="col-md-10">공간설명 들어갈 자리</p>
+				</div>
+				
+				<div class="form-inline form-group">
+					<p class="col-md-2">공간유형</p>
+					<p class="col-md-10">파티룸</p>
+				</div>
+				
+				<div class="form-inline form-group">
+					<p class="col-md-2">예약인원</p>
+					<p class="col-md-10">최소 1명 ~ 최대 8명</p>
+				</div>
 
+				<h2 class="mb-3 mt-5 font-weight-bold"># 예약 정보</h2><hr>
+				
+				<div class="form-inline form-group">
+					<p class="col-md-2">예약날짜</p>
+					<p class="col-md-10">2020. 12. 31. (목) 12시 ~ 15시</p>
+				</div>
+				
+				<div class="form-inline form-group">
+					<p class="col-md-2">예약인원</p>
+					<p class="col-md-10">1명</p>
+				</div>
 
-				<h2 class="mb-3 mt-5"># 예약 정보</h2><hr>
-				<p>예약날짜 : 2020. 12. 31. (목) 12시 ~ 15시</p>
-				<p>예약인원 : 1명</p>
-
-
-
-				<h2 class="mb-3 mt-5"># 예약자 정보</h2><hr>
-				<!-- 여기서 3:7로 나누고 싶다-->
-				<form>
-					<div class="row">
-						<div class="col-lg-2 ftco-animate">
-							<p>예약자명 (*)</p>
-							<p>연락처 (*)</p>
-							<p>이메일 (*)</p>
-							<p>인원수 (*)</p>
-							<p>요청사항</p>
-						</div>
-
-
-						<!-- 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴 -->
-						<!-- 수정 가능 -->
-						<div class="col-lg-10 ftco-animate">
-							<p>
-								<input type="text" placeholder="예약자명" class="form-control-sm">
-							</p>
-							<p>
-								<input type="tel" name="phone1" placeholder="010" class="form-control-sm"
-									style="width: 50px;">-<input type="tel" name="phone2" class="form-control-sm"
-									style="width: 50px;">-<input type="tel" name="phone3" class="form-control-sm"
-									style="width: 50px;">
-							</p>
-							<p>
-								<input type="text" class="form-control-sm">
-							</p>
-							<p>
-								<input type="text" class="form-control-sm">
-							</p>
-							<p>
-								<textarea cols="40" rows="5" class="form-control"
-									placeholder="남기고 싶은 말을 적어주세요.(최대 100자)"></textarea>
-							</p>
-						</div>
+				<h2 class="mb-3 mt-5 font-weight-bold"># 예약자 정보</h2><hr>
+				<!-- .contactForm 설정시 form-control 선 사라지는 css 있어서 이렇게 함 -->
+				<form class="contactForm ftco-animate">
+					<div class="form-inline form-group">
+						<label for="1" class="col-md-2 control-label text-left">예약자명(*)</label>
+						<input type="text" id="1" class="form-control" placeholder="예약자명"
+						required="required" >
+					</div>
+					
+					
+					<!-- 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴
+						 수정 가능 -->
+					<div class="form-inline form-group">
+						<label for="2" class="col-md-2 control-label">이메일</label>
+						<input type="text" id="2" placeholder="이메일" class="form-control"
+						required="required">@
+						<input type="text" placeholder="xxx.com" class="form-control"
+						required="required">
+					</div>
+					
+					<div class="form-inline form-group">
+						<label for="3" class="col-md-2 control-label">인원수(*)</label>
+						<input type="text" id="3" class="form-control col-md-1"
+						required="required"> 명
+					</div>
+					
+					<div class="form-inline form-group">
+						<label for="2" class="col-md-2 control-label">요청사항</label>
+						<textarea class="form-control col-md-9" name="message"
+							placeholder="남기고 싶은 말을 적어주세요.(최대 50자)" maxlength="100"></textarea>
 					</div>
 				</form>
 
-				<h2 class="mb-3 mt-5"># 호스트 정보</h2><hr>
+				<h2 class="mb-3 mt-5 font-weight-bold"># 호스트 정보</h2><hr>
 				<!-- 해당 공간의 호스트 사업자 정보 출력-->
-				<p>공간상호 : 파파존스 파티룸</p>
-				<p>대표자명 : 진영은</p>
-				<p>소재지 : 주소주소 알아서뭐하게</p>
-				<p>사업자번호 : 1234567890</p>
-				<p>연락처 : 010-1234-1234, papajon@lookation.com</p>
 				
 				
-				<h2 class="mb-3 mt-5"># 예약시 주의사항</h2><hr>
-				<div class="row">
-					<div class="col-lg-1 ftco-animate text-center flex">
-						<p>1</p>
-						<p>2</p>
-						<p>3</p>
-						<p>4</p>
-						<p>5</p>
+				<div class="hostInfo ftco-animate">
+					<div class="form-inline form-group">
+						<p class="col-md-2">공간상호</p>
+						<p class="col-md-10">파파존스 파티룸</p>
 					</div>
 
-
-					<div class="col-lg-10 ftco-animate">
-						<!-- 해당 공간의 주의사항 출력-->
-						<p>그냥 조심하세요. 이렇게 길게 쓴 주의사항도 담을 수 있는지 확인하는 중입니다. 이렇게 길게 쓴 주의사항도 담을 수 있는지 확인하는 중입니다.</p>
-						<p>깨트리면 2배 보상</p>
-						<p>마음의 상처도 보상하세요</p>
-						<p>최대 10개까지 입력가능</p>
-						<p>출력은 DB에 있는 만큼만!</p>
-					</div>
-				</div>
-				
-				<h2 class="mb-3 mt-5"># 환불 규정</h2><hr>
-				<span>이용 1일전 23:59까지만 취소 가능</span>
-				<span>이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 문의하세요.</span><br><br>
-				<div class="row">
-					<div class="col-lg-3 ftco-animate">
-						<p>이용 7일전</p>
-						<p>이용 6일전 ~ 1일전</p>
-						<p>예약 당일</p>
+					<div class="form-inline form-group">
+						<p class="col-md-2">대표자명</p>
+						<p class="col-md-10">진영은</p>
 					</div>
 
+					<div class="form-inline form-group">
+						<p class="col-md-2">소재시</p>
+						<p class="col-md-10">서울특별시 은평구 땡땡동 주소주소</p>
+					</div>
 
-					<!-- 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴 -->
-					<!-- 수정 가능 -->
-					<div class="col-lg-8 ftco-animate">
-						<p>총 금액의 100% 환불</p>
-						<p>총 금액의 50% 환불</p>
-						<p>환불 불가</p>
+					<div class="form-inline form-group">
+						<p class="col-md-2">사업자번호</p>
+						<p class="col-md-10">2020. 12. 31. (목) 12시 ~ 15시</p>
+					</div>
+
+					<div class="form-inline form-group">
+						<p class="col-md-2 align-self-start">연락처</p>
+						<div class="col-md-10">
+							<p>010-1234-1234</p>
+							<p>papajon@lookation.com</p>
+						</div>
 					</div>
 				</div>
 				
-				<h2 class="mb-3 mt-5"># 서비스 동의 </h2> <hr>
 				
-				
-				
-				<span>이용 1일전 23:59까지만 취소 가능</span>
-				<span>이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 문의하세요.</span><br>
-				<div class="text-right"><input type="checkbox"> 전체 동의</div><br>
-				
-				<div>
-				<!-- 전부 다 체크했는지 확인 -->
-				<p><input type="checkbox"> <span>(필수)</span> 위 공간의 예약조건 확인 및 결제진행 동의</p>
-				<p><input type="checkbox"> <span>(필수)</span> 환불규정 안내에 대한 동의</p>
-				<p><input type="checkbox"> <span>(필수)</span> 개인정보 제3자 제공 동의</p>
-				<p><input type="checkbox"> <span>(필수)</span> 개인정보 수집 및 이용 동의</p>
-				<span>서비스 이용약관 동의는 필수입니다.</span>
-				<!-- 빨간색, 작은글씨 -->
+				<h2 class="mb-3 mt-5 font-weight-bold"># 예약시 주의사항</h2><hr>
+				<div class="ftco-animate">
+					<div class="form-inline form-group">
+						<p class="col-md-1 text-center align-self-start">1.</p>
+						<p class="col-md-11">그냥 조심하세요. 이렇게 길게 쓴 주의사항도 담을 수 있는지 확인하는 중입니다. 이렇게 길게 쓴 주의사항도 담을 수 있는지 확인하는 중입니다.</p>
+					</div>
+					
+					
+					<div class="form-inline form-group">
+						<p class="col-md-1 text-center align-self-start">2.</p>
+						<p class="col-md-11">깨트리면 2배 보상</p>
+					</div>
+			
+					<div class="form-inline form-group">
+						<p class="col-md-1 text-center align-self-start">3.</p>
+						<p class="col-md-11">마음의 상처도 보상하세요</p>
+					</div>
+			
+					<div class="form-inline form-group">
+						<p class="col-md-1 text-center align-self-start">4.</p>
+						<p class="col-md-11">최대 10개까지 입력가능</p>
+					</div>
+			
+					<div class="form-inline form-group">
+						<p class="col-md-1 text-center align-self-start">5.</p>
+						<p class="col-md-11">출력은 DB에 있는 만큼만!</p>
+					</div>
 				</div>
-				<br><br>
+				
+				<h2 class="mb-3 mt-5 font-weight-bold"># 환불 규정</h2><hr>
 				
 				
-				
-				
-				<!-- 버튼 클릭시 폼 내용 검증 -->
-				<!-- 검증 완료시 submit 후 DB 예약내역, 결제내역 테이블에 추가 -->
-				<div class="d-grid gap-2 mx-auto">
-					<button class="btn btn-primary" type="button">동의하고 결제하기</button>
+				<div class="ftco-animate">
+					<div class="memo">
+						<span class="text-body">이용 1일전 23:59까지만 취소 가능.</span>
+						<span class="text-danger">이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 문의하세요.</span><br><br>
+					</div>
+			
+					
+					<div class="row">
+						<div class="col-lg-3 ftco-animate">
+							<p>이용 7일전</p>
+							<p>이용 6일전 ~ 1일전</p>
+							<p>예약 당일</p>
+						</div>
+	
+	
+						<!-- 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴 -->
+						<!-- 수정 가능 -->
+						<div class="col-lg-8 ftco-animate">
+							<p>총 금액의 100% 환불</p>
+							<p>총 금액의 50% 환불</p>
+							<p>환불 불가</p>
+						</div>
+					</div>
 				</div>
 				
-				<!-- 맨 위로 올라가는 버튼 -->
+				
+				<h2 class="mb-3 mt-5 font-weight-bold"># 서비스 동의 </h2> <hr>
+				
+				
+				<div class="ftco-animate">
+					<span>약관 블라블라~</span>
+					
+					<!-- 체크박스 크기 조절  -->
+					<!-- 전체동의 클릭시 아래의 체크박스 4개 동시 체크 -->
+					<div class="text-right">
+						<input type="checkbox" id="allConfirm" class="checkbox">
+						<label for="allConfirm">전체 동의</label><br></div>
+					<div>
+					
+					<!-- 전부 다 체크했는지 확인 -->
+					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 위 공간의 예약조건 확인 및 결제진행 동의</p>
+					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 환불규정 안내에 대한 동의</p>
+					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 개인정보 제3자 제공 동의</p>
+					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 개인정보 수집 및 이용 동의</p>
+					<span class="text-danger">- 서비스 이용약관 동의는 필수입니다.</span>
+					</div>
+					<br><br>
+						
+					<!-- 버튼 클릭시 폼 내용 검증 -->
+					<!-- 검증 완료시 submit 후 DB 예약내역, 결제내역 테이블에 추가 -->
+					<div class="row">
+						<button class="btn btn-primary btn-block" type="button">동의하고 결제하기</button>
+					</div>
+					
+					<!-- 맨 위로 올라가는 버튼 만들기 -->
+				
+				</div>
+
 				
 			</div>
 
@@ -234,6 +279,7 @@
 				<div class="sidebar-box ftco-animate">
 					<div class="categories">
 						<h3>결제 예정금액</h3>
+						<hr>
 						
 						<div class="row">
 							<div class="col-lg-4 ftco-animate">
@@ -256,15 +302,16 @@
 						</div>
 						<br>
 						
-						<!-- 거대버튼 만들고싶은데 못 만듦... -->
 						<button type="button" class="btn btn-primary btn-lg btn-block">결제하기</button>
 
 					</div>
 				</div>
-			</div>
+			</div><!-- 오른쪽 사이드바 끝 -->
 		</div>
-	</div>
+	</div>	
 </section>
+
+
 
 
 

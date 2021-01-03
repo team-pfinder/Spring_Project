@@ -12,7 +12,6 @@
 <meta charset="utf-8">
 <%@ include file="../includes/includes_home.jsp" %>
 <title>Lookation</title>
-
 </head>
 <body>
 	
@@ -87,8 +86,7 @@
 					<dl>
 						<dt>공간유형</dt>
 						<dd>
-							<select class="form-select" aria-label="Default select example"
-								style="width: 200px;">
+							<select class="form-control">
 								<option selected>모든 공간</option>
 								<option value="1">파티룸</option>
 								<option value="2">엠티장소</option>
@@ -99,18 +97,43 @@
 					</dl>
 				</div>
 				<div class="col-md-4">
-					<dl>
-						<dt>날짜</dt>
-						<dd>캘린더 선택</dd>
-					</dl>
-				</div>
+						<dl>
+							<dt>날짜</dt>
+							<dd>
+								<!-- ※ 원래는 datePicker 이용해야 함. -->
+								<input type="date" class="form-control">
+							</dd>
+							
+							<!-- ※ 슬라이더 못해먹겠다 -->
+							<dt><label for="customRange">가격</label></dt>
+							<dd>
+								<div class="form-group">
+									<span> 
+										<!-- 처음 입력한 숫자가 뒤 숫자보다 작아야 검색가능. -->
+										<input type="number" value="10000" min="0" max="400000" step="10000"> - 
+										<input type="number" value="60000" min="0" max="400000" step="10000">
+									</span> 
+    								
+ 								</div>
+							</dd>
+							<dd>
+								<div class="form-group">
+									<input value="10000" min="0" max="400000" step="500" type="range">
+								</div>
+							</dd>
+							<dd>
+								<div class="form-group">
+									<input value="10000" min="0" max="400000" step="500" type="range">
+								</div>
+							</dd>
+						</dl>
+					</div>
 				<div class="col-md-4">
 					<dl>
 						<dt>지역</dt>
 						<dd>
-							<select class="form-select" aria-label="Default select example2"
-								style="width: 200px;">
-								<option selected>전체</option>
+							<select class="form-control px-10">
+								<option selected="selected">전체</option>
 								<option value="1">서울</option>
 								<option value="2">경기</option>
 								<option value="3">충북</option>
@@ -121,10 +144,13 @@
 								<option value="8">경남</option>
 							</select>
 							<!-- 선택시 지역명 텍스트 입력 가능-->
+							<div class="input-group d-flex py-2">
+								<input type="text" class="form-control border-0" placeholder="동 이름을 입력하세요."> 
+								<div class="input-group-append mb-3"">
+									<button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
+								</div>
+							</div>
 						</dd>
-						<dd>
-           					<input type="text" class="form-control pl-3" placeholder="Search">
-         				</dd>
 					</dl>
 				</div>
 				
@@ -135,15 +161,13 @@
 		<!-- 정렬 start -->
 		<div class="row">
     		<div class="col-md-12 text-right">
-	    		<select class="form-select" aria-label="Default select example3"
-				style="width: 200px; float: right;">
-	
-					<option selected>정렬방법선택</option>
-					<!-- 우측정렬 -->
+    			<!-- 우측정렬 -->
+	    		<select class="form-control-m float-right">
+					<option selected="selected">정렬방법선택</option>
 					<option value="1">가격 낮은 순</option>
 					<option value="2">가격 높은 순</option>
 					<option value="3">이용후기 많은 순</option>
-					<option value="4">베스트 공간 순</option>
+					<option value="4">평균 별점 순</option>
 					<!-- 선택시 해당 순서대로 정렬한 페이지 요청-->
 				</select>
     		</div>
@@ -252,7 +276,9 @@
             </div>
           </div>
         </div>
-
+		
+		
+		<!-- 페이징 처리할 부분 -->
         <div class="row mt-5">
           <div class="col text-center">
             <div class="block-27">
