@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\Users\KUNSTWERK\Documents\GitHub\Spring_Project\Lookation\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2783696816.index
+3092677103.index
+1791350360.index
+1992704501.index
+3165345128.index
+3807352082.index
