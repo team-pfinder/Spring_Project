@@ -10,6 +10,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Mileage_Charge(user).jsp</title>
+<script type="text/javascript">
+
+	function add10000()
+	{
+		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 10000;
+	}
+	function add50000()
+	{
+		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 50000;
+	}
+	
+</script>
 </head>
 <body>
 
