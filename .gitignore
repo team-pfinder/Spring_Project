@@ -1,1 +1,17 @@
 /.metadata/
+
+# 00.Lookation Ignore
+
+# file
+*.classpath
+*.project
+
+# folder
+/Lookation/.metadata/
+/Lookation/.settings/
+/Lookation/build/
+
+# 01.Servers Ignore
+/Servers/
+
+
