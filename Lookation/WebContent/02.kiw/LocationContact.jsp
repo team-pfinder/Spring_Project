@@ -8,139 +8,73 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>locationContact.jsp</title>
-<%@ include file="/includes/includes_home.jsp" %>
-<%@ include file="/includes/includes_menu.jsp" %>
-
-
+<title>LocationContact.jsp</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 
-   <!-- 타이틀 -->
-   <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
-      data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      
-      <!-- 타이틀 내용 -->
-      <div class="container">
-         <div class="row no-gutters slider-text align-items-end">
-            <div class="col-md-9 ftco-animate pb-5">
-               <p class="breadcrumbs mb-2">
-                  <span class="mr-2"> 
-                  	<a href="index.html">Home 
-                  		<i class="ion-ios-arrow-forward"></i>
-                  	</a>
-                  </span> 
-                   
-                  <span>공간 등록 
-                  	<i class="ion-ios-arrow-forward"></i>
-                  </span>
-               </p>
-               <h1 class="mb-0 bread">연락처정보 입력</h1>
-            </div>
-         </div>
-      </div>
-   </section>
-   <!-- END 타이틀 -->
+<!-- 헤더 -->
+<div>
+	<h1>연락처 정보</h1>	<!-- 가운데 정렬 -->
+</div>
+<%-- <img src="<!-- 뒤로가는 화살표 버튼 -->"> --%>
+<br><br>
 
-   <!-- 본문 -->
-<!-- container 시작 -->
+<div>
+	<h1>연락처 정보를 입력하세요.</h1>
+	<hr>	
+</div>
 
-<div class="container">
+<br><br>
 
-	<br><br>
-   
-   <!-- Page Heading -->
-   <h1 class="mb-2 text-gray-800">연락처정보 입력</h1>
-   <p class="mb-4"> 연락처정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
-      
-      <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
-      
-      
-      <div class="card shadow mb-4">
-         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-default">연락처정보 입력</h6>
-         </div>
+<!-- 1. 이메일 -->
 
-
-
-<form style="width: 800px; margin: 120px;">
-
-	<!-- 1. 이메일 -->
-
-	<div id="locationContactMail">
-		
-		<span style="font-size: 14pt; font-weight: bold;">이메일 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" required="required" id="locationContactMail1"
-					style="width:100px;">
-		@ 
-		<input type="text" required="required" id="locationContactMail2"
-					style="width:100px;">
-	</div>
-
-<br><br><br>
-
-	<!-- 2. 휴대폰 -->
+<div id="LocationContactMail">
 	
-	<div id="locationContactTel">
-		
-		<span style="font-size: 14pt; font-weight: bold;">휴대폰 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" name="locationTel1" required="required" style="width: 70pt;">
-		- <input type="text" name="locationTel2" required="required" style="width: 70pt;">
-		- <input type="text" name="locationTel3" required="required" style="width: 70pt;">
-	</div>
-
+	연락처 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" name="LocationContactMail1" style="width: 100pt;">
+	@ <input type="text" name="LocationContactMail2" style="width: 100pt;">
+	<!-- 대소문자 구별 x -->
+</div>
 
 <br><br><br>
 
+<!-- 2. 휴대폰 -->
 
-	<!-- 3. 대표전화 -->
+<div id="LocationContactTel">
 	
-	<div id="locationContactMainTel">
-		
-		<span style="font-size: 14pt; font-weight: bold;">대표전화 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" required="required" name="locationContactMainTel" style="width: 70pt;">
-		- <input type="text" required="required" name="locationContactMainTel" style="width: 70pt;">
-		- <input type="text" required="required" name="locationContactMainTel" style="width: 70pt;">
-	</div>
-
-
+	휴대폰 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" name="LocationTel1" style="width: 30pt;">
+	- <input type="text" name="LocationTel2" style="width: 30pt;">
+	- <input type="text" name="LocationTel3" style="width: 30pt;">
+</div>
 
 <br><br><br>
-<div class="container">
 
-<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-					   (필수항목을 입력하지 않았을 경우,
-						입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-					    alert("필수항목을 입력해야합니다")된다.
-						그리고 입력하는 textbox로 입력커서가 이동한다. 
-						또한 다음페이지로 submit 되지 않는다.
-						
-						※ 다음 버튼 이동 순서
-						※ xxxUpdate.jsp 다음버튼 이동 순서 
-						   기본정보 → 연락처정보 → 사업자정보
-						   → 이용정보  → 상세정보  → 패키지정보 -->
+<!-- 3. 대표전화 -->
 
-	<input type="submit" value="다음" class="btn btn-warning" style="width:300px;">
-			
+<div id="LocationContactMainTel">
+	
+	대표전화 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" name="LocationContactMainTel" style="width: 30pt;">
+	- <input type="text" name="LocationContactMainTel" style="width: 30pt;">
+	- <input type="text" name="LocationContactMainTel" style="width: 30pt;">
+</div>
+
+<br><br><br>
+
+<!-- 다음 버튼 : (자세한 설명은 LocationBasicInfo.jsp 참조) -->
+<input type="button" id="LocationContactSave" style="width: 150pt;"
+	value="다음"> <!-- onclick="function()" submit → LocationBusinessInfo.jsp -->
+
 <!-- 취소 버튼 -->
-	<input type="button" class="btn btn-default" style="width:300px;" 
-			 value="취소">
-	<!-- onclick="function()" -->
-</div>
+<input type="button" id="LocationContactCancel" style="width: 150pt;"
+	value="취소"> <!-- onclick="function()" -->
 
-	<%@ include file="../includes/includes_home_end.jsp"%>
-	
 
-<br><br><br><br>
 
-</form>
-</div>
-</div>
+<br><br><br>
 
+<br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
 </html>

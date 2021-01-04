@@ -8,250 +8,185 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>locationBasicInfo.jsp</title>
-<%@ include file="/includes/includes_home.jsp" %>
-<%@ include file="/includes/includes_menu.jsp" %>
-
-<style type="text/css">
-	#refund
-	{
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		width: 300px;
-		padding: 15px;
-		margin: 30px;
-	}
-</style>
-
+<title>LocationBasicInfo.jsp</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/sb-admin-2.min.css">
 </head>
-
-
 <body>
 
-   <!-- 타이틀 -->
-   <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
-      data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      
-      <!-- 타이틀 내용 -->
-      <div class="container">
-         <div class="row no-gutters slider-text align-items-end">
-            <div class="col-md-9 ftco-animate pb-5">
-               <p class="breadcrumbs mb-2">
-                  <span class="mr-2"> 
-                  	<a href="index.html">Home 
-                  		<i class="ion-ios-arrow-forward"></i>
-                  	</a>
-                  </span> 
-                   
-                  <span>공간 등록 
-                  	<i class="ion-ios-arrow-forward"></i>
-                  </span>
-               </p>
-               <h1 class="mb-0 bread">기본 정보 입력</h1>
-            </div>
-         </div>
-      </div>
-   </section>
-   <!-- END 타이틀 -->
+<!-- 헤더 -->
+<div>
+	<h1>기본 정보</h1>	<!-- 가운데 정렬 -->
+</div>
+<%-- <img src="<!-- 뒤로가는 화살표 버튼 -->"> --%>
+<br><br>
 
-   <!-- 본문 -->
-<!-- container 시작 -->
+<div>
+	<h1>등록할 공간의 기본 정보를 입력하세요.</h1>
+	<hr>	
+</div>
 
-<div class="container">
+<br><br>
 
+<!-- 1. 공간명 -->
+
+<div id="LocationName">
+
+	공간명 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" id="LocationName" name="LocationName" style="width: 300pt;">
 	<br><br>
-   
-   <!-- Page Heading -->
-   <h1 class="mb-2 text-gray-800">기본정보 입력</h1>
-   <p class="mb-4"> 기본정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
-      
-      <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
-      
-      
-      <div class="card shadow mb-4">
-         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-default">기본정보 입력</h6>
-         </div>
-
-
-
-<form style="width: 800px; margin: 120px;">
-
-	<!-- 1. 공간명 -->
+	<span>최소 2자, 최대 20자</span>
+	<!-- 입력 전 default 내용 : 공간명을 입력하세요.  -->
 	
-	<div id="locationName">
-		<!-- <label for="locName" style="font-weight: bold;">공간명 *</label> -->
-		<span style="font-size: 14pt; font-weight: bold;">공간명  <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" class="form-control"  
-			   name="locName" id="locName"
-			   placeholder="공간명을 입력하세요. [최소 2자 ~ 최대 20자]" required="required">
-		<br>
-		<span style="color: gray">* 사용 가능한 특수문자: ( , ) , [ , ] , - , .(마침표), ,(쉼표)</span> <!-- 글자크기 작게 -->
-	</div>
+	<span>사용 가능한 특수문자: ( , ) , [ , ] , - , .(마침표), ,(쉼표)</span> <!-- 글자크기 작게 -->
+
+</div>
+
+<br><br><br>
+
+
+<!-- 2. 공간 유형 -->
+
+<div id="LocationType">
+
+	공간 유형 *<br><br>	<!-- bold, *은 빨간색 -->
+	<select id="LocationType" name="LocationType" style="width: 200pt;">
+		<option value="==[공간 유형을 선택하세요.]==">[==공간 유형을 선택하세요.]==</option>
+		<option value="파티룸">파티룸</option>
+		<option value="클럽">클럽</option>
+		<option value="엠티장소">엠티장소</option>
+		<option value="워크샵장소">워크샵장소</option>
+		<option value="워크샵장소">루프탑</option>
+		<option value="워크샵장소">브라이덜샤워</option>
+	</select>
+	<br><br>
+	<span>※ 검수 후에는 유형변경이 불가합니다.</span> <!-- 붉은색 글자 -->
+
+</div>
 
 
 <br><br><br>
 
-	
-	<!-- 2. 공간 유형 -->
-	
-	<div id="locationType">
-		<span style="font-size: 14pt; font-weight: bold;">공간 유형  <span style="color: red">*</span></span>
-		<br><br>
-		<select id="locType" class="form-control" required="required">
-			<option>[==공간 유형을 선택하세요.]==</option>
-			<option value="파티룸">파티룸</option>
-			<option value="클럽">클럽</option>
-			<option value="엠티장소">엠티장소</option>
-			<option value="워크샵장소">워크샵장소</option>
-			<option value="루프탑">루프탑</option>
-			<option value="브라이덜샤워">브라이덜샤워</option>
-		</select>
-		<br>
-		<span style="color: red;">* 검수 후에는 유형변경이 불가합니다.</span>
-	</div>
-	
-	
-<br><br><br>
+<!-- 4. 공간 한줄 소개 -->
 
-	<!-- 3. 공간 한줄 소개 -->
-	
-	<div id="locationOneLineComment">
-	
-		<span style="font-size: 14pt; font-weight: bold;">공간 한줄 소개  <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" class="form-control" required="required" 
-			   placeholder="공간을 한 문장으로 소개해주세요. [최소 4자 ~ 최대 20자]" 
-			   id="locationOneLineComment" name="locationOneLineComment">
-	</div>
-	
-	
-<br><br><br>
+<div id="LocationOneLineComment">
 
+	공간 한줄 소개 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" id="LocationOneLineComment" name="LocationOneLineComment" style="width: 300pt;">
+	<br><br>
+	<span>최소 4자, 최대 20자</span> <!-- 글자크기 작게 -->
+	<!-- 입력 전 defalut 내용 : 공간을 한 문장으로 소개해주세요.  -->
 
-	<!-- 4. 공간 소개 -->
-	
-	<div id="locationComment">
-	
-		<span style="font-size: 14pt; font-weight: bold;">공간 소개  <span style="color: red">*</span></span>
-		<br><br>
-		<textarea class="form-control" required="required" 
-				  placeholder="공간을 상세하게 소개해주세요. [최소 20자 ~ 최대 400자]"
-				  name="LocationComment" id="LocationComment" cols="40" rows="5"></textarea>
-	</div>
-	
-	
-<br><br><br>
-
-		
-	<!-- 5. 시설안내 -->
-	
-	<div id="locationFacilityInfo">
-	
-		<span style="font-size: 14pt; font-weight: bold;">시설 안내 <span style="color: red">*</span></span>
-		<br><br>
-		<input class="form-control" required="required"
-			   placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."
-			   type="text" name="LocationFacilityInfo">
-		<br>
-		<input type="button" class="form-control"
-				name="LocationFacilityInfoInsert" value="시설 추가 +">
-		<br><br>
-		
-		<!-- 5-1. 추가한 시설안내 내용이 보여지도록 하는 공간
-				, 리스트 형태로 추가할때마다 순번부여,
-				, "x" 버튼클릭시 추가한 내용 삭제가능 
-				, (순번).(내용)(x버튼) 형식		<- 순번은 뺼 수도 있을듯.
-		-->
-	</div>
-
+</div>
 
 <br><br><br>
 
-	
-	<!-- 6. 예약 시 주의사항 -->
-	
-	<div id="locationPrecautions">
-		
-		<span style="font-size: 14pt; font-weight: bold;">예약 시 주의사항 <span style="color: red">*</span></span>
-		<br><br>
-		<input class="form-control" required="required"
-			   placeholder="[최소 20자 ~ 최대 100자] 로 입력하여 10개까지 추가 가능합니다."
-		type="text" name="locationPrecautions">
-		<br>
-		<input type="button" class="form-control"
-			   name="locationPrecautionsInsert" value="예약 시 주의사항 추가 +">
-		<br><br>
-		<div id="refund">
-			<span style="font-weight: bold; font-size: 12pt">※ 환불규정</span>
-				<br><br>
-				- 7일 전 : 100% 환불<br>
-				- 6~1일 전 : 50% 환불<br><br>
-				<span style="color: red;">-<ins>당일 환불 및 예약취소 불가</ins></span>
-			<!-- 6-1. 추가한 예약 시 주의사항 내용이 보여지도록, 삭제 x 버튼클릭시 추가한 내용 삭제가능 -->
-		</div>
-	</div>
+<!-- 5. 공간 소개 -->
 
-	
-<br><br><br>
-	
-	
-	<!-- 7. 대표이미지 -->
-	<div id="locationThumbnail">
-	
-		<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
-		<br><br>
-		<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
-		<textarea class="form-control" required="required"
-			      placeholder="대표이미지 파일을 추가해 주세요(JPG, JPEG, PNG)"
-				  name="locationThunmbnail" cols="40" rows="10"></textarea>
-		<br>
-		<input type="button" class="form-control" 
-				name="locationThumbnailInsert"
-				 value="이미지 추가 +">
-		<br><br>
-		<span>* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158 까지</span> <!-- 작은 글자 -->
-		
-		<!-- 7.1 추가 시 보여지는 default 이미지 해상도 xxx*xxx -->
-		<!-- ※ 다시 첨부하여 등록할 시 기존 이미지를 대체 -->
-		
-	</div>
-		
-	
-<br><br><br>
-	
-	<!-- 8. 주소 -->
-		
-	<div id="locationAddr">
-		<span style="font-size: 14pt; font-weight: bold;">주소 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" class="form-control" required="required"
-			   placeholder="주소를 입력해주세요." name="LocationAddr">
-		
-		<input type="button" class="form-control" name="LocationAddrInsert" value="주소 등록">
-		<!-- 주소등록 버튼클릭 
-			 → 주소등록창이라는 새 페이지 등장 
-			 →  텍스트로 주소검색 → 검색버튼 클릭 
-			 → 해당 검색어에 따른 데이터를 selectbox나 radio button으로 체크 
-			 → 체크된 상태로 등록 버튼 클릭 
-			 → 주소등록 페이지가 닫힘 
-			 → 체크된 주소 및 우편번호 
-				
-				: 텍스트가 (우편번호)주소 텍스트박스(readonly)에 자동입력 
-				{주소 API 사용} 
-		-->
-		<br><br>
-		<span style="font-size: 13pt; font-weight: bold;">상세 주소 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" class="form-control" required="required" 
-				id="LocationDetailedAddr" name="LocationDetailedAddr">
-		<!-- 입력 전 default 내용 : 상세 주소  -->
-	
-	</div>
+<div id="LocationComment">
 
+	공간 소개 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<textarea name="LocationComment" id="LocationComment" cols="40" rows="5"></textarea>
+	<br><br><!-- 입력 전 default 내용 : 공간을 상세하게 소개해주세요.  -->
+	
+	<span>최소 20자, 최대 400자</span> <!-- 글자크기 작게 -->
+
+</div>
+
+<br><br><br>
+
+
+<!-- 6. 시설안내 -->
+
+<div id="LocationFacilityInfo">
+
+	시설 안내 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" id="LocationFacilityInfo" name="LocationFacilityInfo" style="width: 300pt;">
+	<!-- 입력 전 default 내용 : 최대 10개까지 추가가능합니다.  -->
+	
+	<input type="button" id="LocationFacilityInfoInsert" name="LocationFacilityInfoInsert"
+			 style="width: 70pt;" value="추가 +">
+	<br><br>
+	<span>최소 10자, 최대 50자, 최대 10개까지 등록가능</span> <!-- 글자크기 작게 -->
+	
+	<!-- 5-1. 추가한 시설안내 내용이 보여지도록 하는 공간
+			, 리스트 형태로 추가할때마다 순번부여,
+			, "x" 버튼클릭시 추가한 내용 삭제가능 
+			, (순번).(내용)(x버튼) 형식		<- 순번은 뺼 수도 있을듯.
+	-->
+</div>
+
+<br><br><br>
+
+
+<!-- 7. 예약 시 주의사항 -->
+
+<div id="LocationPrecautions">
+	
+	예약 시 주의사항 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<input type="text" id="LocationPrecautions" name="LocationPrecautions" style="width: 300pt;">
+	<!-- 입력 전 default 내용 : 최대 10개까지 추가가능합니다.  -->
+	
+	<input type="button" id="LocationPrecautionsInsert" name="LocationPrecautionsInsert"
+			 style="width: 70pt;" value="추가 +">
+	<br><br>
+	<span>최소 20자, 최대 100자, 최대 10개까지 등록가능</span> <!-- 글자크기 작게 -->
+	<br><br>
+	<span>※환불규정<br>	<!-- 모두 red color font -->
+		7일전 - 100% 환불, 6~1일전 - 50% 환불, 예약당일 : 환불 및 취소 불가
+		</span>
+	<!-- 6-1. 추가한 예약 시 주의사항 내용이 보여지도록, 삭제 x 버튼클릭시 추가한 내용 삭제가능 -->
+
+</div>
+
+<br><br><br>
+
+
+<!-- 8. 대표이미지 -->
+<div id="LocationThumbnail">
+
+	대표이미지 *<br><br> <!-- bold, font-size 1~2pt up -->
+	<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
+	<textarea name="LocationThunmbnail" id="LocationThumbnail" cols="40" rows="10"></textarea>
+	<!-- 입력 전 default 내용 : 대표이미지 파일을 추가해 주세요(JPG, JPEG, PNG)  -->
+	<br><br>
+	<input type="button" id="LocationThumbnailInsert" name="LocationThumbnailInsert"
+			 style="width: 70pt;" value="파일첨부">
+	<br><br>
+	<span>최소/최대 1장, 최대 5MB, 최대해상도 2048*1158
+		, 이미지 확장자(JPG,JPEG,PNG)만 가능</span> <!-- 작은 글자 -->
+	
+	<!-- 7.1 추가 시 보여지는 default 이미지 해상도 xxx*xxx -->
+	<!-- ※ 다시 첨부하여 등록할 시 기존 이미지를 대체 -->
+</div>
+
+<br><br><br>
+
+<!-- 9. 주소 -->
+	
+<div id="LocationAddr">
+	주소 *<br><br> <!-- bold, font-size 1~2pt up -->
+	
+	<input type="text" id="LocationAddr" name="LocationAddr" style="width: 300pt;" readonly="readonly">
+	<!-- 입력 전 default 내용 : 주소를 입력해주세요.  -->
+	
+	<input type="button" id="LocationAddrInsert" name="LocationAddrInsert"
+			 style="width: 70pt;" value="주소등록">
+	<!-- 주소등록 버튼클릭 
+		 → 주소등록창이라는 새 페이지 등장 
+		 →  텍스트로 주소검색 → 검색버튼 클릭 
+		 → 해당 검색어에 따른 데이터를 selectbox나 radio button으로 체크 
+		 → 체크된 상태로 등록 버튼 클릭 
+		 → 주소등록 페이지가 닫힘 
+		 → 체크된 주소 및 우편번호 
+			
+			: 텍스트가 (우편번호)주소 텍스트박스(readonly)에 자동입력 
+			{주소 API 사용} 
+	-->
+	<br><br>
+	<input type="text" id="LocationDetailedAddr" name="LocationDetailedAddr" style="width: 300pt;">
+	<!-- 입력 전 default 내용 : 상세 주소  -->
+
+</div>
 
 
 <br><br><br>
@@ -267,31 +202,17 @@
 						※ xxxUpdate.jsp 다음버튼 이동 순서 
 						   기본정보 → 연락처정보 → 사업자정보
 						   → 이용정보  → 상세정보  → 패키지정보 -->
-<div class="container">
-	<input type="submit" value="다음" class="btn btn-warning" style="width:350px;">
-	
+						
+<input type="button" id="LocationBasicInfoSave" style="width: 150pt;"
+	value="다음"> <!-- onclick="function()" submit → LocationContact.jsp-->
+
 <!-- 취소 버튼 -->
-	<input type="button" class="btn btn-default" style="width:350px;" 
-			id="locationBasicInfoCancel" value="취소">
-	<!-- onclick="function()" -->
-<!-- 
-    <div>
-       <button type="button" class="btn-warning" style="width:260px;" onclick="showPopup()">계좌등록</button>
-       <button type="button" class="btn-warning" style="width:260px;" onclick="deleteAccount()">계좌삭제</button>
-    </div>
- -->
-   <%@ include file="../includes/includes_home_end.jsp"%>
-</div>
+<input type="button" id="LocationBasicInfoCancel" style="width: 150pt;"
+	value="취소"> <!-- onclick="function()" -->
 
 
-</form>
-</div>
-</div>
-	
 
-<br><br><br><br>
-
-
+<br><br><br><br><br><br><br><br><br>
 
 </body>
 </html>
