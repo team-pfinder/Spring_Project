@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -10,6 +10,8 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <%@ include file="../includes/includes_home.jsp"%>
+<%-- <%@ include file="../includes/defaults.jsp"%> --%>
+
 <title>5.mypageMileageLoadAndWithdraw.jsp</title>
 <style type="text/css">
 .nav-tabs .pill-1 .nav-link:not(.active)
@@ -40,7 +42,7 @@ String cp = request.getContextPath();
 		document.getElementById("chargeAmount").value = parseInt(document
 				.getElementById("chargeAmount").value) + 50000;
 	}
-
+	
 	function calc()
 	{
 		var cr_mileage = document.getElementById("cr_mileage").value;
@@ -64,6 +66,7 @@ String cp = request.getContextPath();
 		document.getElementById("ex_amount1").value = document.getElementById("cr_mileage").value;
 		document.getElementById("ex_remained").value = 0;
 	}
+	
 </script>
 </head>
 <body>
@@ -283,7 +286,7 @@ String cp = request.getContextPath();
 						<!-- END 첫번째 탭 -->
 						
 						<!-- 두번째 탭 -->
-						<div class="tab-pane fade" id="second">
+						<div class="tab-pane" id="second">
 							<!-- 두번째 카드 -->
 							<div class="card shadow mb-4">
 							<div class="card-header py-3">
@@ -348,6 +351,25 @@ String cp = request.getContextPath();
 	<!-- END 컨테이너 -->	
 	</section>
 	<!-- .section -->
+	
+	
+	<table class="table">
+		<tr>
+			<td>f</td>
+			<td>f</td>
+			<td>f</td>
+		</tr>
+		<tr>
+			<td>f</td>
+			<td>f</td>
+			<td>f</td>
+		</tr>
+		<tr>
+			<td>f</td>
+			<td>f</td>
+			<td>f</td>
+		</tr>
+	</table>
 
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen">
