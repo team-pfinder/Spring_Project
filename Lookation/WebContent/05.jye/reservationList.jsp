@@ -14,7 +14,74 @@
 <%@ include file="../includes/includes_home.jsp" %>
 </head>
 <body>
-
+<!-- 모달창 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel">예약 취소하기</h4>
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				<!-- 이전 페이지에서 해당 예약에 대한 데이터 받아와야 함. -->
+					<form>
+						<table class="table table-condensed">
+							<tr>
+								<th>예약코드</th>
+								<td> NNSJ1532</td>
+							</tr>
+							<tr>
+								<th>예약 공간명</th>
+								<td> 산</td>
+							</tr>
+							<tr>
+								<th>예약자명</th>
+								<td> 진영은</td>
+							</tr>
+							
+							<tr>
+								<th>예약일자</th>
+								<td> 2021-01-01</td>
+							</tr>
+							<tr>
+								<th>예약인원수</th>
+								<td> 4명</td>
+							</tr>
+							<tr>
+								<th>예약가격</th>
+								<td>200,000</td>
+							</tr>
+							<tr>
+								<th>취소사유</th>
+								<td><textarea class="form-control" required="required" maxlength="40"></textarea></td>
+							</tr>
+						</table>
+					</form>
+						
+					<div class="row">
+						<div class="col-md-12 form-group form-inline">
+							<!-- 환불 정책에 맞춘 환불 가격 자동 계산 -->
+							<small>이용시작일자 <span class="text-danger">4</span>일 전이므로
+							예약 가격의 <span class="text-danger text-weight-bold">50%</span>인
+							<span class="text-primary">100,000</span>원이 마일리지로 환불됩니다. 취소한 예약은 되돌릴 수 없습니다.</small>
+							<br>
+							<span class="text-center">정말 취소하시겠습니까?</span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소하고 닫기</button>
+					
+					<!-- 확인 버튼 클릭시 예약취소테이블 insert -->
+					<button type="button" class="btn btn-primary">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 <!-- 맨위 로고, 검색창 -->
 <!-- Header -->
 <div class="container pt-5">
@@ -131,7 +198,7 @@
 								<td>
 									<!-- 전일 23:59 전까지는 예약취소 버튼 출력 -->
 									<!-- 버튼 -->
-									<button type="button" class="btn-xs btn-danger border-0 rounded" data-toggle="modal" data-target="#myModal" >
+									<button type="button" class="btn-danger border-0 rounded" data-toggle="modal" data-target="#myModal" >
 									취소
 									</button>
 									<!-- 해당 버튼 클릭시 id가 myModal인 팝업 실행시킴. -->
@@ -247,75 +314,6 @@
 
 </div><!-- .container End -->
 	
-	<!-- 모달창 -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">예약 취소하기</h4>
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">×</span><span class="sr-only">Close</span>
-					</button>
-				</div>
-				<div class="modal-body">
-				<!-- 이전 페이지에서 해당 예약에 대한 데이터 받아와야 함. -->
-					<form>
-						<table class="table table-condensed">
-							<tr>
-								<th>예약코드</th>
-								<td> NNSJ1532</td>
-							</tr>
-							<tr>
-								<th>예약 공간명</th>
-								<td> 산</td>
-							</tr>
-							<tr>
-								<th>예약자명</th>
-								<td> 진영은</td>
-							</tr>
-							
-							<tr>
-								<th>예약일자</th>
-								<td> 2021-01-01</td>
-							</tr>
-							<tr>
-								<th>예약인원수</th>
-								<td> 4명</td>
-							</tr>
-							<tr>
-								<th>예약가격</th>
-								<td>200,000</td>
-							</tr>
-							<tr>
-								<th>취소사유</th>
-								<td><textarea class="form-control" required="required" maxlength="40"></textarea></td>
-							</tr>
-						</table>
-					</form>
-						
-					<div class="row">
-						<div class="col-md-12 form-group form-inline">
-							<!-- 환불 정책에 맞춘 환불 가격 자동 계산 -->
-							<small>이용시작일자 <span class="text-danger">4</span>일 전이므로
-							예약 가격의 <span class="text-danger text-weight-bold">50%</span>인
-							<span class="text-primary">100,000</span>원이 마일리지로 환불됩니다. 취소한 예약은 되돌릴 수 없습니다.</small>
-							<br>
-							<span class="text-center">정말 취소하시겠습니까?</span>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소하고 닫기</button>
-					
-					<!-- 확인 버튼 클릭시 예약취소테이블 insert -->
-					<button type="button" class="btn btn-primary">확인</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
