@@ -8,169 +8,221 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LocationBusinessInfo.jsp</title>
-<link rel="stylesheet" type="text/css" href="css/main.css">
+<title>locationBusinessInfoUpdate.jsp</title>
+<%@ include file="../includes/includes_home.jsp" %>
+<%@ include file="../includes/includes_menu.jsp" %>
+
+
 </head>
 <body>
 
 
-<!-- 헤더 -->
-<div>
-	<h1>사업자 정보 수정</h1>	<!-- 가운데 정렬 -->
-</div>
-<%-- <img src="<!-- 뒤로가는 화살표 버튼 -->"> --%>
-<br><br>
+   <!-- 타이틀 -->
+   <section class="hero-wrap hero-wrap-2"
+      style="background-image: url('images/bg_3.jpg');"
+      data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      
+      <!-- 타이틀 내용 -->
+      <div class="container">
+         <div class="row no-gutters slider-text align-items-end">
+            <div class="col-md-9 ftco-animate pb-5">
+               <p class="breadcrumbs mb-2">
+                  <span class="mr-2"> 
+                  	<a href="index.html">Home 
+                  		<i class="ion-ios-arrow-forward"></i>
+                  	</a>
+                  </span> 
+                   
+                  <span>공간 등록 
+                  	<i class="ion-ios-arrow-forward"></i>
+                  </span>
+               </p>
+               <h1 class="mb-0 bread">사업자정보 수정</h1>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- END 타이틀 -->
 
-<div>
-	<h1>등록된 사업자 정보는 조회만 가능합니다.</h1>
-	<hr>	
-</div>
+   <!-- 본문 -->
+<!-- container 시작 -->
 
-<br><br>
-<!-- ※ 변경불가 항목 : 사업자 정보는 모두 변경할 수 없다.(readonly 처리) -->
+<div class="container">
 
-<!-- 등록했던 사업자 정보를 모두 불러와 
-	 해당 텍스트를 readonly 시킨상태를 default로 둔다.-->
-	 
-	 
-<!-- 1. 상호명 --><!-- ※ 변경불가 항목 -->
-
-<div id="LocationBusinessName">
-
-	상호명 *<br><br> <!-- bold, font-size 1~2pt up -->
-	<input type="text" id="LocationBusinessName" name="LocationBusinessName" style="width: 300pt;">
-	<span>최소 2자, 최대 20자</span> <!-- 글자 크기 작게 -->
-	<!-- 입력 전 default 내용 : 상호명을 입력하세요.  -->
-
-</div>
-
-<br><br><br>
-
-<!-- 2. 대표자명 --><!-- ※ 변경불가 항목 -->
-
-<div id="LocationRepresentative">
-
-	대표자명 *<br><br> <!-- bold, font-size 1~2pt up -->
-	<input type="text" id="LocationRepresentative" name="LocationRepresentative" style="width: 300pt;">
-	<span>최소 2자, 최대 10자</span> <!-- 글자 크기 작게 -->
-	<!-- 입력 전 default 내용 : 대표자명을 입력하세요.  -->
-
-</div>
-
-<br><br><br>
-
-<!-- 3. 사업자등록번호 --><!-- ※ 변경불가 항목 -->
-
-<div id="LocationBusinessRegNum">
-
-	사업자등록번호 *<br><br> <!-- bold, font-size 1~2pt up -->
-	<input type="text" id="LocationBusinessRegNum1" name="LocationBusinessRegNum1" style="width: 30pt;">
-	- <input type="text" id="LocationBusinessRegNum2" name="LocationBusinessRegNum2" style="width: 30pt;">
-	- <input type="text" id="LocationBusinessRegNum3" name="LocationBusinessRegNum3" style="width: 30pt;">
-
-</div>
-
-<br><br><br>
-
-<!-- 4. 사업자 등록증 --><!-- ※ 변경불가 항목 -->
-<div id="LocationBusinessReg">
-
-	사업자 등록증 *<br><br> <!-- bold, font-size 1~2pt up -->
-	<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
-	<textarea name="LocationBusinessReg" id="LocationBusinessReg" cols="40" rows="10"></textarea>
-	<!-- 입력 전 default 내용 : 사업자등록증을 첨부해 주세요(JPG, JPEG, PNG)  -->
 	<br><br>
-	<input type="button" id="LocationBusinessRegInsert" name="LocationBusinessRegInsert"
-			 style="width: 70pt;" value="파일첨부">
-			 <br><br>
-	<span>최소/최대 1장, 최대 5MB, 최대해상도 2048*1158
-		, 이미지 확장자(JPG,JPEG,PNG)만 가능</span> <!-- 작은 글자 -->
+   
+   <!-- Page Heading -->
+   <h1 class="mb-2 text-gray-800">사업자정보 수정</h1>
+   <p class="mb-4"> 사업자정보를 수정하세요. <a target="_blank" href="#">이전으로</a>.</p>
+      
+      <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
+      
+      
+      <div class="card shadow mb-4">
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-default">사업자정보 수정</h6>
+         </div>
+
+
+
+<form style="width: 800px; margin: 120px;">
+
+	<!-- 1. 상호명 --><!-- ※ 변경불가 항목 -->
 	
-	<!-- 7.1 추가 시 보여지는 default 이미지 해상도 xxx*xxx -->
-	<!-- ※ 다시 첨부하여 등록할 시 기존 이미지를 대체 -->
-</div>
+	<div id="locationBusinessName">
+		<span style="font-size: 14pt; font-weight: bold;">상호명 <span style="color: red">*</span></span>
+		<br><br>
+		<input type="text" class="form-control" readonly="readonly"
+			   placeholder="상호명을 입력하세요. [최소 2자 ~ 최대 20자]"
+	 		   name="locationBusinessName">
+	</div>
 
 <br><br><br>
 
-<!-- 5. 사업자 유형 --><!-- ※ 변경불가 항목 -->
+	<!-- 2. 대표자명 --><!-- ※ 변경불가 항목 -->
 
-<div id="LocationBusinessType">
-	<form>
-		사업자 유형 *<br><br> <!-- bold, font-size 1~2pt up -->
-		<input type="radio" name="LocationBusinessType" value="간이과세자">간이과세자
-		<input type="radio" name="LocationBusinessType" value="일반과세자">일반과세자
-		<input type="radio" name="LocationBusinessType" value="법인사업자">법인사업자
-		<input type="radio" name="LocationBusinessType" value="면세사업자">면세사업자
-		<input type="radio" name="LocationBusinessType" value="기타">기타
-	</form>
-</div>
+	<div id="locationRepresentative">
+
+	<span style="font-size: 14pt; font-weight: bold;">대표자명 <span style="color: red">*</span></span>
+	<br><br>
+	<input type="text" class="form-control" readonly="readonly"
+		   placeholder="대표자명을 입력하세요. [최소 2자 ~ 최대 10자]" 
+		   name="locationRepresentative">	
+	</div>
+	
+	
+<br><br><br>
+
+	<!-- 3. 사업자등록번호 --><!-- ※ 변경불가 항목 -->
+	
+	<div id="locationBusinessRegNum">
+	
+		<span style="font-size: 14pt; font-weight: bold;">사업자등록번호 <span style="color: red">*</span></span>
+		<br><br>
+			<input type="text" readonly="readonly" id="locationBusinessRegNum1"
+				style="width:100px; background-color: gray">
+			-
+			<input type="text" readonly="readonly" id="locationBusinessRegNum2"
+				style="width:100px; background-color: gray">
+			-
+			<input type="text" readonly="readonly" id="locationBusinessRegNum3"
+				style="width:100px; background-color: gray">
+
+	</div>
+	
+	
+<br><br><br>
+
+
+	<!-- 4. 사업자 등록증 --><!-- ※ 변경불가 항목 -->
+	<div id="locationBusinessReg">
+	
+		<span style="font-size: 14pt; font-weight: bold;">사업자등록증 <span style="color: red">*</span></span>
+		<br><br>
+		<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
+		<textarea class="form-control" placeholder="사업자등록증을 첨부해 주세요(JPG, JPEG, PNG)"
+					name="locationBusinessReg"
+					cols="40" rows="10" readonly="readonly"></textarea>
+		<br><br>
+		<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
+		
+		<!-- 7.1 추가 시 보여지는 default 이미지 해상도 xxx*xxx -->
+		<!-- ※ 다시 첨부하여 등록할 시 기존 이미지를 대체 -->
+	</div>
+
+	
 
 <br><br><br>
 
-<!-- 6. 주종목 --><!-- ※ 변경불가 항목 -->
+	<!-- 5. 사업자 유형 --><!-- ※ 변경불가 항목 -->
+	
+	<div id="locationBusinessType">
+		<span style="font-size: 14pt; font-weight: bold;">사업자유형 <span style="color: red">*</span></span>
+		<br><br>
+			<input disabled="disabled" type="radio" name="locationBusinessType" value="간이과세자">간이과세자
+			<input disabled="disabled" type="radio" name="locationBusinessType" value="일반과세자">일반과세자
+			<input disabled="disabled" type="radio" name="locationBusinessType" value="법인사업자">법인사업자
+			<input disabled="disabled" type="radio" name="locationBusinessType" value="면세사업자">면세사업자
+			<input disabled="disabled" type="radio" name="locationBusinessType" value="기타">기타
+	</div>
 
-<div id="LocationBusinessMainEvent">
+	
 
-	주종목 *<br><br> <!-- bold, font-size 1~2pt up -->
-	<input type="text" id="LocationBusinessMainEvent" name="LocationBusinessMainEvent" style="width: 300pt;">
-	<span>최소 5자, 최대 30자</span> <!-- 글자 크기 작게 -->
-	<!-- 입력 전 default 내용 : 주종목을 입력하세요.  -->
+	<br><br><br>
+	
+	<!-- 6. 주종목 --><!-- ※ 변경불가 항목 -->
+	
+	<div id="locationBusinessMainEvent">
+	
+		<span style="font-size: 14pt; font-weight: bold;">주종목 <span style="color: red">*</span></span>
+		<br><br>
+		<input type="text" readonly="readonly" class="form-control"
+			   placeholder="주종목을 입력하세요. [최소 5자 ~ 최대 30자]"
+			   name="locationBusinessMainEvent">
+	</div>
+	
+	<br><br><br>
 
-</div>
+
+	<!-- 7. 주업태 --><!-- ※ 변경불가 항목 -->
+	
+	<div id="locationBusinessMain">
+	
+		<span style="font-size: 14pt; font-weight: bold;">주업태 <span style="color: red">*</span></span>
+		<br><br>
+		<input type="text" readonly="readonly" class="form-control"
+			   placeholder="주업태을 입력하세요. [최소 5자 ~ 최대 30자]"
+			   name="locationBusinessMainEvent">
+	</div>
+
 
 <br><br><br>
 
-<!-- 7. 주업태 --><!-- ※ 변경불가 항목 -->
-
-<div id="LocationBusinessMain">
-
-	주종목 *<br><br> <!-- bold, font-size 1~2pt up -->
-	<input type="text" id="LocationBusinessMain" name="LocationBusinessMain" style="width: 300pt;">
-	<span>최소 5자, 최대 30자</span> <!-- 글자 크기 작게 -->
-	<!-- 입력 전 default 내용 : 주업태를 입력하세요.  -->
-
-</div>
+	<!-- 8. 사업지 주소 --><!-- ※ 변경불가 항목 -->
+		
+	<div id="locationBusinessAddr">
+		<span style="font-size: 14pt; font-weight: bold;">주소 <span style="color: red">*</span></span>
+		
+		<br><br>
+		<input type="text" class="form-control" readonly="readonly"
+			   placeholder="주소를 입력해주세요." name="locationBusinessAddr">
+		<br><br>
+		<span style="font-size: 13pt; font-weight: bold;">상세 주소 <span style="color: red">*</span></span>
+		<br><br>
+		<input type="text" class="form-control" readonly="readonly" name="locationBusinessDetailedAddr">
+	</div>
 
 <br><br><br>
+<div class="container">
+<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
+					   (필수항목을 입력하지 않았을 경우,
+						입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
+					    alert("필수항목을 입력해야합니다")된다.
+						그리고 입력하는 textbox로 입력커서가 이동한다. 
+						또한 다음페이지로 submit 되지 않는다.
+						
+						※ 다음 버튼 이동 순서
+						※ xxxUpdate.jsp 다음버튼 이동 순서 
+						   기본정보 → 연락처정보 → 사업자정보
+						   → 이용정보  → 상세정보  → 패키지정보 -->
 
-<!-- 8. 주소 --><!-- ※ 변경불가 항목 -->
-	
-<div id="LocationBusinessAddr">
-	주소 *<br><br> <!-- bold, font-size 1~2pt up -->
-	
-	<input type="text" id="LocationBusinessAddr" name="LocationBusinessAddr" style="width: 300pt;" readonly="readonly">
-	<!-- 입력 전 default 내용 : 주소를 입력해주세요.  -->
-	
-	<input type="button" id="LocationBusinessAddrInsert" name="LocationBusinessAddrInsert"
-			 style="width: 70pt;" value="주소등록">
-	<!-- 주소등록 버튼클릭 
-		 → 주소등록창이라는 새 페이지 등장 
-		 →  텍스트로 주소검색 → 검색버튼 클릭 
-		 → 해당 검색어에 따른 데이터를 selectbox나 radio button으로 체크 
-		 → 체크된 상태로 등록 버튼 클릭 
-		 → 주소등록 페이지가 닫힘 
-		 → 체크된 주소 및 우편번호 
+	<input type="submit" value="다음" class="btn btn-warning" style="width:300px;">
 			
-			: 텍스트가 (우편번호)주소 텍스트박스(readonly)에 자동입력 
-			{주소 API 사용} 
-	-->
-	<br><br>
-	<input type="text" id="LocationBusinessDetailedAddr" name="LocationBusinessDetailedAddr" style="width: 300pt;">
-	<!-- 입력 전 default 내용 : 상세 주소  -->
-
+<!-- 취소 버튼 -->
+	<input type="button" class="btn btn-default" style="width:300px;" 
+			id="LocationBasicInfoCancel" value="취소">
+	<!-- onclick="function()" -->
 </div>
 
+	<%@ include file="../includes/includes_home_end.jsp"%>
+	
 
-<br><br><br>
+<br><br><br><br>
 
-<!-- 다음 버튼 (자세한 설명은 LocationBasicInfo.jsp 참조) -->
-<input type="button" id="LocationBusinessInfoSave" style="width: 150pt;"
-	value="다음"> <!-- onclick="function()" submit → LocationUsingInfoUpdate.jsp -->
-
-<!-- 취소 버튼 -->
-<input type="button" id="LocationBusinessInfoCancel" style="width: 150pt;"
-	value="취소"> <!-- onclick="function()" -->
-
-
+</form>
+</div>
+</div>
+</div>
 </body>
 </html>
