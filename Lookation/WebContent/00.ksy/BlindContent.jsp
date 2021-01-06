@@ -11,22 +11,36 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>BlindContent.jsp</title>
 	
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="user/css/animate.css">
-    <link rel="stylesheet" href="user/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="user/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="user/css/magnific-popup.css">
-    <link rel="stylesheet" href="user/css/ionicons.min.css">
-    <link rel="stylesheet" href="user/css/flaticon.css">
-    <link rel="stylesheet" href="user/css/icomoon.css">
-    <link rel="stylesheet" href="user/css/style.css">
+<!-- css 등 공통적으로 들어가는 요소 include -->
+<%@ include file="../includes/includes_home.jsp"%>
+
+<style type="text/css">
+	
+	.outer
+	{
+		margin: 10% auto;
+		height: 200px;
+		width: 100%;
+	}
+	.inner
+	{
+		margin: auto;
+		height: 200px;
+		width: 1000px;
+		text-align: center;
+	}
+	.inner .btn
+	{
+		width: 500px;
+	}
+
+</style>
 
 <script type="text/javascript">
 
 	function back()
 	{
-		alert("상세페이지로 돌아가기");
+		alert("이전페이지로 돌아가기");
 	}
 
 </script>
@@ -40,35 +54,25 @@
 		
 	-->
 
-<div class="container pt-5">
-		<div class="row justify-content-between">
-			<div class="col">
-				<a class="navbar-brand" href="user/index.html">LOOK<span>ATION</span></a>
-			</div>
-		</div>
-	</div>
+	<!-- 경로변경 필요 -->
+	<!-- Lookation 로고 및 메뉴 include -->
+	<%@ include file="../01.ksb/head(user).jsp" %>
 
-<div>
-	<span>접근 제한된 게시물입니다.</span><br>	<!-- align : center -->
-	<br>
-	<button type="button" onclick="back()" class="btn-primary">되돌아가기</button> <!-- align : center -->
+<div class="outer">
+	<div class="inner">
+		운영정책을 위반하여 블라인드 처리된 공간게시글 입니다.	<!-- align : center -->
+		<br><br>
+		<button type="button" onclick="back()" class="btn btn-primary">되돌아가기</button> <!-- align : center -->
+	</div>
 </div>
 
-	<script src="user/js/jquery.min.js"></script>
-	<script src="user/js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="user/js/popper.min.js"></script>
-	<script src="user/js/bootstrap.min.js"></script>
-	<script src="user/js/jquery.easing.1.3.js"></script>
-	<script src="user/js/jquery.waypoints.min.js"></script>
-	<script src="user/js/jquery.stellar.min.js"></script>
-	<script src="user/js/jquery.animateNumber.min.js"></script>
-	<script src="user/js/owl.carousel.min.js"></script>
-	<script src="user/js/jquery.magnific-popup.min.js"></script>
-	<script src="user/js/scrollax.min.js"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-	<script src="user/js/google-map.js"></script>
-	<script src="user/js/main.js"></script>
+
+	<!-- 경로변경 필요 -->
+	<%@ include file="../01.ksb/foot.jsp" %>
+	
+	
+	<!-- 자바스크립트 include -->
+	<%@ include file="../includes/includes_home_end.jsp"%>
 
 </body>
 </html>
