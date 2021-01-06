@@ -100,7 +100,7 @@
 						<p class="err">이메일 형식이 유효하지 않습니다.</p>
 					</li>
 					<li>
-						<input type="text" class="form-control full" id="pw" placeholder="비밀번호">
+						<input type="password" class="form-control full" id="pw" placeholder="비밀번호">
 					</li>
 				</ul>
 				<div class="memory_box">

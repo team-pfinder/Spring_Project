@@ -129,7 +129,7 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 d-flex">
               <div class="text d-flex align-items-center">
-                <strong class="number" data-number="8500">0</strong>
+                <strong class="number" data-number="1000">0</strong>
               </div>
               <div class="text-2">
               	<span>건 예약거래 <br>성사</span>

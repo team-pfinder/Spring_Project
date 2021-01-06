@@ -21,12 +21,16 @@
 		padding: 15px;
 		margin: 30px;
 	}
+	.back-default
+	{
+		background: #f6f6f6;
+	}
 </style>
 
 </head>
 
 
-<body>
+<body class="back-default">
 
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"

@@ -70,7 +70,6 @@
 	<!-- 경로변경 필요 -->
 	<%@ include file="../01.ksb/foot.jsp" %>
 	
-	
 	<!-- 자바스크립트 include -->
 	<%@ include file="../includes/includes_home_end.jsp"%>
 
