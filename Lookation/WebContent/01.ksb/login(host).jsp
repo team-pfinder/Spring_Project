@@ -91,15 +91,20 @@
 		<h1 style="font-weight:1000;">호스트 로그인</h1> <!-- 큰폰트 -->
 	</div>
 	
+	<form>
+	
 	<div class="container" >
 		<div class="loginBox">		
 				<ul class="login_info">
-					<li>
-						<input type="text" class="form-control full" id="email" placeholder="이메일">
+					<li>				
+						<input type="email" class="form-control full" id="email" placeholder="이메일"
+						pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" title="이메일 형식이 유효하지 않습니다.">
 						<p class="err">이메일 형식이 유효하지 않습니다.</p>
 					</li>
 					<li>
-						<input type="text" class="form-control full" id="pw" placeholder="비밀번호">
+						<input type="text" class="form-control full" id="pw" placeholder="비밀번호"
+						pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$" 
+						title="비밀번호는 최소 8자 이상, 최대 12자 이상이며 특수문자를 포함합니다.">>
 					</li>
 				</ul>
 				<div class="memory_box">
@@ -115,9 +120,11 @@
 					<p style="text-align:center; padding-top: 15px;">
 						아직 룩케이션 회원이 아니신가요? <a href="createAccount" style="font-weight:0">회원가입</a>
 					</p>
-				</div>
+			</div>
 		</div>
 	</div>
+	
+	</form>
 
 </body>
 </html>

@@ -77,8 +77,9 @@
 	
 	button
 	{
-		border-style: solid;
+		border-style: ridge;
 		border-width: thin;
+		border-color: silver;
 		background: #fdbe34;
 		width:49%;
 		height: 50px;

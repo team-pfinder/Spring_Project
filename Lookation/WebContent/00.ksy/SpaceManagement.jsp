@@ -7,64 +7,71 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>SpaceManagement.jsp</title>
+
+<style>
 	
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="user/css/animate.css">
-    <link rel="stylesheet" href="user/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="user/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="user/css/magnific-popup.css">
-    <link rel="stylesheet" href="user/css/ionicons.min.css">
-    <link rel="stylesheet" href="user/css/flaticon.css">
-    <link rel="stylesheet" href="user/css/icomoon.css">
-    <link rel="stylesheet" href="user/css/style.css">
+	div.container  p
+	{
+		color: #fdbe34;
+		font-weight: bold;
+	}
+
+</style>
+
+<!-- css 등 공통적으로 들어가는 요소 include -->
+<%@ include file="../includes/includes_home.jsp"%>
 
 </head>
 <body>
 	
-	<!-- include 필요 -->
-	<div class="container pt-5">
-		<div class="row justify-content-between">
-			<div class="col">
-				<a class="navbar-brand" href="user/index.html">LOOK<span>ATION</span></a>
+	<!-- 경로변경 필요 -->
+	<!-- Lookation 로고 및 메뉴 include -->
+	<%@ include file="../01.ksb/head(user).jsp" %>
+	
+	
+	<section class="hero-wrap hero-wrap-2"
+		style="background-image: url('images/bg_3.jpg');"
+		data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-end">
+				<div class="col-md-9 ftco-animate pb-5">
+					<p class="breadcrumbs mb-2">
+						<span class="mr-2"><a href="index.html">Services
+						<i class="ion-ios-arrow-forward"></i></a></span>
+					</p>
+					<h1 class="mb-0 bread">공간관리정책</h1>
+				</div>
 			</div>
 		</div>
+	</section>
+
+	<!-- 정책 본문 -->
+	<div class="container" style="margin: 10% 10% 10% 10%;">
+		<div>
+			본 정책은 Lookation 회원 이용약관에 따라 작성되었으며 본 정책에서
+			사용되는 용어의 정의는 Lookation 회원 이용약관과 동일하다.
+		</div>
+		<br>
+		<div>
+			<p>와 이건 어케 써야할지 모르겠다 ㅠㅠㅠ</p>
+			
+		</div>
+		
+		후략...
+		
 	</div>
-
-<div>
 	
-	<span>공간 관리 정책</span>
-	<p>
-	정책 복붙 해야할까...
-	</p>
-	<br>
+	<!-- 경로변경 필요 -->
+	<%@ include file="../01.ksb/foot.jsp" %>
 	
-	<span>이전 공간관리</span>
-	<p>
 	
-	</p>
-	<br>
-	
-</div>
-
-	<script src="user/js/jquery.min.js"></script>
-	<script src="user/js/jquery-migrate-3.0.1.min.js"></script>
-	<script src="user/js/popper.min.js"></script>
-	<script src="user/js/bootstrap.min.js"></script>
-	<script src="user/js/jquery.easing.1.3.js"></script>
-	<script src="user/js/jquery.waypoints.min.js"></script>
-	<script src="user/js/jquery.stellar.min.js"></script>
-	<script src="user/js/jquery.animateNumber.min.js"></script>
-	<script src="user/js/owl.carousel.min.js"></script>
-	<script src="user/js/jquery.magnific-popup.min.js"></script>
-	<script src="user/js/scrollax.min.js"></script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-	<script src="user/js/google-map.js"></script>
-	<script src="user/js/main.js"></script>
+	<!-- 자바스크립트 include -->
+	<%@ include file="../includes/includes_home_end.jsp"%>
 
 </body>
 </html>
