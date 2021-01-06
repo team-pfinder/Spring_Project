@@ -15,7 +15,6 @@
 <title>1.mypageMain(host).jsp</title>
 </head>
 <body>
-
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('<%=cp%>/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
@@ -94,7 +93,7 @@
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="6.mypageMileageHistory.jsp">마일리지 내역(**정산/환전)</a>
+								<a href="6.mypageMileageHistory.jsp">마일리지 내역(정산/환전)</a>
 							</h3>
 						</div>
 					</div>
@@ -128,11 +127,9 @@
 		</div>
 	</section>
 
-
 	<!-- loader -->
 	<%@ include file="../includes/includes_loader.jsp"%>
 
 	<%@ include file="../includes/includes_home_end.jsp"%>
-
 </body>
 </html>

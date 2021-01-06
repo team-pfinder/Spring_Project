@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <!-- include NAV -->
 <%@ include file="../01.ksb/head(user).jsp"%>
-<title>5-1.dopositGuide.jsp</title>
+<title>5-1.withdrawGuide.jsp</title>
 <style type="text/css">
 button
     {
@@ -37,21 +37,23 @@ button
             	</div>
             </div>
             <div style="overflow:hidden; text-align:center;margin-top:-140px">
-				<h1><br><br><br>충전신청이 <b>완료</b> 되었습니다.</h1>
+				<h1><br><br><br>환전신청이 <b>완료</b> 되었습니다.</h1>
 				<hr>
 				<p style="font-size: 25px">
-				계좌이체로 결제시 <span>입금대기 후 48시간 이내 
-				입금</span>해 주시지 않으면 <span>결제 시스템 상 취소</span>로 진행됩니다.
+				<span>환전신청 후 48시간 이내 관리자가 입금</span>하지 않으면 
+				<span>결제 시스템 상 취소</span>로 진행됩니다. 
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</p>
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12">	
 				<span style="text-align:left; font-size:23px">
-				<b>결제 신청일</b> : 2021-01-06 18:21<br>
-				<b>결제 기한일</b> : 2021-01-08 18:21<br>
+				<b>환전 신청일</b> : 2021-01-06 18:21<br>
+				<b>기한일</b> : 2021-01-08 18:21<br>
 				
-				<b>입금 계좌</b> : 554602-04-076182(국민은행)<br>
-				<b>예금주</b> : 룩케이션조윤상<br>
-				<b>결제 예정 금액</b> : 1,000,000원<br>
+				<b>환전 하실 계좌</b> : 554602-04-076182(국민은행)<br>
+				<b>예금주</b> : 김손님<br>
+				<b>예정 금액</b> : 450,000원<br>
 				</span>
 				<hr><br>
 				
