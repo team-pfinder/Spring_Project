@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>LocationPackageApl.jsp</title>
 <%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/includes_menu.jsp" %>
+<%@ include file="../includes/header_host.jsp" %>
 
 
 <link rel="stylesheet" href="/css/jquery-ui.min.css">
@@ -231,7 +231,6 @@
 
 </div>
 
-	<%@ include file="../includes/includes_home_end.jsp"%>
 	
 
 <br><br><br><br>
@@ -239,6 +238,7 @@
 </form>
 </div>
 </div>
-
+<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/includes_home_end.jsp"%>
 </body>
 </html>

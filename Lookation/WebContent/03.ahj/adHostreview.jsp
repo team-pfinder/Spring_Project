@@ -9,7 +9,7 @@ String cp = request.getContextPath();
 <head>
 
   <%@ include file="../includes/includes_admin.jsp" %>
-  <title>호스트 QnA 조회</title>
+  <title>호스트 리뷰 조회</title>
  
 <!-- 블라인드 클릭 시 팝업 창 -->
 <script type="text/javascript">
