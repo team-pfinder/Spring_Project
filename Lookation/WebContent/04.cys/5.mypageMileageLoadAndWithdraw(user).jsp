@@ -66,10 +66,7 @@
 		color: black;
 		font-weight: bold;
 	}
-	
-	.row {
-		width: 120%;
-	}
+
 </style>
 
 

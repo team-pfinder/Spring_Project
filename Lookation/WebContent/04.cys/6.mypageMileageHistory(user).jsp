@@ -28,9 +28,6 @@ String cp = request.getContextPath();
       font-weight: bold;
    }
    
-   .row {
-      width: 120%;
-   }
 </style>
 
 </head>

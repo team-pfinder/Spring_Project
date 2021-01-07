@@ -11,10 +11,13 @@
 <meta charset="UTF-8">
 
 <!-- include head -->
-<%@ include file="../01.ksb/head(user).jsp"%>
 <title>1.mypageMain(user).jsp</title>
 </head>
 <body>
+	<div>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+	</div>
+
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('<%=cp%>/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
@@ -115,8 +118,9 @@
 	</section>
 
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
 	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>

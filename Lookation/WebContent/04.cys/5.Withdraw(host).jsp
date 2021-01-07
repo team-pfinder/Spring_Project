@@ -28,9 +28,6 @@
 	font-weight: bold;
 }
 
-.row {
-	width: 120%;
-}
 </style>
 <script type="text/javascript">
 	function add10000()
