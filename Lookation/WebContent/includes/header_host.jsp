@@ -8,11 +8,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>head(host).jsp</title>
 
 <%@ include file="../includes/includes_home.jsp"%>
+<title>header_host.jsp</title>
+
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	
 <script type="text/javascript">
 	/* 서브메뉴 애니메이션 */
 	$(function()

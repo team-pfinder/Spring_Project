@@ -12,7 +12,7 @@
 <!-- head에서 include 하므로 X -->
 <%-- <%@ include file="../includes/includes_home.jsp"%> --%>
 
-<title>foot.jsp</title>
+<title>footer.jsp</title>
 
 </head>
 <body>

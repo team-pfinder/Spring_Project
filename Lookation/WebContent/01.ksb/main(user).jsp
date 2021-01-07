@@ -108,8 +108,11 @@ size-big
 </script>
 </head>
 
-<%@ include file="head(user).jsp"%>
 <body>
+	<div>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+	</div>
+
 	<!-- 슬라이드쇼 -->
 	<div class="hero-wrap">
 		<div class="home-slider owl-carousel">
@@ -377,8 +380,12 @@ size-big
         </div>
       </div>
     </section>
+    
+    <div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 </body>
-<%@ include file="foot.jsp"%>
+
 <%@ include file="../includes/includes_home_end.jsp"%>
 </html>
 

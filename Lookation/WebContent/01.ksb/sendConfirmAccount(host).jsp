@@ -11,7 +11,6 @@
 <meta charset="UTF-8">
 <%@ include file="../includes/includes_home.jsp" %>
 <%@ include file="../includes/defaults.jsp" %>
-<%@ include file="head(host).jsp"%>
 <title>createAccountSuccess(host).jsp</title>
 
 <style type="text/css">
@@ -73,6 +72,9 @@
 </head>
 
 <body class="back-default">
+	<div>
+        <c:import url="${cp}/includes/header_host.jsp"></c:import>
+    </div>
 
 	<div class="head">
 		<h1 style="font-weight:1000;">호스트 가입 이메일 인증</h1>
@@ -91,7 +93,9 @@
 		</div>
 	</div>
 
-	<%@ include file="foot.jsp"%>
+	<div>
+        <c:import url="${cp}/includes/footer.jsp"></c:import>
+    </div>
 	<%@ include file="../includes/includes_home_end.jsp"%>
 </body>
 </html>

@@ -44,7 +44,9 @@
 
 </head>
 <body>
-	<jsp:include page="head(host).jsp" />
+	<div>
+        <c:import url="${cp}/includes/header_host.jsp"></c:import>
+    </div>
 	
 	<div class="container padding-vertical" style="text-align: center">
 		<h1 class="brand" style="font-size: 500%;">Look<span>ation.</span></h1>
@@ -161,7 +163,9 @@
     </section>
 	<!-- 통계 END -->
 	
-	<jsp:include page="foot.jsp" />
+	<div>
+        <c:import url="${cp}/includes/footer.jsp"></c:import>
+    </div>
 	<%@ include file="../includes/includes_home_end.jsp"%>
 </body>
 </html>

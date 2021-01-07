@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 
 <%@ include file="../includes/includes_home.jsp"%>
-<title>head(user).jsp</title>
+<title>header_host.jsp</title>
 
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
