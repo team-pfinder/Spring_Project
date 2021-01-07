@@ -12,6 +12,18 @@
 <title>이용자탈퇴완료.jsp</title>
 <%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
 <%@ include file="../includes/includes_home.jsp" %>
+<style type="text/css">
+.withdrawBox
+	{
+	    width: 648px;
+	    background-color: #ffffff;
+	    
+	    margin: 0 auto; 
+		float: none;
+		padding: 32px;
+	}
+
+</style>
 </head>
 <body>
 
@@ -23,37 +35,33 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<!-- 체크그림 가운데정렬 -->
-				<div class="dbox w-100 text-center">
+				<div class="withdrawBox">
 					<!-- 체크그림 가운데정렬 -->
-					<div class="icon d-flex align-items-center justify-content-center">
-						<span class="fa fa-check"></span>
-					</div>
-					<div class="text">
-						<h3 class="font-weight-bold">탈퇴하시겠습니까?</h3>
-						<h6>회원가입시 입력한 모든 개인정보는
-						서비스 부정이용을 막기 위해 탈퇴일로부터 최대 1년간 보관 후 파기되며,
-						이는 재가입하더라도 복구되지
-						않습니다.</h6>
-					</div>
-				</div>
-			</div>
-		</div><!-- End .row  -->
-		
-		<br><br>
-		
-		<div class="row">
-			<div class="col-md-12">
-				<hr>
-				<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
-				<div class="text-center">
-					<button class="btn btn-dark" type="button">취소하기</button>
-					<button class="btn btn-primary" type="button">탈퇴하기</button>
-				</div>
+					<div class="dbox w-100 text-center">
+						<!-- 체크그림 가운데정렬 -->
+						<div class="icon d-flex align-items-center justify-content-center">
+							<span class="fa fa-check"></span>
+						</div>
+						<div class="text mb-5">
+							<h3 class="font-weight-bold">탈퇴하시겠습니까?</h3>
+							<h6>회원가입시 입력한 모든 개인정보는
+							서비스 부정이용을 막기 위해 탈퇴일로부터 최대 1년간 보관 후 파기되며,
+							이는 재가입하더라도 복구되지
+							않습니다.</h6>
+						</div>
 
-			</div><!-- End .col-md-12  -->
+						<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
+						<div class="text-center">
+							<button class="btn btn-dark" type="button">취소하기</button>
+							<button class="btn btn-primary" type="button">탈퇴하기</button>
+						</div>
+
+					</div>
+				
+				</div><!-- End withdrawBox -->
+				
+			</div><!-- End .col-md-12 -->
 		</div><!-- End .row  -->
-		
 		
 	</div><!-- End .container -->
 	
