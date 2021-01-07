@@ -11,7 +11,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
+
 <%@ include file="../includes/includes_home.jsp" %>
+
 <style type="text/css">
 .navbar-expand-sm {
 	border-bottom: solid 2px #ffd014;
@@ -21,6 +23,16 @@
 .info-div {
 	padding-bottom: 8em;
 }
+
+/*=== carousel ===*/
+.slider-item img{
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+    resize: both;
+}
+
 
 /*=== scrollspy ===*/
 a {
@@ -83,7 +95,6 @@ a:hover {
 	color: #656565;
 }
 </style>
-
 </head>
 <!-- scroll할 영역을 body로 지정해줌 -->
 <!-- navbar 클래스대로 클림하면 움직일 예정 -->
@@ -134,92 +145,57 @@ a:hover {
 </nav>
 <!-- END nav -->
 
-<%-- <section class="hero-wrap hero-wrap-2" style="background-image: url('<%=cp%>/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
-  	<div class="overlay"></div>
-  	<div class="container">
-    	<div class="row no-gutters slider-text align-items-end">
-      		<div class="col-md-9 ftco-animate pb-5">
-      			<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Space <i class="ion-ios-arrow-forward"></i></span></p>
-        		<h1 class="mb-0 bread">선택한 공간 예약하기</h1>
-      		</div>
-    	</div>
-  	</div>
-</section>
- --%>
-
 <section class="ftco-section ftco-degree-bg">
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 p-md-5 p-4">
-				<h2 class="mb-3 font-weight-bold">파파존스 호러존 스튜디오</h2>
-				<h4 class="">주택개조 카페입니다</h4>
-				<!-- 태그모양으로 카테고리를...?  -->
-				<div class="tagcloud">
-	                <a href="#" class="tag-cloud-link">파티룸</a>
-	                <a href="#" class="tag-cloud-link">루프탑</a>
-             	</div>
-			</div>
-		</div>
 		<div class="row">	
 			<div class="col-lg-8 w-100 p-md-5 p-4">
 				
-				<!-- carousel를 구성할 영역 설정 -->
-				<div style="width: 100%;">
-					<!-- carousel를 사용하기 위해서는 class에 carousel와 slide 설정한다. -->
-					<!-- carousel는 특이하게 id를 설정해야 한다.-->
-					<div id="carousel-example-generic" class="carousel slide">
-						<!-- carousel의 지시자 -->
-						<!-- 지시자라고는 하는데 ol태그의 class에 carousel-indicators를 넣는다. -->
-						<ol class="carousel-indicators">
-							<!-- li는 이미지 개수만큼 추가하고 data-target은 carousel id를 가르킨다. -->
-							<!-- data-slide-to는 순서대로 0부터 올라가고 0은 active를 설정한다. -->
-							<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-							<li data-target="#carousel-example-generic" data-slide-to="1"></li>
-							<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-							<li data-target="#carousel-example-generic" data-slide-to="3"></li>
-							<li data-target="#carousel-example-generic" data-slide-to="4"></li>
-						</ol>
-						<!-- 실제 이미지 아이템 -->
-						<!-- class는 carousel-inner로 설정하고 role은 listbox에서 설정한다. -->
-						<div class="carousel-inner" role="listbox">
-							<!-- 이미지의 개수만큼 item을 만든다. 중요한 포인트는 carousel-indicators의 li 태그 개수와 item의 개수는 일치해야 한다. -->
-							<div class="item active">
-								<!-- 이미지 설정- -->
-								<img src="<%=cp%>/images/image_1.jpg" style="width: 100%">
-							</div>
-							<div class="item">
-								<img src="<%=cp%>/images/image_2.jpg" style="width: 100%">
-							</div>
-							<div class="item">
-								<img src="<%=cp%>/images/image_3.jpg" style="width: 100%">
-							</div>
-							<div class="item">
-								<img src="<%=cp%>/images/image_4.jpg" style="width: 100%">
-							</div>
-							<div class="item">
-								<img src="<%=cp%>/images/image_5.jpg" style="width: 100%">
-							</div>
-						</div>
-						
-						
-						<!-- 왼쪽 화살표 버튼 -->
-						<!-- href는 carousel의 id를 가르킨다. -->
-						<a class="left carousel-control" href="#carousel-example-generic"
-							role="button" data-slide="prev"> <!-- 왼쪽 화살표 --> <span
-							class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-						</a>
-						<!-- 오른쪽 화살표 버튼 -->
-						<!-- href는 carousel의 id를 가르킨다. -->
-						<a class="right carousel-control"
-							href="#carousel-example-generic" role="button" data-slide="next">
-							<!-- 오른쪽 화살표 --> <span class="glyphicon glyphicon-chevron-right"
-							aria-hidden="true"></span>
-						</a>
-					</div>
-				</div><!-- End carousel -->
-
+				
+				<!--- carousel --->
 				<!-- 상세이미지 슬라이더 -->
-				<!-- 클릭하면,,  -->
+				<div class="home-slider owl-carousel">
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_1.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_2.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_3.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_4.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_5.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_6.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/location1.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/location4.jpg);">
+					</div>
+					<div class="slider-item"
+						style="background-image: url(<%=cp%>/images/image_2.jpg);">
+					</div>
+				</div>
+				<!-- 이미지 클릭하면 확대  -->
+				
+				<div class="row">
+					<div class="col-lg-12 p-md-5 p-4">
+						<h2 class="mb-3 font-weight-bold">파파존스 호러존 스튜디오</h2>
+						<h4 class="">주택개조 카페입니다</h4>
+						<!-- 태그모양으로 카테고리를...?  -->
+						<div class="tagcloud">
+			                <a href="#" class="tag-cloud-link">파티룸</a>
+			                <a href="#" class="tag-cloud-link">루프탑</a>
+		             	</div>
+					</div>
+				</div>
+				
 
 				<!-- .navbar scrollspy로 이동할 부분 -->
 				<nav class="navbar navbar-expand-sm my-5">
@@ -487,8 +463,8 @@ a:hover {
 
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-<%@ include file="../includes/includes_home_end.jsp" %>
 
+<%@ include file="../includes/includes_home_end.jsp" %>
 
 <!-- Footer -->
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
