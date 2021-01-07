@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>locationBasicInfo.jsp</title>
 <%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/includes_menu.jsp" %>
+<%@ include file="../includes/header_host.jsp" %>
 
 <style type="text/css">
 	#refund
@@ -284,7 +284,7 @@
        <button type="button" class="btn-warning" style="width:260px;" onclick="deleteAccount()">계좌삭제</button>
     </div>
  -->
-   <%@ include file="../includes/includes_home_end.jsp"%>
+
 </div>
 
 
@@ -296,6 +296,7 @@
 <br><br><br><br>
 
 
-
+	<%@ include file="../includes/footer.jsp"%>
+	<%@ include file="../includes/includes_home_end.jsp"%>
 </body>
 </html>
