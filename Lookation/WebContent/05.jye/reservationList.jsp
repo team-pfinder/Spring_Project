@@ -198,7 +198,7 @@
 								<td>
 									<!-- 전일 23:59 전까지는 예약취소 버튼 출력 -->
 									<!-- 버튼 -->
-									<button type="button" class="btn-danger border-0 rounded" data-toggle="modal" data-target="#myModal" >
+									<button type="button" class="btn btn-danger border-0 rounded" data-toggle="modal" data-target="#myModal" >
 									취소
 									</button>
 									<!-- 해당 버튼 클릭시 id가 myModal인 팝업 실행시킴. -->
@@ -318,7 +318,6 @@
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 <%@ include file="../includes/includes_home_end.jsp" %>
-
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 
 </body>

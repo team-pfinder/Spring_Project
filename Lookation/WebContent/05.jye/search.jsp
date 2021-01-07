@@ -82,7 +82,7 @@
       
       	<form>
       		<div class="row">
-      			<div class="col-md-4">
+      			<div class="col-md-3">
 					<dl>
 						<dt>공간유형</dt>
 						<dd>
@@ -96,7 +96,7 @@
 						</dd>
 					</dl>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 						<dl>
 							<dt>날짜</dt>
 							<dd>
@@ -108,15 +108,16 @@
 							<dt><label for="customRange">가격</label></dt>
 							<dd>
 								<div class="form-group">
-									<span> 
+									<span class="d-flex"> 
 										<!-- 처음 입력한 숫자가 뒤 숫자보다 작아야 검색가능. -->
-										<input type="number" value="10000" min="0" max="400000" step="10000"> - 
-										<input type="number" value="60000" min="0" max="400000" step="10000">
+										<input type="number" class="form-control"
+										value="10000" min="0" max="400000" step="10000"> - 
+										<input type="number" class="form-control"
+										value="60000" min="0" max="400000" step="10000"> (원)
 									</span> 
-    								
  								</div>
 							</dd>
-							<dd>
+							<!-- <dd>
 								<div class="form-group">
 									<input value="10000" min="0" max="400000" step="500" type="range">
 								</div>
@@ -125,10 +126,10 @@
 								<div class="form-group">
 									<input value="10000" min="0" max="400000" step="500" type="range">
 								</div>
-							</dd>
+							</dd> -->
 						</dl>
 					</div>
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<dl>
 						<dt>지역</dt>
 						<dd>
@@ -153,6 +154,17 @@
 						</dd>
 					</dl>
 				</div>
+				<div class="col-md-3">
+					<dl>
+						<dd class="mt-4">
+							<button type="button" class="ml-3 btn btn-outline-dark rounded-pill border">
+							<span class="icon-map-marker" style="font-size:1.2em;">  지도</span></button>
+							<button type="button" class="ml-4 btn btn-outline-dark rounded-pill border">
+							<span class="icon-filter" style="font-size:1.2em;">  필터</span></button>
+							
+						</dd>
+					</dl>
+				</div>
 				
 				
       		</div><br><br>
@@ -160,9 +172,12 @@
 		
 		<!-- 정렬 start -->
 		<div class="row">
-    		<div class="col-md-12 text-right">
+			<div class="col-md-9">
+				<!-- 빈공간 -->
+			</div>
+    		<div class="col-md-3 m-0 text-right">
     			<!-- 우측정렬 -->
-	    		<select class="form-control-m float-right">
+	    		<select class="form-control">
 					<option selected="selected">정렬방법선택</option>
 					<option value="1">가격 낮은 순</option>
 					<option value="2">가격 높은 순</option>
@@ -277,7 +292,7 @@
           </div>
         </div>
 		
-		
+		<!-- 페이징 아니면 무한스크롤 방식 -->
 		<!-- 페이징 처리할 부분 -->
         <div class="row mt-5">
           <div class="col text-center">
