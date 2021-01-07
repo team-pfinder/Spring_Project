@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>locationBasicInfo.jsp</title>
 <%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/includes_menu.jsp" %>
+<%@ include file="../includes/header_host.jsp" %>
 
 <style type="text/css">
 	#refund
@@ -21,12 +21,16 @@
 		padding: 15px;
 		margin: 30px;
 	}
+	.back-default
+	{
+		background: #f6f6f6;
+	}
 </style>
 
 </head>
 
 
-<body>
+<body class="back-default">
 
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
@@ -280,7 +284,7 @@
        <button type="button" class="btn-warning" style="width:260px;" onclick="deleteAccount()">계좌삭제</button>
     </div>
  -->
-   <%@ include file="../includes/includes_home_end.jsp"%>
+
 </div>
 
 
@@ -292,6 +296,7 @@
 <br><br><br><br>
 
 
-
+	<%@ include file="../includes/footer.jsp"%>
+	<%@ include file="../includes/includes_home_end.jsp"%>
 </body>
 </html>

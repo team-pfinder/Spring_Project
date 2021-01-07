@@ -103,11 +103,6 @@
 		<div class="changeBox">		
 				<ul class="pw_info">
 					<li>
-						<p>현재 비밀번호</p>
-						<input type="password" class="form-control full" id="pw_current">
-						<br>
-					</li>
-					<li>
 						<p>새 비밀번호</p>
 						<input type="password" class="form-control full" id="pw_new">
 						<p class="err">비밀번호가 너무 짧습니다.</p>

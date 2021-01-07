@@ -102,9 +102,9 @@
 						<p class="err">이메일 형식이 유효하지 않습니다.</p>
 					</li>
 					<li>
-						<input type="text" class="form-control full" id="pw" placeholder="비밀번호"
+						<input type="password" class="form-control full" id="pw" placeholder="비밀번호"
 						pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$" 
-						title="비밀번호는 최소 8자 이상, 최대 12자 이상이며 특수문자를 포함합니다.">>
+						title="비밀번호는 최소 8자 이상, 최대 12자 이상이며 특수문자를 포함합니다.">
 					</li>
 				</ul>
 				<div class="memory_box">

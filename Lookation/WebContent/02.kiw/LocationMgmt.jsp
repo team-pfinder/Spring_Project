@@ -12,7 +12,6 @@
 <%@ include file="../includes/includes_home.jsp" %>
 <%@ include file="../includes/includes_menu.jsp" %>
 
-
 </head>
 <body>
 
