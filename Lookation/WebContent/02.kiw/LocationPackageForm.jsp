@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/includes_menu.jsp" %>
+<%@ include file="../includes/header_host.jsp" %>
 
 </head>
 <body>
@@ -146,10 +146,7 @@
 		   value="취소">
 
 
-</div>
-
-	<%@ include file="../includes/includes_home_end.jsp"%>
-	
+</div>	
 
 <br><br><br><br>
 
@@ -157,6 +154,8 @@
 </div>
 </div>
 
+<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/includes_home_end.jsp"%>
 
 </body>
 </html>

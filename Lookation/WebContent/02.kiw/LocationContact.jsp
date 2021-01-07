@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>locationContact.jsp</title>
 <%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/includes_menu.jsp" %>
+<%@ include file="../includes/header_host.jsp" %>
 
 
 </head>
@@ -132,8 +132,6 @@
 			 value="취소">
 	<!-- onclick="function()" -->
 </div>
-
-	<%@ include file="../includes/includes_home_end.jsp"%>
 	
 
 <br><br><br><br>
@@ -142,5 +140,7 @@
 </div>
 </div>
 
+<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/includes_home_end.jsp"%>
 </body>
 </html>

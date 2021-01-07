@@ -10,8 +10,9 @@
 <meta charset="UTF-8">
 
 <!-- head에서 include 하므로 X -->
-<%@ include file="../includes/includes_home.jsp"%>
-<title>foot.jsp</title>
+<%-- <%@ include file="../includes/includes_home.jsp"%> --%>
+
+<title>footer.jsp</title>
 
 </head>
 <body>
@@ -25,7 +26,7 @@
 	</div> -->
 	<div class="footer">
 		<div class="container-fluid px-lg-5" >
-			<div class="col-md-9 py-5" style="float:none; margin:0 auto;">
+			<div class="col-md-9 py-5" style="float: none; margin:0 auto;">
 				<div class="row">
 					<div class="col-md-4 mb-md-0 mb-4">
 						<h2 class="footer-heading">About us</h2>

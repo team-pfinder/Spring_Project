@@ -71,7 +71,6 @@
 
 
 <body class="back-default">
-
 	<div class="email-form">
 
 		<!-- 로고 -->

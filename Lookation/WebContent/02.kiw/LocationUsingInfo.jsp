@@ -11,7 +11,7 @@
 <title>locationUsingInfo.jsp</title>
 
 <%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/includes_menu.jsp" %>
+<%@ include file="../includes/header_host.jsp" %>
 
 </head>
 <body>
@@ -200,14 +200,16 @@
 	<!-- onclick="function()" -->
 </div>
 
-	<%@ include file="../includes/includes_home_end.jsp"%>
-	
+
 
 <br><br><br><br>
 
 </form>
 </div>
 </div>
+
+<%@ include file="../includes/footer.jsp"%>
+<%@ include file="../includes/includes_home_end.jsp"%>
 
 </body>
 </html>
