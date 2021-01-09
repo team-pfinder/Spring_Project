@@ -61,10 +61,27 @@
 		font-weight: bold;
 	}
 	
-	.modifyBox
+	input.full
 	{
-		width : 80%;
 		height: 40px;
+	}
+	
+	input.err
+	{
+		border-color: red;
+	}
+	
+	p.err 
+	{
+	    display: display;
+		font-size: 14px;
+		text-align: left;
+		color: red;
+	}
+	
+	p.pass
+	{
+		display: none;
 	}
 	
 	button
@@ -78,6 +95,60 @@
 	}
 	
 </style>
+
+
+<script type="text/javascript">
+
+	$(function()
+	 {
+		$("#change").click(function()
+		{
+			$("div#displayTel").attr("class", "hide");
+			$("div#modifyTel").attr("class", "display");
+		});
+		
+		$("#cancel").click(function()
+		{
+			$("div#displayTel").attr("class", "display");
+			$("div#modifyTel").attr("class", "hide");
+		});
+		
+		// 전화번호 정규식
+		var regTel = /^\d{2,3}-\d{3,4}-\d{4}$/;
+		
+		// 전화번호 정규식 검사(입력시마다)
+		$("#tel").keyup(function()
+		{
+			if(!regTel.test($(this).val()))
+			{	
+				$(this).removeClass("full");
+				$(this).addClass("err");
+				$("p#tel").attr("class", "err");
+			}
+			else
+			{
+				$(this).removeClass("err");
+				$(this).addClass("full");
+				$("p#tel").attr("class", "pass");	
+			}
+		});
+		
+		$("#modify").click(function()
+		{
+			if(!regTel.test($("input#tel").val()))
+			{
+				alert("연락처 형식이 알맞지 않습니다. 다시 입력해주세요.");
+				return;
+			}
+			
+			/* 적용이 되는 자리 */
+			
+			$("div#displayTel").attr("class", "display");
+			$("div#modifyTel").attr("class", "hide");
+		});
+	 });
+</script>
+
 </head>
 <body>
 	<div>
@@ -96,15 +167,8 @@
 				<tr>
 					<th>닉네임</th>	<!-- 닉네임 변경창으로 변경되어야 함 -->
 					<!-- 닉네임 변경창으로 변경되어야 함 -->
-					<td>
-						<div>
-							<input class="modifyBox" type="text" value="입코딩"><button>확인</button>	
-						</div>
-						<!-- 입코딩<br> -->
-						<div>
-							<!-- <a class="clickAble" href="#">변경하기</a> -->
-							<a class="clickAble" href="#">취소하기</a>
-						</div>
+					<td width="400">
+						입코딩<br>	
 					</td>
 				</tr>
 				
@@ -116,13 +180,19 @@
 				<tr>
 					<th>연락처</th> <!-- 연락처 변경창으로 변경되어야 함 -->
 					<td>
-						<div>
-							<input class="modifyBox" type="text" value="010-3441-0260"><button>확인</button>	
-						</div>
-						<!-- 010-3441-0260<br> -->
-						<div>
-							<!-- <a class="clickAble" href="#">변경하기</a> -->
-							<a class="clickAble" href="#">취소하기</a>
+						<div class="display" id="displayTel">
+					    	010-3441-0260<br>
+					    	<a class="clickAble" href="#" id="change">변경하기</a>
+					    </div>
+						<div class="hide" id="modifyTel">
+							<div>
+								<input type="text" class="form-control full"  id="tel"
+								 value="010-3441-0260" style="float:left; width:80%;">
+								<button id="modify" style="float:right; width:20%;
+								 height:52px; border-radius: 5px">확인</button>	
+							</div>
+							<p class="pass" id="tel">연락처 형식이 알맞지 않습니다.</p>
+							<a class="clickAble" href="#" id="cancel">취소하기</a>
 						</div>
 					</td>
 				</tr>
