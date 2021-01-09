@@ -28,6 +28,15 @@
 			//$("ul",this).slideUp("fast");
 			$("ul",this).fadeOut("fast");
 		});
+		
+		$("a#sub").hover(function()
+		{
+		    $(this).css("color","#fdbe34");
+		},
+		function()
+		{
+			$(this).css("color","white");
+		});
 	});
 </script>
 
@@ -41,7 +50,7 @@ ul.sub
 	list-style: none;
 	padding-left: 0px;
 	padding-top: 10px;
-	padding-bottom: 50px;
+	padding-bottom: 10px;
 	
 	position: absolute;
 	display:none;
@@ -76,6 +85,11 @@ li.nav-item
 .navbar
 {
 	margin-bottom: 0px;
+}
+
+a#sub
+{
+	color: white;
 }
 </style>
 
@@ -122,28 +136,28 @@ li.nav-item
 				<ul class="navbar-nav mr-auto" id="menu">
 					<li class="nav-item"><a href="#" class="nav-link">바로가기</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">공간 등록하기</a></li>
+							<li><a href="#" class="nav-link" id="sub">공간 등록하기</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">마이페이지</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">공간 관리</a></li>
-							<li><a href="#">예약 리스트 관리</a></li>
-							<li><a href="#">답글 관리</a></li>
+							<li><a href="#" class="nav-link" id="sub">공간 관리</a></li>
+							<li><a href="#" class="nav-link" id="sub">예약 리스트 관리</a></li>
+							<li><a href="#" class="nav-link" id="sub">답글 관리</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">고객지원</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">도움말</a></li>
-							<li><a href="#">FAQ</a></li>
+							<li><a href="#" class="nav-link" id="sub">도움말</a></li>
+							<li><a href="#" class="nav-link" id="sub">FAQ</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">dummy</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">dummy</a></li>
-							<li><a href="#">dummy</a></li>
-							<li><a href="#">dummy</a></li>
-							<li><a href="#">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
 						</ul> 
 					</li>
 				</ul>
