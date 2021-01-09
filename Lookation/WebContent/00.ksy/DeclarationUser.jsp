@@ -59,9 +59,10 @@
 		<!-- 이용자 → 호스트 : 공간게시물 신고 폼 -->
 		<form>
 			<span>호스트</span>
-			<input type="text" id="hostName" class="form-control"><br>
-			<span>신고하려는 공간</span> <input id="placeCode" value="이전페이지에서 받아온 공간제목"
-								class="form-control"><br>
+			<input type="text" id="hostName" class="form-control" readonly="readonly"
+			value="이전페이지에서 받아온 호스트이름"><br>
+			<span>신고하려는 공간</span> <input id="placeCode" readonly="readonly"
+			value="이전페이지에서 받아온 공간제목" class="form-control"><br>
 			<select class="form-control">
 				<option>==[신고유형]==</option>
 				<option>부적절한 언행 사용</option>
@@ -74,6 +75,8 @@
 			<span>신고사유</span><br>
 			<textarea rows="3" cols="40" placeholder="자세한 신고사유를 작성하세요."
 			class="form-control"></textarea><br>
+			<!-- 파일 여러개 업로드 가능, 근데 파일만 초기화는 아직... -->
+			<input type="file" multiple="multiple" class="form-control"><br>
 			<p>※ 신고 내용을 허위로 작성할 경우, 해당 신고는 반려처리됩니다.<br>
 			허위 신고의 경우 횟수가 잦거나, <br>
 			정도가 심한 경우에는 블랙리스트 처리될 수 있으며,<br>

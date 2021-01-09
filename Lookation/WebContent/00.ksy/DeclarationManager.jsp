@@ -34,6 +34,13 @@
 		
 		// 신고 처리 사유를 작성하는 페이지 또는 텍스트박스 필요
 	}
+	
+	function blacklist()
+	{
+		var popUrl = "blackListPopup.jsp";
+		var popOption = "width=500, height=300, resizable=no, scrollbars=yes, status=no";
+		window.open(popUrl, "", popOption);
+	}
 
 </script>
 
@@ -93,6 +100,7 @@
 											<td>
 												<button type="button" onclick="process1()" class="btn btn-primary">인정</button>
 												<button type="button" onclick="process2()" class="btn btn-secondary">반려</button>
+												<button type="button" onclick="blacklist()" class="btn btn-danger">블랙리스트추가</button>
 											</td>
 										</tr>
 										<tr>
@@ -104,6 +112,7 @@
 											<td>
 												<button type="button" onclick="process1()" class="btn btn-primary">인정</button>
 												<button type="button" onclick="process2()" class="btn btn-secondary">반려</button>
+												<button type="button" onclick="blacklist()" class="btn btn-danger">블랙리스트추가</button>
 											</td>
 										</tr>
 										<tr>

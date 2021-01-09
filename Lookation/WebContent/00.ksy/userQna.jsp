@@ -11,12 +11,19 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <%@ include file="../includes/includes_admin.jsp" %>
-<title>qnaReview.jsp</title>
+<title>userQna.jsp</title>
 
 <style type="text/css">
 	table 
 	{
 		text-align: center;
+	}
+	table tr td
+	{
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		max-width: 300px;
 	}
 
 </style>
@@ -32,8 +39,29 @@
 	
 	function deleteReview()
 	{
-		alert("게시글 삭제 function 작동 부릉부릉 =3");
+		confirm("해당 게시글을 삭제하시겠습니까?");
+		/* if문으로 분기하여 true(=확인버튼)일 때 삭제할 수 있도록 변경 */
 	}
+	
+	/* 체크박스 전체선택 전체 해제 */
+	$(document).ready(function()
+	{
+		$("#allCheck").click(function()
+		{
+			//전체 선택 체크
+			if($("#allCheck").prop("checked"))
+			{
+				// 해당화면 전체 checkbox 체크하는 구문
+				$("input[type=checkbox]").prop("checked", true);
+			}
+			// 전체 선택 해제
+			else
+			{
+				// 해당화면 전체 checkbox 체크 해제 하는 구문
+				$("input[type=checkbox]").prop("checked", false);
+			}
+		});
+	});
         
     </script>
 
@@ -71,10 +99,11 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
                                     <thead>
                                     	<tr>
-                                    		<th>Q&A번호</th>
+                                    		<th><input type="checkbox" id="allCheck"></th>
+                                    		<th>Q&A코드</th>
                                     		<th>닉네임</th>
                                     		<th>이메일</th>
                                     		<th>공간코드</th>
@@ -85,58 +114,64 @@
                                     
                                     <tbody>
                                     	<tr>
-	                                    	<td><input type="checkbox"> 5</td>
+                                    		<td><input type="checkbox"></td>
+	                                    	<td>Q00005</td>
 	                                    	<td>알 수 없음</td>
 	                                    	<td>test5@test.com</td>
 	                                    	<td>P05005</td>
-	                                    	<td>★홍$대#카&지@노☆...</td>
+	                                    	<td>★홍$대#카&지@노☆</td>
 	                                    	<td>
 												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
 											</td>
                                     	</tr>
                                     	<tr>
-	                                    	<td><input type="checkbox"> 4</td>
+                                    		<td><input type="checkbox"></td>
+	                                    	<td>Q00004</td>
 	                                    	<td>닉네임4</td>
 	                                    	<td>test4@test.com</td>
 	                                    	<td>P05005</td>
 	                                    	<td>브라이덜 샤워할건데 혹시 가능한가요?</td>
 	                                    	<td>
 												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
 											</td>
                                     	</tr>
                                     	<tr>
-	                                    	<td><input type="checkbox"> 3</td>
+                                    		<td><input type="checkbox"></td>
+	                                    	<td>Q00003</td>
 	                                    	<td>닉네임3</td>
 	                                    	<td>test3@test.com</td>
 	                                    	<td>P03002</td>
 	                                    	<td>코로난데 혹시 영업 계속 하시나요?</td>
 	                                    	<td>
 												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
 											</td>
                                     	</tr>
                                     	<tr>
-	                                    	<td><input type="checkbox"> 2</td>
+                                    		<td><input type="checkbox"></td>
+	                                    	<td>Q00002</td>
 	                                    	<td>닉네임2</td>
 	                                    	<td>test2@test.com</td>
 	                                    	<td>P05001</td>
-	                                    	<td>혹시 배달음식 가능한가요?</td>
+	                                    	<td>이거 길어지면 ...처리 되는지 확인하려고 엄청 길게 써봅니다. 지금 붕어빵 먹고있는데 존 맛 탱 그자체
+	                                    	커스터드 크림도 존맛이고 팥도 개개개개개존맛..;;이게 바로 소..확..행?ㅋ</td>
 	                                    	<td>
 												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
 											</td>
                                     	</tr>
                                     	<tr>
-	                                    	<td><input type="checkbox"> 1</td>
+                                    		<td><input type="checkbox"></td>
+	                                    	<td>Q00001</td>
 	                                    	<td>닉네임1</td>
 	                                    	<td>test1@test.com</td>
 	                                    	<td>P05003</td>
 	                                    	<td>사진이 좀 흐릿해서 그러는데 뫄뫄 있는거 확실한가요?</td>
 	                                    	<td>
 												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-warning" onclick="deleteReview()">삭제</button>
+												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
 											</td>
                                     	</tr>
                                     </tbody>

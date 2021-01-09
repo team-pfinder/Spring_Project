@@ -22,6 +22,15 @@
 
 </script>
 
+<style type="text/css">
+
+	table
+	{
+		text-align: center;
+	}
+
+</style>
+
 </head>
 <body id="page-top">
 
@@ -74,7 +83,7 @@
 											<td>2020-12-26</td>
 											<td>탈퇴</td>
 											<td>
-												<button type="button" onclick="blindCancel()" class="btn-primary">블라인드 해제</button>
+												<button type="button" onclick="blindCancel()" class="btn btn-primary">블라인드 해제</button>
 											</td>
 									</tr>
 									</tbody>
