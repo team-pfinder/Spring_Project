@@ -7,6 +7,31 @@
 
   <%@ include file="../includes/includes_admin.jsp" %>
   <title>도움말 목록</title>
+  <script type="text/javascript">
+  
+	/* 체크박스 전체선택 전체 해제 */
+	$(document).ready(function()
+	{
+		$("#allCheck").click(function()
+		{
+			//전체 선택 체크
+			if($("#allCheck").prop("checked"))
+			{
+				// 해당화면 전체 checkbox 체크하는 구문
+				$("input[type=checkbox]").prop("checked", true);
+			}
+			// 전체 선택 해제
+			else
+			{
+				// 해당화면 전체 checkbox 체크 해제 하는 구문
+				$("input[type=checkbox]").prop("checked", false);
+			}
+		});
+	});
+      
+  </script>
+  
+  </script>
 
 </head>
 
@@ -39,9 +64,11 @@
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">도움말 목록</h6>
-            </div>
+          
+              <button type="button" class="btn btn-secondary">글 작성</button>
+              </div>
             
             
           <div class="card-body">
@@ -49,28 +76,71 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
 				<tr align="center">
-					<th><input type="checkbox" /></th>
 					<th>글 번호</th>
+					<th>카테고리</th>
 					<th>제목</th>
 					<th>내용</th>
+					<th>작성일자</th>
 					<th>수정/삭제</th>
 				</tr>
 			</thead>
                <tbody>
 				<tr align="center">
-					<td><input type="checkbox" /></td>
 
 					<td>1</td>
+					
+					<td>취소 및 환불</td>
 
-					<td>아무제목</td>
+					<td>예약을 취소하고싶어요!</td>
 
-					<td>아무말 아 하기 싫어</td>
+					<td>아무말 아 ...</td>
+					
+					<td>2021-01-09</td>
 
 					<td>
 						<!-- 수정기능 -->
-						<button type="button" class="btn btn-warning btn-icon-split">수정</button> 
+						<button type="button" class="btn btn-warning">수정</button> 
 						<!-- 삭제기능 -->
-						<button type="button" class="btn btn-danger btn-icon-split">삭제</button>
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
+					</td>
+				</tr>
+
+				<tr align="center">
+
+					<td>2</td>
+					
+					<td>예약 및 결제</td>
+
+					<td>예약을 변경 하고 싶어요.</td>
+
+					<td>귀찮은ㄷ...</td>
+					
+					<td>2021-01-09</td>
+
+					<td>
+						<!-- 수정기능 -->
+						<button type="button" class="btn btn-warning">수정</button> 
+						<!-- 삭제기능 -->
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
+					</td>
+				</tr>
+				<tr align="center">
+
+					<td>3</td>
+					
+					<td>기타</td>
+
+					<td>룩케이션과 제휴를 하고 싶어요</td>
+
+					<td>왜..?요?...</td>
+					
+					<td>2021-01-09</td>
+
+					<td>
+						<!-- 수정기능 -->
+						<button type="button" class="btn btn-warning">수정</button> 
+						<!-- 삭제기능 -->
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
 			</tbody>
@@ -82,6 +152,31 @@
 
         </div>
         <!-- /.container-fluid -->
+   
+   <!-- 삭제 -->
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+            	<h4 class="modal-title" id="myModalLabel">삭제하기</h4>
+               <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+               </button>
+            </div>
+            <div class="modal-body">
+            <!-- 해당 리뷰, 리뷰답글 받아와야함 -->
+               <p>삭제하시겠습니까?</p>
+               
+            </div>
+            <div class="modal-footer">
+            	<button type="button" class="btn btn-primary">확인</button>
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+         </div>
+      </div>
+   </div>
 
       </div>
       <!-- End of Main Content -->

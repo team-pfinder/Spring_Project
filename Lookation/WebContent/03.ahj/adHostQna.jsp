@@ -10,66 +10,40 @@ String cp = request.getContextPath();
 
   <%@ include file="../includes/includes_admin.jsp" %>
   <title>호스트 QnA 조회</title>
- 
-<!-- 블라인드 클릭 시 팝업 창 -->
-<script type="text/javascript">
-  function showPopup(hasFilter) 
-  {
-	  const popup = document.querySelector('#popup');
-	  
-	  if (hasFilter) 
-	  {
-	  	popup.classList.add('has-filter');
-	  }
-	  popup.classList.remove('hide');
-  }
-
-	function closePopup() 
+  
+    <script type="text/javascript">
+  
+  	//팝업창
+	function popupOpen()
 	{
-		const popup = document.querySelector('#popup');
-	    
-		popup.classList.add('hide');
+		var popUrl = "adHostQnaPopup.jsp";
+		var popOption = "width=500, height=500, resizable=no, scrollbars=yes, status=no";
+		window.open(popUrl, "", popOption);
 	}
+	
+  
+	//체크박스
+	$(document).ready(function()
+	{
+		$("#allCheck").click(function()
+		{
+			//전체 선택 체크
+			if($("#allCheck").prop("checked"))
+			{
+				// 해당화면 전체 checkbox 체크하는 구문
+				$("input[type=checkbox]").prop("checked", true);
+			}
+			// 전체 선택 해제
+			else
+			{
+				// 해당화면 전체 checkbox 체크 해제 하는 구문
+				$("input[type=checkbox]").prop("checked", false);
+			}
+		});
+	});
+      
   </script>
-
-<!-- 블라인드 클릭 시 팝업 창 -->  
-<style type="text/css">
-
-	#popup 
-	{
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  position: fixed;
-	  top: 0;
-	  left: 0;
-	  width: 100%;
-	  height: 100%;
-	  background: rgba(0, 0, 0, .7);
-	  z-index: 1;
-	}
-	
-	#popup.hide 
-	{
-	  display: none;
-	}
-	
-	#popup.has-filter 
-	{
-	  backdrop-filter: blur(4px);
-	  -webkit-backdrop-filter: blur(4px);
-	}
-	
-	#popup .content 
-	{
-	  padding: 20px;
-	  background: #fff;
-	  border-radius: 5px;
-	  box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
-	}
-</style>
  
-
 </head>
 
 <body id="page-top">
@@ -96,14 +70,16 @@ String cp = request.getContextPath();
         
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">호스트 QnA</h1>
-          <p class="mb-4"> 요기는 호스트 QnA 목록이지롱 요기 게시물 누르면 상세페이지로 기기</p>
+          <h1 class="h3 mb-2 text-gray-800">호스트 QnA답글</h1>
+          <p class="mb-4">호스트 QnA답글 목록입니다.</p>
 
-          <!-- DataTales Example -->
+         <!-- DataTales Example -->
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">호스트 QnA 목록</h6>
-            </div>
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">QnA답글목록</h6>
+          
+              <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">전체삭제</button>
+              </div>
             
             
           <div class="card-body">
@@ -126,8 +102,7 @@ String cp = request.getContextPath();
 					<td><input type="checkbox" /></td>
 					<td>1</td>
 
-					<!-- 해당공간 하이퍼링크 넣기 -->
-					<td><a href="#">PL010101</a></td>
+					<td>QRE000001</td>
 					
 					<td>여기보일러가따숩나요?</td>
 
@@ -138,9 +113,9 @@ String cp = request.getContextPath();
 					<td>2021.01.01</td>
 
 					<td>
-						<!-- 검수처리기능 -->
-						<button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">상세보기</button>  
-						<button type="button" class="btn btn-danger " onclick="showPopup(true)">삭제</button> 
+						<!-- 상세보기/삭제기능 -->
+						<button type="button" class="btn btn-warning"onclick="popupOpen()">상세보기</button>  
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
 				
@@ -148,8 +123,7 @@ String cp = request.getContextPath();
 					<td><input type="checkbox" /></td>
 					<td>2</td>
 		
-					<!-- 해당공간 하이퍼링크 넣기 -->
-					<td><a href="#">PL020202</a></td>
+					<td>QRE000002</td>
 					
 					<td>에어컨청소는언제했나요?</td>
 
@@ -160,19 +134,17 @@ String cp = request.getContextPath();
 					<td>2020.12.31</td>
 
 					<td>
-						<!-- 검수처리기능 -->
-						<button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">상세보기</button>  
-						<button type="button" class="btn btn-danger " onclick="showPopup(true)">삭제</button>
+						<!-- 상세보기/삭제기능 -->
+						<button type="button" class="btn btn-warning"onclick="popupOpen()">상세보기</button>  
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
 				
 				<tr align="center">
 					<td><input type="checkbox" /></td>
 					<td>3</td>
-
 					
-					<!-- 해당공간 하이퍼링크 넣기 -->
-					<td><a href="#">PL030303</a></td>
+					<td>QRE000003</td>
 					
 					<td>$바@다!이&야%기#</td>
 
@@ -183,9 +155,9 @@ String cp = request.getContextPath();
 					<td>2020.12.23</td>
 
 					<td>
-						<!-- 처리기능 -->
-						<button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">상세보기</button>  
-						<button type="button" class="btn btn-danger " onclick="showPopup(true)">삭제</button> 
+						<!-- 상세보기/삭제기능 -->
+						<button type="button" class="btn btn-warning"onclick="popupOpen()">상세보기</button>  
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
 				
@@ -193,9 +165,7 @@ String cp = request.getContextPath();
 					<td><input type="checkbox" /></td>
 					<td>4</td>
 
-					
-					<!-- 해당공간 하이퍼링크 넣기 -->
-					<td><a href="#">PL040404</a></td>
+					<td>QRE000004</td>
 					
 					<td>홍대역몇번출구인가요?</td>
 
@@ -206,18 +176,17 @@ String cp = request.getContextPath();
 					<td>2020.12.24</td>
 
 					<td>
-						<!-- 처리기능 -->
-						<button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">상세보기</button>  
-						<button type="button" class="btn btn-danger " onclick="showPopup(true)">삭제</button>
+						<!-- 상세보기/삭제기능 -->
+						<button type="button" class="btn btn-warning"onclick="popupOpen()">상세보기</button>  
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
 				
 				<tr align="center">
 				<td><input type="checkbox" /></td>
 					<td>5</td>
-
-					<!-- 해당공간 하이퍼링크 넣기 -->					
-					<td><a href="#">PL050505</a></td>
+					
+					<td>QRE000005</td>
 					
 					<td>불친절이컨셉인가요?</td>
 
@@ -228,8 +197,8 @@ String cp = request.getContextPath();
 					<td>2020.12.25</td>
 
 					<td>
-						<!-- 처리기능 -->
-						<button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">상세보기</button> 
+						<!-- 상세보기/삭제기능 -->
+						<button type="button" class="btn btn-warning"onclick="popupOpen()">상세보기</button>  
 						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
@@ -243,10 +212,8 @@ String cp = request.getContextPath();
         </div>
         
 
-   <!-- 해당 버튼 클릭시 id가 myModal인 팝업 실행시킴. -->
-
-
-   <!-- 모달 팝업 -->
+<!-- 
+   모달 팝업
    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
       aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -258,7 +225,7 @@ String cp = request.getContextPath();
                </button>
             </div>
             <div class="modal-body">
-            <!-- 해당 리뷰, 리뷰답글 받아와야함 -->
+            해당 리뷰, 리뷰답글 받아와야함
                <table class="table">
                   <tr>
                      <th align="center">공간코드</th>
@@ -295,7 +262,7 @@ String cp = request.getContextPath();
          </div>
       </div>
    </div>
-   
+    -->
    <!-- 삭제 -->
 
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
@@ -321,16 +288,7 @@ String cp = request.getContextPath();
       </div>
    </div>
         
-<div id="popup" class="hide">
-  <div class="content">
-    <p>
-      삭제 하시겠습니까?
-    </p>
-    <!-- 버튼 디자인 수정 필요  -->
-     <button  type="button" class="btn btn-success">예</button>
-     <button  type="button"  class="btn btn-secondary" onclick="closePopup()">닫기</button>
-  </div>
-</div>
+
 
         <!-- /.container-fluid -->
 

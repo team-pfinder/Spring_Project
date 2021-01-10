@@ -57,10 +57,18 @@
 	input.full
 	{
 		width:100%;
+		margin-bottom: 15px;
+	}
+	
+	input.err
+	{
+		width:100%;
+		border-color: red;
 	}
 	
 	.err 
 	{
+	    display: display;
 		font-size: 14px;
 		text-align: left;
 		color: red;
@@ -68,13 +76,63 @@
 		margin-bottom: 15px;
 	}
 	
+	.pass
+	{
+		display: none;
+	}
+	
 	button
 	{
 		width:100%;
 		height: 52px;
 	}
-	
 </style>
+
+<script type="text/javascript">
+	$(function()
+	{
+		// 이메일 정규식
+		var regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		
+		// 이메일 정규식 검사(입력시마다)
+		$("#email").keyup(function()
+		{
+			if(!regEmail.test($(this).val()))
+			{	
+				$(this).removeClass("full");
+				$(this).addClass("err");
+				$("p#email").attr("class", "err");
+			}
+			else
+			{
+				$(this).removeClass("err");
+				$(this).addClass("full");
+				$("p#email").attr("class", "pass");	
+			}
+		});
+		
+		// submit
+		$("#submit").click( function()
+		{
+			// 형식이 맞지 않을경우
+			if(!regEmail.test($("#email").val()))
+			{
+				alert("이메일 형식이 알맞지 않습니다. 다시 입력해주세요.");
+				return;
+			}
+			
+			// (이메일이 데이터베이스에 없는 경우 발송 불가)
+			
+			$("#").submit();
+		});
+		
+		// cancel
+		$("#cancel").click( function()
+		{
+			alert("cancel");
+		});
+	});
+</script>
 
 </head>
 
@@ -94,7 +152,7 @@
 					<li>
 						<!-- err시 빨간 textbox border 테두리 필요 -->
 						<input type="text" class="form-control full" id="email" placeholder="이메일">
-						<p class="err">이메일 형식이 유효하지 않습니다.</p>
+						<p class="pass" id="email">이메일 형식이 알맞지 않습니다.</p>
 					</li>
 					<li>
 						<p style="font-size:12px">
@@ -105,7 +163,8 @@
 				</ul>
 
 				<div style="margin-top:15px;">
-					<button type="submit" class="btn btn-primary full" style="margin-bottom: 0px;">
+					<button type="button" class="btn btn-primary full" id="submit"
+					style="margin-bottom: 0px;">
 						<span style="color:black; font-weight: bold;">비밀번호 재설정 링크 보내기</span>
 					</button>
 				</div>

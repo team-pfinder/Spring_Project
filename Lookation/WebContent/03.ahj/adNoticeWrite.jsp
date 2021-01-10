@@ -7,7 +7,7 @@
 <head>
 
 <%@ include file="../includes/includes_admin.jsp" %>
-<title>도움말 글쓰기</title>
+<title>공지사항 글쓰기</title>
 
 </head>
 
@@ -16,7 +16,10 @@
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<%@ include file="../includes/Admin_Sidebar.jsp" %>
+		<!-- Sidebar -->
+		<%@include file="../includes/Admin_Sidebar.jsp"%>
+
+		<!-- End of Sidebar -->
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -26,38 +29,39 @@
 
 				<%@include file="../includes/header.jsp"%>
 
+
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- 상품등록 폼 -->
+					<!-- 글등록 폼 -->
 					<div class="row">
 						<!-- left column -->
 						<div class="col-md-12">
 							<!-- general form elements -->
 							<div class="box box-primary">
 								<div class="box-header">
-									<h3 class="box-title">도움말 등록하기</h3>
+									<h3 class="box-title">공지사항 등록하기</h3>
 								</div>
 								<br>
 
 								<!-- /.box-header -->
 								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
 									<div class="box-body">
+										<label for="exampleInputEmail1">중요도</label>
 										<div class="form-group">
 											<select class="form-control" id="mainCategory" name="cate_prtcode"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>회원</option>
-												<option>취소 및 환불</option>
-												<option>공간이용 및 후기</option>
-												<option>기타</option>
+												<option>일반</option>
+												<option>중요 공지</option>
 											</select>
+											
 
 										</div>
 
 										<div class="form-group">
-											<label for="exampleInputEmail1">제목</label> <input
-												type="text" id="pro_name" name="pro_name"
+											<label for="exampleInputEmail1">제목</label> 
+											<input type="text" id="pro_name" name="pro_name"
 												class="form-control">
 										</div>
 

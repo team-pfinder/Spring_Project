@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 
 <%@ include file="../includes/includes_home.jsp"%>
-<title>header_host.jsp</title>
+<title>head(user).jsp</title>
 
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -31,6 +31,17 @@
 			//$("ul",this).slideUp("fast");
 			$("ul",this).fadeOut("fast");
 		});
+		
+		$("a#sub").hover(function()
+		{
+			$(this).css("font-weight","bold");
+		    $(this).css("color","#fdbe34");
+		},
+		function()
+		{
+			$(this).css("font-weight","normal");
+			$(this).css("color","white");
+		});
 	});
 </script>
 
@@ -44,7 +55,7 @@ ul.sub
 	list-style: none;
 	padding-left: 0px;
 	padding-top: 10px;
-	padding-bottom: 50px;
+	padding-bottom: 10px;
 		
 	position: absolute;
 	display:none;
@@ -67,7 +78,6 @@ li.nav-item
 {
 	font-size: 14px;
 	font-weight: 500;
-	color: #fdbe34;
 	color: #ffffff;
 }
 
@@ -79,6 +89,11 @@ li.nav-item
 .navbar
 {
 	margin-bottom: 0px;
+}
+
+a#sub
+{
+	color: white;
 }
 </style>
 
@@ -125,30 +140,30 @@ li.nav-item
 				<ul class="navbar-nav mr-auto" id="menu">
 					<li class="nav-item"><a href="#" class="nav-link">바로가기</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">오늘의 추천공간</a></li>
-							<li><a href="#">이용자 리뷰</a></li>
-							<li><a href="#">선택검색</a></li>
+							<li><a href="#" class="nav-link" id="sub">오늘의 추천공간</a></li>
+							<li><a href="#" class="nav-link" id="sub">이용자 리뷰</a></li>
+							<li><a href="#" class="nav-link" id="sub">선택검색</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">마이페이지</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">마일리지 관리</a></li>
-							<li><a href="#">예약 리스트</a></li>
-							<li><a href="#">리뷰·Q&amp;A관리</a></li>
+							<li><a href="#" class="nav-link" id="sub">마일리지 관리</a></li>
+							<li><a href="#" class="nav-link" id="sub">예약 리스트</a></li>
+							<li><a href="#" class="nav-link" id="sub">리뷰·Q&amp;A관리</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">고객지원</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">도움말</a></li>
-							<li><a href="#">FAQ</a></li>
+							<li><a href="#" class="nav-link" id="sub">도움말</a></li>
+							<li><a href="#" class="nav-link" id="sub">FAQ</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">dummy</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#">dummy</a></li>
-							<li><a href="#">dummy</a></li>
-							<li><a href="#">dummy</a></li>
-							<li><a href="#">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
+							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
 						</ul> 
 					</li>
 				

@@ -2,12 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
 <!DOCTYPE html>
 
 <head>
 
 <%@ include file="../includes/includes_admin.jsp" %>
-<title>공지사항 수정하기</title>
+<title>도움말 수정하기</title>
 
 </head>
 
@@ -16,10 +17,7 @@
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<!-- Sidebar -->
-		<%@include file="../includes/Admin_Sidebar.jsp"%>
-
-		<!-- End of Sidebar -->
+		<%@ include file="../includes/Admin_Sidebar.jsp" %>
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -40,23 +38,29 @@
 							<!-- general form elements -->
 							<div class="box box-primary">
 								<div class="box-header">
-									<h3 class="box-title">공지사항 수정하기</h3>
+									<h3 class="box-title">도움말 수정하기</h3>
 								</div>
 								<br>
 
 								<!-- /.box-header -->
 								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
 									<div class="box-body">
+										<label for="exampleInputEmail1">카테고리</label>
 										<div class="form-group">
 											<select class="form-control" id="mainCategory" name="cate_prtcode"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>기능</option>
-												<option>업데이트</option>
-												<option>긴급 공지</option>
-												<option>사과문</option>
+												<option>회원</option>
+												<option>공간이용 및 후기</option>
+												<option>호스트되기</option> 
+												<option>공간조회</option>
+												<option>공간등록</option>
+												<option>공간정보관리</option> 
+												<option>가격 및 일정</option>
+												<option>예약 및 결제</option>
+												<option>취소 및 환불</option> 
+												<option>기타</option>
 											</select>
-											
 
 										</div>
 
@@ -74,8 +78,9 @@
 										</div>
 
 										<div class="form-group">
-											<label for="exampleInputEmail1">Upload Image</label> <input
-												type="file" id="file1" name="file1" class="form-control" />
+											<label for="exampleInputEmail1">Upload Image</label> 
+											<p>이자리에기존에있던파일이있어야겠죠?</p>
+											<input type="file" id="file1" name="file1" class="form-control" />
 										</div>
 									</div>
 							</div>

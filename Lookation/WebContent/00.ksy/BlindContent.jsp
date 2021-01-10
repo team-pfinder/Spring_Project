@@ -56,7 +56,7 @@
 
 	<!-- 경로변경 필요 -->
 	<!-- Lookation 로고 및 메뉴 include -->
-	<%@ include file="../01.ksb/head(user).jsp" %>
+	<%@ include file="../includes/header_user.jsp" %>
 
 <div class="outer">
 	<div class="inner">
@@ -68,7 +68,7 @@
 
 
 	<!-- 경로변경 필요 -->
-	<%@ include file="../01.ksb/foot.jsp" %>
+	<%@ include file="../includes/footer.jsp" %>
 	
 	<!-- 자바스크립트 include -->
 	<%@ include file="../includes/includes_home_end.jsp"%>
