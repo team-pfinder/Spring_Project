@@ -9,17 +9,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예약리스트확인페이지.jsp</title>
+<title>mypageReservaionList(host).jsp</title>
 <style type="text/css">
-	.row
-	{
-		width:120%;
-	}
 </style>
-<!-- include NAV -->
-<%@ include file="../01.ksb/head(user).jsp"%>
 </head>
 <body>
+	<!-- include header_host.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+	</div>
+	
+	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('<%=cp%>/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
@@ -46,7 +46,7 @@
 	<div class="container" style="margin-top:50px" >
 		<div class="row">
 			<!-- include mypage_Sidebar.jsp -->
-			<%@ include file="../includes/mypage_Sidebar.jsp"%>
+			<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
 			<br>
 		
 			<div class="col-lg-10 col-md-10">
@@ -292,9 +292,13 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>
 	
 </body>

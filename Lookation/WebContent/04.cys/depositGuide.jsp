@@ -9,9 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- include NAV -->
-<%@ include file="../01.ksb/head(user).jsp"%>
-<title>5-1.dopositGuide.jsp</title>
+<title>dopositGuide.jsp</title>
 <style type="text/css">
 button
     {
@@ -27,6 +25,11 @@ button
 </style>
 </head>
 <body>
+	<!-- include header_user.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+	</div>
+	
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
@@ -57,7 +60,7 @@ button
 				
 				<div class="buttonForm">
 					<button style="float: left; background: #ffffff" onclick="location.href='#' ">홈으로</button>
-					<button style="float: right; border-width: 0px" onclick="location.href='1.mypageMain(user).jsp' ">
+					<button style="float: right; border-width: 0px" onclick="location.href='mypageMain(user).jsp' ">
 						<span style="font-color: black">마이페이지로</span>
 					</button>
 					<br><br><br><br><br><br>
@@ -65,10 +68,10 @@ button
 			</div>
 		</div>
 	</div>
-			
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
-
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>		
 	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>
 

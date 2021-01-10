@@ -11,9 +11,10 @@
 <meta charset="UTF-8">
 <!-- include head -->
 
-<title>1.mypageMain(host).jsp</title>
+<title>mypageMain(host).jsp</title>
 </head>
 <body>
+	<!-- include header_host.jsp -->
 	<div>
 		<c:import url="${cp}/includes/header_host.jsp"></c:import>
 	</div>
@@ -41,36 +42,36 @@
 			<div class="row d-flex">
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="2.mypageProfile.jsp" class="block-20 rounded"
+						<a href="mypageProfile(host).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="2.mypageProfile.jsp">프로필관리</a>
+								<a href="mypageProfile(host).jsp">프로필관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="3.mypageBankAccount.jsp" class="block-20 rounded"
+						<a href="mypageBankAccount(host).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="3.mypageBankAccount.jsp">계좌관리</a>
+								<a href="mypageBankAccount(host).jsp">계좌관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="4.mypageReservaionList.jsp" class="block-20 rounded"
+						<a href="mypageReservaionList(host).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Exchange.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="4.mypageReservaionList.jsp">예약리스트</a>
+								<a href="mypageReservaionList(host).jsp">예약리스트</a>
 							</h3>
 						</div>
 					</div>
@@ -78,50 +79,50 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="5.mypageMileageLoadAndWithdraw.jsp" class="block-20 rounded"
+						<a href="mypageMileageWithdraw(host).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="5.mypageMileageLoadAndWithdraw.jsp">환전 신청</a>
+								<a href="mypageMileageWithdraw(host).jsp">환전 신청</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="6.mypageMileageHistory.jsp" class="block-20 rounded"
+						<a href="mypageMileageHistory(host).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="6.mypageMileageHistory.jsp">마일리지 내역(정산/환전)</a>
+								<a href="mypageMileageHistory(host).jsp">마일리지 내역(정산/환전)</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="6.mypageMileageHistory(user).jsp" class="block-20 rounded"
+						<a href="LocationMgmt.jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="6.mypageMileageHistory(user).jsp">공간관리</a>
+								<a href="LocationMgmt.jsp">공간관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="7.mypageMyReviewAndQ&A.jsp" class="block-20 rounded"
+						<a href="mypageMyReviewAndQNA(host).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_6.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="7.mypageMyReviewAndQ&A.jsp">내가 쓴 글</a>
+								<a href="mypageMyReviewAndQNA(host).jsp">내가 작성한 글</a>
 							</h3>
 						</div>
 					</div>
@@ -130,12 +131,13 @@
 		</div>
 	</section>
 
-	<!-- loader -->
+	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer.jsp"></c:import>
 	</div>
-
-
+	
+	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>
+
 </body>
 </html>

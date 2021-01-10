@@ -11,9 +11,10 @@
 <meta charset="UTF-8">
 
 <!-- include head -->
-<title>1.mypageMain(user).jsp</title>
+<title>mypageMain(user).jsp</title>
 </head>
 <body>
+	<!-- include header_user.jsp -->
 	<div>
 		<c:import url="${cp}/includes/header_user.jsp"></c:import>
 	</div>
@@ -41,36 +42,36 @@
 			<div class="row d-flex">
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="2.mypageProfile.jsp" class="block-20 rounded"
+						<a href="mypageProfile(user).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="2.mypageProfile.jsp">프로필관리</a>
+								<a href="mypageProfile(user).jsp">프로필관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="3.mypageBankAccount.jsp" class="block-20 rounded"
+						<a href="mypageBankAccount(user).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="3.mypageBankAccount.jsp">계좌관리</a>
+								<a href="mypageBankAccount(user).jsp">계좌관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="4.mypageReservaionList.jsp" class="block-20 rounded"
+						<a href="mypageReservaionList(user).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Exchange.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="4.mypageReservaionList.jsp">예약리스트</a>
+								<a href="mypageReservaionList(user).jsp">예약리스트</a>
 							</h3>
 						</div>
 					</div>
@@ -78,37 +79,37 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="5.mypageMileageLoadAndWithdraw(user).jsp" class="block-20 rounded"
+						<a href="mypageMileageLoadAndWithdraw(user).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="5.mypageMileageLoadAndWithdraw(user).jsp">충전/환전 신청</a>
+								<a href="mypageMileageLoadAndWithdraw(user).jsp">충전/환전 신청</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="6.mypageMileageHistory(user).jsp" class="block-20 rounded"
+						<a href="mypageMileageHistory(user).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="6.mypageMileageHistory(user).jsp">마일리지 내역</a>
+								<a href="mypageMileageHistory(user).jsp">마일리지 내역</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="7.mypageMyReviewAndQ&A.jsp" class="block-20 rounded"
+						<a href="mypageMyReviewAndQNA(user).jsp" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_6.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="7.mypageMyReviewAndQ&A.jsp">내가 쓴 글</a>
+								<a href="mypageMyReviewAndQNA(user).jsp">내가 작성한 글</a>
 							</h3>
 						</div>
 					</div>
@@ -117,13 +118,13 @@
 		</div>
 	</section>
 
-
+	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer.jsp"></c:import>
 	</div>
 
-	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
-
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 </body>
 </html>
