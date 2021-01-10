@@ -7,7 +7,7 @@
 
 <head>
 
-<%@ include file="../includes/includes_admin.jsp" %>
+<%@ include file="../includes/includes_admin.jsp"%>
 <title>관리자 로그인</title>
 
 </head>
@@ -53,10 +53,6 @@
 											class="btn btn-primary btn-user btn-block"> Login </a>
 									</form>
 									<hr>
-									<div class="text-center">
-										<a class="small" href="forgot-password.html">Forgot
-											Password?</a>
-									</div>
 
 								</div>
 							</div>
@@ -68,8 +64,7 @@
 		</div>
 
 	</div>
-
-	</div>
+	<!-- end class container -->
 
 </body>
 

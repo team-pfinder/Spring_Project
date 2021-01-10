@@ -2,13 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <!DOCTYPE html>
 
 <head>
 
 <%@ include file="../includes/includes_admin.jsp" %>
-<title>도움말 수정하기</title>
+<title>공지사항 수정하기</title>
 
 </head>
 
@@ -17,7 +16,10 @@
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<%@ include file="../includes/Admin_Sidebar.jsp" %>
+		<!-- Sidebar -->
+		<%@include file="../includes/Admin_Sidebar.jsp"%>
+
+		<!-- End of Sidebar -->
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -38,22 +40,22 @@
 							<!-- general form elements -->
 							<div class="box box-primary">
 								<div class="box-header">
-									<h3 class="box-title">도움말 수정하기</h3>
+									<h3 class="box-title">공지사항 수정하기</h3>
 								</div>
 								<br>
 
 								<!-- /.box-header -->
 								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
 									<div class="box-body">
+										<label for="exampleInputEmail1">중요도</label>
 										<div class="form-group">
 											<select class="form-control" id="mainCategory" name="cate_prtcode"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>회원</option>
-												<option>취소 및 환불</option>
-												<option>공간이용 및 후기</option>
-												<option>기타</option>
+												<option>일반</option>
+												<option>중요 공지</option>
 											</select>
+											
 
 										</div>
 

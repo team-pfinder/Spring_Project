@@ -37,36 +37,82 @@
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">공지사항 목록</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
+          
+              <button type="button" class="btn btn-secondary">글 작성</button>
+              </div>
+            
+            
+          <div class="card-body">
+            <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
-				<tr>
-					<th><input type="checkbox" /></th>
+				<tr align="center">
 					<th>글 번호</th>
+					<th>중요</th>
 					<th>제목</th>
 					<th>내용</th>
+					<th>작성일자</th>
 					<th>수정/삭제</th>
 				</tr>
 			</thead>
                <tbody>
 				<tr align="center">
-					<td></td>
 
 					<td>1</td>
+					<th></th>
 
-					<td>아무제목</td>
+					<td align="left">[업데이트] 결제 기능이 추가되었습니다.</td>
 
-					<td>아무말 아 하기 싫어</td>
+					<td>할 수 있을 ...</td>
+					
+					<td>2021-01-09</td>
 
 					<td>
 						<!-- 수정기능 -->
-						<button type="button" class="btn btn-warning btn-icon-split">수정</button> 
+						<button type="button" class="btn btn-warning">수정</button> 
 						<!-- 삭제기능 -->
-						<button type="button" class="btn btn-danger btn-icon-split">삭제</button>
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
+					</td>
+				</tr>
+
+				<tr align="center">
+
+					<td>2</td>
+					
+					<td>중요</td>
+
+					<td align="left">[공지] 사회적 거리두기 2.5단계 시행에 따른 공간이용 안내사항 </td>
+
+					<td>지겹어,,</td>
+					
+					<td>2021-01-09</td>
+
+					<td>
+						<!-- 수정기능 -->
+						<button type="button" class="btn btn-warning">수정</button> 
+						<!-- 삭제기능 -->
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
+					</td>
+				</tr>
+				<tr align="center">
+
+					<td>3</td>
+					
+					<td></td>
+
+					<td align="left">[공지] 룩케이션 운영정책 일부 개정 안내</td>
+
+					<td>안읽겠지...</td>
+					
+					<td>2021-01-09</td>
+
+					<td>
+						<!-- 수정기능 -->
+						<button type="button" class="btn btn-warning">수정</button> 
+						<!-- 삭제기능 -->
+						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
 					</td>
 				</tr>
 			</tbody>
@@ -78,10 +124,35 @@
 
         </div>
         <!-- /.container-fluid -->
+   
+   <!-- 삭제 -->
+
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+            	<h4 class="modal-title" id="myModalLabel">삭제하기</h4>
+               <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+               </button>
+            </div>
+            <div class="modal-body">
+            <!-- 해당 리뷰, 리뷰답글 받아와야함 -->
+               <p>삭제하시겠습니까?</p>
+               
+            </div>
+            <div class="modal-footer">
+            	<button type="button" class="btn btn-primary">확인</button>
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            </div>
+         </div>
+      </div>
+   </div>
 
       </div>
       <!-- End of Main Content -->
-
+      
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
