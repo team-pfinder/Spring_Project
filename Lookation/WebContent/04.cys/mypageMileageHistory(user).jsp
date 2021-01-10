@@ -14,15 +14,15 @@ String cp = request.getContextPath();
 <style type="text/css">
    .nav-tabs .pill-1 .nav-link:not(.active)
    {
-      background-color:#00043C;
-      color:white;
+      background-color:#00043C !important;
+      color:white !important;
    }
    
    /* active (faded) */
    .nav-tabs .pill-1 .nav-link {
-      background-color: #FDBE34;
-      color: black;
-      font-weight: bold;
+      background-color: #FDBE34 !important;
+      color: black !important;
+      font-weight: bold !important;
    }
 </style>
 </head>
