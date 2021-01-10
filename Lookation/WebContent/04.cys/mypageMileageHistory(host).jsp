@@ -9,27 +9,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="../includes/includes_home.jsp"%>
-<!-- include NAV -->
-<%@ include file="../01.ksb/head(host).jsp"%>
-<title>6.mypageMileageHistory(host).jsp</title>
+<title>mypageMileageHistory(host).jsp</title>
 <style type="text/css">
-	/*
-	.nav-pills .pill-1 .nav-link:not(.active) 
-	{
-	    background-color: #00043C;
-	}
-	
-	// active (faded)
-	.nav-pills .pill-1 .nav-link {
-	    background-color: #FDBE34;
-	    color: white;
-	}
-	.row
-	{
-		width:130%;
-	}
-	 */
 	.nav-tabs .pill-1 .nav-link:not(.active)
 	{
 		background-color:#00043C;
@@ -42,14 +23,15 @@
 		color: black;
 		font-weight: bold;
 	}
-	
-	.row {
-		width: 120%;
-	}
 </style>
 
 </head>
 <body>
+	<!-- include header_host.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+	</div>
+	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -78,33 +60,11 @@
 		<div class="container" style="margin-top: -80px">
 			<div class="row">
 				<!-- 사이드바 -->
-				<!-- .col-md-8 -->
-				<div class="col-lg-2 sidebar pl-lg-5 ftco-animate">
-					<div class="sidebar-box ftco-animate">
-						<div class="categories back-default">
-							<h3>
-								<a href="1.mypageMain.jsp">마이페이지</a>
-							</h3>
-							<hr>
-							<li><a href="2.mypageProfile.jsp">프로필 관리 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="3.mypageBankAccount.jsp">계좌 관리 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="4.mypageReservaionList.jsp">예약 리스트 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="5.mypageMileageLoadAndWithdraw.jsp">충전 및 환전
-									신청 <span class="ion-ios-arrow-forward"></span>
-							</a></li>
-							<li><a href="6.mypageMileageHistory.jsp">마일리지 내역 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="7.mypageMyReviewAndQ&A.jsp">내가 작성한 글 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-						</div>
-					</div>
+				<!-- .col-md-2 -->
+				<!-- include mypage_Sidebar(host).jsp -->
+				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
 
-				</div>
-				<!-- END 사이드바 -->
-
+				<!-- .col-md-10 -->
 				<div class="col-lg-10 ftco-animate">
 					<nav class="navbar navbar-default navbar-fixed-top">
 						<div>
@@ -134,9 +94,9 @@
 											<tr>
 												<th>번호</th>
 												<th>공간명</th>
-												<th>사용 마일리지</th>
-												<th>잔여 마일리지</th>
-												<th>사용일</th>
+												<th>예약코드</th>
+												<th>정산 마일리지</th>
+												<th>정산일</th>
 											</tr>
 											<tr>
 												<th colspan="5">정산 내역이 존재하지 않습니다.</th>
@@ -144,8 +104,29 @@
 											<tr>
 												<td>1</td>
 												<td>어승승의 어승승승</td>
-												<td>20000</td>
-												<td>40000</td>
+												<td>cal000001</td>
+												<td>25000</td>
+												<td>2020-12-31</td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td>어승승의 어승승승</td>
+												<td>cal000002</td>
+												<td>25000</td>
+												<td>2020-12-31</td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td>어승승의 어승승승</td>
+												<td>cal000003</td>
+												<td>25000</td>
+												<td>2020-12-31</td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td>어승승의 어승승승</td>
+												<td>cal000004</td>
+												<td>25000</td>
 												<td>2020-12-31</td>
 											</tr>
 										</table>
@@ -183,23 +164,55 @@
 								<div class="card-body">
 									<form action="">
 										<table class="table table-bordered">
-											<tr>
-												<th>번호</th>
-												<th>공간명</th>
-												<th>사용 마일리지</th>
-												<th>잔여 마일리지</th>
-												<th>사용일</th>
-											</tr>
-											<tr>
-												<th colspan="5">환전 내역이 존재하지 않습니다.</th>
-											</tr>
-											<tr>
-												<td>1</td>
-												<td>어승승의 어승승승</td>
-												<td>20000</td>
-												<td>40000</td>
-												<td>2020-12-31</td>
-											</tr>
+											<thead>
+												<tr>
+													<th>번호</th>
+													<th>금액</th>
+													<th>계좌번호</th>
+													<th>은행명</th>
+													<th>환전처리일</th>
+												</tr>
+											</thead>
+											<tbody>	
+												<tr>
+													<th colspan="5">환전 내역이 존재하지 않습니다.</th>
+												</tr>
+												<tr>
+													<td>1</td>
+													<td>38400</td>
+													<td>554602-04-076182</td>
+													<td>국민은행</td>
+													<td>2020-12-31</td>
+												</tr>
+												<tr>
+													<td>2</td>
+													<td>8400</td>
+													<td>554602-04-076182</td>
+													<td>국민은행</td>
+													<td>2021-01-04</td>
+												</tr>
+												<tr>
+													<td>3</td>
+													<td>14000</td>
+													<td>87848-04-77412</td>
+													<td>우리은행</td>
+													<td>2020-01-05</td>
+												</tr>
+												<tr>
+													<td>4</td>
+													<td>14000</td>
+													<td>87848-04-77412</td>
+													<td>우리은행</td>
+													<td>2020-01-05</td>
+												</tr>
+												<tr>
+													<td>5</td>
+													<td>14000</td>
+													<td>87848-04-77412</td>
+													<td>우리은행</td>
+													<td>2020-01-05</td>
+												</tr>
+											</tbody>	
 										</table>
 									</form>
 								</div>
@@ -234,8 +247,10 @@
 	</section>
 	<!-- .section -->
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
 	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>

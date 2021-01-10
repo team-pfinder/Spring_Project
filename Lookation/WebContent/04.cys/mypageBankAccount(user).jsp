@@ -9,29 +9,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- include NAV -->
-<%@ include file="../01.ksb/head(user).jsp"%>
-
 <title>3.mypageBankAccount.jsp</title>
 <script type="text/javascript">
 
 	function showPopup()
 	{
         var obj = document.frm;
-        url = "3.1.bankAccountAddPopup.jsp";
+        url = "bankAccountAddPopup.jsp";
         option = "width=600, height=670, toolbar=no, location=no, status=no, memubar=no, scrollbars=no, resizable=no, left=150, top=150";/* 크롬은 resizable 옵션 안먹음 */
 		window.open(url, "계좌 등록 팝업", option);
 	}
 
 </script>
-<style type="text/css">
-	.row
-	{
-		width:120%;
-	}
-</style>
 </head>
 <body>
+	<!-- include header_user.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+	</div>
+	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -62,7 +58,7 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar.jsp"%>
+				<%@ include file="../includes/mypage_Sidebar(user).jsp"%>
 
 				<div class="col-lg-10 col-md-10">
 					<!-- Page Heading -->
@@ -88,6 +84,7 @@
 												<th>번호</th>
 												<th>계좌번호</th>
 												<th>은행명</th>
+												<th>예금주</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -99,25 +96,28 @@
 												<td>1</td>
 												<td>554602-04-076182</td>
 												<td>국민은행</td>
+												<td>조윤상</td>
 											</tr>
 											<tr align="center">
 												<th><input type="checkbox"></th>
 												<td>2</td>
 												<td>879412-487-454561</td>
 												<td>우리은행</td>
+												<td>조윤상</td>
 											</tr>
 											<tr align="center">
 												<th><input type="checkbox"></th>
 												<td>3</td>
 												<td>484814-58-1512124</td>
 												<td>농협</td>
+												<td>조윤상</td>
 											</tr>
 	
 										</tbody>
 									</table>
 									<div>
-										<button type="button" class="btn-warning" style="width:260px;" onclick="showPopup()">계좌등록</button>
-										<button type="button" class="btn-warning" style="width:260px;" onclick="deleteAccount()">계좌삭제</button>
+										<button type="button" class="btn btn-warning" style="width:260px;" onclick="showPopup()">계좌등록</button>
+										<button type="button" class="btn btn-warning" style="width:260px;" onclick="deleteAccount()">계좌삭제</button>
 									</div>
 								</form>
 							</div>
@@ -135,11 +135,14 @@
 	</section>
 	<!-- .section -->
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
-	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 
 </body>
 </html>

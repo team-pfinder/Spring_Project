@@ -13,7 +13,8 @@
 <title>header_host.jsp</title>
 
 <script type="text/javascript"
-	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>	
 	
 <script type="text/javascript">
 	/* 서브메뉴 애니메이션 */

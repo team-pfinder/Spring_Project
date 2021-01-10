@@ -9,13 +9,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
-	<!-- include NAV -->
-	<%@ include file="../01.ksb/head(user).jsp"%>
-	<%@ include file="../includes/includes_home.jsp"%>
 <title>7.mypageMyReviewAndQ&A.jsp</title>
 </head>
 <body>
+	<!-- include header_host.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+	</div>
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -46,7 +46,7 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar.jsp"%>
+				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
 
 				<div class="col-lg-10 ftco-animate">
 					<h2 class="mb-3">It is a long established fact a reader be
@@ -87,11 +87,12 @@
 	</section>
 	<!-- .section -->
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
 	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>
-
 </body>
 </html>

@@ -9,9 +9,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="../includes/includes_home.jsp"%>
+<%-- <%@ include file="../includes/includes_home.jsp"%>
 <!-- include NAV -->
-<%@ include file="../01.ksb/head(host).jsp"%>
+<%@ include file="../01.ksb/head(host).jsp"%> --%>
 
 <title>5.Withdraw(host).jsp</title>
 <style type="text/css">
@@ -68,6 +68,11 @@
 </script>
 </head>
 <body>
+	<!-- include header_host.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+	</div>
+	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -84,7 +89,7 @@
 							Withdraw <i class="ion-ios-arrow-forward"></i>
 						</span>
 					</p>
-					<h1 class="mb-0 bread">마일리지 충전 & 환전</h1>
+					<h1 class="mb-0 bread">마일리지 환전</h1>
 				</div>
 			</div>
 		</div>
@@ -96,32 +101,9 @@
 		<div class="container" style="margin-top: -80px">
 			<div class="row">
 				<!-- 사이드바 -->
-				<!-- .col-md-8 -->
-				<div class="col-lg-2 sidebar pl-lg-5 ftco-animate">
-					<div class="sidebar-box ftco-animate">
-						<div class="categories back-default">
-							<h3>
-								<a href="1.mypageMain.jsp">마이페이지</a>
-							</h3>
-							<hr>
-							<li><a href="2.mypageProfile.jsp">프로필 관리 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="3.mypageBankAccount.jsp">계좌 관리 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="4.mypageReservaionList.jsp">예약 리스트 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="5.mypageMileageLoadAndWithdraw.jsp">충전 및 환전
-									신청 <span class="ion-ios-arrow-forward"></span>
-							</a></li>
-							<li><a href="6.mypageMileageHistory.jsp">마일리지 내역 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-							<li><a href="7.mypageMyReviewAndQ&A.jsp">내가 작성한 글 <span
-									class="ion-ios-arrow-forward"></span></a></li>
-						</div>
-					</div>
-
-				</div>
-				<!-- END 사이드바 -->
+				<!-- .col-md-2 -->
+				<!-- include mypage_Sidebar(host).jsp -->
+				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
 				
 				<!-- 본문 -->
 				<div class="col-lg-10 ftco-animate">
@@ -149,7 +131,7 @@
 										<th>
 											<div class="row">
 												<b class="col-12">환전하실 금액을 입력하세요.</b>
-												<input type="text" class="form-control col-6 ml-3" id="ex_amount1" onkeyup="calc()" />
+												<input type="text" class="form-control col-6 ml-3" id="ex_amount1" onkeyup="calc()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 												<button type="button" class="btn btn-primary col-4 ml-3" onclick="setTotal()">전액 입력</button>
 											</div>
 										</th>
@@ -186,8 +168,10 @@
 	</section>
 	<!-- .section -->
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
 	<!-- includes_home_end -->
 	<%@ include file="../includes/includes_home_end.jsp"%>

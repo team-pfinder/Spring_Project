@@ -3,17 +3,20 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-%>
+%>    
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- include NAV -->
-<%@ include file="../01.ksb/head(user).jsp"%>
-<title>2.mypageProfile.jsp</title>
+<title>7.mypageMyReviewAndQ&A.jsp</title>
 </head>
 <body>
+	<!-- include header_user.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+	</div>
+	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -23,14 +26,14 @@
 			<div class="row no-gutters slider-text align-items-end">
 				<div class="col-md-9 ftco-animate pb-5">
 					<p class="breadcrumbs mb-2">
-						<span class="mr-2"> <a href="index.html">Home <i
-								class="ion-ios-arrow-forward"></i></a>
-						</span> <span class="mr-2"><a href="1.mypageMain.jsp">Mypage <i
-								class="ion-ios-arrow-forward"></i></a></span> <span>Profile <i
-							class="ion-ios-arrow-forward"></i>
+						<span class="mr-2">
+							<a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a>
+						</span> 
+						<span class="mr-2"><a href="1.mypageMain.jsp">Mypage <i class="ion-ios-arrow-forward"></i></a></span>
+							<span>My Review & Q&A <i class="ion-ios-arrow-forward"></i>
 						</span>
 					</p>
-					<h1 class="mb-0 bread">프로필 관리</h1>
+					<h1 class="mb-0 bread">내가 작성한 글</h1>
 				</div>
 			</div>
 		</div>
@@ -39,14 +42,14 @@
 
 	<!-- 본문 -->
 	<section class="ftco-section ftco-degree-bg">
-		<div class="container" style="margin-top: -80px";>
+		<div class="container">
 			<div class="row">
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar.jsp"%>
+				<%@ include file="../includes/mypage_Sidebar(user).jsp"%>
 
-				<div class="col-lg-9 ftco-animate">
+				<div class="col-lg-10 ftco-animate">
 					<h2 class="mb-3">It is a long established fact a reader be
 						distracted</h2>
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -73,7 +76,6 @@
 						<img src="images/image_2.jpg" alt="" class="img-fluid">
 					</p>
 
-
 				</div>
 				<!-- END <div class="col-lg-8 ftco-animate"> -->
 
@@ -86,11 +88,14 @@
 	</section>
 	<!-- .section -->
 
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
-	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 
 </body>
 </html>
