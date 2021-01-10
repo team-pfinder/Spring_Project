@@ -18,7 +18,7 @@ String cp = request.getContextPath();
 
 
 
-<title>검수처리2</title>
+<title>검수처리</title>
 
 
 
