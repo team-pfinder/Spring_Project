@@ -12,6 +12,34 @@
 <%@ include file="../includes/includes_home.jsp" %>
 <%@ include file="../includes/includes_menu.jsp" %>
 
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="<%=cp%>/js/jquery-ui.js"></script>
+
+<script type="text/javascript">
+
+		/* <input type="text" class="form-control"  
+	   name="locName" id="locName"
+	   placeholder="공간명을 입력하세요. [최소 2자 ~ 최대 20자]" required="required"> */
+	
+	   
+	// 1-1. 공간명 글자수 제한
+	$(document).ready(function()
+	{
+		$("locName").on("keyup", function()
+		{
+			if ($(this).val().length > 20)
+			{
+				// $(this).val($(this).val().substring(0,19));
+				
+			}
+		});
+	});
+	   
+	   
+
+</script>
+
+
 <style type="text/css">
 	#refund
 	{
@@ -83,7 +111,7 @@
 
 
 
-<form style="width: 800px; margin: 120px;">
+<form style="width: 70%; margin: 120px;">
 
 	<!-- 1. 공간명 -->
 	
