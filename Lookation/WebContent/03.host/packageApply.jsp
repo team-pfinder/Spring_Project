@@ -74,7 +74,7 @@
 <body>
 	<div>
 	<c:import url="${cp}/includes/header_host.jsp"></c:import>
-	</div
+	</div>
 
 
    <!-- 타이틀 -->
