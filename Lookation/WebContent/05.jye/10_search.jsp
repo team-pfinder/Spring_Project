@@ -8,65 +8,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="utf-8">
-<%@ include file="../includes/includes_home.jsp" %>
 <title>Lookation</title>
+<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
-	
-	<!-- header 자리 -->
-    <div class="container pt-5">
-		<div class="row justify-content-between">
-			<div class="col">
-				<a class="navbar-brand" href="index.html">Look<span>ation.</span></a>
-			</div>
-				<div class="col d-flex justify-content-end">
-					<div class="social-media">
-		    		<p class="mb-0 d-flex">
-		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
-		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
-		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
-		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-		    		</p>
-	        </div>
-				</div>
-		</div>
-	</div>
-	
-	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
-	    
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="fa fa-bars"></span> Menu
-	      </button>
-				<form action="#" class="searchform order-lg-last">
-          <div class="form-group d-flex">
-            <input type="text" class="form-control pl-3" placeholder="Search">
-            <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
-          </div>
-        </form>
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav mr-auto">
-	        	<li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-	        	<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	        	<li class="nav-item"><a href="team.html" class="nav-link">Our team</a></li>
-	        	<li class="nav-item"><a href="project.html" class="nav-link">Project</a></li>
-	        	<li class="nav-item active"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-    <!-- END nav -->
-
     <section class="hero-wrap hero-wrap-2" style="background-image: url('<%=cp%>/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text align-items-end">
           <div class="col-md-9 ftco-animate pb-5">
-          	<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Search <i class="ion-ios-arrow-forward"></i></span></p>
-            <h1 class="mb-0 bread">Search Space</h1>
+          	<p class="breadcrumbs mb-2"><span class="mr-2"><a href="#">Home <i class="ion-ios-arrow-forward"></i></a></span> <a href="#"><span>Search <i class="ion-ios-arrow-forward"></i></span></a></p>
+            <h1 class="mb-0 bread">공간 검색하기</h1>
           </div>
         </div>
       </div>
@@ -74,17 +28,29 @@
     
     <section class="ftco-section">
       <div class="container">
-      
-      	<div class="row d-flex">
+      	<div class="row ml-1 mb-3 d-flex ftco-animate ">
       		<!-- 나중에 검색어 태그 a 안에 받아야 함 -->
-      		<h3><a>인천</a>에 대한 검색 결과입니다.</h3><br>
+      		<h3><a href="">인천</a>에 대한 검색 결과입니다.</h3><br>
       	</div>
-      
+      	
+      	
+      	<!-- 검색 폼 -->
       	<form>
-      		<div class="row">
+      		<div class="row ml-1 my-1 ftco-animate">
+      			<div class="checkbox">
+			       <label>
+			           <input type="checkbox" id="cancelled" checked="checked">
+			           해당 검색 결과 내에서 다시 검색
+			       </label>
+				</div>
+      		</div>
+      		
+      	
+      	
+      		<div class="row ftco-animate">
       			<div class="col-md-3">
 					<dl>
-						<dt>공간유형</dt>
+						<dt class="ml-1">공간유형</dt>
 						<dd>
 							<select class="form-control">
 								<option selected>모든 공간</option>
@@ -98,39 +64,50 @@
 				</div>
 				<div class="col-md-3">
 						<dl>
-							<dt>날짜</dt>
+							<dt>시작일</dt>
 							<dd>
 								<!-- ※ 원래는 datePicker 이용해야 함. -->
 								<input type="date" class="form-control">
 							</dd>
-							
-							<!-- ※ 슬라이더 못해먹겠다 -->
-							<dt><label for="customRange">가격</label></dt>
+							<dt>종료일</dt>
 							<dd>
-								<div class="form-group">
-									<span class="d-flex"> 
-										<!-- 처음 입력한 숫자가 뒤 숫자보다 작아야 검색가능. -->
-										<input type="number" class="form-control"
-										value="10000" min="0" max="400000" step="10000"> - 
-										<input type="number" class="form-control"
-										value="60000" min="0" max="400000" step="10000"> (원)
-									</span> 
- 								</div>
+								<!-- ※ 원래는 datePicker 이용해야 함. -->
+								<input type="date" class="form-control">
 							</dd>
-							<!-- <dd>
-								<div class="form-group">
-									<input value="10000" min="0" max="400000" step="500" type="range">
-								</div>
-							</dd>
-							<dd>
-								<div class="form-group">
-									<input value="10000" min="0" max="400000" step="500" type="range">
-								</div>
-							</dd> -->
 						</dl>
 					</div>
 				<div class="col-md-3">
 					<dl>
+						<!-- ※ 슬라이더 못해먹겠다 -->
+						<dt><label for="customRange">가격</label></dt>
+						<dd>
+							<div class="form-group">
+								<span class="d-flex"> 
+									<!-- 처음 입력한 숫자가 뒤 숫자보다 작아야 검색가능. -->
+									<input type="number" class="form-control"
+									value="10000" min="0" max="400000" step="10000"> <span class="mt-2 mx-1">-</span> 
+									<input type="number" class="form-control"
+									value="60000" min="0" max="400000" step="10000">  <span class="mt-2 mx-1">(원)</span>
+								</span> 
+								</div>
+						</dd>
+						<!-- <dd>
+							<div class="form-group">
+								<input value="10000" min="0" max="400000" step="500" type="range">
+							</div>
+						</dd>
+						<dd>
+							<div class="form-group">
+								<input value="10000" min="0" max="400000" step="500" type="range">
+							</div>
+						</dd> -->
+					</dl>
+					
+					
+				</div>
+				<div class="col-md-3">
+					<dl>
+					
 						<dt>지역</dt>
 						<dd>
 							<select class="form-control px-10">
@@ -145,23 +122,18 @@
 								<option value="8">경남</option>
 							</select>
 							<!-- 선택시 지역명 텍스트 입력 가능-->
-							<div class="input-group d-flex py-2">
-								<input type="text" class="form-control border-0" placeholder="동 이름을 입력하세요."> 
-								<div class="input-group-append mb-3"">
-									<button type="button" class="btn btn-primary"><span class="fa fa-search"></span></button>
+							<div class="input-group d-flex mt-2">
+								<input type="text" class="form-control border" placeholder="동 이름을 입력하세요."> 
+								<div class="input-group-append">
+									<button type="button" class="btn btn-primary pb-3"><span class="fa fa-search"></span></button>
 								</div>
 							</div>
 						</dd>
-					</dl>
-				</div>
-				<div class="col-md-3">
-					<dl>
-						<dd class="mt-4">
-							<button type="button" class="ml-3 btn btn-outline-dark rounded-pill border">
+					
+						<dd class="float-right">
+							<!-- 지도 버튼 클릭시 핀 찍은 지도 창 열림 -->
+							<button type="button" class="btn btn-outline-dark rounded-pill border">
 							<span class="icon-map-marker" style="font-size:1.2em;">  지도</span></button>
-							<button type="button" class="ml-4 btn btn-outline-dark rounded-pill border">
-							<span class="icon-filter" style="font-size:1.2em;">  필터</span></button>
-							
 						</dd>
 					</dl>
 				</div>
@@ -314,16 +286,12 @@
     
     
     
-    <!-- footer 자리 -->
     
-    
-    
- <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-
-  <%@ include file="../includes/includes_home_end.jsp" %>
-    
-  </body>
-
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+<!-- Footer -->
+<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
+<div>
+	<c:import url="${cp}/includes/footer.jsp"></c:import>
+</div>
+</body>
 </html>

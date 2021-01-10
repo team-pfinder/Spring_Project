@@ -9,14 +9,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>이용자탈퇴완료.jsp</title>
+<title>호스트탈퇴완료.jsp</title>
 <%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 .withdrawBox
 	{
 	    width: 648px;
-	    background-color: #ffffff;
 	    
 	    margin: 0 auto; 
 		float: none;
@@ -32,9 +32,9 @@
 		<br><br><br><br><br><!-- 임시 개행 -->
 	</div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
+	<div class="container mb-5">
+		<div class="row mb-5">
+			<div class="col-md-12 mb-5">
 				<div class="withdrawBox">
 					<!-- 체크그림 가운데정렬 -->
 					<div class="dbox w-100 text-center">
@@ -51,9 +51,11 @@
 						</div>
 
 						<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
-						<div class="text-center">
-							<button class="btn btn-dark" type="button">취소하기</button>
-							<button class="btn btn-primary" type="button">탈퇴하기</button>
+						<div class="align-items-center">
+							<button class="btn btn-primary mx-1" type="button">취소하기</button>
+							<!-- 탈퇴 버튼 클릭시 탈퇴완료 alert창 호출,  -->
+							<!-- 자동으로 메인 화면으로 돌아가기 -->
+							<button class="btn btn-danger mx-1" type="button">탈퇴하기</button>
 						</div>
 
 					</div>
@@ -65,13 +67,11 @@
 		
 	</div><!-- End .container -->
 	
-	<!-- Footer -->
-
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 <%@ include file="../includes/includes_home_end.jsp" %>
-
+<!-- Footer -->
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
+
+<c:import url="${cp}/01.ksb/foot.jsp"></c:import>
 </body>
 </html>

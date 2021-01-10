@@ -15,7 +15,7 @@ String cp = request.getContextPath();
 <style type="text/css">
 body {
 	padding: 5%;
-	background-color: #F5F5F5;
+	background-color: #F6F6F6;
 	font-family: "나눔스퀘어";
 }
 
@@ -24,12 +24,6 @@ body {
 	background-color: #FFF;
 	width: 600px;
 }
-
-
-/*
-.chat {
-	width: calc(65% - 85px);
-}*/
 
 /* header-chat */
 .header-chat {
@@ -70,14 +64,15 @@ body {
 	height: 500px;
 }
 
-/*=== 왼쪽 말풍선 공간 ===*/
+/*=== 왼쪽(응답측) 말풍선 공간 ===*/
 .messages-chat .message {
 	display: flex;
 	align-items: center;
 	margin-bottom: 8px;
+	clear: both; /* float-right인 시간표시와 분리하기 위함 */
 }
 
-/*=== 왼쪽 말풍선 ===*/
+/*=== 왼쪽(응답측) 말풍선 ===*/
 .messages-chat .text {
 	margin: 0 35px;
 	background-color: #00043c;
@@ -87,17 +82,17 @@ body {
 	max-width: 380px;
 }
 
-/*=== 오른쪽 말풍선 공간 ===*/
-.response {
-	float: right;
+/*=== 오른쪽(전송측) 말풍선 공간 ===*/
+.send {
+	display: block;
 	margin-right: 0px; /* !important */
 	margin-left: auto; /* flexbox alignment rule */
 	resize: both;
 	display: block;
 }
 
-/*=== 오른쪽 말풍선 ===*/
-.response .text {
+/*=== 오른쪽(전송측) 말풍선 ===*/
+.send .text {
 	background-color: #fdbe34;
 	color: black;
 	max-width: 380px;
@@ -106,23 +101,21 @@ body {
 
 /*=== 모든 사진 ===*/
 .message-img {
-	max-width: 100px;
+	max-width: 150px;
 	resize: both;
 }
 
 /*=== 시간 ===*/
-.send-timestamp {
+.response-timestamp {
 	font-size: 12px;
 	color: lightgrey;
 	margin-bottom: 10px;
 	margin-left: 40px;
 }
 
-.response-timestamp {
+.send-timestamp {
 	font-size: 12px;
 	color: lightgrey;
-	float: right;
-	/*시간 위치 다시 설정*/
 	margin-right: 40px;
 }
 
@@ -146,8 +139,8 @@ body {
 }
 
 .footer-chat .send {
-	color: #fdbe34;
-	background-color: #FFF;
+	color: #FFF;
+	background-color: #00043c;
 	position: absolute;
 	right: 15px;
 	padding: 12px 12px 12px 12px;
@@ -161,7 +154,7 @@ body {
 }
 
 .write-message {
-	border: none !important;
+	border: none;
 	width: 60%;
 	height: 50px;
 	margin-left: 20px;
@@ -173,8 +166,7 @@ body {
 }
 
 
-/* 사진첨부버튼 지우기 */
-
+/* 사진첨부 기존버튼 지우기 */
 .filebox input[type="file"] {
   position: absolute;
   width: 1px;
@@ -185,15 +177,27 @@ body {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-
 </style>
+<script type="text/javascript">
+	
+	/* 이미지 팝업으로 원본크기 띄우기 */
+	/* 추후 제이쿼리 수정 */
+	function popImg(url)
+	{
+		var img = new Image();
+		img.src = url;
+		var w_img = img.width;
+		var h_img = img.height;
+		var OpenWindow = window.open('', '_blank', 'width=' + w_img
+				+ ', height=' + h_img + ', menubars=no, scrollbars=auto');
+		OpenWindow.document
+				.write("<style>body{margin:0px;}</style><img src='"+url+"'>");
+	}
+	
+</script>
+
 </head>
 <body>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 	<div class="container">
 
 		<div class="message-box shadow">
@@ -213,37 +217,52 @@ body {
 						<div class="message">
 							<p class="text">안녕하세요. 몇시쯤 도착 예정이신지요...?</p>
 						</div>
-						<p class="send-timestamp">21-01-11 03:45:27</p>
+						<div class="message">
+							<p class="response-timestamp">21-01-11 03:45:27</p>
+						</div>
 
 						<div class="message">
-							<div class="response">
+							<div class="send">
 								<p class="text">9999시요</p>
 							</div>
 						</div>
-						<p class="response-timestamp">21-01-11 03:45:27</p>
-
+						<!-- 오른쪽 시간표시하는 timestamp는 : send-timestamp -->
+						<!-- 부모 class에 float-right 해야 우측정렬됨. -->
+						<div class="message float-right">
+							<p class="send-timestamp">21-01-11 03:45:27</p>
+						</div>
+						
 						<div class="message">
 							<p class="text">네, 비밀번호는 486입니다.</p>
 						</div>
-						<p class="send-timestamp">21-01-11 03:45:27</p>
-
 						<div class="message">
-							<div class="response">
+							<p class="response-timestamp">21-01-11 03:45:27</p>
+						</div>
+						
+						
+						<div class="message">
+							<div class="send">
 								<p class="text">네네네</p>
 							</div>
 						</div>
-						<p class="response-timestamp">21-01-11 08:45:27</p>
-
-						<!-- 갑자기 사진 보냄 -->
+						<div class="message float-right">
+							<p class="send-timestamp">21-01-11 08:45:27</p>
+						</div>
+						
+						
+						<!-- 보내는 쪽에서 갑자기 사진 보냄 -->
 						<div class="message">
-							<div class="response">
+							<div class="send">
 								<p class="text">
-									<img class="message-img" alt="" src="<%=cp%>/images/1.jpg">
+									<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
 								</p>
 							</div>
 						</div>
-						<p class="response-timestamp">21-01-11 08:45:27</p>
-
+						<div class="message float-right">
+							<p class="send-timestamp">21-01-11 08:45:27</p>
+						</div>
+						
+						
 						<!-- 장문 테스트 -->
 						<div class="message">
 							<p class="text">최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...
@@ -253,19 +272,25 @@ body {
 								입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라
 								dm만 언제까지 해야하는지 궁금해요...</p>
 						</div>
-						<p class="send-timestamp">21-01-11 03:45:27</p>
-
-						<!-- 갑자기 사진 보냄 -->
+						<div class="message">
+							<p class="response-timestamp">21-01-11 03:45:27</p>
+						</div>
+						
+						
+						<!-- 응답 측에서도 갑자기 사진 보냄 -->
 						<div class="message">
 							<p class="text">
-								<img class="message-img" alt="" src="<%=cp%>/images/1.jpg">
+								<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
 							</p>
 						</div>
-						<p class="send-timestamp">21-01-11 08:45:27</p>
-
+						<div class="message">
+							<p class="response-timestamp">21-01-11 08:45:27</p>
+						</div>
+						
+						
 						<!-- 장문 테스트 -->
 						<div class="message">
-							<div class="response">
+							<div class="send">
 								<p class="text">최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...
 									최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는
 									몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지
@@ -274,11 +299,49 @@ body {
 									dm만 언제까지 해야하는지 궁금해요...</p>
 							</div>
 						</div>
-						<p class="response-timestamp">21-01-11 03:45:27</p>
+						<div class="message float-right">
+							<p class="send-timestamp">21-01-11 09:45:27</p>
+						</div>
+						
+						
+						<!-- 응답 측에서 메시지 연결해서 보내는 상황 -->
+						<div class="message">
+							<p class="text">이용하시는 데 불편함 없으시지요?</p>
+						</div>
+						<div class="message">
+							<p class="text">불편한 경우가 생기신다면 바로 말씀해 주세</p>
+						</div>
+						<div class="message">
+							<p class="text">요.</p>
+						</div>
+						<!-- 시간을 제일 마지막에 한번만 출력할 수 있게 한다 -->
+						<div class="message">
+							<p class="response-timestamp">21-01-11 11:45:27</p>
+						</div>
+						
+						
+						<!-- 전송 측에서 메시지 연결해서 보내는 상황 -->
+						<div class="message">
+							<div class="send">
+								<p class="text">
+									<img class="message-img" alt="" src="<%=cp%>/images/about.jpg" onclick="popImg(this.src)">
+								</p>
+							</div>
+						</div>
+						<div class="message">
+							<div class="send">
+								<p class="text">예 그럼요.</p>
+							</div>
+						</div>
+						<div class="message float-right">
+							<p class="send-timestamp">21-01-11 12:12:31</p>
+						</div>
 
 
 
 					</div><!-- End .message-chat  -->
+					
+					
 					
 					
 					<!-- .footer-chat -->
@@ -289,9 +352,8 @@ body {
 								<i class="icon fa fa-picture-o clickable"
 									style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
 							</label>
-							<input type="file" id="ex_file">
+							<input type="file" id="ex_file" multiple="multiple">
 						</div>
-						
 						
 						<input type="text" class="write-message" placeholder="메시지를 입력하세요"></input>
 						<i class="icon send fa fa-paper-plane-o clickable"

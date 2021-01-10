@@ -10,8 +10,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
-<%@ include file="../includes/includes_home.jsp"%>
+
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
 
@@ -21,7 +21,6 @@
 	<br><br><br><br>
 	
 	
-	<!-- 이전 페이지 : userReview.jsp-->
 	<!-- 수정 버튼 클릭해 들어온 모습 -->
 	<!-- 리뷰 내용 수정 -->
 	
@@ -70,18 +69,6 @@
 
 	</div>
 	<!-- .container-fluid End -->
-
-	<!-- loader -->
-	<div id="ftco-loader" class="show fullscreen">
-		<svg class="circular" width="48px" height="48px">
-					<circle class="path-bg" cx="24" cy="24" r="22" fill="none"
-				stroke-width="4" stroke="#eeeeee" />
-					<circle class="path" cx="24" cy="24" r="22" fill="none"
-				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
-	</div>
-
-	<%@ include file="../includes/includes_home_end.jsp"%>
-
-	<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>

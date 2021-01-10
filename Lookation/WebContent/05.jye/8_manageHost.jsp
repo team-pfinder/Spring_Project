@@ -4,8 +4,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <%@ include file="../includes/includes_admin.jsp" %>
-  <title>Lookation_admin</title>
+<title>Lookation_admin</title>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+<script type="text/javascript">
+	
+	// 신고내역 확인하는 팝업창
+	function popCheck()
+	{
+		var url = "8-1_checkReportDetails.jsp";
+		var option = "width=600, height=450, resizable=no, scrollbars=yes, status=no";
+		window.open(url, "", option);
+	}
+	
+	// 블랙리스트 해제하는 알림창
+	function release()
+	{
+		confirm("해당 회원을 블랙리스트 목록에서 해제하시겠습니까?");
+	}
+	
+	// 블랙리스트 등록하는 팝업창
+	function popSetBlack()
+	{
+		var url = "8-2_setBlacklist.jsp";
+		var option = "width=450, height=300, resizable=no, scrollbars=yes, status=no";
+		window.open(url, "", option);
+	}
+
+</script>
+
 </head>
 <body id="page-top">
 
@@ -31,8 +57,8 @@
         
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">호스트 신고내역 관리</h1>
-          <p class="mb-4"> 모든 호스트를 관리할 수 있습니다. 회원의 프로필 정보가 보이고 신고내역 버튼을 누르면 해당 회원의 신고내역이 보입니다.</p>
+          <h1 class="h3 mb-2 text-gray-800">회원관리(호스트)</h1>
+          <p class="mb-4"> 모든 호스트를 관리할 수 있습니다. 신고내역 버튼을 누르면 해당 회원의 신고내역이 보입니다.</p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -43,7 +69,7 @@
             
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable">
                   <thead>
 				<tr align="center">
 					<th>회원코드</th>
@@ -64,9 +90,9 @@
 					<td>
 						<!-- 신고내역 확인 -->
 						<!-- 클릭시 해당회원 신고내역리스트 출력 -->
-						<button type="button" class="btn btn-primary btn-icon-split">신고내역</button> 
+						<button type="button" class="btn btn-primary btn-icon-split" onclick="popCheck()">신고내역</button> 
 						<!-- 블랙리스트 설정 혹은 해제? -->
-						<button type="button" class="btn btn-info btn-icon-split">해제</button>
+						<button type="button" class="btn btn-info btn-icon-split" onclick="release()">해제</button>
 					</td>
 				</tr>
 				<tr align="center">
@@ -79,7 +105,7 @@
 						<button type="button" class="btn btn-primary btn-icon-split">신고내역</button> 
 						<!-- 블랙리스트 설정하고 싶으면 이거 클릭 -->
 						<!-- ※ 블랙리스트 등록 페이지는? -->
-						<button type="button" class="btn btn-danger btn-icon-split">설정</button>
+						<button type="button" class="btn btn-danger btn-icon-split" onclick="popSetBlack()">설정</button>
 					</td>
 				</tr>
 				<tr align="center">

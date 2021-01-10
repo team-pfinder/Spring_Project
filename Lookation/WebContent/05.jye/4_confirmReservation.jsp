@@ -11,6 +11,7 @@
 <meta charset="UTF-8">
 <title>예약신청완료.jsp</title>
 <%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
+<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
 <%@ include file="../includes/includes_home.jsp" %>
 </head>
 <body>
@@ -22,17 +23,15 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 py-5">
 				<!-- 체크그림 가운데정렬 -->
 				<div class="dbox w-100 text-center">
 					<div class="icon d-flex align-items-center justify-content-center">
 						<span class="fa fa-check"></span>
 					</div>
 					<div class="text">
-						<p>
-							<h3 class="font-weight-bold">성공적으로 결제완료되었습니다.</h3>
-							<h6>결제내역은 회원정보에 등록된 이메일로 전송되었습니다.</h6>
-						</p>
+						<h3 class="font-weight-bold">성공적으로 결제완료되었습니다.</h3>
+						<h6>결제내역은 회원정보에 등록된 이메일로 전송되었습니다.</h6>
 					</div>
 				</div>
 			</div>
@@ -40,8 +39,8 @@
 		
 		<br><br>
 		
-		<div class="row">
-			<div class="col-md-12">
+		<div class="row pb-5">
+			<div class="col-md-12 pb-5 mb-5">
 				<h5 class="font-weight-bold">결제내역 확인</h5>
 				<hr>
 	
@@ -77,7 +76,7 @@
 				
 				<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
 				<div class="text-center">
-					<button class="btn btn-dark" type="button">메인 화면으로 돌아가기</button>
+					<button class="btn btn-primary" type="button">메인 화면으로 돌아가기</button>
 				</div>
 			
 			</div><!-- End .col-md-12  -->
@@ -86,14 +85,15 @@
 		
 		
 	</div><!-- End .container -->
-	
-	<!-- Footer -->
-
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 <%@ include file="../includes/includes_home_end.jsp" %>
 
+
+<!-- Footer -->
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
+<div>
+	<c:import url="${cp}/includes/footer.jsp"></c:import>
+</div>
+
 </body>
 </html>

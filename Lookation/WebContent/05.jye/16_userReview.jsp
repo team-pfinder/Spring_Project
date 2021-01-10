@@ -10,57 +10,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
-
-<!-- 맨위 로고, 검색창 -->
-<!-- Header -->
-<div class="container pt-5">
-	<div class="row justify-content-between">
-		<div class="col">
-			<a class="navbar-brand" href="index.html">Look<span>ation.</span></a>
-		</div>
-		<div class="col d-flex justify-content-end">
-			<div class="social-media">
-	    		<p class="mb-0 d-flex">
-	    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
-	    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
-	    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
-	    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-	    		</p>
-       		</div>
-       </div>
-	</div>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	<div class="container">
-    	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="fa fa-bars"></span> Menu
-      	</button>
-      	
-		<form action="#" class="searchform order-lg-last">
-        	<div class="form-group d-flex">
-           		<input type="text" class="form-control pl-3" placeholder="Search">
-           		<button type="submit" class="form-control search"><span class="fa fa-search"></span></button>
-         	</div>
-       	</form>
-      	<div class="collapse navbar-collapse" id="ftco-nav">
-        	<ul class="navbar-nav mr-auto">
-        		<li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-        		<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-        		<li class="nav-item"><a href="team.html" class="nav-link">Our team</a></li>
-        		<li class="nav-item"><a href="project.html" class="nav-link">Project</a></li>
-        		<li class="nav-item active"><a href="blog.html" class="nav-link">Blog</a></li>
-          		<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-        	</ul>
-      	</div>
-      	
-    </div>
-</nav>
-<!-- END nav -->
 
 <section class="hero-wrap hero-wrap-2" style="background-image: url('<%=cp%>/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
   	<div class="overlay"></div>
@@ -125,8 +78,7 @@
 
 
 					<div class="table-responsive align-self-center">
-						<table class="table table-bordered table-hover" id="dataTable"
-							width="100%" cellspacing="0">
+						<table class="table table-bordered table-hover" id="dataTable">
 
 							<!-- 예약정보 조회 및 검색 -->
 							<thead>
@@ -244,12 +196,7 @@
 	
 </div><!-- .container End -->
 	
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-<%@ include file="../includes/includes_home_end.jsp" %>
-
-<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 
 </body>
 </html>

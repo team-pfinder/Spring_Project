@@ -31,8 +31,8 @@
         
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">이용자 관리</h1>
-          <p class="mb-4"> 모든 이용자를 관리할 수 있습니다. 회원의 프로필 정보가 보이고 신고내역 버튼을 누르면 해당 회원의 신고내역이 보입니다.</p>
+          <h1 class="h3 mb-2 text-gray-800">회원관리(이용자)</h1>
+          <p class="mb-4"> 모든 이용자를 관리할 수 있습니다. 신고내역 버튼을 누르면 해당 회원의 신고내역이 보입니다.</p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
