@@ -31,12 +31,10 @@
 		
 		$("a#sub").hover(function()
 		{
-			$(this).css("font-weight","bold");
 		    $(this).css("color","#fdbe34");
 		},
 		function()
 		{
-			$(this).css("font-weight","normal");
 			$(this).css("color","white");
 		});
 	});
