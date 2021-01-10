@@ -10,7 +10,7 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
 
@@ -280,8 +280,7 @@ String cp = request.getContextPath();
 			<circle class="path" cx="24" cy="24" r="22" fill="none"
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
-
-	<%@ include file="../includes/includes_home_end.jsp"%>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 
 	<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 
