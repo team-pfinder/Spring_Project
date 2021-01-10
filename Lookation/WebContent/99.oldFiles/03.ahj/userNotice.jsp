@@ -10,7 +10,7 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
 
@@ -72,34 +72,51 @@ String cp = request.getContextPath();
   	</div>
 </section>
 
- 
-
 	<section class="ftco-section">
 		<div class="container">
+<!-- 		     <form action="#" class="search-form">
+                <div class="form-group d-flex my-2 pt-0 float-right">
+                  <span class="icon icon-search"></span>
+                  <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                </div>
+              </form> -->
+	<!-- 검색창 ---------------------------------------->
+			<%-- <div class="row" style="text-align: right;">
+				<div class="col-lg-12">
+					<form id="searchForm">
+						<input type="text" name="keyword" value="${pageMaker.cri.keyword}"/>
+						<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+						<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+						<button class="btn btn-primary btn-sm">Search</button>
+					</form>
+				</div>
+			</div> --%>
+		<!-- 검색창 -->
+		<!-- 검색이나 정렬 관련 내용 -->
+               <form action="#" class="subscribe-form">
+                  <div class="form-group d-flex my-2 pt-0 float-right">
+                     <input type="text" class="form-control" placeholder="검색어를 입력하세요.">
+                      <input type="button" value="검색" class="submit">
+                  </div>
+                  <br>
+               </form>
+		
 			<div class="row justify-content-center">
 				<div class="col-md-12">
 					<div class="wrapper">
 						<div class="row no-gutters mb-5">
-
-
+						
 							<div class="card-body">
 								<div align="center">
-										<form action="#" class="searchform order-lg-last">
-        								<div class="form-group d-flex">
-           								<input type="text" class="form-control pl-3" placeholder="Search">
-           									<button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
-         								</div>
-       								</form>
+										
 								</div>
 								<div class="table-responsive">
-									<table class="table table-bordered" id="dataTable" width="100%"
-										cellspacing="0">
+									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 										<thead>
-											<tr>
+											<tr align="center">
 												<th>글 번호</th>
 												<th>제목</th>
 												<th>작성일자</th>
-												<th>파일</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -108,7 +125,36 @@ String cp = request.getContextPath();
 												<td>1</td>
 												<td><a href="#">공지사항 다른 느낌으로 하기</a></td>
 												<td>2021-01-10</td>
-												<td></td>
+											</tr>
+											
+											<tr align="center">
+												<td>2</td>
+												<td><a href="#">공지사항 다른 느낌으로 하기</a></td>
+												<td>2021-01-10</td>
+											</tr>
+											
+											<tr align="center">
+												<td>3</td>
+												<td><a href="#">공지사항 다른 느낌으로 하기</a></td>
+												<td>2021-01-10</td>
+											</tr>
+											
+											<tr align="center">
+												<td>4</td>
+												<td><a href="#">공지사항 다른 느낌으로 하기</a></td>
+												<td>2021-01-10</td>
+											</tr>
+											
+											<tr align="center">
+												<td>5</td>
+												<td><a href="#">공지사항 다른 느낌으로 하기</a></td>
+												<td>2021-01-10</td>
+											</tr>
+											
+											<tr align="center">
+												<td>6</td>
+												<td><a href="#">공지사항 다른 느낌으로 하기</a></td>
+												<td>2021-01-10</td>
 											</tr>
 											
 	
@@ -117,9 +163,32 @@ String cp = request.getContextPath();
 										</tbody>
 
 									</table>
+																		
+											<!-- 페이징 처리할 부분 -->
+
+						
 								</div>
+									        <div class="row mt-2">
+	          <div class="col text-center">
+	            <div class="block-27">
+	              <ul>
+	                <li><a href="#">&lt;</a></li>
+	                <li class="active"><span>1</span></li>
+	                <li><a href="#">2</a></li>
+	                <li><a href="#">3</a></li>
+	                <li><a href="#">4</a></li>
+	                <li><a href="#">5</a></li>
+	                <li><a href="#">&gt;</a></li>
+	              </ul>
+	            </div>
+	          </div>
+	        </div>
+		</div><!-- End .col-md-10 -->
 							</div>
 						</div>
+	
+						
+						
 						
 						<div class="row">
 							<div class="col-md-3">
@@ -294,7 +363,7 @@ String cp = request.getContextPath();
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
 
-	<%@ include file="../includes/includes_home_end.jsp"%>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 
 	<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 
