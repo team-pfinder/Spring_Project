@@ -62,6 +62,20 @@
 			}
 		});
 	});
+	
+	/* 선택삭제 눌렀을 때 */
+	$(document).ready(function()
+	{
+		$("#selectDelete").click(function()
+		{
+			/* 체크가 선택된 모든 리뷰 삭제 구문 */
+			if($("input[type=checkbox]"))	// 체크가 되어있는 것들..근데 이게 맞나?
+			{
+				confirm("정말로 삭제하시겠습니까?");
+				/* 분기하여 확인 누르면 다중삭제 되게 처리할 것 */
+			}
+		});
+	});
         
     </script>
 
@@ -102,7 +116,8 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
                                     <thead>
                                     	<tr>
-                                    		<th><input type="checkbox" id="allCheck"></th>
+                                    		<th><input type="checkbox" id="allCheck">
+                                    		<button type="button" id="selectDelete" class="btn">선택삭제</button></th>
                                     		<th>Q&A코드</th>
                                     		<th>닉네임</th>
                                     		<th>이메일</th>
