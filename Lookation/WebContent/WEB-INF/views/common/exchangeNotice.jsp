@@ -10,10 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- include NAV -->
-<div>
-	<c:import url="${cp}/includes/includes_home.jsp"></c:import>
-</div>
-
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <title>5-1.withdrawGuide.jsp</title>
 <style type="text/css">
 button
@@ -74,10 +71,6 @@ button
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer.jsp"></c:import>
-	</div>
-
-	<!-- includes_home_end -->
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 

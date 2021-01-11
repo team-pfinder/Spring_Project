@@ -9,7 +9,8 @@
 <head>
 
 <meta charset="UTF-8">
-<%@ include file="../includes/includes_admin.jsp"%>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+
 <title></title>
 </head>
 
@@ -19,7 +20,7 @@
 	<div id="wrapper">
 
 		<!-- Sidebar -->
-		<%@ include file="../includes/Admin_Sidebar.jsp"%>
+		<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">

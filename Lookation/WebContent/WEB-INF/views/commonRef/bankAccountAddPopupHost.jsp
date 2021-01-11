@@ -19,8 +19,7 @@ String cp = request.getContextPath();
 		window.open(url, "계좌 등록 약관", option);
 	}
 </script>
-<%@ include file="../includes/includes_home.jsp"%>
-</head>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import></head>
 <body>
 	<!-- nav -->
 	<div class="container pt-5">
