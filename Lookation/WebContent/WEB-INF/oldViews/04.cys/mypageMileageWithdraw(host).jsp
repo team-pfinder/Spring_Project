@@ -174,7 +174,9 @@
 	</div>
 
 	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 
 </body>
 </html>

@@ -9,8 +9,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- include NAV -->
-<%@ include file="../includes/includes_home.jsp"%>
 <title>5-1.withdrawGuide.jsp</title>
 <style type="text/css">
 button
@@ -27,6 +25,11 @@ button
 </style>
 </head>
 <body>
+	<!-- includes_home_end -->
+	<div>
+		<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+	</div>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
@@ -68,11 +71,15 @@ button
 		</div>
 	</div>
 			
-	<!-- loader -->
-	<%@ include file="../includes/includes_loader.jsp"%>
+	<!-- footer.jsp -->
+	<div>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
+	</div>
 
 	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 
 </body>
 </html>

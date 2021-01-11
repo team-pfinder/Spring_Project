@@ -120,7 +120,7 @@
 						<%@ include file="loadTabUser.jsp"%>
 						
 						<!-- 두번째 탭 -->
-						<%@ include file="exchangeTabUser.jsp"%>
+						<%@ include file="../common/exchangeTab.jsp"%>
 					</div>
 					<!-- END 탭구성 -->
 				</div>

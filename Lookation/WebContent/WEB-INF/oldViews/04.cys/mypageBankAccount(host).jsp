@@ -60,6 +60,7 @@
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
 				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
+				
 
 				<div class="col-lg-10 col-md-10">
 					<!-- Page Heading -->
@@ -142,6 +143,8 @@
 	</div>
 
 	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 </body>
 </html>
