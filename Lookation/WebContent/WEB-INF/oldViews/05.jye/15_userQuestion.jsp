@@ -36,8 +36,10 @@
 
 <div class="container">
 	<br>
-	<div class="row">
-		<!-- Page Heading -->
+	<div class="row mt-4">
+		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
+		<div class="col-md-10">
+			<!-- Page Heading -->
 		<div class="memo">
 			<h1 class="mb-2 text-gray-800">내가 작성한 글</h1>
 			<p class="mb-4">
@@ -52,36 +54,19 @@
 					<h6 class="m-0 font-weight-bold text-default">작성글보기(Q&A)</h6>
 				</div>
 				<div class="card-body">
-					<!-- 검색이나 정렬 관련 내용 -->
-					<!-- ※ 여기 세개가 안붙음 -->
-					<div class="col-md-5 d-flex float-right">
-						<form action="" class="subscribe-form">
-							<div class="input-group">
-								<select class="custom-select border-0 my-2">
-									<option selected="selected">전체</option>
-									<option>공간명</option>
-									<option>내용</option>
-								</select>
-								<div class="form-group d-flex">
-									<input type="text" class="form-control"
-										placeholder="검색어를 입력하세요.">
-								</div>
-								<div class="input-group-append">
-									<button class="btn btn-primary">검색</button>
-								</div>
-							</div><!-- End .input-group -->
-							
-							
-						</form>
-						<br><br>
-					</div><!-- End .col-md-5 -->
-
-
 					<div class="table-responsive align-self-center">
 						<table class="table table-bordered table-hover" id="dataTable">
-
+							<colgroup>
+								<col style="width: 7%">
+								<col style="width: 23%">
+								<col style="width: 30%">
+								<col style="width: 20%">
+								<col style="width: 15%">
+							</colgroup>
+							
+							
 							<!-- 예약정보 조회 및 검색 -->
-							<thead>
+							<thead class="text-center">
 								<tr>
 									<th>#</th>
 									<!-- 번호순 -->
@@ -91,12 +76,12 @@
 									<th></th>
 								</tr>
 							</thead>
-							<tbody data-link="row" class="rowlink">
-								<tr align="center">
-									<td>189</td>
+							<tbody data-link="row" class="rowlink text-center">
+								<tr>
+									<td>UR000001</td>
 									<td>바다</td>
 									<!-- 문의내용은 첫줄만 표시 -->
-									<td>오늘은 날씨가 많이 춥네요...더보기</td>
+									<td>오늘은 날씨가 많이 춥네요...</td>
 									<!-- 글 수정시 작성일은 수정일로 변경(update)된다. -->
 									<td>2021-01-01</td>
 									<td>
@@ -109,58 +94,58 @@
 										<!-- 2. 수정, 삭제버튼 클릭시 각각 수정창, 삭제창 뜨게 -->
 									</td>
 								</tr>
-								<tr align="center">
-									<td>123</td>
-									<td>공간이이렇게길면</td>
-									<td>난방이 잘 되어 있는지 궁금합니다. 추위를 ... 더보기</td>
+								<tr>
+									<td>UR000001</td>
+									<td>일이삼사오육칠...</td>
+									<td>난방이 잘 되어 있는지 궁금합니다. 추위를 ... </td>
 									<td>2021-07-14</td>
 									<td>
 											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
 											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
 									</td>
 								</tr>
-								<tr align="center">
-									<td>111</td>
+								<tr>
+									<td>UR000001</td>
 									<td>파파존스 호러 어쩌구 저쩌구</td>
-									<td>파파존스 피자 할인 되나요? ... 더보기</td>
+									<td>파파존스 피자 할인 되나요? ... </td>
 									<td>2021-07-12</td>
 									<td>
 											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
 											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
 									</td>
 								</tr>
-								<tr align="center">
-									<td>109</td>
+								<tr>
+									<td>UR000001</td>
 									<td>질문이 너무 많은 공간</td>
-									<td>진동벨 가져갈테니 내일 아침 6시에 울려주 ...더보기</td>
+									<td>진동벨 가져갈테니 내일 아침 6시에 울려주 ...</td>
 									<td>2021-03-14</td>
 									<td>
 											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
 											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
 									</td>
 								</tr>
-								<tr align="center">
-									<td>88</td>
+								<tr>
+									<td>UR000001</td>
 									<td>브라이덜샤워</td>
-									<td>제 브라덜도 데려가도 되나요? ... 더보기</td>
+									<td>제 브라덜도 데려가도 되나요? ... </td>
 									<td>2021-02-14</td>
 									<td>
 											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
 											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
 									</td>
 								</tr>
-								<tr align="center">
-									<td>72</td>
+								<tr>
+									<td>UR000001</td>
 									<td>루프탑 빌려주는 곳</td>
-									<td>냉장고를 사용할 수 있는지 궁 ... 더보기</td>
+									<td>냉장고를 사용할 수 있는지 궁 ... </td>
 									<td>2021-02-14</td>
 									<td>
 											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
 											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
 									</td>
 								</tr>
-								<tr align="center">
-									<td>52</td>
+								<tr>
+									<td>UR000001</td>
 									<td>새해맞이공간</td>
 									<td>새해 할인없나요??</td>
 									<td>2021-01-01</td>
@@ -174,7 +159,10 @@
 					</div>
 				</div><!-- End .cardBody -->
 			</div><!-- End .card -->
-		</div><!-- End .row -->
+		
+		</div><!-- End .col-md-10 -->
+		
+	</div><!-- End .row -->
 		
 	<!-- 페이징 처리할 부분 -->
     <div class="row mt-5">
