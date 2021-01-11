@@ -6,7 +6,7 @@
 <html>
 <head>
 
-  <%@ include file="../includes/includes_admin.jsp" %>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
   <title>공지사항 목록</title>
 </head>
 
@@ -16,7 +16,7 @@
   <div id="wrapper">
   
   <!-- Sidebar -->
-  <%@include file="../includes/Admin_Sidebar.jsp"%>
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -26,7 +26,7 @@
       <div id="content">
       
       <!-- header -->
-      <%@include file="../includes/header.jsp" %>
+<c:import url="${cp}/includes/header.jsp"></c:import>
         <!-- End of header -->
 
         <!-- Begin Page Content -->

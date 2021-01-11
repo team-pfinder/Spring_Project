@@ -5,7 +5,7 @@
 
 <head>
 
-  <%@ include file="../includes/includes_admin.jsp" %>
+  <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
   <title>도움말 목록</title>
   <script type="text/javascript">
   

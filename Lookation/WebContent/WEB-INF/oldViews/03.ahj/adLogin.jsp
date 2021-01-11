@@ -7,7 +7,7 @@
 <html>
 <head>
 
-<%@ include file="../includes/includes_admin.jsp"%>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>관리자 로그인</title>
 
 </head>
