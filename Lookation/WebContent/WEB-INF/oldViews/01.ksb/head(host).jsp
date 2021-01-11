@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <title>head(host).jsp</title>
 
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">

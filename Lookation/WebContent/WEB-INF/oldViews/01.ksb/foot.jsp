@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 
 <!-- head에서 include 하므로 X -->
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <title>foot.jsp</title>
 
 </head>
