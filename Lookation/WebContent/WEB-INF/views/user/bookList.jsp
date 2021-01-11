@@ -10,8 +10,8 @@
 <head>
 <meta charset="UTF-8">
 <title>예약리스트확인페이지.jsp</title>
-<%@ include file="../01.ksb/head(user).jsp" %>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 	/* btn */
 	.btn-gon {
@@ -71,7 +71,8 @@
 <div class="container my-5">
 	<div class="row">
 		<!-- include mypage_Sidebar.jsp -->
-		<%@ include file="../includes/mypage_Sidebar(user).jsp"%>
+		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
+		<%-- <%@ include file="../../../includes/mypage_Sidebar(user).jsp"%> --%>
 	
 		<div class="col-lg-10 col-md-10">
 			<!-- Page Heading -->
@@ -270,8 +271,7 @@
 	
 
 </div><!-- End .container -->
-
-<%@ include file="../includes/includes_home_end.jsp" %>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 <div>
 	<c:import url="${cp}/includes/footer_user.jsp"></c:import>
