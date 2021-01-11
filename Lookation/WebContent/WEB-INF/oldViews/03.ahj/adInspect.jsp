@@ -8,8 +8,7 @@ String cp = request.getContextPath();
 <html>
 <head>
 
-<%@ include file="../includes/includes_admin.jsp"%>
-
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <!-- 커러셀 사용 -->
 <link rel="stylesheet" href="../css/owl.carousel.min.css">
 <link rel="stylesheet" href="../css/owl.theme.default.min.css">
@@ -66,14 +65,14 @@ String cp = request.getContextPath();
 	<div id="wrapper">
 
 		<!-- 사이드 메뉴 -->
-		<%@include file="../includes/Admin_Sidebar.jsp"%>
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
 
 		<!-- 메인 페이지 -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
 
 				<!-- Header-->
-				<%@include file="../includes/header.jsp"%>
+				<c:import url="${cp}/includes/header.jsp"></c:import>
 
 				<!-- 주요 내용 -->
 				<div class="container-fluid">
