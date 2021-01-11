@@ -9,7 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>locationBasicInfo.jsp</title>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 <%-- <%@ include file="../includes/header_host.jsp" %> --%>
 
@@ -329,6 +330,7 @@
 
 </div>
 	
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 
 <br><br><br><br>
 
@@ -336,6 +338,6 @@
 	<div>
 		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 	</div>
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	
 </body>
 </html>

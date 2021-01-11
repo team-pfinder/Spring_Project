@@ -9,7 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>locationMgmt.jsp</title>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 
 </head>
@@ -197,7 +198,6 @@
 				style="width:100%; font-size: 16pt; font-family: 맑은 고딕; font-weight: bold;">
 				새 공간 등록하기</a>
 		
-		   <%@ include file="../includes/includes_home_end.jsp"%>
 		
 		<!-- 페이지 -->		<!-- ←논의 필요 --> 
 		<!-- 일정개수(약 6개) 이상이면 등록한 공간등록날짜보다 더 이전것들을 보여준다. -->

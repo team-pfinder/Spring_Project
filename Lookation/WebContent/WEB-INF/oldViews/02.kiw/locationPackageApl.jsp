@@ -9,7 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>LocationPackageApl.jsp</title>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 
 <link rel="stylesheet" href="/css/jquery-ui.min.css">
@@ -74,7 +75,7 @@
 <body>
 	<div>
 	<c:import url="${cp}/includes/header_host.jsp"></c:import>
-	</div
+	</div>
 
 
    <!-- 타이틀 -->
