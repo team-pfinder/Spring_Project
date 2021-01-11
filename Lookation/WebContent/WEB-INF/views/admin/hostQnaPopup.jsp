@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="../includes/includes_admin.jsp" %>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>호스트답글상세보기</title>
 <style type="text/css">
    .font-default
