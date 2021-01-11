@@ -39,7 +39,7 @@
   <div id="wrapper">
   
   	<!-- Sidebar -->
- 	<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -50,7 +50,7 @@
       
       <!-- header -->
       
-      <c:import url="${cp}/includes/header.jsp"></c:import>
+<c:import url="${cp}/includes/header.jsp"></c:import>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">

@@ -7,7 +7,7 @@
 
 <head>
 
-<%@ include file="../includes/includes_admin.jsp" %>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>도움말 수정하기</title>
 
 </head>
@@ -16,8 +16,8 @@
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
 
-		<%@ include file="../includes/Admin_Sidebar.jsp" %>
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -25,7 +25,7 @@
 			<!-- Main Content -->
 			<div id="content">
 
-				<%@include file="../includes/header.jsp"%>
+<c:import url="${cp}/includes/header.jsp"></c:import>
 
 
 				<!-- Begin Page Content -->

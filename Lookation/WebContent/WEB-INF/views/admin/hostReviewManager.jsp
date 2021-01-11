@@ -8,7 +8,7 @@ String cp = request.getContextPath();
 <html>
 <head>
 
-  <%@ include file="../includes/includes_admin.jsp" %>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
   <title>호스트 리뷰 조회</title>
   <script type="text/javascript">
   
@@ -51,7 +51,7 @@ String cp = request.getContextPath();
   <div id="wrapper">
   
   	<!-- Sidebar -->
- 	<%@include file="../includes/Admin_Sidebar.jsp" %>
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -62,8 +62,7 @@ String cp = request.getContextPath();
       
       <!-- header -->
       
-      <%@include file="../includes/header.jsp" %>
-
+     <c:import url="${cp}/includes/header.jsp"></c:import>
         <!-- Begin Page Content -->
         <div class="container-fluid">
         

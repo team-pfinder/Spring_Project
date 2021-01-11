@@ -9,17 +9,24 @@
 <head>
 
 <meta charset="UTF-8">
-<%@ include file="../includes/includes_admin.jsp"%>
+
 <title></title>
 </head>
 
 <body id="page-top">
 
+	<div>
+		<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+	</div>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
 		<!-- Sidebar -->
-		<%@ include file="../includes/Admin_Sidebar.jsp"%>
+		<%-- <%@ include file="../includes/Admin_Sidebar.jsp"%> --%>
+		<div>
+			<c:import url="${cp}/includes/Admin_Sidebar.jsp.jsp"></c:import>
+		</div>
+
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">

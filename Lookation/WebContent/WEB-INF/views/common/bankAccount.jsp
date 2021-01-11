@@ -138,10 +138,12 @@
 
 	<!-- footer.jsp -->
 	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		<c:import url="${cp}/includes/footer.jsp"></c:import>
 	</div>
 
 	<!-- includes_home_end -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<div>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+	</div>
 </body>
 </html>
