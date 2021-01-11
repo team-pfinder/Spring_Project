@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>email(user).jsp</title>
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 	*
 	{
@@ -93,6 +93,6 @@
 	
 	</div>
 	
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>

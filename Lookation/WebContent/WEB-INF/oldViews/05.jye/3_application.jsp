@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약 신청화면.jsp</title>
-<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 
@@ -354,12 +354,8 @@
 
 
 
-
-
-	
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <!-- Footer -->
-<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 <div>
 	<c:import url="${cp}/includes/footer_user.jsp"></c:import>
 </div>

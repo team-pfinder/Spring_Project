@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<%@ include file="../includes/includes_admin.jsp" %>
+<c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <title>userQna.jsp</title>
 
 <style type="text/css">
@@ -98,7 +98,7 @@
 
                 <!-- Topbar -->
                 <!-- Header -->
-					<%@ include file="../includes/header.jsp" %>
+				<c:import url="${cp }/includes/header.jsp"></c:import>
 
                  <!-- Begin Page Content -->
                 <div class="container-fluid">

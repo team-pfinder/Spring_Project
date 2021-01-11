@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>qnaPopup.jsp</title>
-<%@ include file="../includes/includes_admin.jsp"%>
+<c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <style>
 	table
 	{
