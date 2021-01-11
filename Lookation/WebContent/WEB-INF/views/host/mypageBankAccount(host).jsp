@@ -59,8 +59,7 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
-				
+				<c:import url="${cp}/includes/mypage_Sidebar(host).jsp"></c:import>
 
 				<div class="col-lg-10 col-md-10">
 					<!-- Page Heading -->

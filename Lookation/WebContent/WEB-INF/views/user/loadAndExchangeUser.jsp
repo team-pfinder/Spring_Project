@@ -100,7 +100,7 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar(user).jsp"%>
+				<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
 				
 				<!-- 본문 -->
 				<div class="col-lg-10 ftco-animate">
@@ -117,10 +117,11 @@
 					<!-- 탭 구성 -->
 					<div class="tab-content" style="margin-top: 0px; margin-left: 10px;">
 						<!-- 첫번째 탭 -->
-						<%@ include file="loadTabUser.jsp"%>
+						<c:import url="loadTabUser.jsp"></c:import>
 						
 						<!-- 두번째 탭 -->
-						<%@ include file="../common/exchangeTab.jsp"%>
+						<c:import url="../common/exchangeTab.jsp"></c:import>						
+
 					</div>
 					<!-- END 탭구성 -->
 				</div>
@@ -135,9 +136,6 @@
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-	</div>
-
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 

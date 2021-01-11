@@ -103,7 +103,7 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar(host).jsp -->
-				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
+				<c:import url="${cp}/includes/mypage_Sidebar(host).jsp"></c:import>
 				
 				<!-- 본문 -->
 				<div class="col-lg-10 ftco-animate">
@@ -171,10 +171,6 @@
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	</div>
-
-	<!-- includes_home_end -->
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 

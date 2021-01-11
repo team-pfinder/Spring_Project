@@ -10,10 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>dopositGuide.jsp</title>
-<div>
-	<c:import url="${cp }/includes/includes_home.jsp"></c:import>
-</div>
-<%-- <%@ include file="../includes/includes_home.jsp"%> --%>
+<c:import url="${cp }/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 button
     {
@@ -72,9 +69,6 @@ button
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-	</div>
-
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 
