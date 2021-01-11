@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
@@ -35,25 +35,27 @@
 
 <!-- container 시작 -->
 <div class="container">
-	<br>
-	<div class="row">
+	<div class="row mt-4">
+		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
 		<!-- Page Heading -->
-		<div class="memo">
-			<h1 class="mb-2 text-gray-800">내가 작성한 글</h1>
-			<p class="mb-4">
+		<div class="col-md-10">
+			<div class="memo">
+				<h1 class="mb-2 text-gray-800">내가 작성한 글</h1>
+				<p class="mb-4">
 				<!-- 작성자 닉네임 출력 -->
 				<span class="text-primary">거북이</span>님의 작성글입니다. <span>행 클릭시
 					해당 게시글이 있는 위치로 이동합니다 </span><a target="_blank" href="#"> 이전으로</a>.
-			</p>
-		</div><!-- End .memo -->
+				</p>
+			</div><!-- End .memo -->
 
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
 					<h6 class="m-0 font-weight-bold text-dark">작성글보기(리뷰)</h6>
 				</div>
 				<div class="card-body">
-					<!-- 검색이나 정렬 관련 내용 -->
-					<!-- ※ 여기 세개가 안붙음 -->
+					<!-- 
+					검색이나 정렬 관련 내용
+					※ 여기 세개가 안붙음
 					<div class="col-md-5 d-flex float-right">
 						<form action="" class="subscribe-form">
 							<div class="input-group">
@@ -69,14 +71,14 @@
 								<div class="input-group-append">
 									<button class="btn btn-primary">검색</button>
 								</div>
-							</div><!-- End .input-group -->
+							</div>End .input-group
 							
 							
 						</form>
 						<br><br>
-					</div><!-- End .col-md-5 -->
-
-
+					</div>End .col-md-5 
+					-->
+					
 					<div class="table-responsive align-self-center">
 						<table class="table table-bordered table-hover" id="dataTable">
 
@@ -173,7 +175,10 @@
 					</div>
 				</div><!-- End .cardBody -->
 			</div><!-- End .card -->
-		</div><!-- End .row -->
+		
+		</div><!-- End .col-md-10 -->
+
+	</div><!-- End .row -->
 		
 	<!-- 페이징 처리할 부분 -->
     <div class="row mt-5">

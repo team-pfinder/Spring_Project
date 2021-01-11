@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation 예약확인</title>
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 
 	.back-default
@@ -157,6 +157,7 @@
 			
 		</div><!-- End .row -->
 	</div>
-<%@ include file="../includes/includes_home_end.jsp" %>
+	
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>

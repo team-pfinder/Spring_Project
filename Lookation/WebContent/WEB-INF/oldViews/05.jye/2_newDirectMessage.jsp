@@ -10,8 +10,7 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <title>Direct Message.jsp</title>
-<%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 body {
 	padding: 5%;
@@ -198,7 +197,7 @@ body {
 
 </head>
 <body>
-	<div class="container">
+	<div class="container pb-5">
 
 		<div class="message-box shadow">
 			<div class="row">
@@ -367,21 +366,5 @@ body {
 
 	</div>
 
-
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 </body>
 </html>

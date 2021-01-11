@@ -10,8 +10,8 @@
 <head>
 <meta charset="UTF-8">
 <title>예약신청완료.jsp</title>
-<%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>
 
@@ -85,11 +85,8 @@
 		
 	</div><!-- End .container -->
 
-<%@ include file="../includes/includes_home_end.jsp" %>
 
-
-<!-- Footer -->
-<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
-
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+<c:import url="${cp}/includes/footer_user.jsp"></c:import>
 </body>
 </html>
