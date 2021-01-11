@@ -16,6 +16,41 @@
 	<!--    → 문서 본문 내용의 425 페이지(직접 이동 450 / 805)로 이동 -->
 	<!--    → 페이지 하단의 XML 파일 샘플코드 복사 & 붙여넣기 -->
 
+    <!-- 『BeanNameUrlHandlerMapping』 -->
+	<bean id="beanNameUrlHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+		<property name="alwaysUseFullPath" value="true"></property>
+		<property name="order" value="1"></property>
+	</bean>
 	
-
+	<!-- 『InternalResourceViewResolver』 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- /WEB-INF/views/	Test         .jsp -->
+		<property name="prefix" value="/WEB-INF/views/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- DataSource 등록 → SimpleDriverDataSource -->
+	<!-- remote -->
+	<bean id="remoteDataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass"
+			value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url"
+			value="jdbc:oracle:thin:@34.64.215.203:1521:xe"></property>
+		<property name="username" value="lookation"></property>
+		<property name="password" value="java006$"></property>
+	</bean>
+	<!-- 기본세팅 END -->
+	
+	
+	<!-- DAO 등록 -->
+	<bean id="sampleDAO" class="com.lookation.dao.SampleDAO">
+		<property name="dataSource" ref="remoteDataSource"></property>
+	</bean>
+	
+	<!-- Controller 등록(폼, AJAX, 리스트, 액션 등) -->
+	<bean name="/actions/sample.action" class="com.lookation.controller.SampleController">
+		<property name="dao" ref="sampleDAO"></property>
+	</bean>
+	
 </beans>

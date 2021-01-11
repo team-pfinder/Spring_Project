@@ -10,21 +10,38 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
    
-   	<!-- ※ Sprint MVC Framework 등록 -->
-	<!-- → Front Controller 등록 -->
-	<!-- → DispatcherServlet 객체 등록 -->
-
-    <!--※ 별도로 필터를 사용하거나 하기 전까지는-->
-	<!-- 이 코드를 그대로 사용할 예정 -->
-
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+   
+    <!-- 스프링 컨트롤러 -->
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
-
-	<servlet-mapping>
+   
+    <servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
-		<url-pattern>*.action</url-pattern>		<!-- action 요청이 들어왔을때... -->
-	</servlet-mapping>
-  
+		<url-pattern>*.action</url-pattern>
+	</servlet-mapping> 
+   
+   	<!-- 인코딩 필터 등록 -->
+  	<!-- → CharacterEncodingFilter -->
+  	<filter>
+  		<filter-name>encodingFilter</filter-name>
+  		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  		
+  		<!-- 필터 파라미터 초기값 지정 -->
+  		<init-param>
+  			<param-name>encoding</param-name>
+  			<param-value>UTF-8</param-value>
+  		</init-param>
+  	</filter>
+  	
+  	<!-- 요청에 대한 매핑 -->
+  	<filter-mapping>
+  		<filter-name>encodingFilter</filter-name>
+  		<url-pattern>/*</url-pattern> <!-- 모든 것에 대해.. -->
+  	</filter-mapping>
 </web-app>
