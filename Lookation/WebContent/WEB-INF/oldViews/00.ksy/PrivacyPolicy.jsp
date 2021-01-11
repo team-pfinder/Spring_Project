@@ -23,7 +23,7 @@ String cp = request.getContextPath();
 </style>
 
 <!-- css 등 공통적으로 들어가는 요소 include -->
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp }/includes/includes_home.jsp"></c:import>
 
 </head>
 <body>
@@ -79,7 +79,7 @@ String cp = request.getContextPath();
 	
 	
 	<!-- 자바스크립트 include -->
-	<%@ include file="../includes/includes_home_end.jsp"%>
+	<c:import url="${cp }/includes/includes_home_end.jsp"></c:import>
 
 </body>
 </html>
