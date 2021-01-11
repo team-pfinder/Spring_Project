@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 
-<%@ include file="../includes/includes_home.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <title>head(user).jsp</title>
 
 <script type="text/javascript"

@@ -14,4 +14,7 @@
 # 01.Servers Ignore
 /Servers/
 
+# dispatcher-servlet
+/Lookation/WebContent/WEB-INF/dispatcher-servlet.xml
+
 

@@ -9,7 +9,7 @@
 
 <head>
 
-<%@ include file="../includes/includes_admin.jsp"%>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>공지사항 글쓰기</title>
 
 </head>

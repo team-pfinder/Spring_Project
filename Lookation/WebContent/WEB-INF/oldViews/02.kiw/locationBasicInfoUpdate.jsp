@@ -9,7 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>locationBasicInfoUpdate.jsp</title>
-<%@ include file="../includes/includes_home.jsp" %>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript" src="<%=cp%>/js/jquery-ui.js"></script>
@@ -305,7 +306,6 @@
 	<input type="button" class="btn btn-default" style="width:300px;" 
 			value="취소">
 	<!-- onclick="function()" -->
-	   <%@ include file="../includes/includes_home_end.jsp"%>
 	
 </div>
 

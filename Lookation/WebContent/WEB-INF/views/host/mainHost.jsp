@@ -10,8 +10,8 @@
 <head>
 <meta charset="UTF-8">
 
-<%@ include file="../includes/includes_home.jsp"%>
-<%@ include file="../includes/defaults.jsp"%>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 <title>main(host).jsp</title>
 
@@ -165,13 +165,9 @@
 	
 	<!-- footer.jsp -->
 	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	</div>
 
-	<!-- includes_home_end -->
-	<div>
-		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
-	</div>
-
+        <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+        <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+    </div>
 </body>
 </html>

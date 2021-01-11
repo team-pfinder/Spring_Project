@@ -9,8 +9,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="../includes/includes_home.jsp" %>
-<%@ include file="../includes/defaults.jsp" %>
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/defaults.jsp"></c:import>
 <title>findPassword(host).jsp</title>
 
 <style type="text/css">

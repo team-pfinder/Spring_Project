@@ -10,7 +10,6 @@
 <head>
 <meta charset="UTF-8">
 <title>호스트탈퇴완료.jsp</title>
-<%-- <%@ include file="../01.ksb/head(user).jsp" %> --%>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 .withdrawBox
@@ -67,7 +66,8 @@
 	</div><!-- End .container -->
 	
 
-<%@ include file="../includes/includes_home_end.jsp" %>
+
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <!-- Footer -->
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 </body>
