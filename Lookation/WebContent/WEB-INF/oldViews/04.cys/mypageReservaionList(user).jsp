@@ -44,9 +44,9 @@
 	<div class="container" style="margin-top:50px" >
 		<div class="row">
 			<!-- include mypage_Sidebar.jsp -->
-			<%@ include file="../includes/mypage_Sidebar(user).jsp"%>
+			<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
 			<br>
-		
+	
 			<div class="col-lg-10 col-md-10">
 				<!-- Page Heading -->
 				<p class="mb-4">
@@ -294,9 +294,6 @@
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer.jsp"></c:import>
-	</div>
-
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 

@@ -47,7 +47,7 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
+				<c:import url="${cp}/includes/mypage_Sidebar(host).jsp"></c:import>
 
 				<div class="col-lg-9 ftco-animate">
 					<h2 class="mb-3">It is a long established fact a reader be
@@ -92,10 +92,6 @@
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer.jsp"></c:import>
-	</div>
-
-	<!-- includes_home_end -->
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 

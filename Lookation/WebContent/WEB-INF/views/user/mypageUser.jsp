@@ -121,9 +121,6 @@
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-	</div>
-
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 </body>

@@ -24,11 +24,17 @@
 </script>
 </head>
 <body>
+	<!-- include header_user.jsp -->
+	<div>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+	</div>
+
 	<!-- include header_host.jsp -->
+	<!-- 
 	<div>
 		<c:import url="${cp}/includes/header_host.jsp"></c:import>
 	</div>
-	
+	 -->
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -59,7 +65,9 @@
 				<!-- 사이드바 -->
 				<!-- .col-md-2 -->
 				<!-- include mypage_Sidebar.jsp -->
-				<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
+				<c:import url="${cp}/includes/mypage_Sidebar(host).jsp"></c:import>
+				<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
+				
 
 				<div class="col-lg-10 col-md-10">
 					<!-- Page Heading -->
@@ -136,13 +144,10 @@
 	</section>
 	<!-- .section -->
 
-	<!-- footer.jsp -->
 	<div>
+		<!-- footer.jsp -->
 		<c:import url="${cp}/includes/footer.jsp"></c:import>
-	</div>
-
-	<!-- includes_home_end -->
-	<div>
+		<!-- includes_home_end -->
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 </body>

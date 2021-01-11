@@ -46,7 +46,7 @@
 	<div class="container" style="margin-top:50px" >
 		<div class="row">
 			<!-- include mypage_Sidebar.jsp -->
-			<%@ include file="../includes/mypage_Sidebar(host).jsp"%>
+			<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
 			<br>
 		
 			<div class="col-lg-10 col-md-10">
@@ -296,10 +296,6 @@
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	</div>
-
-	<!-- includes_home_end -->
-	<div>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 	
