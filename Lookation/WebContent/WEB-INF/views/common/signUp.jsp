@@ -3,7 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	request.setCharacterEncoding("UTF-8");
-	String cp = request.getContextPath();
+	//String cp = request.getContextPath();
+	
+	// jstl 변수 세팅
+	String identify = (String)request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+	
+	String actionUrl = "sendemail.action?identify=" + identify + "&type=createAccount";
+	pageContext.setAttribute("actionUrl", actionUrl);
 %>
 <!DOCTYPE html>
 <html>
@@ -11,7 +18,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>signUp(host).jsp</title>
+<title>signUp.jsp</title>
 
 <style type="text/css">
 	*
@@ -211,9 +218,6 @@
 			}
 		});
 		
-		
-		
-		
 		// submit
 		$("#submit").click( function()
 		{
@@ -241,7 +245,7 @@
 			}
 			
 			// 연락처 형식이 맞지 않을경우
-			if(!regTel.test($("#nick").val()))
+			if(!regTel.test($("#tel").val()))
 			{
 				alert("연락처 형식이 알맞지 않습니다. 다시 입력해주세요.");
 				return;
@@ -251,7 +255,7 @@
 			/* 닉네임 중복검사 */
 			
 			
-			$("#").submit();
+			$("#signUpForm").submit();
 		});
 		
 		// cancel
@@ -267,26 +271,38 @@
 <body class="back-default">
 	
 	<div style="margin: 30px 0px 0px 50px;">
-		<h1 class="brand">Look<span>ation.</span> <span style="color: black; font-size: 18px;">호스트센터</span></h1>
+		<h1 class="brand">Look<span>ation.</span> 
+			<c:if test="${identify eq 'host'}">
+				<span style="color: black; font-size: 18px;">호스트센터</span>
+			</c:if>
+		</h1>
 	</div>
 
 	<div class="head">
-		<h1 style="font-weight:1000;">호스트 회원가입</h1>
+		<c:if test="${identify eq 'user'}">
+			<h1 style="font-weight:1000;">이용자 회원가입</h1>
+		</c:if>
+		
+		<c:if test="${identify eq 'host'}">
+			<h1 style="font-weight:1000;">호스트 회원가입</h1>
+		</c:if>
 	</div>
 	
 	<div class="container" >
-		<div class="loginBox">		
+		<div class="loginBox">
+			<form action="${actionUrl}" method="post" id="signUpForm">
 				<ul class="login_info">
 					<li>
 						<!-- err시 빨간 textbox border 테두리 필요 -->
 						<p class="normal">이메일</p> 
-						<input type="text" class="form-control full" id="email">
+						<input type="text" class="form-control full" 
+						id="email" name="email">
 						<p class="pass" id="email">이메일 형식이 알맞지 않습니다.</p>
 					</li>
 					<li>
 						<p class="normal">비밀번호</p> 
 						<input type="password" class="form-control full"
-						id="pw_new">
+						id="pw_new" name="pw">
 						<p class="pass" id="pw_new">
 							비밀번호 형식에 알맞지 않습니다.<br>
 							비밀번호는 숫자, 특수문자(!,@,#,$) 포함 최소 8자, 최대 12자 사이입니다.
@@ -302,7 +318,7 @@
 					<li>
 						<p class="normal">닉네임</p> 
 						<input type="text" class="form-control full"
-						id="nick">
+						id="nick" name="nick">
 						<p class="pass" id="nick">
 							닉네임 형식이 알맞지 않습니다.<br>
 							닉네임은 한글로 최소 2자, 최대 6자 사이입니다.
@@ -311,21 +327,22 @@
 					<li>
 						<p class="normal">이름</p> 
 						<input type="text" class="form-control full"
-						id="name">
+						id="name" name="name">
 					</li>
 					<li>
 						<p class="normal">연락처</p> 
 						<input type="text" class="form-control full"
-						id="tel">
+						id="tel" name="tel">
 						<p class="pass" id="tel">연락처 형식이 알맞지 않습니다.</p>
 					</li>
 				</ul>
-				
+			</form>
 				<div style="margin-top:35px;">
 					<button type="button" class="btn btn-primary full" id="submit">
 						<span style="color:black; font-weight: bold;">회원가입</span>
 					</button>
 				</div>
+			
 		</div>
 	</div>
 
