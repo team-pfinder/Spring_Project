@@ -7,20 +7,6 @@
 			http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 			http://www.springframework.org/schema/util 
 			http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-
-	<bean id="mailSender"
-		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
-		<property name="port" value="587" />
-		<property name="username" value="sb92120@gmail.com" />
-		<property name="password" value="Ehdqja123" />
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.smtp.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-			</props>
-		</property>
-	</bean>
-
-
+	
+	
 </beans>

@@ -9,7 +9,7 @@
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
-	String actionUrl = "sendemail.action?identify=" + identify + "&type=createAccount";
+	String actionUrl = "sendaccountcreateemail.action?identify=" + identify;
 	pageContext.setAttribute("actionUrl", actionUrl);
 %>
 <!DOCTYPE html>
@@ -279,7 +279,7 @@
 	</div>
 
 	<div class="head">
-		<c:if test="${identify eq 'user'}">
+		<c:if test="${identify eq 'member'}">
 			<h1 style="font-weight:1000;">이용자 회원가입</h1>
 		</c:if>
 		
