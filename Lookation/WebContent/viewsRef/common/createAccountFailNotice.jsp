@@ -4,6 +4,11 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String identify = (String)request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+	
+	pageContext.setAttribute("path", cp);
 %>
 <!DOCTYPE html>
 <html>
@@ -11,7 +16,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>createAccountSuccess.jsp</title>
+<title>createAccountSuccess(host).jsp</title>
 
 <style type="text/css">
 	*
@@ -89,27 +94,39 @@
 			
 			<div class="dbox" style="margin-bottom: 30px;">
 				<div class="icon d-flex align-items-center justify-content-center">
-	                  <span class="fa fa-check"></span>
+	                  <span class="fa fa-close" style="font-size:400%"></span>
 	            </div>
             </div>
 			<%-- <img src="<%=cp%>/images/check.png" style="width:15%;"/> --%>
-			<h2>회원가입이 <span>완료</span> 되었습니다.</h2>
+			<h2>회원가입에 <span>실패</span> 하였습니다.</h2>
 			<br>
 			
 			<c:if test="${identify eq 'host'}">
-				<p>호스트님의 회원가입을 축하합니다!</p> 
+				<p>호스트님의 계정 정보가 이미 생성되었거나, 잘못된 접근이 감지되었습니다. </p> 
 			</c:if>
 			<c:if test="${identify eq 'member'}">
-				<p>이용자님의 회원가입을 축하합니다!</p> 
+				<p>이용자님의 계정 정보가 이미 생성되었거나, 잘못된 접근이 감지되었습니다. </p> 
 			</c:if>
 			
-			<p>알차고 실속있는 서비스로 찾아뵙겠습니다.</p> 
+			<p>다시 가입해주세요. 불편을 끼쳐드려 죄송합니다.</p> 
 			<hr style="border: solid thin silver;
 			           margin: 50px 0px 35px 0px;">
 			
 			<div class="buttonForm">
-				<button style="float: left; background: #ffffff">홈으로</button> 
-				<button style="float: right; border-width: 0px;">로그인</button> 
+				<c:if test="${identify eq 'host'}">
+					<button style="float: left; background: #ffffff"
+							onclick="location.href='#'">홈으로</button> 
+				</c:if>
+				<c:if test="${identify eq 'member'}">
+					<button style="float: left; background: #ffffff"
+					        onclick="location.href='#'">홈으로</button> 
+				</c:if>
+				
+				<button style="float: right; border-width: 0px;"
+				        onclick="location.href='${path}/actions/signupform.action?identify=${identify}'">
+				        회원가입
+				 </button>  
+				
 			</div>
 		</div>
 	</div>

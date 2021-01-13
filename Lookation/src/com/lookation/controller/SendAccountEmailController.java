@@ -61,7 +61,7 @@ public class SendAccountEmailController implements Controller
 				"		<div class=\"content-form\" style=\"width : 100%; background: #ffffff; padding: 50px 0px 50px 0px;\">" + 
 				"			<h1>계정생성 인증 안내</h1>" + 
 				"			<br>" + 
-				"			<form action=\"http://localhost:8090/Lookation/actions/createaccount.action?identify=&"+ identify +"\" method=\"post\">" + 
+				"			<form action=\"http://localhost:8090/Lookation/actions/createaccount.action?identify="+ identify +"\" method=\"post\">" + 
 				"				<table style=\"margin:0 auto;\">" + 
 				"					<tr>" + 
 				"						<th>이메일 : </th>" + 
@@ -98,7 +98,10 @@ public class SendAccountEmailController implements Controller
 				"</body>" + 
 				"</html>";
 		
-		util.sendHtml("sb921204@naver.com", "Lookation", "■■■■■  계정생성 인증 메일입니다.  ■■■■■", html);
+		String titleType = (identify.equals("host") ? "호스트" : "이용자");
+		String title = "■■■■■ " + titleType + " 계정생성 인증 메일입니다.  ■■■■■";
+		
+		util.sendHtml(email, "Lookation", title, html);
 		
 		/*
 		 * 	
