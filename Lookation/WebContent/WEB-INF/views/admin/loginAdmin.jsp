@@ -10,6 +10,25 @@
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>관리자 로그인</title>
 
+<script type="text/javascript">
+$(document).ready(function()
+		{
+			$("#submitBtn").click(function()
+			{
+				$("#err").css("display", "none");
+
+				if ($("#id").val() == "" || $("#pw").val() == "")
+				{
+					$("#err").html("This field is required.").css("display", "inline");
+					return; //-- submit 액션 처리 중단
+				}
+
+				$("#adminloginForm").submit();
+			});
+
+		});
+</script>
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -23,6 +42,7 @@
 
 				<div class="card o-hidden border-0 shadow-lg my-5">
 					<div class="card-body p-0">
+					
 						<!-- Nested Row within Card Body -->
 						<div class="row">
 
@@ -31,15 +51,15 @@
 									<div class="text-center">
 										<h1 class="h4 text-gray-900 mb-4">Welcome Admin!</h1>
 									</div>
-									<form class="user">
+									<form action="adminlogin.action" method="post" id="adminloginForm">
 										<div class="form-group">
 											<input type="email" class="form-control form-control-user"
-												id="exampleInputEmail" aria-describedby="emailHelp"
+												id="id" aria-describedby="emailHelp"
 												placeholder="ID">
 										</div>
 										<div class="form-group">
 											<input type="password" class="form-control form-control-user"
-												id="exampleInputPassword" placeholder="Password">
+												id="pw" placeholder="Password">
 										</div>
 										<div class="form-group">
 											<div class="custom-control custom-checkbox small">
@@ -49,8 +69,9 @@
 													Me</label>
 											</div>
 										</div>
-										<a href="index.html"
-											class="btn btn-primary btn-user btn-block"> Login </a>
+										<!-- <a href="index.html" -->
+											<div id="submitBtn" class="btn btn-primary btn-user btn-block"> Login</div> <!-- </a> -->
+											 <br><span id="err" style="color: red; display: none;"></span>
 									</form>
 									<hr>
 
