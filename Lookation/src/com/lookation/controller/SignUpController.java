@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.Controller;
 import com.lookation.dao.IAccountDAO;
 import com.lookation.dto.AccountDTO;
 
-public class CreateAccountController implements Controller
+public class SignUpController implements Controller
 {
 	private IAccountDAO memberDao, hostDao;
 	
@@ -41,7 +41,7 @@ public class CreateAccountController implements Controller
 		account.setNick(nick);
 		account.setPw(request.getParameter("pw"));
 		account.setName(request.getParameter("name"));
-		account.setTel(request.getParameter("nick"));
+		account.setTel(request.getParameter("tel"));
 		
 		try
 		{	
