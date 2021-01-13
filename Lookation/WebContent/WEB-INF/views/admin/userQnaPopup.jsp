@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>qnaPopup.jsp</title>
+<title>userQnaPopup.jsp</title>
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <style>
 	table
@@ -51,25 +51,25 @@
 <div class="outer">
 	<div class="inner">
 		<form>
-		<!-- userReview.jsp에서 공간코드, 작성일자, 이용자이름, 리뷰전문을 받아온다. -->
+		<!-- userQnaManager.jsp에서 qnaCode를 받아옴 -->
 			<table>
 				<tr>
 					<th>공간코드</th>
 					<td>
-						<a href="#">이전페이지에서 받아온 공간코드</a>
+						<a href="#">${dto.locCode }</a>
 					</td>
 				</tr>
 				<tr>
 					<th>작성일자</th>
-					<td>이전페이지에서 받아온 작성일자</td>
+					<td>${dto.qnaDate }</td>
 				</tr>
 				<tr>
-					<th>이용자</th>
-					<td>이전페이지에서 받아온 이용자 이름</td>
+					<th>닉네임</th>
+					<td>${dto.memberNickname }</td>
 				</tr>
 				<tr>
 					<th>작성된 Q&A</th>
-					<td>이전페이지에서 받아온 큐엔에이 전문 표시</td>
+					<td>${dto.qnaContent }</td>
 				</tr>
 			</table>
 		</form>

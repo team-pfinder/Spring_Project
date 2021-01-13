@@ -30,18 +30,41 @@
 
 <script type="text/javascript">
 	
-	function popupOpen()
+	/* 상세보기 버튼을 클릭했을 때 상세보기 팝업을 띄우는 구문 */
+	$(document).ready(function()
 	{
-		var popUrl = "qnaPopup.jsp";
-		var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
-		window.open(popUrl, "", popOption);
-	}
+		$(".detailBtn").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "userqnapopup.action?qnaCode=" + $(this).val();
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		});
+	});
 	
-	function deleteReview()
+	/* 삭제버튼 누르면 삭제가 되게 */
+	$(document).ready(function()
 	{
-		confirm("해당 게시글을 삭제하시겠습니까?");
-		/* if문으로 분기하여 true(=확인버튼)일 때 삭제할 수 있도록 변경 */
-	}
+		$(".deleteBtn").click(function()
+		{
+			// alert($(this).val());
+			
+			if (confirm("해당 게시글을 삭제하시겠습니까?"))
+			{
+				$(location).attr("href", "qnadelete.action?qnaCode=" + $(this).val());
+			}
+		});
+	});
+	
+	/* QNA 테이블과 QNA_REMOVE 테이블 데이터 비교해서 뷰에서 안보이게 */
+	$(document).ready(function()
+	{
+		if(count>0)
+		{
+			css("display", "none");
+		}
+	});
+	
 	
 	/* 체크박스 전체선택 전체 해제 */
 	$(document).ready(function()
@@ -130,67 +153,23 @@
                                     </thead>
                                     
                                     <tbody>
+                                    	<c:forEach var="adminUserDTO" items="${basicList }">
                                     	<tr>
                                     		<td><input type="checkbox"></td>
-	                                    	<td>Q00005</td>
-	                                    	<td>알 수 없음</td>
-	                                    	<td>test5@test.com</td>
-	                                    	<td>P05005</td>
-	                                    	<td>★홍$대#카&지@노☆</td>
-	                                    	<td>
-												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
+                                    		<td>${adminUserDTO.qnaCode }</td>
+                                    		<td>${adminUserDTO.memberNickname }</td>
+                                    		<td>${adminUserDTO.memberEmail }</td>
+                                    		<td>${adminUserDTO.locCode }</td>
+                                    		<td>${adminUserDTO.qnaContent }</td>
+                                    		<td>
+												<button type="button" class="btn btn-primary detailBtn"
+												value="${adminUserDTO.qnaCode }">상세보기</button>
+												<button type="button" class="btn btn-danger deleteBtn"
+												value="${adminUserDTO.qnaCode }">삭제</button>
 											</td>
                                     	</tr>
-                                    	<tr>
-                                    		<td><input type="checkbox"></td>
-	                                    	<td>Q00004</td>
-	                                    	<td>닉네임4</td>
-	                                    	<td>test4@test.com</td>
-	                                    	<td>P05005</td>
-	                                    	<td>브라이덜 샤워할건데 혹시 가능한가요?</td>
-	                                    	<td>
-												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
-											</td>
-                                    	</tr>
-                                    	<tr>
-                                    		<td><input type="checkbox"></td>
-	                                    	<td>Q00003</td>
-	                                    	<td>닉네임3</td>
-	                                    	<td>test3@test.com</td>
-	                                    	<td>P03002</td>
-	                                    	<td>코로난데 혹시 영업 계속 하시나요?</td>
-	                                    	<td>
-												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
-											</td>
-                                    	</tr>
-                                    	<tr>
-                                    		<td><input type="checkbox"></td>
-	                                    	<td>Q00002</td>
-	                                    	<td>닉네임2</td>
-	                                    	<td>test2@test.com</td>
-	                                    	<td>P05001</td>
-	                                    	<td>이거 길어지면 ...처리 되는지 확인하려고 엄청 길게 써봅니다. 지금 붕어빵 먹고있는데 존 맛 탱 그자체
-	                                    	커스터드 크림도 존맛이고 팥도 개개개개개존맛..;;이게 바로 소..확..행?ㅋ</td>
-	                                    	<td>
-												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
-											</td>
-                                    	</tr>
-                                    	<tr>
-                                    		<td><input type="checkbox"></td>
-	                                    	<td>Q00001</td>
-	                                    	<td>닉네임1</td>
-	                                    	<td>test1@test.com</td>
-	                                    	<td>P05003</td>
-	                                    	<td>사진이 좀 흐릿해서 그러는데 뫄뫄 있는거 확실한가요?</td>
-	                                    	<td>
-												<button type="button" class="btn btn-primary" onclick="popupOpen()">상세보기</button>
-												<button type="button" class="btn btn-danger" onclick="deleteReview()">삭제</button>
-											</td>
-                                    	</tr>
+                                    	</c:forEach> 
+                                    	
                                     </tbody>
                                 </table>
                             </div>
