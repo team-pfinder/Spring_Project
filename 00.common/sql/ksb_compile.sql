@@ -1,5 +1,3 @@
--- 암호화 패키지
-
 --○ 패키지 선언
 CREATE OR REPLACE PACKAGE CRYPTPACK
 AS
@@ -41,6 +39,19 @@ AS
         );
         RETURN TRIM(CRYPTED_STRING);
     END;
-    
 END CRYPTPACK;
 --==>> Package Body CRYPTPACK이(가) 컴파일되었습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

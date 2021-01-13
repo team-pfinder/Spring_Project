@@ -9,7 +9,7 @@
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
-	String actionUrl = "sendemail.action?identify=" + identify + "&type=createAccount";
+	String actionUrl = "sendaccountcreateemail.action?identify=" + identify;
 	pageContext.setAttribute("actionUrl", actionUrl);
 %>
 <!DOCTYPE html>
@@ -255,6 +255,8 @@
 			/* 닉네임 중복검사 */
 			
 			
+			alert("입력하신 이메일 주소로 인증 메일이 발송되었습니다.\n인증이 끝나면 회원가입이 완료됩니다.");
+			
 			$("#signUpForm").submit();
 		});
 		
@@ -279,7 +281,7 @@
 	</div>
 
 	<div class="head">
-		<c:if test="${identify eq 'user'}">
+		<c:if test="${identify eq 'member'}">
 			<h1 style="font-weight:1000;">이용자 회원가입</h1>
 		</c:if>
 		

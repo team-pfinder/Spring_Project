@@ -1,5 +1,5 @@
 -- DUMMY DATA
-
+-- ※※※ 돌리기 전에 F_CODE 함수를 먼저 만들어 주세요.
 --============================================================= 0. ADMIN
 
 -- ADMIN(관리자)
@@ -24,7 +24,6 @@ VALUES(F_CODE('N', N_SEQ.NEXTVAL), 'IN000002', '안내드립니다.', '코로나로 인해 �
 
 INSERT INTO NOTICE(NOTICE_CODE, IMPORTANT_NOTICE_CODE, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE)
 VALUES(F_CODE('N', N_SEQ.NEXTVAL), 'IN000001', '개인정보유출이슈', '저희는 개인정보 유출을 안했는데 어쩌고...', SYSDATE);
-
 
 -- ATTACHMENT(첨부파일(공지사항), AT)
 CREATE SEQUENCE AT_SEQ
@@ -1347,4 +1346,4 @@ VALUES (F_CODE('HMIMG',HMIMG_SEQ.NEXTVAL), 'HMIF000009', '메신저이미지링크홑3');
 
 
 -- 커밋
-COMMIT;
+--COMMIT;
