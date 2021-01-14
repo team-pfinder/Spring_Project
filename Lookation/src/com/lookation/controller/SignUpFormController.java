@@ -26,7 +26,7 @@ public class SignUpFormController implements Controller
 		
 		try
 		{
-			mav.setViewName("common/signUp");
+			mav.setViewName("../WEB-INF/views/common/signUp.jsp");
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());
