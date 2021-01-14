@@ -40,27 +40,33 @@ public class DeleteMemberController implements Controller
 		try
 		{	
 			
-			if(dao.searchMemCode(memCode)!=0)	// 이미 탈퇴이용자 테이블에 있다면... 
+			if(dao.checkMemCode(memCode)==0)	// 회원프로필 존재하지 않는다면... 
 			{
 				response.setContentType("text/html; charset=UTF-8");
-				 
 				PrintWriter out = response.getWriter();
-				 
-				out.println("<script>alert('이미 탈퇴가 완료되었습니다.');</script>");
-				 
+				out.println("<script>alert('가입정보가 유효하지 않거나 이미 탈퇴가 완료된 회원입니다.');</script>");
 				out.flush();
 				
 				mav.setViewName("common/login");
 				return mav;
 			}
+			else if(dao.checkMileage(memCode)!=0)	// 마일리지 남아있으면
+			{
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>alert('마일리지가 남아있어 마일리지 환전 페이지로 이동합니다.');</script>");
+				out.flush();
+				
+				// 마이페이지로 보냄
+				mav.setViewName("user/mypageUser");
+				
+				return mav;
+			}
 			else if(dao.checkBook(memCode)!=0)	// 예약내역 남아있으면
 			{	
 				response.setContentType("text/html; charset=UTF-8");
-				 
 				PrintWriter out = response.getWriter();
-				 
 				out.println("<script>alert('예약내역이 남아있어 예약관리 페이지로 이동합니다.');</script>");
-				 
 				out.flush();
 				
 				// 마이페이지로 보냄
@@ -69,12 +75,13 @@ public class DeleteMemberController implements Controller
 				return mav;
 			}
 			else						
-			{
+			{	
+				// 가입하지 않은 회원(M000009) 있으면 인서트 안되게 확인해야겠음.
 				dao.delExchangeInfo(memCode);
 				dao.delLoadReg(memCode);
 				dao.delBankInfo(memCode);
 				dao.delProfile(memCode);
-				
+				/*ORA-02291: integrity constraint (LOOKATION.FK_MEMBER_WITHDRAW_MEMBER_CODE) violated - parent key not found*/
 				dao.insertDelTbl(memCode);
 			}
 			

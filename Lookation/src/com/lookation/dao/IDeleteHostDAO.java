@@ -21,13 +21,14 @@ import java.sql.SQLException;
 
 public interface IDeleteHostDAO
 {	
-	// 1. 탈퇴내역에 해당 호스트 있는지 확인
-	public int searchHostCode(String hostCode) throws SQLException;
+	// 1. 호스트프로필에 해당 호스트정보 있는지 확인
+	public int checkHostCode(String hostCode) throws SQLException;
 	
-	// 2. 예약내역 있으면 탈퇴 불가능
+	// 2. 예약내역 남아있는지 확인
 	public int checkBook(String hostCode) throws SQLException;
 	
-	// 마일리지 남아있는지 확인
+	// 3. 마일리지 남아있는지 확인
+	public int checkMileage(String hostCode) throws SQLException;
 	
 	// 4. LOC_CONTACT에서 연락처 삭제
 	public int delContact(String hostCode) throws SQLException;

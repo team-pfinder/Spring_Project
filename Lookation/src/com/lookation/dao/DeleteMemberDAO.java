@@ -1,9 +1,11 @@
 package com.lookation.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.sql.DataSource;
 
@@ -18,15 +20,15 @@ public class DeleteMemberDAO implements IDeleteMemberDAO
 	}
 	
 	
-	// 이미 탈퇴했는지 확인
+	// 로그인한 멤버코드 유효성 확인 → 멤버프로필 존재하는지
 	@Override
-	public int searchMemCode(String memCode) throws SQLException
+	public int checkMemCode(String memCode) throws SQLException
 	{
 		int result = 0;
 		
 		Connection conn = dataSource.getConnection();
-		String sql = "SELECT COUNT(*) AS COUNT FROM MEMBER_WITHDRAW"
-				   + " WHERE MEMBER_CODE = ?";
+		String sql = "SELECT COUNT(*) AS COUNT"
+				+ " FROM MEMBER_PROFILE WHERE MEMBER_CODE = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
@@ -40,6 +42,23 @@ public class DeleteMemberDAO implements IDeleteMemberDAO
 		
 		return result;
 	}
+	
+	// 탈퇴한 멤버 테이블 확인
+	/*
+	 * @Override public int searchMemCode(String memCode) throws SQLException { int
+	 * result = 0;
+	 * 
+	 * Connection conn = dataSource.getConnection(); String sql =
+	 * "SELECT COUNT(*) AS COUNT FROM MEMBER_WITHDRAW" + " WHERE MEMBER_CODE = ?";
+	 * 
+	 * PreparedStatement pstmt = conn.prepareStatement(sql);
+	 * 
+	 * pstmt.setString(1, memCode); ResultSet rs = pstmt.executeQuery();
+	 * 
+	 * while(rs.next()) { result = rs.getInt("COUNT"); }
+	 * 
+	 * return result; }
+	 */
 	
 	// 예약내역 존재하는지 확인 
 	@Override
@@ -73,6 +92,31 @@ public class DeleteMemberDAO implements IDeleteMemberDAO
 		return result;
 	}
 	
+	// 마일리지 내역 확인하기
+	@Override
+	public int checkMileage(String memCode) throws SQLException
+	{
+		Connection conn = dataSource.getConnection();
+		
+		int mileage = 0;
+		
+		String sql = "{call PRC_MEMBER_MILEAGE(?, ?)}";
+		
+		CallableStatement cstmt = conn.prepareCall(sql);
+		cstmt.setString(1, memCode);
+		cstmt.registerOutParameter(2, Types.VARCHAR);
+		cstmt.execute();
+		
+		mileage = Integer.parseInt(cstmt.getString(2));
+		System.out.println(cstmt.getString(2));
+		
+		cstmt.close();
+		conn.close();
+		
+		return mileage;
+	}
+
+
 	// 환전계좌정보 삭제
 	@Override
 	public int delExchangeInfo(String memCode) throws SQLException

@@ -20,13 +20,15 @@ import java.sql.SQLException;
 
 public interface IDeleteMemberDAO
 {
-	// 1. 프로필정보에서 해당 이용자 있는지 확인
-	public int searchMemCode(String memCode) throws SQLException;
+	
+	// 1. 이용자 정보 유효한지 확인
+	public int checkMemCode(String memCode) throws SQLException;
 	
 	// 2. 예약내역 있는지 확인
 	public int checkBook(String memCode) throws SQLException;
-	
-	// 마일리지 남아있는지 확인
+
+	// 3. 마일리지 남아있는지 확인
+	public int checkMileage(String memCode) throws SQLException;
 	
 	// 3. 환전계좌정보 테이블에서 해당 계좌번호로 이루어진 것들 삭제
 	public int delExchangeInfo(String memCode) throws SQLException;
