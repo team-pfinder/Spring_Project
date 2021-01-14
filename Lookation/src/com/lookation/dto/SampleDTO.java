@@ -3,15 +3,40 @@ package com.lookation.dto;
 public class SampleDTO
 {
 	// 객체로 처리할 데이터 선언
-	private int test;
-
-	public int getTest()
+	private String a, c;
+	private int b, d;
+	public String getA()
 	{
-		return test;
+		return a;
 	}
-
-	public void setTest(int test)
+	public void setA(String a)
 	{
-		this.test = test;
+		this.a = a;
 	}
+	public String getC()
+	{
+		return c;
+	}
+	public void setC(String c)
+	{
+		this.c = c;
+	}
+	public int getB()
+	{
+		return b;
+	}
+	public void setB(int b)
+	{
+		this.b = b;
+	}
+	public int getD()
+	{
+		return d;
+	}
+	public void setD(int d)
+	{
+		this.d = d;
+	}
+	
+	
 }

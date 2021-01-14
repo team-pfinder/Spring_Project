@@ -55,7 +55,7 @@ private IAccountDAO memberDao, hostDao;
 			}
 			
 			mav.addObject("result", str);
-			mav.setViewName("ajax/AccountAjax");
+			mav.setViewName("../WEB-INF/views/ajax/AccountAjax.jsp");
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());

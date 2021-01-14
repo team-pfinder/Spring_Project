@@ -113,7 +113,8 @@ public class SendSignUpEmailController implements Controller
 			mav.setViewName("redirect:host/mainHost.jsp");
 		*/
 		
-		mav.setViewName("user/mainUser");
+		// for test
+		mav.setViewName("../WEB-INF/views/user/mainUser.jsp");
 		
 		return mav;
 	}
