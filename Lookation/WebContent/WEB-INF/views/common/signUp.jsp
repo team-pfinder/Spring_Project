@@ -9,7 +9,7 @@
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
-	String actionUrl = "sendaccountcreateemail.action?identify=" + identify;
+	String actionUrl = "sendsignupemail.action?identify=" + identify;
 	pageContext.setAttribute("actionUrl", actionUrl);
 %>
 <!DOCTYPE html>
@@ -148,6 +148,9 @@
 				$(this).addClass("full");
 				$("p#email").attr("class", "pass");	
 			}
+			
+			// 실시간 중복 검사
+			emailAjaxRequest();
 		});
 		
 		// 새 비밀번호 정규식 검사(입력시마다)
@@ -199,6 +202,9 @@
 				$(this).addClass("full");
 				$("p#nick").attr("class", "pass");	
 			}
+			
+			// 실시간 중복 검사
+			nickAjaxRequest();
 		});
 		
 		// 전화번호 정규식 검사(입력시마다)
@@ -251,8 +257,18 @@
 				return;
 			}
 			
-			/* 이메일 중복검사 */
-			/* 닉네임 중복검사 */
+			// 중복된 정보가 있으면 다시 입력
+			if(emailErr.trim() != "")
+			{
+				alert(emailErr.trim());
+				return;	
+			}
+			
+			if(nickErr.trim() != "")
+			{
+				alert(nickErr.trim());
+				return;	
+			}
 			
 			
 			alert("입력하신 이메일 주소로 인증 메일이 발송되었습니다.\n인증이 끝나면 회원가입이 완료됩니다.");
@@ -263,9 +279,29 @@
 		// cancel
 		$("#cancel").click( function()
 		{
+			// 이전 페이지 이동
 			alert("cancel");
 		});
 	});
+	
+	
+	// 이메일, 닉네임 실시간 중복검사
+	function emailAjaxRequest()
+	{
+		emailErr = "";
+		$.post("accountajax.action?type=email"
+				, {email : $("#email").val()}
+		        , function(data) {emailErr = data;});
+	}
+	
+	function nickAjaxRequest()
+	{
+		nickErr = "";
+		$.post("accountajax.action?type=nick"
+				, {nick : $("#nick").val()}
+		        , function(data) {nickErr = data;});
+	}
+	
 </script>
 
 </head>
@@ -335,7 +371,7 @@
 						<p class="normal">연락처</p> 
 						<input type="text" class="form-control full"
 						id="tel" name="tel">
-						<p class="pass" id="tel">연락처 형식이 알맞지 않습니다.</p>
+						<p class="pass" id="tel">연락처 형식이 알맞지 않습니다. 하이픈(-)을 포함하여 입력해주세요.</p>
 					</li>
 				</ul>
 			</form>

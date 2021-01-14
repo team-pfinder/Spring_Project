@@ -1044,7 +1044,7 @@ CREATE TABLE MEMBER_PROFILE
 (
     MEMBER_EMAIL       VARCHAR2(320)    , 
     MEMBER_CODE        VARCHAR2(15)     , 
-    MEMBER_PW          VARCHAR2(15)     , 
+    MEMBER_PW          VARCHAR2(30)     , 
     MEMBER_NICKNAME    VARCHAR2(18)     , 
     MEMBER_NAME        VARCHAR2(30)     , 
     MEMBER_TEL         VARCHAR2(13)     , 
@@ -1209,7 +1209,7 @@ CREATE TABLE HOST_PROFILE
 (
     HOST_EMAIL       VARCHAR2(320)    , 
     HOST_CODE        VARCHAR2(15)     , 
-    HOST_PW          VARCHAR2(15)     , 
+    HOST_PW          VARCHAR2(30)     , 
     HOST_NICKNAME    VARCHAR2(18)     , 
     HOST_NAME        VARCHAR2(30)     , 
     HOST_TEL         VARCHAR2(13)     , 

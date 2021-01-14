@@ -31,25 +31,31 @@ private IAccountDAO memberDao, hostDao;
 	{
 		ModelAndView mav = new ModelAndView();
 		
+		String type = request.getParameter("type");
 		String email = request.getParameter("email");
 		String nick = request.getParameter("nick"); 
 		
 		String str = "";
 		try
 		{
-			if(memberDao.countNick(nick) > 0 || hostDao.countNick(nick) > 0)
+			// 이메일, 닉네임 중복 검사
+			if(type.equals("nick"))
 			{
-				str = "닉네임이 이미 사용중입니다. 다른 닉네임을 입력해주세요.";
-			}	
-			
-			// 이메일, 닉네임 중복 검사 
-			if(memberDao.countEmail(email) > 0 || hostDao.countEmail(email) > 0 )
+				if(memberDao.countNick(nick) > 0 || hostDao.countNick(nick) > 0)
+				{
+					str = "닉네임이 이미 사용중입니다. 다른 닉네임을 입력해주세요.";
+				}
+			}
+			else if(type.equals("email"))
 			{
-				str = "이메일이 이미 사용중입니다. 다른 이메일을 입력해주세요.";
-			}	
+				if(memberDao.countEmail(email) > 0 || hostDao.countEmail(email) > 0 )
+				{
+					str = "이메일이 이미 사용중입니다. 다른 이메일을 입력해주세요.";
+				}
+			}
 			
 			mav.addObject("result", str);
-			mav.setViewName("");
+			mav.setViewName("ajax/AccountAjax");
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());

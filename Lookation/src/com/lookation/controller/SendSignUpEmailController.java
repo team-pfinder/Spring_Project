@@ -11,7 +11,7 @@ import com.lookation.util.IEmailService;
 //※ Spring 이 제공하는 『Controller』 인터페이스를 구현함으로써
 //사용자 정의 컨트롤러 클래스를 구성한다.
 
-public class SendAccountEmailController implements Controller
+public class SendSignUpEmailController implements Controller
 {
 	private IEmailService util;
 
@@ -61,7 +61,7 @@ public class SendAccountEmailController implements Controller
 				"		<div class=\"content-form\" style=\"width : 100%; background: #ffffff; padding: 50px 0px 50px 0px;\">" + 
 				"			<h1>계정생성 인증 안내</h1>" + 
 				"			<br>" + 
-				"			<form action=\"http://localhost:8090/Lookation/actions/createaccount.action?identify="+ identify +"\" method=\"post\">" + 
+				"			<form action=\"http://localhost:8090/Lookation/actions/signup.action?identify="+ identify +"\" method=\"post\">" + 
 				"				<table style=\"margin:0 auto;\">" + 
 				"					<tr>" + 
 				"						<th>이메일 : </th>" + 
