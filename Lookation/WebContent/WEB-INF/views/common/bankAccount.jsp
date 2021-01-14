@@ -39,9 +39,15 @@
 			        send_cnt++;
 			    }
 			}
+			
+			alert($("#array").val(send_array));
+			
 			// 배열 저장 끝--
-
-			$("#array").val(send_array);
+			if(confirm("선택하신 계좌를 정말 삭제 하시겠습니까?") == true)
+			{
+				$(location).attr("href", "studentdelete.action?sid=" + send_array);
+			}
+			
 		});
 	});
 	

@@ -28,7 +28,7 @@ public class BankInfoAddPopupController implements Controller
 		try
 		{
 			System.out.println("popup");
-			mav.setViewName("../WEB-INF/views/bankAccountAddPopup");
+			mav.setViewName("../WEB-INF/views/common/bankAccountAddPopup.jsp");
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());
