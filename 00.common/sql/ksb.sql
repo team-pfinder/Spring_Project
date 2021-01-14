@@ -85,6 +85,32 @@ EXEC CREATE_MEMBER_ACCOUNT('sb9999@gmail.com', 'JAVA006$', '테스트다', '홍홍훙',
 
 
 
---######################################### 2.
---######################################### 3.
+--######################################### 2. LOGIN
+
+--○ MEMBER 로그인 검사
+SELECT MEMBER_CODE
+FROM MEMBER_PROFILE
+WHERE MEMBER_EMAIL = 'test1@test.com'
+  AND MEMBER_PW = 'test12345@';
+
+--○ HOST 로그인 검사
+SELECT HOST_CODE
+FROM HOST_PROFILE
+WHERE HOST_EMAIL = 'good1@test.com'
+  AND HOST_PW = 'test12345@';
+
+--○ MEMBER 패스워드 검사
+SELECT COUNT(*) AS COUNT
+FROM MEMBER_PROFILE
+WHERE MEMBER_CODE = 'M000001'
+  AND MEMBER_PW = 'test12345@';
+
+--○ HOST 패스워드 검사
+SELECT COUNT(*) AS COUNT
+FROM HOST_PROFILE
+WHERE HOST_CODE = 'H000001'
+  AND HOST_PW = 'test12345@';
+
+
+--######################################### 3. 
 

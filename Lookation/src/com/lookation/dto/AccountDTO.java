@@ -2,7 +2,7 @@ package com.lookation.dto;
 
 public class AccountDTO
 {
-	private String email, pw, nick, name, tel;
+	private String email, code, pw, nick, name, tel;
 
 	public String getEmail()
 	{
@@ -12,6 +12,16 @@ public class AccountDTO
 	public void setEmail(String email)
 	{
 		this.email = email;
+	}
+	
+	public String getCode()
+	{
+		return code;
+	}
+
+	public void setCode(String code)
+	{
+		this.code = code;
 	}
 
 	public String getPw()
