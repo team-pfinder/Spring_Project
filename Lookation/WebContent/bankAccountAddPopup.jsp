@@ -19,14 +19,28 @@ String cp = request.getContextPath();
 		option = "width=600, height=670, toolbar=no, location=no, status=no, memubar=no, scrollbars=no, resizable=no, left=150, top=150";/* 크롬은 resizable 옵션 안먹음 */
 		window.open(url, "계좌 등록 약관", option);
 	}
-	
-	function popupSubmit()
+
+/* 	$(document).ready(function() 
 	{
- 		$("#bankinfoform").action = "";
-		$("#bankinfoform").submit();
-	}
+		$("form").submit(function(event) 
+		{ 
+			var bankNum = $('#bankNum').val(); 
+			var pw = $('#pw').val();
+		}
+	} */
 
-
+/* 	$(document).ready(function()
+	{
+		$("#submit").click(function()
+		{
+			//
+			alert();
+			$("form").submit();
+			//
+			alert();
+			//window.open("about:blank", "_self").close();
+		});
+	}); */
 </script>
 
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
@@ -58,11 +72,12 @@ String cp = request.getContextPath();
 			<div class="col-1"></div>
 			<div class="col-10">
 				
-				<form action="bankinfoadd.action" method="post" id="bankinfoform">
+				<form action="/actions/bankinfoadd.action" method="post" id="info">
 					<div class="form-group has-success">
-						<label class="control-label" for="inputSuccess1">은행 선택</label>
-						<select class="form-control" id="bank" name="bank"  required >
-							<option value="" disabled selected hidden>등록할 계좌의 은행을 선택하세요...</option>
+						<label class="control-label" for="inputSuccess1">은행 선택</label> <select
+							class="form-control" required>
+							<option value="" id="bank" name="bank" disabled selected hidden>등록할 계좌의 은행을
+								선택하세요...</option>
 							<option value="경남은행">경남은행</option>
 							<option value="광주은행">광주은행</option>
 							<option value="국민은행">국민은행</option>
@@ -112,8 +127,7 @@ String cp = request.getContextPath();
 							</div>
 						</div>
 						<div class="col-sm-12">
-							<!-- <input type="button" id="submit" class="btn btn-warning" value="계좌등록" style="width:384px" onclick="popupSubmit();"> -->
-							<button type="submit" id="submit" class="btn btn-warning" style="width:384px">계좌등록</button>
+							<button type="button" id="submit" class="btn btn-warning" style="width:384px">계좌등록</button>
 							<button type="button" class="btn btn-warning" style="width:384px"
 								onclick="javascript:window.close()">취소</button>
 						</div>

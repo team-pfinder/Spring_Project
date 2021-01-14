@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.sql.DataSource;
 
@@ -20,14 +21,14 @@ public class DeleteHostDAO implements IDeleteHostDAO
 	
 	// 이미 탈퇴했는지 확인 
 	@Override
-	public int searchHostCode(String hostCode) throws SQLException
+	public int checkHostCode(String hostCode) throws SQLException
 	{
 		int result = 0;
 		
 		Connection conn = dataSource.getConnection();
 		String sql = "SELECT COUNT(*) AS COUNT"
-				   + " FROM HOST_WITHDRAW" 
-				   + " WHERE HOST_CODE=?";
+		           + " FROM HOST_PROFILE"
+				   + " WHERE HOST_CODE = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		
@@ -77,6 +78,30 @@ public class DeleteHostDAO implements IDeleteHostDAO
 		return result;
 	}
 	
+	// 마일리지 남아있는지 확인
+	@Override
+	public int checkMileage(String hostCode) throws SQLException
+	{
+		Connection conn = dataSource.getConnection();
+		
+		int mileage = 0;
+
+		// PRC_HOST_MILEAGE(IN, OUT) : IN은 hostCode, OUT 은 마일리지 잔액 String 형태로
+		String sql = "{call PRC_HOST_MILEAGE(?, ?)}";
+		
+		CallableStatement cstmt = conn.prepareCall(sql);
+		cstmt.setString(1, hostCode);
+		cstmt.registerOutParameter(2, Types.VARCHAR);
+		cstmt.execute();
+		
+		mileage = Integer.parseInt(cstmt.getString(2));
+		System.out.println(cstmt.getString(2));
+		
+		cstmt.close();
+		conn.close();
+		
+		return mileage;
+	}
 
 	// 4. 공간 연락처정보 삭제
 	@Override
@@ -138,8 +163,6 @@ public class DeleteHostDAO implements IDeleteHostDAO
 		cstmt.setString(1, hostCode);
 		
 		result = cstmt.executeUpdate();
-		
-		//System.out.println(cstmt.getString(1));
 		
 		cstmt.close();
 		conn.close();

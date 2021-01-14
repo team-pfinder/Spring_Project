@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 .navbar-expand-sm {
@@ -27,14 +27,93 @@
 }
 
 /*=== carousel ===*/
-.slider-item img{
-    display: block;
-    width: 100%;
-    height: auto;
-    max-width: 500px;
-    resize: both;
+.slider-item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-width: 500px;
+	resize: both;
 }
 
+/* Scrollspy 수정중 */
+.myScrollspy {
+	position: fixed;
+    z-index: 999;
+    top: 55%;
+    left: 20px;
+    width: 50px;
+    padding: inherit;
+    transform: translateY(-50%);
+    color:black;
+}
+
+.myScrollspy .nav-stacked li {
+    position: relative;
+    min-width: 200px;
+    text-align: left;
+}
+
+.myScrollspy .nav-stacked li .dot {
+    display: block;
+    color: #fff;
+    padding: 5px 0;
+}
+
+.myScrollspy .nav-stacked li .dot::before,
+.myScrollspy .nav-stacked li .dot::after {
+    display: block;
+    position: absolute;
+    content: '';
+    border-radius: 50%;
+    top: 50%;
+    transition: all .3s ease;
+}
+
+.myScrollspy .nav-stacked li .dot::before {
+    width: 5px;
+    height: 5px;
+    left: 0;
+    border: 2px solid #888;
+    transform: translateY(-50%);
+}
+
+.myScrollspy .nav-stacked li .dot::after {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #444;
+    left: -5px;
+    transform: translateY(-50%) scale(0);
+}
+
+.myScrollspy .nav-stacked li .dot.active::before,
+.myScrollspy .nav-stacked li:hover .dot::before {
+    background: #00043c;
+    border-color: #00043c;
+}
+
+.myScrollspy .nav-stacked li .dot.active::after,
+.myScrollspy .nav-stacked li:hover .dot::after {
+    transform: translateY(-50%) scale(1);
+}
+
+.myScrollspy .nav-stacked li .dot span {
+    display: inline-block;
+    opacity: 0;
+    font-weight: 700;
+    letter-spacing: .5px;
+    background-color: #00043c;
+    padding: 10px 20px;
+    border-radius: 3px;
+    margin-left: 30px;
+    transform: translateX(20px);
+    transition: all .3s ease;
+}
+
+.myScrollspy .nav-stacked li .dot.active span,
+.myScrollspy .nav-stacked li:hover .dot span {
+    transform: translateX(0px);
+    opacity: 1;
+}
 
 /*=== scrollspy ===*/
 .nav-pick {
@@ -42,24 +121,24 @@
 	margin: 10px;
 }
 
-.nav-pick > a{
+.nav-pick>a {
 	color: black;
 	font-weight: bold;
 }
 
-.nav-pick > a:hover {
+.nav-pick>a:hover {
 	color: #ebebeb;
 	text-decoration: none;
 }
 
 /*=== sub 제목 밑줄 ===*/
 .info-sub:after {
-    content: "";
-    display: block;
-    font-weight: bold;
-    width: 25px;
-    border-bottom: 4px solid #ffd014;
-    margin: 10px 0px;
+	content: "";
+	display: block;
+	font-weight: bold;
+	width: 25px;
+	border-bottom: 4px solid #ffd014;
+	margin: 10px 0px;
 }
 
 /*=== 공간소개, 환불규정안내 ===*/
@@ -82,7 +161,7 @@
 .det {
 	padding-left: 30px;
 	color: #656565;
-	text-align:justify;
+	text-align: justify;
 }
 
 /*=== 시설 안내, 주의사항 리스트 ===*/
@@ -102,7 +181,6 @@
 	color: #656565;
 }
 
-
 /*=== 호스트 정보 ===*/
 .host-box {
 	font-size: 0.8em;
@@ -112,47 +190,77 @@
 	line-height: 130%;
 }
 
-
 /*=== 리뷰, Q&A 시간 표시 ===*/
 .meta {
 	font-size: 13px;
-    letter-spacing: .1em;
-    color: #ccc;
+	letter-spacing: .1em;
+	color: #ccc;
 }
 
 /*=== 별점 ===*/
-.set-star{
+.set-star {
 	color: #fdbe34;
 }
 
 /*=== 답글 버튼 ===*/
 .reply {
 	padding: 5px 10px;
-    background: #e6e6e6;
-    color: #000000;
-    font-size: 11px;
-    letter-spacing: .1em;
-    font-weight: 400;
-    border-radius: 4px;
+	background: #e6e6e6;
+	color: #000000;
+	font-size: 11px;
+	letter-spacing: .1em;
+	font-weight: 400;
+	border-radius: 4px;
 }
-
 
 /*=== 리뷰 이미지 리사이징 ===*/
 .review-img {
-
 	display: inline-block;
 	resize: both;
 	max-width: 100%;
-	
 }
-
 </style>
+<script type="text/javascript">
+$(function(){
+
+    var link = $('#myScrollspy a.dot');
+    link.on('click',function(e){
+        
+        //href 속성을 통해, section id 타겟을 잡음
+        var target = $($(this).attr('href')); 
+        
+        //target section의 좌표를 통해 꼭대기로 이동
+        $('html, body').animate({
+            scrollTop: target.offset().top
+        },600);
+        
+        //active 클래스 부여
+        $(this).addClass('active');
+
+        // 앵커를 통해 이동할때, URL에 #id가 붙지 않도록 함.
+        e.preventDefault();
+    });
+    
+    $(window).on('scroll',function(){
+        findPosition();
+    });
+
+    function findPosition(){
+        $('section').each(function(){
+            if( ($(this).offset().top - $(window).scrollTop() ) < 20){
+                link.removeClass('active');
+                $('#myScrollspy').find('[data-scroll="'+ $(this).attr('id') +'"]').addClass('active');
+            }
+        });
+    }
+
+    findPosition();
+});
+
+</script>
+
 </head>
-<!-- scroll할 영역을 body로 지정해줌 -->
-<!-- navbar 클래스대로 클림하면 움직일 예정 -->
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
-
-
+<body>
 <section class="ftco-section ftco-degree-bg">
 	<div class="container">
 		<div class="row">	
@@ -206,8 +314,20 @@
 			<div class="col-lg-8 p-md-3">
 
 
-				<!-- .navbar scrollspy로 이동할 부분 -->
-				<nav class="navbar navbar-expand-sm my-5">
+			<!-- .navbar scrollspy로 이동할 부분 -->
+			<nav class="myScrollspy" id="myScrollspy">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a data-scroll="section1" href="#section1" class="dot active"><span>공간소개</span></a><li>
+					<li><a data-scroll="section2" href="#section2" class="dot"><span>시설안내</span></a><li>
+					<li><a data-scroll="section3" href="#section3" class="dot"><span>주의사항</span></a><li>
+					<li><a data-scroll="section4" href="#section4" class="dot"><span>환불정책</span></a><li>
+					<li><a data-scroll="section5" href="#section5" class="dot"><span>Q&A</span></a><li>
+					<li><a data-scroll="section6" href="#section6" class="dot"><span>이용후기</span></a><li>
+				</ul>
+			</nav>
+
+
+					<!-- <nav class="navbar navbar-expand-sm my-5">
 					<ul class="navbar-nav text-center">
 						<li class="nav-pick"><a href="#section1">공간소개</a>
 						<li>
@@ -222,11 +342,11 @@
 						<li class="nav-pick"><a href="#section6">이용후기</a>
 						<li>
 					</ul>
-				</nav>
+				</nav> -->
 
 				<!-- Section 1 -->
 				<div id="section1" class="info-div">
-					<h4 class="mb-4 info-sub">공간소개</h4>
+					<h4 class="my-4 info-sub">공간소개</h4>
 					<p>30평정도 되면 테이블은 단체석 포함 12개입니다. 상인동 술집 골목과 상인롯데시네마 인근이며 지하철
 						상인역에서 도보 7분이면 오실 수 있습니다.</p>
 
@@ -337,63 +457,54 @@
 				</div><!-- End .map -->
 
 
-
-
 				<!-- Section 5 -->
 				<div id="section5" class="info-div">
-					<h4 class="info-sub">
+					<h4 class="info-sub mb-5">
 						Q&A<span class="set-star ml-3">2개</span>
 						<button class="btn btn-primary float-right">질문 작성하기</button>
 					</h4>
-					<br>
-					<br>
-					<ul class="comment-list">
-						<li class="comment">
-							<h3>돈조반니</h3>
-							<div class="meta">2021년 1월 1일 2:21pm</div>
-							<p>식기류가 준비되어 있는지 궁금합니다~!!!</p>
-							<p>
+					
+					<div>
+						<ul class="comment-list">
+							<li class="comment">
+								<h3>돈조반니</h3>
+								<span class="meta">2021년 1월 1일 2:21pm</span>
+								<p>식기류가 준비되어 있는지 궁금합니다~!!!</p>
+									<a href="#" class="reply">답글</a>
+							</li>
+							<li class="comment">
+								<h3>장로스탄</h3>
+								<span class="meta">2020년 12월 31일 2:11pm</span>
+								<p>궁금한게 있는데 호박도 나오나요?</p>
 								<a href="#" class="reply">답글</a>
-							</p>
-						</li>
-
-						<li class="comment">
-							<h3>장로스탄</h3>
-							<div class="meta">2020년 12월 31일 2:11pm</div>
-							<p>궁금한게 있는데 호박도 나오나요?</p>
-							<p>
-								<a href="#" class="reply">답글</a>
-							</p>
-
-							<ul class="children">
-								<li class="comment">
-									<h3>슈미</h3>
-									<div class="meta">2020년 1월 4일 7:19pm</div>
-									<p>해당 공간 게시글을 작성한 호스트가 맞을 경우 수정/삭제 버튼이 나타납니다.</p>
-									<p>
+	
+								<ul class="children">
+									<li class="comment">
+										<h3>슈미</h3>
+										<span class="meta">2020년 1월 4일 7:19pm</span>
+										<p>해당 공간 게시글을 작성한 호스트가 맞을 경우 수정/삭제 버튼이 나타납니다.</p>
 										<a href="#" class="reply">수정</a> <a href="#" class="reply">삭제</a>
-									</p>
-								</li>
-							</ul>
-						</li>
-
-						<li class="comment">
-							<h3>제이</h3>
-							<div class="meta">2020년 12월 21일 5:14pm</div>
-							<p>6명 이상 가면 추가요금 지불하고 묵을 수 있나요?</p>
-							<p>
+									</li>
+								</ul>
+							</li>
+	
+							<li class="comment">
+								<h3>제이</h3>
+								<span class="meta">2020년 12월 21일 5:14pm</span>
+								<p>6명 이상 가면 추가요금 지불하고 묵을 수 있나요?</p>
 								<a href="#" class="reply">답글</a>
-							</p>
-						</li>
-					</ul>
-					<!-- .comment-list -->
-
+							</li>
+						</ul><!-- .comment-list -->
+					</div>
+				
 				</div>
 				<!-- End .section5 -->
 
 
 				<!-- section 6 -->
-				<div id="section6" class="info-div">
+				<div id="section7" class="info-div">
+					
+					<div>
 					<h4 class="info-sub">
 						이용후기<span class="set-star ml-3">2개</span>
 
@@ -415,6 +526,7 @@
 						<li class="comment">
 							<h3>돈조반니</h3>
 							<div class="float-right set-star">
+								<!-- 별존 -->
 								<span class="icon-star mr-1"></span><span
 									class="icon-star mr-1"></span><span class="icon-star mr-1"></span><span
 									class="icon-star mr-1"></span><span class="icon-star mr-1"></span>
@@ -472,10 +584,10 @@
 					<!-- .comment-list -->
 
 				</div>
-				<!-- End .section6 -->
-			</div>
-			<!-- .col-lg-8 -->
-
+				
+				</div><!-- End .section6 -->
+			
+		</div><!-- .col-lg-8 -->
 
 			<!-- 오른쪽 사이드바 -->
 	<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">

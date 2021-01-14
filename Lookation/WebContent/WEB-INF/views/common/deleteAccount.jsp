@@ -47,17 +47,18 @@
 			//alert(param);
 			//alert($(this).val());
 			
+			var code = $("#deleteBtn").val();
 			
 			// ※ 나중에 세션처리로 변경
 			if(param=="member")
 			{
 				// 이용자일 경우 멤버코드 받아서
-				$(location).attr("href", "deletemember.action?memCode=M000006");
+				$(location).attr("href", "deletemember.action?memCode=" + code);
 			}
 			else if(param=="host")
 			{
 				// 호스트일 경우 호스트코드 받아서 
-				$(location).attr("href", "deletehost.action?hostCode=H000006");
+				$(location).attr("href", "deletehost.action?hostCode=" + code);
 			}
 			else
 			{
@@ -108,11 +109,11 @@
 							
 							<!-- 이용자 탈퇴버튼 -->
 							<c:if test="${identify eq 'member'}">
-								<button class="btn btn-danger mx-1" value="user" type="button" id="deleteBtn">탈퇴하기</button>
+								<button class="btn btn-danger mx-1" value="M000011" type="button" id="deleteBtn">탈퇴하기</button>
 							</c:if>
 							<!-- 호스트 탈퇴버튼 -->
 							<c:if test="${identify eq 'host'}">
-								<button class="btn btn-danger mx-1" value="host" type="button" id="deleteBtn">탈퇴하기</button>
+								<button class="btn btn-danger mx-1" value="H000011" type="button" id="deleteBtn">탈퇴하기</button>
 							</c:if>
 						</div>
 
