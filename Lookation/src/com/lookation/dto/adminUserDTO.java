@@ -3,89 +3,85 @@ package com.lookation.dto;
 public class adminUserDTO
 {
 	// userQnaManager 에서 사용할 주요 속성 구성
-	private String qnaCode, memberNickname, memberEmail, locCode, qnaContent
-		, qnaDate, qnaRemoveCode, qnaRemoveDate;
+	private String qna_code, member_nickname, member_email, loc_code, qna_content
+		, qna_date, qna_remove_code, qna_remove_date;
+	private int count;
+	
+	// userReviewManager 에서 사용할 주요 속성 구성
+	
 	
 	// userQnaManager getter / setter 구성
-	
-	public String getQnaCode()
+	public String getQna_code()
 	{
-		return qnaCode;
+		return qna_code;
 	}
-
-	public void setQnaCode(String qnaCode)
+	public void setQna_code(String qna_code)
 	{
-		this.qnaCode = qnaCode;
+		this.qna_code = qna_code;
 	}
-
-	public String getMemberNickname()
+	public String getMember_nickname()
 	{
-		return memberNickname;
+		return member_nickname;
 	}
-
-	public void setMemberNickname(String memberNickname)
+	public void setMember_nickname(String member_nickname)
 	{
-		this.memberNickname = memberNickname;
+		this.member_nickname = member_nickname;
 	}
-
-	public String getMemberEmail()
+	public String getMember_email()
 	{
-		return memberEmail;
+		return member_email;
 	}
-
-	public void setMemberEmail(String memberEmail)
+	public void setMember_email(String member_email)
 	{
-		this.memberEmail = memberEmail;
+		this.member_email = member_email;
 	}
-
-	public String getLocCode()
+	public String getLoc_code()
 	{
-		return locCode;
+		return loc_code;
 	}
-
-	public void setLocCode(String locCode)
+	public void setLoc_code(String loc_code)
 	{
-		this.locCode = locCode;
+		this.loc_code = loc_code;
 	}
-
-	public String getQnaContent()
+	public String getQna_content()
 	{
-		return qnaContent;
+		return qna_content;
 	}
-
-	public void setQnaContent(String qnaContent)
+	public void setQna_content(String qna_content)
 	{
-		this.qnaContent = qnaContent;
+		this.qna_content = qna_content;
 	}
-
-	public String getQnaDate()
+	public String getQna_date()
 	{
-		return qnaDate;
+		return qna_date;
 	}
-
-	public void setQnaDate(String qnaDate)
+	public void setQna_date(String qna_date)
 	{
-		this.qnaDate = qnaDate;
+		this.qna_date = qna_date;
 	}
-
-	public String getQnaRemoveCode()
+	public String getQna_remove_code()
 	{
-		return qnaRemoveCode;
+		return qna_remove_code;
 	}
-
-	public void setQnaRemoveCode(String qnaRemoveCode)
+	public void setQna_remove_code(String qna_remove_code)
 	{
-		this.qnaRemoveCode = qnaRemoveCode;
+		this.qna_remove_code = qna_remove_code;
 	}
-
-	public String getQnaRemoveDate()
+	public String getQna_remove_date()
 	{
-		return qnaRemoveDate;
+		return qna_remove_date;
 	}
-
-	public void setQnaRemoveDate(String qnaRemoveDate)
+	public void setQna_remove_date(String qna_remove_date)
 	{
-		this.qnaRemoveDate = qnaRemoveDate;
+		this.qna_remove_date = qna_remove_date;
+	}
+	public int getCount()
+	{
+		return count;
+	}
+	public void setCount(int count)
+	{
+		this.count = count;
 	}
 	
 }
