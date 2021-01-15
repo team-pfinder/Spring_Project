@@ -21,6 +21,7 @@ public class Account
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 로그인
 	@RequestMapping(value="/actions/loginform.action", method=RequestMethod.GET)
 	public String loginForm(HttpServletRequest request)
 	{
@@ -86,6 +87,7 @@ public class Account
 		}
 	}
 
+	// 본인인증
 	@RequestMapping(value="/actions/confirmpasswordform.action", method=RequestMethod.GET)
 	public String confirmPasswordForm(HttpServletRequest request)
 	{
@@ -137,5 +139,133 @@ public class Account
 			return "Next.action";
 		}
 		
+	}
+	
+	// 프로필
+	@RequestMapping(value="/actions/profile.action", method=RequestMethod.GET)
+	public String profile(HttpServletRequest request, Model model)
+	{
+		//String identify = request.getParameter("identify");
+		
+		// 로그인 확인
+		// ...
+		
+		// 세션 정보를 가지고 온다.
+		HttpSession session = request.getSession();
+		String identify = "member";	
+		String accountCode = "";
+		
+		if(identify.equals("host"))
+			accountCode = "H000004";
+		else if(identify.equals("member"))
+			accountCode = "M000003";
+		
+		// 세션 정보의 회원 코드를 토대로 프로필 정보를 찾는다.	
+		if(identify.equals("host"))
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	
+			model.addAttribute("info", dao.getInfo(accountCode));
+			model.addAttribute("blackListDate", dao.getBlackListDate(accountCode));
+		}
+		else if(identify.equals("member"))
+		{
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			model.addAttribute("info", dao.getInfo(accountCode));
+			model.addAttribute("blackListDate", dao.getBlackListDate(accountCode));
+		}
+		
+		return "../WEB-INF/views/common/profile.jsp?identify=" + identify;
+	}
+	
+	@RequestMapping(value="/actions/ajaxmodifytel.action", method=RequestMethod.POST)
+	public String ajaxModifyTel(HttpServletRequest request, Model model)
+	{
+		//String identify = request.getParameter("identify");
+		
+		// 로그인 확인
+		// ...
+		// 세션 정보를 가지고 온다.
+		HttpSession session = request.getSession();
+		String identify = "member";
+		
+		//
+		String accountCode = "";
+		if(identify.equals("host"))
+			accountCode = "H000001";
+		else if(identify.equals("member"))
+			accountCode = "M000001";
+		
+		String tel = request.getParameter("tel");
+		AccountDTO account = new AccountDTO();
+		account.setTel(tel);
+		account.setCode(accountCode);
+		
+		// 세션 정보의 회원 코드를 토대로 회원 전화번호를 수정한다.
+		if(identify.equals("host"))
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+			
+			// 수정 후 다시 가져옴
+			dao.modifyTel(account);
+			model.addAttribute("result", dao.getInfo(accountCode).getTel());
+		}
+		else if(identify.equals("member"))
+		{
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			
+			// 수정 후 다시 가져옴
+			dao.modifyTel(account);
+			model.addAttribute("result", dao.getInfo(accountCode).getTel());
+		}
+
+		
+		return "../WEB-INF/views/ajax/AccountAjax.jsp";
+	}
+
+	
+	@RequestMapping(value="/actions/changepasswordform.action", method=RequestMethod.GET)
+	public String changePasswordForm(HttpServletRequest request)
+	{
+		// 세션 정보를 가지고 온다.
+		HttpSession session = request.getSession();
+		String identify = "member";
+		
+		return "../WEB-INF/views/common/changePassword.jsp?identify=" + identify;
+	}
+	
+	@RequestMapping(value="/actions/changepassword.action", method=RequestMethod.POST)
+	public String changePassword(HttpServletRequest request)
+	{
+		// 세션 정보를 가지고 온다.
+		HttpSession session = request.getSession();
+		String identify = "member";
+		String accountCode = "";
+		
+		if(identify.equals("host"))
+			accountCode = "H000001";
+		else if(identify.equals("member"))
+			accountCode = "M000001";
+		
+		String newPw = request.getParameter("pw_new");
+		
+		System.out.println(newPw);
+		
+		AccountDTO account = new AccountDTO();
+		account.setCode(accountCode);
+		account.setPw(newPw);
+		
+		// 세션 정보의 회원 코드를 토대로 프로필 정보를 찾는다.	
+		if(identify.equals("host"))
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+			dao.modifyPassword(account);
+		}
+		else if(identify.equals("member"))
+		{
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			dao.modifyPassword(account);
+		}
+		
+		return "redirect:profile.action";
 	}
 }

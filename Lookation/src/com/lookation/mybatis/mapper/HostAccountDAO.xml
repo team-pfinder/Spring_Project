@@ -18,4 +18,31 @@
   		AND HOST_PW = #{pw}
 	</select>
 	
+	<select id="getInfo" parameterType="java.lang.String" 
+	resultType="com.lookation.dto.AccountDTO">
+		SELECT EMAIL, CODE, PW, NICK, NAME, TEL, CREATEDATE
+		FROM HOST_PROFILEVIEW
+		WHERE CODE = #{code}
+	</select>
+	
+	<update id="modifyTel">
+		UPDATE HOST_PROFILE
+		SET HOST_TEL = #{tel}
+		WHERE HOST_CODE = #{code}
+	</update>
+	
+	<select id="getBlackListDate" parameterType="java.lang.String"
+	resultType="java.lang.String">
+		SELECT TO_CHAR(HB.HOST_BLACKLIST_DATE, 'YYYY-MM-DD')
+		FROM HOST_BLACKLIST HB JOIN HOST_PROFILE HP
+		ON HB.HOST_EMAIL = HP.HOST_EMAIL
+		WHERE HP.HOST_CODE = #{host_code}
+	</select>
+	
+	<update id="modifyPassword">
+		UPDATE HOST_PROFILE
+		SET HOST_PW = #{pw}
+		WHERE HOST_CODE = #{code}
+	</update>
+	
 </mapper>

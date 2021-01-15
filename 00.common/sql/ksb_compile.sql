@@ -61,7 +61,7 @@ BEGIN
                          , MEMBER_PW, MEMBER_NICKNAME
                          , MEMBER_NAME, MEMBER_TEL)
     VALUES(V_EMAIL, F_CODE('M', M_SEQ.CURRVAL)
-         , CRYPTPACK.ENCRYPT(V_PW, V_PW), V_NICK
+         , V_PW, V_NICK
          , V_NAME, V_TEL);
          
     COMMIT;
@@ -85,7 +85,7 @@ BEGIN
                        , HOST_PW, HOST_NICKNAME
                        , HOST_NAME, HOST_TEL)
     VALUES(V_EMAIL, F_CODE('H', H_SEQ.CURRVAL)
-         , CRYPTPACK.ENCRYPT(V_PW, V_PW), V_NICK
+         , V_PW, V_NICK
          , V_NAME, V_TEL);
          
     COMMIT;

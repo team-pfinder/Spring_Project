@@ -4,12 +4,15 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>profile(host).jsp</title>
+<title>profile.jsp</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 <style type="text/css">
@@ -92,10 +95,9 @@
 		color: #000000;
 		font-weight: bold;
 		border: 0;
-	}
+	}	
 	
 </style>
-
 
 <script type="text/javascript">
 
@@ -142,21 +144,52 @@
 			}
 			
 			/* 적용이 되는 자리 */
+			telAjaxRequest();
 			
 			$("div#displayTel").attr("class", "display");
 			$("div#modifyTel").attr("class", "hide");
 		});
+		
+		$("#change").click(function()
+		{
+			var tel = $("span#tel").html();
+			$("input#tel").val(tel);
+		});
+		
+		
+		
 	 });
+	
+	 // 수정 후 수정된 연락처를 다시 가져옴
+	 function telAjaxRequest()
+	 {
+	 	 $.post("ajaxmodifytel.action"
+		         , {tel : $("input#tel").val()}
+		         , function(data) 
+		           {
+		               $("span#tel").html(data);
+		           });
+	 }
 </script>
 
 </head>
 <body>
 	<div>
-        <c:import url="${cp}/includes/header_user.jsp"></c:import>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/header_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/header_user.jsp"></c:import>
+		</c:if>
     </div>
 	
 	<div class="head">
-		<h1 style="font-weight:1000;">호스트 프로필관리</h1> <!-- 큰폰트 -->
+		<c:if test="${identify eq 'host' }">
+			<h1 style="font-weight:1000;">호스트 프로필관리</h1> <!-- 큰폰트 -->
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			<h1 style="font-weight:1000;">이용자 프로필관리</h1> <!-- 큰폰트 -->
+		</c:if>
 	</div>
 	
 	<!-- 프로필관리 양식 -->
@@ -168,26 +201,26 @@
 					<th>닉네임</th>	<!-- 닉네임 변경창으로 변경되어야 함 -->
 					<!-- 닉네임 변경창으로 변경되어야 함 -->
 					<td width="400">
-						입코딩<br>	
+						${info.nick }<br>	
 					</td>
 				</tr>
 				
 				<tr>
 					<th>이메일</th>
-					<td>sb92120@gmail.com</td>
+					<td>${info.email }</td>
 				</tr>
 				
 				<tr>
 					<th>연락처</th> <!-- 연락처 변경창으로 변경되어야 함 -->
 					<td>
 						<div class="display" id="displayTel">
-					    	010-3441-0260<br>
+					    	<span id="tel">${info.tel }</span><br>
 					    	<a class="clickAble" href="#" id="change">변경하기</a>
 					    </div>
 						<div class="hide" id="modifyTel">
 							<div>
 								<input type="text" class="form-control full"  id="tel"
-								 value="010-3441-0260" style="float:left; width:80%;">
+								 style="float:left; width:80%;">
 								<button id="modify" style="float:right; width:20%;
 								 height:52px; border-radius: 5px">확인</button>	
 							</div>
@@ -198,10 +231,17 @@
 				</tr>
 				
 				<tr>
+					<th>이름</th> <!-- 연락처 변경창으로 변경되어야 함 -->
+					<td>${info.name} </td>
+				</tr>
+				
+				<tr>
 					<th>비밀번호</th>
 					<td>
 						<div>
-							<a class="clickAble" href="changePassword(host).jsp">변경하기</a>
+							<a class="clickAble" href="confirmpasswordform.action?identify=${identify }" >
+								변경하기
+							</a>
 						</div>
 					</td>
 				</tr>
@@ -217,13 +257,14 @@
 				
 				<tr>
 					<th>가입일자</th>
-					<td>2020.12.04</td>
+					<td>${info.createDate }</td>
 				</tr>
 				
 				<tr>
 					<th>블랙리스트 전환일</th>
-					<td>2021.01.05</td>
+					<td>${blackListDate }</td>
 				</tr>
+				
 			</table>
 			<hr>
 			<!-- 서비스 탈퇴 -->
@@ -235,8 +276,13 @@
 	</div>
 	
 	<div>
-        <c:import url="${cp}/includes/footer_host.jsp"></c:import>
-        <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:if>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
     </div>
 </body>
 </html>
