@@ -36,7 +36,7 @@
 		$(".detailBtn").click(function()
 		{
 			// alert($(this).val());
-			var popUrl = "userqnapopup.action?qnaCode=" + $(this).val();
+			var popUrl = "userqnapopup.action?qna_code=" + $(this).val();
 			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
 			window.open(popUrl, "", popOption);
 		});
@@ -51,24 +51,19 @@
 			
 			if (confirm("해당 게시글을 삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "qnadelete.action?qnaCode=" + $(this).val());
+				$(location).attr("href", "qnadelete.action?qna_code=" + $(this).val());
 			}
 		});
 	});
 	
-	/* QNA 테이블과 QNA_REMOVE 테이블 데이터 비교해서 뷰에서 안보이게 */
+	
+	/* 선택삭제 */
 	$(document).ready(function()
 	{
-		if(count>0)
-		{
-			css("display", "none");
-		}
-	});
-	
-	
-	/* 체크박스 전체선택 전체 해제 */
-	$(document).ready(function()
-	{
+		var chkObj = document.getElementsByName("rowCheck");
+		var rowCnt = chkObj.length;
+		
+		/* 체크박스 전체 선택 */
 		$("#allCheck").click(function()
 		{
 			//전체 선택 체크
@@ -84,19 +79,24 @@
 				$("input[type=checkbox]").prop("checked", false);
 			}
 		});
-	});
-	
-	/* 선택삭제 눌렀을 때 */
-	$(document).ready(function()
-	{
-		$("#selectDelete").click(function()
+		
+		/* 손수 전체 선택을 해도 전체선택 체크박스에 체크 되게 */
+		$("input[name='rowCheck']").click(function()
 		{
-			/* 체크가 선택된 모든 리뷰 삭제 구문 */
-			if($("input[type=checkbox]"))	// 체크가 되어있는 것들..근데 이게 맞나?
+			if($("input[name='rowCheck']:checked").length == rowCnt)
 			{
-				confirm("정말로 삭제하시겠습니까?");
-				/* 분기하여 확인 누르면 다중삭제 되게 처리할 것 */
+				$("input[name='allCheck']")[0].checked = true;
 			}
+			else
+			{
+				$("input[name='allCheck']")[0].checked = false;
+			}
+		});
+		
+		/* 선택삭제 버튼 클릭 */
+		$(".modal-footer .removeBtn").click(function()
+		{
+			// 추후 추가
 		});
 	});
         
@@ -132,17 +132,20 @@
                      검색을 통해 특정 이용자QNA를 조회할 수 있읍니다.</p>
 
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Q&A</h6>
-                        </div>
+		          <div class="card shadow mb-4">
+		            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+		              <h6 class="m-0 font-weight-bold text-primary">QnA목록</h6>
+		          
+		              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal2">선택삭제</button>
+		              </div>
+		              
+		              
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
                                     <thead>
                                     	<tr>
-                                    		<th><input type="checkbox" id="allCheck">
-                                    		<button type="button" id="selectDelete" class="btn">선택삭제</button></th>
+                                    		<th><input type="checkbox" id="allCheck" name="allCheck"></th>
                                     		<th>Q&A코드</th>
                                     		<th>닉네임</th>
                                     		<th>이메일</th>
@@ -154,20 +157,40 @@
                                     
                                     <tbody>
                                     	<c:forEach var="adminUserDTO" items="${basicList }">
-                                    	<tr>
-                                    		<td><input type="checkbox"></td>
-                                    		<td>${adminUserDTO.qnaCode }</td>
-                                    		<td>${adminUserDTO.memberNickname }</td>
-                                    		<td>${adminUserDTO.memberEmail }</td>
-                                    		<td>${adminUserDTO.locCode }</td>
-                                    		<td>${adminUserDTO.qnaContent }</td>
-                                    		<td>
-												<button type="button" class="btn btn-primary detailBtn"
-												value="${adminUserDTO.qnaCode }">상세보기</button>
-												<button type="button" class="btn btn-danger deleteBtn"
-												value="${adminUserDTO.qnaCode }">삭제</button>
-											</td>
-                                    	</tr>
+	                                    	<c:choose>
+	                                    		<c:when test="${adminUserDTO.count == 0 }">
+			                                    	<tr>
+			                                    		<td><input type="checkbox" name="rowCheck" value="${adminUserDTO.qna_code }"></td>
+			                                    		<td>${adminUserDTO.qna_code }</td>
+			                                    		<td>${adminUserDTO.member_nickname }</td>
+			                                    		<td>${adminUserDTO.member_email }</td>
+			                                    		<td>${adminUserDTO.loc_code }</td>
+			                                    		<td>${adminUserDTO.qna_content }</td>
+			                                    		<td>
+															<button type="button" class="btn btn-primary detailBtn"
+															value="${adminUserDTO.qna_code }">상세보기</button>
+															<button type="button" class="btn btn-danger deleteBtn"
+															value="${adminUserDTO.qna_code }">삭제</button>
+														</td>
+			                                    	</tr>
+		                                    	</c:when>
+		                                    	<c:otherwise>
+		                                    		<tr style="display: none;">
+			                                    		<td><input type="checkbox"></td>
+			                                    		<td>${adminUserDTO.qna_code }</td>
+			                                    		<td>${adminUserDTO.member_nickname }</td>
+			                                    		<td>${adminUserDTO.member_email }</td>
+			                                    		<td>${adminUserDTO.loc_code }</td>
+			                                    		<td>${adminUserDTO.qna_content }</td>
+			                                    		<td>
+															<button type="button" class="btn btn-primary detailBtn"
+															value="${adminUsertDTO.qna_code }">상세보기</button>
+															<button type="button" class="btn btn-danger deleteBtn"
+															value="${adminUserDTO.qna_code }">삭제</button>
+														</td>
+			                                    	</tr>
+		                                    	</c:otherwise>
+	                                    	</c:choose>
                                     	</c:forEach> 
                                     	
                                     </tbody>
@@ -175,6 +198,29 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+				      aria-labelledby="myModalLabel" aria-hidden="true">
+				      <div class="modal-dialog">
+				         <div class="modal-content">
+				            <div class="modal-header">
+				            	<h4 class="modal-title" id="myModalLabel">삭제하기</h4>
+				               <button type="button" class="close" data-dismiss="modal">
+				                  <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+				               </button>
+				            </div>
+				            <div class="modal-body">
+				            <!-- 해당 리뷰, 리뷰답글 받아와야함 -->
+				               <p>삭제하시겠습니까?</p>
+				               
+				            </div>
+				            <div class="modal-footer">
+				            	<button type="button" class="btn btn-primary removeBtn">확인</button>
+				               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				            </div>
+				         </div>
+				      </div>
+				   </div>
 
                 </div>
                 <!-- /.container-fluid -->
