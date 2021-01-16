@@ -107,6 +107,7 @@
 							<!-- 탈퇴 버튼 클릭시 탈퇴완료 alert창 호출,  -->
 							<!-- 자동으로 메인 화면으로 돌아가기 -->
 							
+							<!-- 나중에 여기 value값에 회원번호 저장할것 -->
 							<!-- 이용자 탈퇴버튼 -->
 							<c:if test="${identify eq 'member'}">
 								<button class="btn btn-danger mx-1" value="M000011" type="button" id="deleteBtn">탈퇴하기</button>
