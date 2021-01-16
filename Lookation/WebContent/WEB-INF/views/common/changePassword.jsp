@@ -5,6 +5,8 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
@@ -12,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>changePassword(host).jsp</title>
+<title>changePassword.jsp</title>
 
 <style type="text/css">
 	*
@@ -158,6 +160,8 @@
 				return;
 			}
 			
+			alert("비밀번호가 변경되었습니다.");
+			
 			$("#changePasswordForm").submit();
 		});
 		
@@ -175,27 +179,34 @@
 <body class="back-default">
 
 	<div class="head">
-		<h1 style="font-weight:1000;">호스트 비밀번호 변경하기</h1> 
+		<c:if test="${identify eq 'host' }">
+			<h1 style="font-weight:1000;">호스트 비밀번호 변경하기</h1>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			<h1 style="font-weight:1000;">이용자 비밀번호 변경하기</h1>
+		</c:if>
 	</div>
 
-	<form action="#.jsp" method="post" id="changePasswordForm">
+	
 		<div class="container">
 			<div class="changeBox">
-				<ul class="pw_info">
-					<li>
-						<p>새 비밀번호</p> <input type="password" class="form-control full"
-						id="pw_new">
-						<p class="pass" id="pw_new">
-							비밀번호 형식에 알맞지 않습니다.<br> 비밀번호는 숫자, 특수문자(!,@,#,$) 포함 최소 8자, 최대
-							12자 사이입니다.
-						</p>
-					</li>
-					<li>
-						<p>새 비밀번호 재입력</p> <input type="password" class="form-control full"
-						id="pw_new_certain">
-						<p class="pass" id="pw_new_certain">새 비밀번호와 같지 않습니다.</p>
-					</li>
-				</ul>
+				<form action="changepassword.action" method="post" id="changePasswordForm">
+					<ul class="pw_info">
+						<li>
+							<p>새 비밀번호</p> <input type="password" class="form-control full"
+							id="pw_new" name="pw_new">
+							<p class="pass" id="pw_new">
+								비밀번호 형식에 알맞지 않습니다.<br> 비밀번호는 숫자, 특수문자(!,@,#,$) 포함 최소 8자, 최대
+								12자 사이입니다.
+							</p>
+						</li>
+						<li>
+							<p>새 비밀번호 재입력</p> <input type="password" class="form-control full"
+							id="pw_new_certain" name="pw_new_certain">
+							<p class="pass" id="pw_new_certain">새 비밀번호와 같지 않습니다.</p>
+						</li>
+					</ul>
+				</form>
 
 
 				<div style="margin-top: 30px;">

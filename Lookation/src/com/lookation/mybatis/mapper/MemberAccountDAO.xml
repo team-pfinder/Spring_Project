@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IMemberAccountDAO">
+	
+	<select id="isLogin" resultType="java.lang.String">
+		SELECT MEMBER_CODE
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_EMAIL = #{email}
+ 	 	AND MEMBER_PW = #{pw}
+	</select>
+	
+	<select id="confirmCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_CODE = #{code}
+  		AND MEMBER_PW = #{pw}
+	</select>
+	
+	<select id="getInfo" parameterType="java.lang.String" 
+	resultType="com.lookation.dto.AccountDTO">
+		SELECT EMAIL, CODE, PW, NICK, NAME, TEL, CREATEDATE
+		FROM MEMBER_PROFILEVIEW
+		WHERE CODE = #{code}
+	</select>
+	
+	<update id="modifyTel">
+		UPDATE MEMBER_PROFILE
+		SET MEMBER_TEL = #{tel}
+		WHERE MEMBER_CODE = #{code}
+	</update>
+	
+	<select id="getBlackListDate" parameterType="java.lang.String"
+	resultType="java.lang.String">
+		SELECT TO_CHAR(MB.MEMBER_BLACKLIST_DATE, 'YYYY-MM-DD')
+		FROM MEMBER_BLACKLIST MB JOIN MEMBER_PROFILE MP
+		ON MB.MEMBER_EMAIL = MP.MEMBER_EMAIL
+		WHERE MP.MEMBER_CODE = #{member_code}
+	</select>
+	
+	<update id="modifyPassword">
+		UPDATE MEMBER_PROFILE
+		SET MEMBER_PW = #{pw}
+		WHERE MEMBER_CODE = #{code}
+	</update>
+	
+</mapper>

@@ -51,25 +51,25 @@
 <div class="outer">
 	<div class="inner">
 		<form>
-		<!-- userQnaManager.jsp에서 qnaCode를 받아옴 -->
+		<!-- userQnaManager.jsp에서 qna_code를 받아옴 -->
 			<table>
 				<tr>
 					<th>공간코드</th>
 					<td>
-						<a href="#">${dto.locCode }</a>
+						<a href="#">${detailList.loc_code }</a>
 					</td>
 				</tr>
 				<tr>
 					<th>작성일자</th>
-					<td>${dto.qnaDate }</td>
+					<td>${detailList.qna_date }</td>
 				</tr>
 				<tr>
 					<th>닉네임</th>
-					<td>${dto.memberNickname }</td>
+					<td>${detailList.member_nickname }</td>
 				</tr>
 				<tr>
 					<th>작성된 Q&A</th>
-					<td>${dto.qnaContent }</td>
+					<td>${detailList.qna_content }</td>
 				</tr>
 			</table>
 		</form>

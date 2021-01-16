@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IuserQnaManagerDAO">
+	
+	<!-- userQnaManager 페이지에 들어갔을 때 보여지는 정보 쿼리문 -->
+	<select id="basicList" resultType="com.lookation.dto.adminUserDTO">
+		SELECT QNA_CODE, MEMBER_NICKNAME, MEMBER_EMAIL, LOC_CODE
+			 , QNA_CONTENT, COUNT
+		FROM ADMIN_QNA_BASIC_VIEW
+	</select>
+	
+	<!-- 상세보기 클릭 시 보여지는 정보 쿼리문 -->
+	<select id="detailList" parameterType="java.lang.String" resultType="com.lookation.dto.adminUserDTO">
+		SELECT LOC_CODE, QNA_DATE, MEMBER_NICKNAME, QNA_CONTENT
+		FROM ADMIN_QNA_DETAIL_VIEW
+		WHERE QNA_CODE = #{qna_code}
+	</select>
+	
+	<insert id="remove" parameterType="java.lang.String">
+		INSERT INTO QNA_REMOVE(QNA_REMOVE_CODE, QNA_CODE, QNA_REMOVE_DATE)
+		VALUES (F_CODE('QRM', QRM_SEQ.NEXTVAL), #{qna_code}, SYSDATE)
+	</insert>
+	
+	
+</mapper>

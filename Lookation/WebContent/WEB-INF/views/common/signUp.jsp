@@ -5,7 +5,6 @@
 	request.setCharacterEncoding("UTF-8");
 	//String cp = request.getContextPath();
 	
-	// jstl 변수 세팅
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
