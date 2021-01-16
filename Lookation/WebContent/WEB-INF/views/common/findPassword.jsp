@@ -4,6 +4,9 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
@@ -11,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>findPassword(host).jsp</title>
+<title>findPassword.jsp</title>
 
 <style type="text/css">
 	*
@@ -109,6 +112,8 @@
 				$(this).addClass("full");
 				$("p#email").attr("class", "pass");	
 			}
+			
+			findEmailAjax();
 		});
 		
 		// submit
@@ -122,8 +127,13 @@
 			}
 			
 			// (이메일이 데이터베이스에 없는 경우 발송 불가)
+			if(str.trim() == "존재하지 않는 이메일")
+			{
+				alert("존재하지 않는 이메일 입니다.");
+				return;
+			}
 			
-			$("#").submit();
+			$("#sendFindPasswordForm").submit();
 		});
 		
 		// cancel
@@ -132,6 +142,21 @@
 			alert("cancel");
 		});
 	});
+	
+	var str;
+	function findEmailAjax()
+	{
+		var vIdentify = "<c:out value='${identify}'/>";
+		$.post("ajaxfindemail.action"
+				, {
+			         identify : vIdentify
+			       , email : $("input#email").val()
+			      }
+			    , function(data)
+			      {
+					  str = data;
+			      });
+	}
 </script>
 
 </head>
@@ -139,19 +164,32 @@
 <body class="back-default">
 
 	<div>
-        <c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:if test="${identify eq 'host' }">
+       		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+        </c:if>
+        <c:if test="${identify eq 'member' }">
+       		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+        </c:if>
     </div>
 
 	<div class="head">
-		<h1 style="font-weight:1000;">호스트 비밀번호 찾기</h1>
+		<c:if test="${identify eq 'host' }">
+			<h1 style="font-weight:1000;">호스트 비밀번호 찾기</h1>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			<h1 style="font-weight:1000;">이용자 비밀번호 찾기</h1>
+		</c:if>
 	</div>
 	
 	<div class="inputBox" >
-		<div class="loginBox">		
+		<div class="loginBox">	
+			<form action="sendconfirmemail.action?identify=${identify }" 
+			method="post" id = "sendFindPasswordForm">
 				<ul class="login_info">
 					<li>
 						<!-- err시 빨간 textbox border 테두리 필요 -->
-						<input type="text" class="form-control full" id="email" placeholder="이메일">
+						<input type="text" class="form-control full" id="email" name="email"
+						placeholder="이메일">
 						<p class="pass" id="email">이메일 형식이 알맞지 않습니다.</p>
 					</li>
 					<li>
@@ -161,7 +199,8 @@
 						</p>
 					</li>
 				</ul>
-
+			</form>	
+			
 				<div style="margin-top:15px;">
 					<button type="button" class="btn btn-primary full" id="submit"
 					style="margin-bottom: 0px;">
@@ -172,7 +211,13 @@
 	</div>
 	
 	<div class="fixed-bottom">
-        <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		<c:if test="${identify eq 'host' }">
+			<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			<c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:if>
+        
         <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
     </div>
 </body>

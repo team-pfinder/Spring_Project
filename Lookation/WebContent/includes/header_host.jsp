@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>head(host).jsp</title>
+<title>header_host.jsp</title>
 
 <%@ include file="../includes/includes_home.jsp"%>
 <script type="text/javascript"
@@ -151,15 +151,6 @@ a#sub
 							<li><a href="#" class="nav-link" id="sub">도움말</a></li>
 							<li><a href="#" class="nav-link" id="sub">FAQ</a></li>
 						</ul></li>
-
-					<li class="nav-item"><a href="#" class="nav-link">dummy</a>
-						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-						</ul> 
-					</li>
 				</ul>
 			</div>
 

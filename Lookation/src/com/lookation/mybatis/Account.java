@@ -268,4 +268,82 @@ public class Account
 		
 		return "redirect:profile.action";
 	}
+	
+	// 비밀번호 찾기 (변경)
+	@RequestMapping(value="/actions/findpasswordform.action", method=RequestMethod.GET)
+	public String findPasswordForm(HttpServletRequest request)
+	{
+		String identify = request.getParameter("identify");
+		
+		return "../WEB-INF/views/common/findPassword.jsp?identify=" + identify;
+	}
+	
+	@RequestMapping(value="/actions/ajaxfindemail.action", method=RequestMethod.POST)
+	public String ajaxFindEmail(HttpServletRequest request, Model model)
+	{
+		String identify = request.getParameter("identify");
+		
+		String email = request.getParameter("email");
+		AccountDTO account = new AccountDTO();
+		account.setEmail(email);
+		
+		// Email의 존재여부 확인
+		String result = "존재하지 않는 이메일";
+		if(identify.equals("host"))
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+			
+			if(dao.countEmail(account) > 0)
+				result = "이미 존재하는 이메일";
+			
+			model.addAttribute("result", result);
+		}
+		else if(identify.equals("member"))
+		{
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			
+			if(dao.countEmail(account) > 0)
+				result = "이미 존재하는 이메일";
+			
+			model.addAttribute("result", result);
+		}
+
+		return "../WEB-INF/views/ajax/AccountAjax.jsp"; 
+	}
+	
+	@RequestMapping(value="/actions/changepasswordnologinform.action", method=RequestMethod.POST)
+	public String changePasswordNoLoginForm(HttpServletRequest request, Model model)
+	{
+		String identify = request.getParameter("identify");
+		String email = request.getParameter("email");
+		
+		model.addAttribute("email", email);
+		
+		return "../WEB-INF/views/common/changePasswordNoLogin.jsp?identify=" + identify;
+	}
+	
+	@RequestMapping(value="/actions/changepasswordnologin.action", method=RequestMethod.POST)
+	public String changePasswordNoLogin(HttpServletRequest request, Model model)
+	{
+		String identify = request.getParameter("identify");
+		String email = request.getParameter("email");
+		String newPw = request.getParameter("pw_new");
+		
+		AccountDTO account = new AccountDTO();
+		account.setEmail(email);
+		account.setPw(newPw);
+		
+		if(identify.equals("host"))
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+			dao.modifyPasswordNoLogin(account);
+		}
+		else if(identify.equals("member"))
+		{
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			dao.modifyPasswordNoLogin(account);
+		}
+		
+		return "redirect:main.action";
+	}
 }

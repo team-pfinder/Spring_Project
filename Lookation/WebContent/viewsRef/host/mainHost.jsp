@@ -13,7 +13,7 @@
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
-<title>main(host).jsp</title>
+<title>main.jsp</title>
 
 <style type="text/css">
 

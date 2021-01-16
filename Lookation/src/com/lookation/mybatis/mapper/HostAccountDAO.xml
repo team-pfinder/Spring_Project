@@ -25,6 +25,12 @@
 		WHERE CODE = #{code}
 	</select>
 	
+	<select id="countEmail" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM HOST_PROFILE
+		WHERE HOST_EMAIL = #{email}
+	</select>
+	
 	<update id="modifyTel">
 		UPDATE HOST_PROFILE
 		SET HOST_TEL = #{tel}
@@ -43,6 +49,12 @@
 		UPDATE HOST_PROFILE
 		SET HOST_PW = #{pw}
 		WHERE HOST_CODE = #{code}
+	</update>
+	
+	<update id="modifyPasswordNoLogin">
+		UPDATE HOST_PROFILE
+		SET HOST_PW = #{pw}
+		WHERE HOST_EMAIL = #{email}
 	</update>
 	
 </mapper>

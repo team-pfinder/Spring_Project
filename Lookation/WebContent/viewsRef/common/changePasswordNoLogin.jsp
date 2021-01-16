@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>changePassword.jsp</title>
+<title>changePasswordNoLogin.jsp</title>
 
 <style type="text/css">
 	*
@@ -160,7 +160,7 @@
 				return;
 			}
 			
-			alert("비밀번호가 변경되었습니다.");
+			alert("비밀번호가 변경되었습니다.\n다시 로그인해주세요.");
 			
 			$("#changePasswordForm").submit();
 		});
@@ -190,7 +190,7 @@
 	
 		<div class="container">
 			<div class="changeBox">
-				<form action="changepassword.action" method="post" id="changePasswordForm">
+				<form action="changepasswordnologinn.action" method="post" id="changePasswordForm">
 					<ul class="pw_info">
 						<li>
 							<p>새 비밀번호</p> <input type="password" class="form-control full"
@@ -220,7 +220,6 @@
 				</div>
 			</div>
 		</div>
-	</form>
 
 </body>
 </html>

@@ -45,8 +45,7 @@ public class SendSignUpEmailController implements Controller
 		// 이메일 전송
 		
 		// html 폼 준비
-		String html = 
-				"<!DOCTYPE html>" + 
+		String html = "<!DOCTYPE html>" + 
 				"<html>" + 
 				"<head>" + 
 				"<meta charset=\"UTF-8\">" + 
@@ -59,31 +58,33 @@ public class SendSignUpEmailController implements Controller
 				"		</div>" + 
 				"		<hr>	" + 
 				"		<div class=\"content-form\" style=\"width : 100%; background: #ffffff; padding: 50px 0px 50px 0px;\">" + 
-				"			<h1>계정생성 인증 안내</h1>" + 
+				"			<!-- <h1>내용이 입력될 곳</h1> -->" + 
+				"			<h1>계정 인증 안내</h1>" + 
 				"			<br>" + 
-				"			<form action=\"http://localhost:8090/Lookation/actions/signup.action?identify="+ identify +"\" method=\"post\">" + 
+				"			<form action=\"http://localhost:8090/Lookation/actions/signup.action?identify="+ identify + "\" method=\"post\">" + 
 				"				<table style=\"margin:0 auto;\">" + 
 				"					<tr>" + 
 				"						<th>이메일 : </th>" + 
-				"						<td><input type=\"text\" name=\"email\" value=\"" + email + "\" readonly=\"readonly\"></td>" + 
-				"					</tr>" + 
-				"					<tr>" + 
-				"						<th>비밀번호 : </th>" + 
-				"						<td><input type=\"password\" name=\"pw\" value=\"" + pw + "\" readonly=\"readonly\"></td>" + 
-				"					</tr>" + 
-				"					<tr>" + 
-				"						<th>닉네임 : </th>" + 
-				"						<td><input type=\"text\" name=\"nick\" value=\"" + nick + "\" readonly=\"readonly\"></td>" + 
-				"					</tr>" + 
-				"					<tr>" + 
-				"						<th>이름 : </th>" + 
-				"						<td><input type=\"text\" name=\"name\" value=\"" + name +  "\" readonly=\"readonly\"></td>" + 
+				"						<td>" + email + "</td>" + 
 				"					</tr>" + 
 				"					<tr>" + 
 				"						<th>연락처 : </th>" + 
-				"						<td><input type=\"text\" name=\"tel\" value=\"" + tel + "\" readonly=\"readonly\"></td>" + 
+				"						<td>" + tel + "</td>" + 
+				"					</tr>" + 
+				"					<tr>" + 
+				"						<th>이름 : </th>" + 
+				"						<td>"+ name +"</td>" + 
+				"					</tr>" + 
+				"					<tr>" + 
+				"						<th>닉네임 : </th>" + 
+				"						<td>"+ nick +"</td>" + 
 				"					</tr>" + 
 				"				</table>" + 
+				"				<input type=\"hidden\" name=\"email\" value=\"" + email + "\">" + 
+				"				<input type=\"hidden\" name=\"pw\" value=\""+ pw +"\">" + 
+				"				<input type=\"hidden\" name=\"nick\" value=\"" + nick + "\">" + 
+				"				<input type=\"hidden\" name=\"name\" value=\"" + name + "\">" + 
+				"				<input type=\"hidden\" name=\"tel\" value=\"" + tel + "\">" + 
 				"				<h2>계정 인증을 위해서 아래 버튼을 클릭해주세요.</h2>" + 
 				"				<button type=\"submit\">인증하기</button>" + 
 				"			</form>" + 

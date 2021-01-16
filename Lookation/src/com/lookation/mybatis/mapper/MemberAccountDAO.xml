@@ -25,6 +25,12 @@
 		WHERE CODE = #{code}
 	</select>
 	
+	<select id="countEmail" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_EMAIL = #{email}
+	</select>
+	
 	<update id="modifyTel">
 		UPDATE MEMBER_PROFILE
 		SET MEMBER_TEL = #{tel}
@@ -44,5 +50,12 @@
 		SET MEMBER_PW = #{pw}
 		WHERE MEMBER_CODE = #{code}
 	</update>
+	
+	<update id="modifyPasswordNoLogin">
+		UPDATE MEMBER_PROFILE
+		SET MEMBER_PW = #{pw}
+		WHERE MEMBER_EMAIL = #{email}
+	</update>
+	
 	
 </mapper>

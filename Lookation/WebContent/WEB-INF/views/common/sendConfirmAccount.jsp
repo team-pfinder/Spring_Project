@@ -4,6 +4,9 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
@@ -11,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>createAccountSuccess(host).jsp</title>
+<title>sendConfirmAccount.jsp</title>
 
 <style type="text/css">
 	*
@@ -71,30 +74,57 @@
 </style>
 </head>
 
+<script type="text/javascript">
+
+	$(function()
+	{
+		$("#home").click(function()
+		{
+			//$(location)
+		});
+	});
+
+</script>
+
 <body class="back-default">
 	<div>
-        <c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/header_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/header_user.jsp"></c:import>
+		</c:if>
     </div>
 
 	<div class="head">
-		<h1 style="font-weight:1000;">호스트 가입 이메일 인증</h1>
+		<c:if test="${identify eq 'host' }">
+			<h1 style="font-weight:1000;">호스트 가입 이메일 인증</h1>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			<h1 style="font-weight:1000;">이용자 가입 이메일 인증</h1>
+		</c:if>
 	</div>
 
 	<div class = "container">
 		<div class = "confirmBox">			
-			<p><span>sb92120@gmail.com</span> 로 가입 인증 이메일을 보내드렸습니다.</p> 
+			<p><span>${email }</span> 로 가입 인증 이메일을 보내드렸습니다.</p> 
 			<p>이메일의 링크를 클릭하시면 회원가입이 완료 됩니다.</p> 
 			<hr style="border: solid thin silver;
 			           margin: 50px 0px 35px 0px;">
 			
 			<div class="buttonForm">
-				<button style="border-width: 0px;">홈으로</button> 
+				<button style="border-width: 0px;" id="home">홈으로</button> 
 			</div>
 		</div>
 	</div>
 
 	<div>
-        <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:if>
         <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
     </div>
 </body>

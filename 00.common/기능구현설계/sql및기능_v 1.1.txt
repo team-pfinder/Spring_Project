@@ -175,7 +175,7 @@
 2. 취소 클릭시 이전 페이지로
 
 
-* findPassword(user, host) 1 
+* findPassword(user, host) 1 (o)
 ●
 1. 링크를 보내기 전에 이메일을 조건문으로 회원 코드를 조회하는 쿼리문
    1-1. 회원이 아니라면 이메일을 보내지 않는다.
@@ -186,11 +186,11 @@
 
 
 
-* footer_user 1
-* footer_host 1
+* footer_user 1 (o)
+* footer_host 1 (o)
 
-* header_user 1
-* header_host 1
+* header_user 1 (o)
+* header_host 1 (o)
 
 
 * mainHost 3

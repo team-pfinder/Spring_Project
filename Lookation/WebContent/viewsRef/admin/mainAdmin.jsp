@@ -6,11 +6,11 @@
 	String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
-
+<html>
 <head>
 
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
-<title>공지사항 글쓰기</title>
+<title>main.jsp</title>
 
 </head>
 
@@ -33,7 +33,7 @@
 			<div id="content">
 
 				<div>
-					<c:import url="../includes/header.jsp"></c:import>
+					<c:import url="${cp}/includes/header.jsp"></c:import>
 				</div>
 
 
@@ -54,12 +54,13 @@
 						</div>
 					</footer>
 					<!-- End of Footer -->
-
 				</div>
-				<!-- End of Content Wrapper -->
-
 			</div>
-			<!-- End of Page Wrapper -->
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
 
 			<!-- Scroll to Top Button-->
 			<a class="scroll-to-top rounded" href="#page-top"> <i
@@ -110,5 +111,4 @@
 			         CKEDITOR.replace("pro_detail", ckeditor_config);
 				</script>
 </body>
-
 </html>

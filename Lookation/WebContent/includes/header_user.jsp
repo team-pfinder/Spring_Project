@@ -8,10 +8,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>header_user.jsp</title>
 
 <%@ include file="../includes/includes_home.jsp"%>
-<title>head(user).jsp</title>
-
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	
@@ -154,15 +153,6 @@ a#sub
 							<li><a href="#" class="nav-link" id="sub">도움말</a></li>
 							<li><a href="#" class="nav-link" id="sub">FAQ</a></li>
 						</ul></li>
-
-					<li class="nav-item"><a href="#" class="nav-link">dummy</a>
-						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-							<li><a href="#" class="nav-link" id="sub">dummy</a></li>
-						</ul> 
-					</li>
 				
 				</ul>
 			</div>
