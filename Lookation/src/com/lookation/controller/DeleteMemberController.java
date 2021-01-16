@@ -47,7 +47,7 @@ public class DeleteMemberController implements Controller
 				out.println("<script>alert('가입정보가 유효하지 않거나 이미 탈퇴가 완료된 회원입니다.');</script>");
 				out.flush();
 				
-				mav.setViewName("common/login");
+				mav.setViewName("../WEB-INF/views/common/login.jsp");
 				return mav;
 			}
 			else if(dao.checkMileage(memCode)!=0)	// 마일리지 남아있으면
@@ -58,7 +58,7 @@ public class DeleteMemberController implements Controller
 				out.flush();
 				
 				// 마이페이지로 보냄
-				mav.setViewName("user/mypageUser");
+				mav.setViewName("../WEB-INF/views/user/mypageUser.jsp");
 				
 				return mav;
 			}
@@ -70,7 +70,7 @@ public class DeleteMemberController implements Controller
 				out.flush();
 				
 				// 마이페이지로 보냄
-				mav.setViewName("user/mypageUser");
+				mav.setViewName("../WEB-INF/views/user/mypageUser.jsp");
 				
 				return mav;
 			}
@@ -93,7 +93,7 @@ public class DeleteMemberController implements Controller
 			 
 			out.flush();
 			
-			mav.setViewName("common/login");
+			mav.setViewName("../WEB-INF/views/common/login.jsp");
 			
 		} catch (Exception e)
 		{

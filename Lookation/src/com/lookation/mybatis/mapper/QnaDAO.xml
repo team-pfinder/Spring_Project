@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IQnaDAO">
+	
+	<insert id="insertMemQna">
+		INSERT INTO QNA(QNA_CODE, LOC_CODE, MEMBER_CODE
+		, QNA_CONTENT, QNA_DATE)
+		VALUES(F_CODE('Q', Q_SEQ.NEXTVAL)
+		, #{loc_code} ,#{member_code}, #{qna_content}, SYSDATE)
+	</insert>
+	
+	
+	<select id="updateForm" resultType="com.lookation.dto.QnaDTO">
+		SELECT QNA_CODE, LOC_CODE, QNA_CONTENT
+		FROM QNA
+		WHERE QNA_CODE=#{qna_code}
+	</select>
+	
+	
+	<insert id="deleteMemQna">
+		INSERT INTO QNA_REMOVE (QNA_REMOVE_CODE, QNA_CODE, QNA_REMOVE_DATE)
+		VALUES(F_CODE('QRM', QRM_SEQ.NEXTVAL), #{qna_code}, SYSDATE)
+	</insert>
+</mapper>

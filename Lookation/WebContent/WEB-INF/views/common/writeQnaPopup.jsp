@@ -19,16 +19,17 @@
 			<div class="col-md-12">
 			<form action="qnainsert.action" method="post" target="redirect:locationdetail.action">
 				<div class="header">
-					<h3 class="title my-2">Q&A 수정하기</h3>
+					<h3 class="title my-2">Q&A 작성하기</h3>
 				</div><!-- End .header -->
 				
 				
 				<div class="body">
 					<div class="form-group">
-						<input type="hidden" value="${qna_code }" name="member_code">
+						<input type="hidden" value="${locCode}" name="loc_code">
+						<input type="hidden" value="${memCode }" name="member_code">
 						<label for="content">내용</label>
 						<textarea class="form-control" id="content" name="qna_content"
-							rows="8" maxlength="3000" placeholder="${qna_content }"></textarea>
+							rows="8" maxlength="3000"></textarea>
 					</div>
 				</div><!-- End .body -->
 				<hr>

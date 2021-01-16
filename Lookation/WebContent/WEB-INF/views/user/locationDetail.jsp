@@ -10,12 +10,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <style type="text/css">
-.navbar-expand-sm {
-	border-bottom: solid 2px #ffd014;
-	border-top: solid 2px #ffd014
+body, html {
+width: 100%;
+height: 100%;
+}
+
+section {
+height: auto;
 }
 
 .info-div {
@@ -41,7 +45,7 @@
     z-index: 999;
     top: 55%;
     left: 20px;
-    width: 50px;
+    width: 30px;
     padding: inherit;
     transform: translateY(-50%);
     color:black;
@@ -49,8 +53,9 @@
 
 .myScrollspy .nav-stacked li {
     position: relative;
-    min-width: 200px;
-    text-align: left;
+    min-width: 100px;
+    font-size: 10px;
+    text-align: center;
 }
 
 .myScrollspy .nav-stacked li .dot {
@@ -115,22 +120,6 @@
     opacity: 1;
 }
 
-/*=== scrollspy ===*/
-.nav-pick {
-	width: 80px;
-	margin: 10px;
-}
-
-.nav-pick>a {
-	color: black;
-	font-weight: bold;
-}
-
-.nav-pick>a:hover {
-	color: #ebebeb;
-	text-decoration: none;
-}
-
 /*=== sub 제목 밑줄 ===*/
 .info-sub:after {
 	content: "";
@@ -155,7 +144,7 @@
 
 .sub {
 	/*font-weight: bold;*/
-	
+	vertical-align: top;
 }
 
 .det {
@@ -197,6 +186,16 @@
 	color: #ccc;
 }
 
+/*=== 답댓글 ===*/
+.comment-list .children-reply {
+    padding: 0px 0px 60px 40px;
+    margin: 0;
+    float: left;
+    width: 100%;
+}
+
+
+
 /*=== 별점 ===*/
 .set-star {
 	color: #fdbe34;
@@ -218,60 +217,196 @@
 	display: inline-block;
 	resize: both;
 	max-width: 100%;
+}	
+	
+/*=== 패키지 가격 줄 정리 ===*/
+.package-bundle {
+max-width: 50%;
+font-size: 10pt;
+color: rgba(0, 0, 0, 0.8);
 }
+
+.vertical-down{
+vertical-align: bottom;
+margin-top: 1.9em;
+}
+
+#section4
+{
+	min-height: 600px;
+	padding: 0;
+	margin: 0;
+}
+
 </style>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
-$(function(){
 
-    var link = $('#myScrollspy a.dot');
-    link.on('click',function(e){
-        
-        //href 속성을 통해, section id 타겟을 잡음
-        var target = $($(this).attr('href')); 
-        
-        //target section의 좌표를 통해 꼭대기로 이동
-        $('html, body').animate({
-            scrollTop: target.offset().top
-        },600);
-        
-        //active 클래스 부여
-        $(this).addClass('active');
+	$(function(){
+		$('body').scrollspy({target: ".navbar"});
+		/* scrollspy */
+	    var link = $('#myScrollspy a.dot');
+	    link.on('click',function(e){
+	        
+	        //href 속성을 통해, section id 타겟을 잡음
+	        var target = $($(this).attr('href')); 
+	        
+	        //target section의 좌표를 통해 꼭대기로 이동
+	        $('html, body').animate({
+	            scrollTop: target.offset().top
+	        },600);
+	        
+	        //active 클래스 부여
+	        $(this).addClass('active');
+	
+	        // 앵커를 통해 이동할때, URL에 #id가 붙지 않도록 함.
+	        e.preventDefault();
+	    });
+	    
+	    $(window).on('scroll',function(){
+	        findPosition();
+	    });
+	
+	    function findPosition(){
+	        $('section').each(function(){
+	            if( ($(this).offset().top - $(window).scrollTop() ) < 20){
+	                link.removeClass('active');
+	                $('#myScrollspy').find('[data-scroll="'+ $(this).attr('id') +'"]').addClass('active');
+	            }
+	        });
+	    }
+	
+	    findPosition();
+	    /* 여기까지 scrollspy */
+	    
+	    /* 날짜 기본값 오늘로 */
+	    var now = new Date();
+		var day = ("0" + now.getDate()).slice(-2);
+		var month = ("0" + (now.getMonth() + 1)).slice(-2);
+		var today = now.getFullYear()+"-"+(month)+"-"+(day);
+		
+		// 최대 3개월까지만으로 제한하기
+		var maxmonth = ("0" + (now.getMonth() + 3)).slice(-2);
+		var maxdate = now.getFullYear()+"-"+(maxmonth)+"-"+(day);
+		
+		$("#selectDate").val(today);
+		$("#selectDate").attr("min", today);
+		$("#selectDate").attr("max", maxdate);
+		
+	    /* 숫자 버튼 증가 및 최소, 최댓값 설정 */
+	    $("#increase").on("click", function(){
+			
+		   	if($("#amount").val() >= 29)
+		    {
+		   		$("#amount").val(30);
+		    }
+		   	else
+		   	{
+		   		$("#amount").val(parseInt($("#amount").val()) + 1);
+		   	}
+	    });
+	    
+	    $("#decrease").on("click", function(){
+	    	
+	    	 if($("#amount").val() <= 0)
+	         {
+	         	$("#amount").val(0);
+	         }
+	    	 else
+	    	 {
+	    		$("#amount").val(parseInt($('#amount').val()) - 1);
+	    	 }
+	       
+	    });
+	    
+		// 날짜가 변경되었을 경우 수행할 코드 처리
+		$("#selectDate").change(function()
+		{
+			// 『jquery.post()』 / 『jquery.get()』
+			// 『$.post()』 / 『$.get()』
+			//-- jQuery 에서 AJAX 를 써야 할 경우 지원해 주는 함수.
+			//   (서버측에서 요청한 데이터를 받아오는 기능의 함수)
+			
+			// ※ 이 함수(『$.post()』)의 사용 방법(방식)
+			//-- 『$.post(요청주소, 전송데이터, 응답액션처리)』
+			//   ·요청주소(url)
+			//    → 데이터를 요청할 파일에 대한 정보
+			//   ·전송데이터(data)
+			//    → 서버 측에 요청하는 과정에서 내가 전달할 파라미터
+			//   ·응답액션처리(function)
+			//    → 응답을 받을 수 있는 함수
+			//       여기서는 익명의 함수를 사용 → 단순 기능 구현 및 적용
+			// ※ 참고로 data 는 파라미터의 데이터타입을 그대로 취하게 되므로
+			//    html 이든, 문자열이든 상관이 없다.
+			$.post("locdetailajax.action", {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}, function(data)
+			{
+				// 받아서 처리할 내용
+				$("#packageDiv").html(data);
+				alert(data);
+			});
+			
+		});
+		
+	
+		$(".modifyQna").click(function()
+		{
+			$(location).attr("href", "modifyformqna.action?qna_code=" + $(this).val());
+		}); 
+		
 
-        // 앵커를 통해 이동할때, URL에 #id가 붙지 않도록 함.
-        e.preventDefault();
-    });
-    
-    $(window).on('scroll',function(){
-        findPosition();
-    });
-
-    function findPosition(){
-        $('section').each(function(){
-            if( ($(this).offset().top - $(window).scrollTop() ) < 20){
-                link.removeClass('active');
-                $('#myScrollspy').find('[data-scroll="'+ $(this).attr('id') +'"]').addClass('active');
-            }
-        });
-    }
-
-    findPosition();
-});
-
+		$(".deleteQna").click(function()
+		{
+			if(confirm("삭제하시겠습니까?"))
+			{
+				$(location).attr("href", "deleteqna.action?qna_code=" + $(this).val());
+			}
+		}); 
+		
+		
+		$(".deleteReview").click(function()
+		{
+			if(confirm("삭제하시겠습니까?"))
+			{
+				$(location).attr("href", "deletereview.action?review_code=" + $(this).val());
+			}
+		}); 
+		
+	});
+	
+	// 질문 작성하는 팝업
+	function writeQna()
+	{	
+		var locCode = document.getElementById("hiddenCode").value;
+		var url = "writeqna.action?locCode="+ locCode + "&memCode=M000003";
+		// memCode 임시
+		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+		window.open(url, "", option);
+	}
+	
+	// 후기 작성하는 팝업
+	function writeReview()
+	{	
+		var locCode = document.getElementById("hiddenCode").value;
+		var url = "writereview.action?locCode="+ locCode + "&memCode=M000004";
+		// memCode 임시
+		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+		window.open(url, "", option);
+	}
+	
 </script>
-
 </head>
-<body>
-<section class="ftco-section ftco-degree-bg">
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="15">
+
+<div class="ftco-section ftco-degree-bg">
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-			
-				<h2 class="mb-1 font-weight-bold">파파존스 호러존 스튜디오</h2>
-				<h4 class="">주택개조 카페입니다</h4>
+				<input type="hidden" id="hiddenCode" value="${basicInfo.locationCode }">${basicInfo.locationCode }
+				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
+				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->
-				<div class="tagcloud mb-5">
-	                <a href="#" class="tag-cloud-link">파티룸</a>
-	                <a href="#" class="tag-cloud-link">루프탑</a>
+			 	<div class="tagcloud mb-5">
+	                <a href="#" class="tag-cloud-link">${basicInfo.locType }</a>
              	</div>
              	
              	
@@ -316,380 +451,357 @@ $(function(){
 
 			<!-- .navbar scrollspy로 이동할 부분 -->
 			<nav class="myScrollspy" id="myScrollspy">
-				<ul class="nav nav-pills nav-stacked">
+				<ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
 					<li><a data-scroll="section1" href="#section1" class="dot active"><span>공간소개</span></a><li>
-					<li><a data-scroll="section2" href="#section2" class="dot"><span>시설안내</span></a><li>
-					<li><a data-scroll="section3" href="#section3" class="dot"><span>주의사항</span></a><li>
-					<li><a data-scroll="section4" href="#section4" class="dot"><span>환불정책</span></a><li>
-					<li><a data-scroll="section5" href="#section5" class="dot"><span>Q&A</span></a><li>
-					<li><a data-scroll="section6" href="#section6" class="dot"><span>이용후기</span></a><li>
+					<li><a data-scroll="section2" href="#section2" class="dot"><span>이용후기</span></a><li>
+					<li><a data-scroll="section3" href="#section3" class="dot"><span>위치안내</span></a><li>
+					<li><a data-scroll="section4" href="#section4" class="dot"><span>질문/후기</span></a><li>
 				</ul>
 			</nav>
 
-
-					<!-- <nav class="navbar navbar-expand-sm my-5">
-					<ul class="navbar-nav text-center">
-						<li class="nav-pick"><a href="#section1">공간소개</a>
-						<li>
-						<li class="nav-pick"><a href="#section2">시설안내</a>
-						<li>
-						<li class="nav-pick"><a href="#section3">주의사항</a>
-						<li>
-						<li class="nav-pick"><a href="#section4">환불정책</a>
-						<li>
-						<li class="nav-pick"><a href="#section5">Q&A</a>
-						<li>
-						<li class="nav-pick"><a href="#section6">이용후기</a>
-						<li>
-					</ul>
-				</nav> -->
-
-				<!-- Section 1 -->
-				<div id="section1" class="info-div">
+			<!-- Section 1 -->
+			<section id="section1" class="mb-5">
+				
+				<div class="info-div mb-5">
 					<h4 class="my-4 info-sub">공간소개</h4>
-					<p>30평정도 되면 테이블은 단체석 포함 12개입니다. 상인동 술집 골목과 상인롯데시네마 인근이며 지하철
-						상인역에서 도보 7분이면 오실 수 있습니다.</p>
-
-					<ol class="info-list">
-						<li class="list-divider"><span class="sub">영업시간</span> <span
-							class="det">12~22시</span></li>
-						<li class="list-divider"><span class="sub">정기휴무일</span> <span
-							class="det">없음</span></li>
-						<li class="list-divider"><span class="sub">지정휴무일</span> <span
-							class="det">언제</span>
-						<li>
-					</ol>
+					<p>${basicInfo.intro }</p>
 				</div>
-				<!-- End .Section 1  -->
 
-				<!-- Section 2 -->
-				<div id="section2" class="info-div">
-					<h4 class="info-sub">시설 안내</h4>
-
-					<ol class="number-list">
-						<li class="list-divider"><span class="sub-num">1</span> <span
-							class="det-num">실내화장실</span></li>
-						<li class="list-divider"><span class="sub-num">2</span> <span
-							class="det">테이블 12개</span></li>
-						<li class="list-divider"><span class="sub-num">3</span> <span
-							class="det-num">최대 30명 수용</span>
-						<li>
-						<li class="list-divider"><span class="sub-num">4</span> <span
-							class="det-num">카페</span>
-						<li>
-						<li class="list-divider"><span class="sub-num">5</span> <span
-							class="det-num">디저트</span>
-						<li>
-					</ol>
-				</div>
-				<!-- End .Section 2  -->
-
-				<!-- Section 3 -->
-				<div id="section3" class="info-div">
-					<h4 class="info-sub">예약시 주의사항</h4>
-					<ol class="number-list">
-						<li class="list-divider"><span class="sub-num">1</span> <span
-							class="det-num">미리 오시기 전 전화 부탁드려요</span></li>
-						<li class="list-divider"><span class="sub-num">2</span> <span
-							class="det">카페 안 물품 파손 주의</span></li>
-						<li class="list-divider"><span class="sub-num">3</span> <span
-							class="det-num">최대 30명 수용</span>
-						<li>
-						<li class="list-divider"><span class="sub-num">4</span> <span
-							class="det-num">그냥그냥그냥</span>
-						<li>
-						<li class="list-divider"><span class="sub-num">5</span> <span
-							class="det-num">아무튼간에 주의하시라고용~~~~~~~~~</span>
-						<li>
-					</ol>
-				</div>
-				<!-- End .Section 3  -->
-
-				<!-- Section 4 -->
-				<div id="section4" class="info-div">
-					<h4 class="info-sub">환불규정 안내</h4>
-					<ol class="number-list">
-						<li class="list-divider"><span class="sub mr-2">이용
-								7일전</span> <span class="det ml-5">총 금액의 100% 환불</span></li>
-						<li class="list-divider"><span class="sub">이용 6일전 ~
-								1일전</span> <span class="det">총 금액의 50% 환불</span></li>
-						<li class="list-divider"><span class="sub mr-3">예약 당일</span>
-							<span class="det ml-5">환불 불가</span>
-						<li>
-					</ol>
-				</div>
-				<!-- End .Section 4  -->
-
-				<div id="map mb-4" class="info-div">
-				
-					<!-- 지도 위치 -->
-					<!-- 주소 및 -->
-					<!-- 전화번호 -->
-					<!-- 길찾기 버튼 -->
-				
-					<h4 class="info-sub">위치 안내</h4>
-					<h6>지도자리~~~~~~~</h6>
-
-					<!-- 호스트 정보 -->
-					<div class="d-flex p-4 host-box">
-						<div class="host-info">
-							<h3 class="mb-4">슈미</h3>
-							<p>
-								<a href="2_newDirectMessage.jsp" class="reply">호스트에게 DM</a>
-							</p>
-						</div>
-														
-							
-						<div class="desc ml-5">
-							<!-- 상호명(개인/법인)
- 								, 대표자명, 사업자 등록번호
- 								, 사업자 유형, 주업태, 주종목, 사업장 주소)  -->
-							<p>사업자번호 : 123-45-67890</p>
-							<p>상호명(개인/법인) : 슈미의 동전찾기</p>
-							<p>대표자명 : 슈미</p>
-							<p>사업자유형 : 간이과세자</p>
-							<p>주업태 : 도,소매 주종목 : 숙박</p>
-							<p>사업장 주소 : 서울특별시 마포구 무슨다리로 89 1층</p>
-							<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
-							
-						</div>
-					</div>
-				</div><!-- End .map -->
-
-
-				<!-- Section 5 -->
-				<div id="section5" class="info-div">
-					<h4 class="info-sub mb-5">
-						Q&A<span class="set-star ml-3">2개</span>
-						<button class="btn btn-primary float-right">질문 작성하기</button>
-					</h4>
-					
-					<div>
-						<ul class="comment-list">
-							<li class="comment">
-								<h3>돈조반니</h3>
-								<span class="meta">2021년 1월 1일 2:21pm</span>
-								<p>식기류가 준비되어 있는지 궁금합니다~!!!</p>
-									<a href="#" class="reply">답글</a>
-							</li>
-							<li class="comment">
-								<h3>장로스탄</h3>
-								<span class="meta">2020년 12월 31일 2:11pm</span>
-								<p>궁금한게 있는데 호박도 나오나요?</p>
-								<a href="#" class="reply">답글</a>
-	
-								<ul class="children">
-									<li class="comment">
-										<h3>슈미</h3>
-										<span class="meta">2020년 1월 4일 7:19pm</span>
-										<p>해당 공간 게시글을 작성한 호스트가 맞을 경우 수정/삭제 버튼이 나타납니다.</p>
-										<a href="#" class="reply">수정</a> <a href="#" class="reply">삭제</a>
-									</li>
-								</ul>
-							</li>
-	
-							<li class="comment">
-								<h3>제이</h3>
-								<span class="meta">2020년 12월 21일 5:14pm</span>
-								<p>6명 이상 가면 추가요금 지불하고 묵을 수 있나요?</p>
-								<a href="#" class="reply">답글</a>
-							</li>
-						</ul><!-- .comment-list -->
-					</div>
-				
-				</div>
-				<!-- End .section5 -->
-
-
-				<!-- section 6 -->
-				<div id="section7" class="info-div">
-					
-					<div>
-					<h4 class="info-sub">
-						이용후기<span class="set-star ml-3">2개</span>
-
-						<!-- 이용후기 작성권한이 있을 경우(이용완료, 후기작성 안했는지 확인) -->
-						<!-- 에만 이용후기 작성버튼 표시  -->
-						<button class="btn btn-primary float-right">후기 작성하기</button>
-					</h4>
-					<br>
-
-					<!-- 사진 후기만 보기 클릭시 사진있는 후기만 보여주기-->
-					<div class="custom-control custom-switch float-right">
-						<input type="checkbox" class="custom-control-input" id="switch1">
-						<label class="custom-control-label" for="switch1">사진 후기만
-							보기</label>
-					</div>
-
-
-					<ul class="comment-list">
-						<li class="comment">
-							<h3>돈조반니</h3>
-							<div class="float-right set-star">
-								<!-- 별존 -->
-								<span class="icon-star mr-1"></span><span
-									class="icon-star mr-1"></span><span class="icon-star mr-1"></span><span
-									class="icon-star mr-1"></span><span class="icon-star mr-1"></span>
-							</div>
-							<div class="meta">2021년 1월 1일 2:21pm</div>
-							<p>커닝시티 파티룸은 무척이나 깨끗하고 쾌적했습니다. 다들 한번 이용해보세요</p>
-							<p>
-								<img class="review-img" src="<%=cp%>/images/bg_1.jpg"
-									alt="리뷰사진">
-							</p>
-							<p>
-								<a href="#" class="reply">답글</a>
-							</p>
-						</li>
-
-						<li class="comment">
-							<h3>장로스탄</h3>
-							<div class="float-right set-star">
-								<span class="icon-star mr-1"></span><span
-									class="icon-star mr-1"></span><span class="icon-star mr-1"></span><span
-									class="icon-star mr-1"></span>
-							</div>
-							<div class="meta">2020년 12월 31일 2:11pm</div>
-							<p>리뷰 내용을 엄청 길게 적을 수도 있기 때문에요/// 1000자까지 작성이 가능합니다. 작성한 이용자가
-								맞을 경우 수정/삭제 버튼이 나타나요.</p>
-							<p>
-								<a href="#" class="reply">답글</a>
-							</p>
-
-							<ul class="children">
-								<li class="comment">
-									<h3>슈미</h3>
-									<div class="meta">2020년 1월 4일 7:19pm</div>
-									<p>해당 공간 게시글을 작성한 호스트가 맞을 경우 수정/삭제 버튼이 나타납니다.</p>
-									<p>
-										<a href="#" class="reply">수정</a> <a href="#" class="reply">삭제</a>
-									</p>
-								</li>
-							</ul>
-						</li>
-
-						<li class="comment">
-							<h3>제이</h3>
-							<div class="float-right set-star">
-								<span class="icon-star mr-1"></span><span
-									class="icon-star mr-1"></span><span class="icon-star mr-1"></span>
-							</div>
-							<div class="meta">2020년 12월 21일 5:14pm</div>
-							<p>아주 쾌적하고 좋은 방이었습니다.</p>
-							<p>
-								<a href="#" class="reply">답글</a>
-							</p>
-						</li>
-					</ul>
-					<!-- .comment-list -->
-
-				</div>
-				
-				</div><!-- End .section6 -->
 			
+				<div class="info-div mt-5">
+					<h4 class="info-sub">시설 안내</h4>
+					<ol class="number-list">
+						<c:forEach var="facility" items="${facilityInfo}" varStatus="status">
+							<li class="list-divider">
+								<span class="sub-num">${status.count }</span>
+								<span class="det-num">${facility.facility }</span>
+							</li>
+						</c:forEach>
+					</ol>
+				</div>
+			</section>
+			<!-- End .Section 1  -->
+
+			<section id="" class="info-div">
+				<h4 class="info-sub">예약시 주의사항</h4>
+				<ol class="number-list">
+					<c:forEach var="caution" items="${cautionInfo}" varStatus="status">
+						<li class="list-divider">
+							<span class="sub-num">${status.count }</span>
+							<span class="det-num">${caution.caution }</span>
+						</li>
+					</c:forEach>
+				</ol>
+			</section>
+				
+			<!-- section 2 -->
+			<section id="section2" class="info-div">
+				<h4 class="info-sub">
+					이용후기<span class="set-star ml-3">${countReview }</span>
+
+					<!-- 이용후기 작성권한이 있을 경우(이용완료, 후기작성 안했는지 확인) -->
+					<!-- 에만 이용후기 작성버튼 표시  -->
+					<button class="btn btn-primary float-right" onclick="writeReview()">후기 작성하기</button>
+				</h4>
+				<br>
+
+				<!-- 사진 후기만 보기 클릭시 사진있는 후기만 보여주기-->
+				<div class="custom-control custom-switch float-right">
+					<input type="checkbox" class="custom-control-input" id="switch1">
+					<label class="custom-control-label" for="switch1">사진 후기만
+						보기</label>
+				</div>
+					
+				<c:forEach var="rv" items="${review }">
+					<ul class="comment-list">	
+						<c:if test="${rv.removeCount eq 0}">
+							<li class="comment">
+								<h4>${rv.memberNickName }</h4>
+								<h6 class="float-right">
+									<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
+										<span class="set-star icon-star mr-1"></span>
+									</c:forEach>
+								</h6>
+								
+								<div class="meta mb-2">${rv.date }</div>
+								<p>${rv.content }</p>
+								
+								<c:if test="${rv.memCode == 'M000004'}">
+									<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
+									<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+								</c:if>
+								
+								<c:if test="${rv.rvimgCount ne 0 }">
+									<p>
+										<img class="review-img" src="<%=cp%>${rv.url}"
+											alt="리뷰사진">
+									</p>
+								</c:if>
+								
+								<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
+									<li class="children children-reply">
+										<h4>${basicInfo.hostNickName }</h4>
+										<span class="meta mb-2">${rv.replyDate }</span>
+										<p class="">${rv.replyContent }</p>
+									</li>
+								</c:if>
+							</li>
+						</c:if>
+					</ul>
+				</c:forEach><!-- .comment-list -->
+			
+			</section><!-- End .section2 -->
+				
+			<!-- Section 3 -->
+			<section id="section3" class="">
+				<!-- 호스트 정보 -->
+				<h4 class="mt-4 info-sub">호스트정보</h4>
+				<div class="d-flex p-4 host-box mb-5">
+					<div class="host-info">
+						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
+						<p>
+							<a href="2_newDirectMessage.jsp" class="reply">호스트에게 DM</a>
+						</p>
+					</div>
+													
+						
+					<div class="desc ml-5">
+						<!-- 상호명(개인/법인)
+								, 대표자명, 사업자 등록번호
+								, 사업자 유형, 주업태, 주종목, 사업장 주소)  -->
+						<p>사업자번호 : ${bizInfo.bizLicenseNum}</p>
+						<p>상호명 : ${bizInfo.bizName}</p>
+						<p>대표자명 : ${bizInfo.bizCeo}</p>
+						<p>사업자유형 : ${bizInfo.bizCeoType}</p>
+						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
+						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
+						<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
+						
+					</div>
+				</div>
+				
+				<!-- 지도 위치 -->
+				<!-- 주소 및 -->
+				<!-- 전화번호 -->
+				<!-- 길찾기 버튼 -->
+			
+				<h4 class="info-sub">위치 안내</h4>
+				<div id="map" style="width:700px;height:350px;"></div>
+				<script>
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			    mapOption = {
+			        center: new kakao.maps.LatLng(33.450701, 126.570667), // 중심좌표
+			        level: 3 // 지도의 확대 레벨
+			    };  
+
+				var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+				// 주소-좌표 변환 객체 생성
+				var geocoder = new kakao.maps.services.Geocoder();
+				
+				// 해당 공간의 주소를 저장
+				var addr = document.getElementById('addr').innerHTML;
+				
+				// 주소로 좌표를 검색합니다
+				geocoder.addressSearch(addr, function(result, status) {
+					
+				     if (status === kakao.maps.services.Status.OK) {	// 검색완료시
+
+				        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+				        // 결과값으로 받은 위치를 마커로 표시
+				        var marker = new kakao.maps.Marker({
+				            map: map,
+				            position: coords
+				        });
+
+				        // 인포윈도우로 장소에 대한 설명을 표시합니다
+				        var infowindow = new kakao.maps.InfoWindow({
+				            content: '<div style="width:150px;text-align:center;padding:3px 0;font-size:0.8em;">${basicInfo.locName }</div>'
+				        });
+				        infowindow.open(map, marker);
+
+				        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+				        map.setCenter(coords);
+				    } 
+				});
+				</script>
+				<sub>※ 주소가 정확하지 않을 경우 실제 위치와 다를 수 있습니다.</sub>
+			</section>
+			<!-- End .Section 3  -->
+
+			<section id="" class="info-div mb-5">
+				<h4 class="info-sub">환불규정 안내</h4>
+				<ol class="number-list">
+					<li class="list-divider"><span class="sub mr-2">이용
+							7일전</span> <span class="det ml-5">총 금액의 100% 환불</span></li>
+					<li class="list-divider"><span class="sub">이용 6일전 ~
+							1일전</span> <span class="det">총 금액의 50% 환불</span></li>
+					<li class="list-divider"><span class="sub mr-3">예약 당일</span>
+						<span class="det ml-5">환불 불가</span>
+					<li>
+				</ol>
+			</section>
+			
+			<!-- Section 4 -->
+			<section id="section4" class="mt-4">
+				<h4 class="info-sub">
+					Q&A<span class="set-star ml-3">${countQna }</span>
+					<!-- 로그인 했는지 확인 -->
+					<button class="btn btn-primary float-right" type="button" onclick="writeQna()">질문 작성하기</button>
+				</h4>
+				
+				<c:forEach var="qna" items="${qna }">
+					<ul class="comment-list">
+					
+						<li class="comment mb-5">
+							<h4>${qna.memberNickName }</h4>
+							<span class="meta">${qna.date }</span>
+							<c:if test="${qna.removeCount==1}">
+								<p class="">이용자가 삭제한 게시글입니다.</p>
+							</c:if>
+							<c:if test="${qna.removeCount==0}">
+								<p class="">${qna.qna_content }</p>
+							</c:if>
+							<c:if test="${qna.memCode == 'M000003'}">
+								<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
+								<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
+							</c:if>
+						</li>
+					
+						<c:if test="${qna.count eq 1 && qna.replyRemove eq 0 }">
+							<li class="children-reply">
+								<h4>${basicInfo.hostNickName }</h4>
+								<span class="meta">${qna.replyDate }</span>
+								<p class="">${qna.replyContent }</p>
+							</li>
+						</c:if>
+					</ul>
+				</c:forEach>
+			</section><!-- End .section4 -->
 		</div><!-- .col-lg-8 -->
 
 			<!-- 오른쪽 사이드바 -->
-	<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
-		<div class="sidebar-box ftco-animate p-3 mt-5">
-			<form action="">
-				<div class="categories">
-					<h3>공간예약하기</h3>
-					<hr>
-					
-					<div class="memo">
-						<p class="text-center text-dark">호스트의 승인을 기다릴 필요 없이<br>지금 바로 예약하세요!</p>
+		<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
+			<div class="sidebar-box ftco-animate p-3 mt-5">
+				<form action="reservation.action" id="reserveForm" method="post">
+					<div class="categories">
+						<h3>공간예약하기</h3>
 						<hr>
-					</div>
-					
-					<!-- 공간정보 -->
-					<div class="info">
-						<div class="spaceInfo">
-							<p class="text mb-0 py-3">
-							TRYGROUND는 아마추어들의 다양한 시도를 지원하는 특별한 아지트입니다.<br>
-							추천용도: 드로잉, 공방 각종  클래스 / 컨설팅 / 각종모임 / 스터디 / 조모임 / 새로운 시도를 위한 공간<br>
-							※ 독립된 공간이며 다양한 음료를 저렴하게 주문가능합니다.
-							</p>
-							<ol class="info-list">
-								<li class="list-divider">
-									<span class="sub">공간유형</span>
-									<span class="det">파티룸 루프탑</span>
-								</li>
-								<li class="list-divider">
-									<span class="sub">예약시간</span>
-									<span class="det">최소 1시간부터</span>
-								</li>
-								<li class="list-divider">
-									<span class="sub">수용인원</span>
-									<span class="det">최소 3명 ~ 최대 4명</span>
-								<li>
-							</ol>
-						</div>
-					</div>
-					
-					<br>
-					
-					<h4>예약선택</h4>
-						<hr>
-					<!-- 예약하고 싶은 날짜를 선택하면 해당 날짜에 적용된 -->
-					<!-- 패키지정보가 나타남. -->
-					<div class="py-2 calendar">
-						<!-- ※ 원래는 datePicker 이용해야 함. -->
-						<input type="date" class="form-control">
-					</div>
-					
-					
-					<div class="content">
 						
-						<div class="form-check">
-							<input type="radio" class="form-check-input" id="radio1">
-							<label class="form-check-label" for="radio1">알뜰오후(12시 ~ 18시)</label>
-							<div class="flex float-right">
-								<strong>\54,000</strong>
+						<div class="memo">
+							<p class="text-center text-dark">호스트의 승인을 기다릴 필요 없이<br>지금 바로 예약하세요!</p>
+							<hr>
+						</div>
+						
+						<!-- 공간정보 -->
+						<div class="info">
+							<div class="spaceInfo">
+								<ol class="info-list">
+									<li class="list-divider">
+										<span class="sub">공간유형</span>
+										<span class="det">${basicInfo.locType }</span>
+									</li>
+									<li class="list-divider">
+										<span class="sub">영업시간</span>
+										<span class="det">${usingInfo.usingHour }</span>
+									</li>
+									<li class="list-divider">
+										<span class="sub">정기휴무일</span>
+										<span class="det">${usingInfo.dayOff }</span>
+									</li>
+									<li class="list-divider">
+										<span class="sub">지정휴무일</span>
+										<span class="det">${usingInfo.appointDayOff }</span>
+									</li>
+								</ol>
 							</div>
 						</div>
-						<div class="form-check">
-							<input type="radio" class="form-check-input" id="radio2">
-							<label class="form-check-label" for="radio2">알뜰저녁(19시 ~ 24시)</label>
-								<div class="flex float-right">
-								<strong>\89,000</strong>
+						
+						
+						
+						<h4 class="mt-5">예약선택</h4>
+							<hr>
+						<!-- 예약하고 싶은 날짜를 선택하면 해당 날짜에 적용된 -->
+						<!-- 패키지정보가 나타남. -->
+						<!-- 선택한 날짜를 date 변수에 담고, 해당 날짜에 존재하는 패키지정보를 불러와서 출력한다... ? -->
+						
+						
+						<div class="py-2 calendar">
+							<input type="date" class="form-control" id="selectDate" min="2020-12">
+						</div>
+						
+						
+						<div class="content mt-3">
+							<div class="packageDiv">
+								<c:forEach var="i" items="${packageInfo }" varStatus="radioNum">
+									
+										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packPrice }">
+										${i.packageName }<br>
+										<span class="ml-3 package-bundle">
+										<c:choose>
+											<c:when test="${i.packStart >= 13 && i.packEnd >= 24}">
+												<c:set var="startpm" value="${i.packStart - 12}" scope="session" />
+												<c:set var="nextam" value="${i.packEnd - 24}" scope="session" />
+												
+												오후 ${startpm }시 ~ 익일 오전 ${nextam }시
+											</c:when>
+										
+											<c:when test="${i.packStart <= 11 && i.packEnd >= 13 }">
+												<c:set var="endpm" value="${i.packEnd - 12}" scope="session" />
+												
+												오전 ${i.packStart }시 ~ 오후 ${endpm }시
+											</c:when>
+											
+											<c:otherwise>
+												오전 ${i.packStart }시 ~ 오후 ${i.packEnd }시
+											</c:otherwise>
+										</c:choose>
+										</span>
+										</label>
+										<div class="flex float-right vertical-down">
+											<strong>${i.packPrice }(원)</strong>
+										</div>
+								</c:forEach> 
 							</div>
 						</div>
-						<div class="form-check">
-							<input type="radio" class="form-check-input" id="radio3">
-							<label class="form-check-label" for="radio3">올나잇(19시~ 익일10시)</label>
-							<div class="flex float-right">
-								<strong>\104,000</strong>
+							 
+						
+						<div class="heading mt-3 mb-2">
+							<h3>총 예약인원</h3>
+							<hr> 
+	                    </div>
+						<span class="pull-right mb-3">
+						최소인원
+						<span class="text-primary" id="minPeople">${basicInfo.minPeople }</span>명
+						최대인원 
+						<span class="text-danger" id="minPeople">${basicInfo.maxPeople }</span>명</span>
+						
+						<div class="text-center my-2 mt-2">
+							<div class="btn-group" style="width: 230px;">
+								<button type="button" class="btn btn-primary py-3 my-0 btn-group-addon"
+								id="decrease" >-</button>
+								<input type="text" id="amount" required="required"
+								class="form-control border-0" name="amount" value="${basicInfo.minPeople }" style="text-align:center;">
+								<button type="button" class="btn btn-primary py-0 mb-0 btn-group-addon"
+								id="increase">+</button>
 							</div>
 						</div>
-					</div>
-						 
-					
-					<div class="heading my-3">
-						<h3>총 예약인원</h3> 
-                     	</div>
-
-					<div class="btn-group" style="width: 200px;">
-						<button type="button" class="btn btn-primary py-3 my-0 btn-group-addon">+</button>
-						<input type="number" id="txtCount" placeholder="인원수"
-							required="required" class="form-control border-0">
-						<button type="button" class="btn btn-primary py-0 mb-0 btn-group-addon">-</button>
-					</div>
-					<div class="text-right">
+							
+						<div class="text-right my-4">
+							<!-- 가격 선택시 바뀌어야함 -->
 							<h3><span class="icon-won"></span>  60,000 원</h3>
-					</div>
-					<br>
-					
-					<!-- 결제하기 누르면 인원수 검증 -->
-					<button type="button" class="btn btn-primary btn-lg btn-block">결제하기</button>
-			
-				</div>
-					</form><!-- End Form -->
-				</div>
-			</div><!-- 오른쪽 사이드바 끝 -->
+						</div>
+						
+						<!-- 결제하기 누르면 인원수 검증 -->
+						<button type="submit" class="btn btn-primary btn-lg btn-block">결제하기</button>
+						</div><!-- End .categories -->
+					</form><!-- End form -->
+				</div><!-- End .sidebar-box ftco-animate -->
+			</div><!-- End .col-md-4 -->
 		</div><!-- End .row -->
 	</div><!-- End .container -->
-</section>
+</div>
 
 
 

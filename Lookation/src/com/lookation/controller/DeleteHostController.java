@@ -42,34 +42,34 @@ public class DeleteHostController implements Controller
 			
 			if(dao.checkHostCode(hostCode)==0)	// 프로필정보가 존재하지 않는다면...
 			{
-				response.setContentType("text/html; charset=UTF-8");
+				//response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>alert('회원정보가 유효하지 않거나 이미 탈퇴가 완료되었습니다.');</script>");
 				out.flush();
 				
-				mav.setViewName("../WEB-INF/views/common/login");
+				mav.setViewName("../WEB-INF/views/common/login.jsp");
 				return mav;
 			}
 			else if(dao.checkMileage(hostCode)!=0)	// 마일리지 남아있으면
 			{
-				response.setContentType("text/html; charset=UTF-8");
+				//response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>alert('마일리지가 남아있어 마일리지 환전 페이지로 이동합니다.');</script>");
 				out.flush();
 				
 				// 마이페이지로 보냄
-				mav.setViewName("../WEB-INF/views/host/mypageHost");
+				mav.setViewName("../WEB-INF/views/host/mypageHost.jsp");
 				
 				return mav;
 			}
 			else if(dao.checkBook(hostCode)!=0)	// 예약내역 남아있으면
 			{	
-				response.setContentType("text/html; charset=UTF-8");
+				//response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.println("<script>alert('예약내역이 남아있어 예약관리 페이지로 이동합니다.');</script>");
 				out.flush();
 				
-				mav.setViewName("../WEB-INF/views/host/mypageHost");
+				mav.setViewName("../WEB-INF/views/host/mypageHost.jsp");
 				return mav;
 			}	
 			else						
@@ -83,11 +83,11 @@ public class DeleteHostController implements Controller
 				dao.insertDelHost(hostCode);
 			}
 			
-			response.setContentType("text/html; charset=UTF-8");
+			//response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			out.println("<script>alert('탈퇴가 완료되었습니다.');</script>");
 			out.flush();
-			mav.setViewName("../WEB-INF/views/common/login");
+			mav.setViewName("../WEB-INF/views/common/login.jsp");
 			
 		} catch (Exception e)
 		{
