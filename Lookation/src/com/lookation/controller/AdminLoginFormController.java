@@ -19,7 +19,7 @@ public class AdminLoginFormController implements Controller
 	{
 		ModelAndView mav = new ModelAndView();
 		
-		mav.setViewName("/admin/loginAdmin");
+		mav.setViewName("../WEB-INF/views/admin/loginAdmin.jsp");
 		
 		return mav;
 	}

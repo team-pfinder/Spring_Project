@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IhostQnaManagerDAO">
+	
+	<!-- hostQnaManager 페이지 qna 목록 쿼리문 -->
+	<select id="firstList" resultType="com.lookation.dto.AdminHostDTO">
+		SELECT QNA_REPLY_CODE,QNA_CONTENT,QNA_REPLY_CONTENT,HOST_NICKNAME,QNA_REPLY_DATE,COUNT
+		FROM QNA_REPLY_VIEW
+	</select>
+	
+	<!-- 상세보기 클릭 보여지는 쿼리문 -->
+	<select id="secondList" parameterType="java.lang.String" resultType="com.lookation.dto.AdminHostDTO">
+		SELECT LOC_CODE, QNA_REPLY_DATE, MEMBER_NICKNAME, QNA_CONTENT
+		,HOST_NICKNAME,QNA_REPLY_CONTENT
+		FROM QNA_REPLY_SECOND_VIEW
+		WHERE QNA_REPLY_CODE = #{qna_reply_code}
+	</select>
+	
+
+	<insert id="remove" parameterType="java.lang.String">
+		INSERT INTO QNA_REPLY_REMOVE(QNA_REPLY_REMOVE_CODE, QNA_REPLY_CODE, QNA_REPLY_REMOVE_DATE)
+		VALUES (F_CODE('QRRM', QRRM_SEQ.NEXTVAL), #{qna_reply_code}, SYSDATE)
+	</insert>
+	
+
+</mapper>

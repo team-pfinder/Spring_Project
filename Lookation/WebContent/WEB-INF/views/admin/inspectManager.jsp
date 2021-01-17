@@ -10,6 +10,21 @@ String cp = request.getContextPath();
 
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
   <title>공간검수 목록</title>
+  <script type="text/javascript">
+  
+	//팝업창
+	$(document).ready(function()
+	{
+			      $(".detailBtn").click(function()
+			      {
+			         // alert($(this).val());
+			         var popUrl = "inspectprocess.action?inspect_reg_code=" + $(this).val();
+			         var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			         window.open(popUrl, "", popOption);
+			      });
+	});
+  </script>
+  
 
 </head>
 
@@ -52,36 +67,27 @@ String cp = request.getContextPath();
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
 				<tr align="center">
-					<!-- <th><input type="checkbox" /></th> -->
-					<th>글 번호</th>
 					<th>검수신청코드</th>
 					<th>공간 명</th>
 					<th>공간 유형</th>
-					<th>검수상태</th>
 					<th>검수처리</th>
 				</tr>
 			</thead>
                <tbody>
+               	<c:forEach var="InspectLocationDTO" items="${list }">
 				<tr align="center">
-					<!-- <td><input type="checkbox" /></td> -->
-					<td>1</td>
-
-					<td>TP001234</td>
-
-					<td>친구덜과오랜만</td>
-					
-					<td>파티룸</td>
-
-					<td>대기</td>
+					<td>${InspectLocationDTO.inspect_reg_code }</td>
+	                <td>${InspectLocationDTO.loc_name }</td>
+	                <td>${InspectLocationDTO.loc_type }</td>
 
 					<td>
 						<!-- 검수처리기능 -->
-						<button type="button" class="btn btn-primary">검수처리</button> 
+						<button type="button" class="btn btn-primary detailBtn"
+								value="${inspect_reg_code }">검수처리</button> 
 					</td>
-				</tr>
-				
+				<!-- 
 				<tr align="center">
-					<!-- <td><input type="checkbox" /></td> -->
+					<td><input type="checkbox" /></td>
 					<td>2</td>
 
 					<td>TP001235</td>
@@ -93,13 +99,13 @@ String cp = request.getContextPath();
 					<td>대기</td>
 
 					<td>
-						<!-- 검수처리기능 -->
+						검수처리기능
 						<button type="button" class="btn btn-primary">검수처리</button> 
 					</td>
 				</tr>
 				
 				<tr align="center">
-					<!-- <td><input type="checkbox" /></td> -->
+					<td><input type="checkbox" /></td>
 					<td>3</td>
 
 					<td>TP001236</td>
@@ -111,13 +117,13 @@ String cp = request.getContextPath();
 					<td>대기</td>
 
 					<td>
-						<!-- 검수처리기능 -->
+						검수처리기능
 						<button type="button" class="btn btn-primary">검수처리</button> 
 					</td>
 				</tr>
 				
 				<tr align="center">
-					<!-- <td><input type="checkbox" /></td> -->
+					<td><input type="checkbox" /></td>
 					<td>4</td>
 
 					<td>TP001237</td>
@@ -129,13 +135,13 @@ String cp = request.getContextPath();
 					<td>대기</td>
 
 					<td>
-						<!-- 검수처리기능 -->
+						검수처리기능
 						<button type="button" class="btn btn-primary">검수처리</button> 
 					</td>
 				</tr>
 				
 				<tr align="center">
-					<!-- <td><input type="checkbox" /></td> -->
+					<td><input type="checkbox" /></td>
 					<td>5</td>
 
 					<td>TP001238</td>
@@ -147,10 +153,11 @@ String cp = request.getContextPath();
 					<td>대기</td>
 
 					<td>
-						<!-- 검수처리기능 -->
+						검수처리기능
 						<button type="button" class="btn btn-primary">검수처리</button> 
-					</td>
+					</td> -->
 				</tr>
+				</c:forEach>
 			</tbody>
                   
                 </table>

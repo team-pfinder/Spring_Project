@@ -72,32 +72,32 @@
                <div class="div-table-body">
                   <div class="div-row">
                      <div class="div-col font-weight-bold">공간코드</div>
-                     <div class="div-col"><a href="#">LOC000001</a></div>
+                     <div class="div-col"><a href="#">${r_secondList.loc_code }</a></div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">작성일자</div>
-                     <div class="div-col">2021-01-10</div>
+                     <div class="div-col">${r_secondList.review_reply_date }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">이용자</div>
-                     <div class="div-col">차은우</div>
+                     <div class="div-col">${r_secondList.member_nickname }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">이용자리뷰</div>
-                     <div class="div-col">덕분에 넘 마음에 드는 하루였습니다</div>
+                     <div class="div-col">${r_secondList.review_content }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">호스트</div>
-                     <div class="div-col">조호스트</div>
+                     <div class="div-col">${r_secondList.host_nickname }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">호스트답글</div>
-                     <div class="div-col">너무감사드립니다:)</div>
+                     <div class="div-col">${r_secondList.review_reply_content }</div>
                   </div>
              
                </div> 

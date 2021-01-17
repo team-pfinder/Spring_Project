@@ -1,5 +1,5 @@
 
- // # AdminLoginController.java
+// # AdminLoginController.java
 
 package com.lookation.controller;
 
@@ -28,7 +28,7 @@ public class AdminLoginController implements Controller
 		// 데이터 수신(LoginForm.jsp) 로부터 id, pw,
 		String admin_id = request.getParameter("admin_id");
 		String admin_pw = request.getParameter("admin_pw");
-		
+
 		// 로그인 여부로 닉네임 반환하게함.
 		String nickname = null;
 
@@ -42,20 +42,22 @@ public class AdminLoginController implements Controller
 			System.out.println(e.toString());
 		}
 		
-		// 로그인 성공 여부에 따른 분기(구분)
-		if(nickname==null)
-		{
-			// 로그인 실패 → 로그인 폼을 다시 요청할 수 있도록 안내
-			mav.setViewName("redirect:adminloginform.action");
-		}
-		else
-		{
-			// 로그인 성공
-				mav.setViewName("redirect:adminloginform.action");
-		}
-			
-			
+		/*
+		mav.setViewName("../WEB-INF/views/admin/loginAdmin.jsp"); return mav;
+		 */
 
+	
+		// 로그인 성공 여부에 따른 분기(구분) 
+		if(nickname==null) 
+		{ // 로그인 실패 → 로그인 폼을 다시 요청할 수 있도록안내 
+			
+			mav.setViewName("redirect:adminform.action");
+			//mav.setViewName("../WEB-INF/views/admin/loginAdmin.jsp"); 
+		 } 
+		else 
+		{ // 로그인 성공
+		 mav.setViewName("redirect:adminloginform.action");
+		}
 		return mav;
 	}
 }

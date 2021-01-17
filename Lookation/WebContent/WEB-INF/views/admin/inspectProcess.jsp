@@ -10,7 +10,7 @@ String cp = request.getContextPath();
 
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 
-<!-- 커러셀 사용 -->
+<!-- 커러셀 사용-->
 <link rel="stylesheet" href="../css/owl.carousel.min.css">
 <link rel="stylesheet" href="../css/owl.theme.default.min.css">
 <script src="../js/jquery.min.js"></script>
@@ -23,7 +23,7 @@ String cp = request.getContextPath();
 
 
 <script type="text/javascript">
-	$(document).ready(function()
+$(document).ready(function()
 	{
 		var owl = $('.owl-carousel');
 
@@ -51,7 +51,8 @@ String cp = request.getContextPath();
 </script>
 
 <style type="text/css">
-.owl-carousel {
+.owl-carousel 
+{
 	display: inline-block;
 	overflow: hidden;
 	object-fit: cover;
@@ -87,51 +88,53 @@ String cp = request.getContextPath();
 								</div>
 								<div class="card-body">
 
-									<h4 class="mb-3 font-weight-bold">#검수신청코드 :TP123456</h4>
+									<h4 class="mb-3 font-weight-bold">#검수신청코드 ${dto1.inspect_reg_code }</h4>
 
 									<h2 class="mb-3 mt-2"># 기본정보</h2>
 									<hr>
-									<p>공간명 : 나랑 별 보러 갈래</p>
-									<p>공간한줄소개 : 감성사진을원한다면여기로</p>
-									<p>공간유형 : 파티룸</p>
-									<p>공간주소 : 서울시 서대문구 창천동</p>
-									<p>공간상세주소: 공간 상세주소를 쓰세요</p>
-									<p>시설안내: 과도한 음주가무는 이웃에게 민폐입니다</p>
-									<p>주의사항: 과한 파티는 철컹철컹</p>
+									<p>공간명 : ${dto1.loc_name}</p>
+									<p>공간한줄소개 : ${dto1.loc_short_intro}</p>
+									<p>공간유형 : ${dto1.loc_type}</p>
+									<p>공간주소 : ${dto1.loc_addr}</p>
+									<p>공간상세주소: ${dto1.loc_detail_addr}</p>
+									<p>공간소개: ${dto1.loc_intro} </p>
+									<p>시설안내: ${dto3.facility_content}</p>
+									<p>주의사항: ${dto4.caution_content}</p>
 
 									<h2 class="mb-3 mt-5"># 상세정보</h2>
 									<hr>
-									<p>최대 인원 : 6명</p>
-									<p>최소 인원 : 2명</p>
-									<p>공간 웹사이트 : www.lala.com</p>
+									<p>최대 인원 : ${dto1.max_people}</p>
+									<p>최소 인원 : ${dto1.min_people}</p>
+									<p>공간 웹사이트 : ${dto5.loc_web_url}</p>
 
 									<h2 class="mb-3 mt-5"># 패키지</h2>
 									<hr>
-									<p>패키지명 : 패키지명을 입력하세요</p>
-									<p>패키지 시작시간 : 9시</p>
-									<p>패키지 종료시간 : 10시</p>
+									<p>패키지명 : ${dto2.package_name} </p>
+									<p>패키지 시작시간 : ${dto2.package_start} </p>
+									<p>패키지 종료시간 : ${dto2.package_end} </p>
 
 									<h2 class="mb-3 mt-5"># 연락처</h2>
 									<hr>
-									<p>휴대폰 : 010-1234-1234</p>
-									<p>대표 전화 : 070-1234-1234</p>
-									<p>이메일 : sist0106@naver.com
+									<p>휴대폰 : ${dto1.loc_tel}</p>
+									<p>대표 전화 : ${dto1.loc_main_tel}</p>
+									<p>이메일 : ${loc_mail} <!-- 이메일을 불러오면 백지상태 -->
+									
 									<h2 class="mb-3 mt-5"># 사업자정보</h2>
 									<hr>
-									<p>상호명 :</p>
-									<p>대표자명 :</p>
-									<p>사업자유형 :</p>
-									<p>주업태 :</p>
-									<p>주종목 :</p>
-									<p>사업장 주소 :</p>
-									<p>사업자등록번호 :</p>
+									<p>상호명 : ${dto1.biz_name}</p>
+									<p>대표자명 : ${dto1.biz_ceo}</p>
+									<p>사업자유형 : ${dto1.biz_ceo_type}</p>
+									<p>주업태 : ${dto1.biz_main_type}</p>
+									<p>주종목 : ${dto1.biz_sub_type}</p>
+									<p>사업장 주소 : ${dto1.biz_addr}</p>
+									<p>사업자등록번호 : ${dto1.biz_license_number}</p>
 									<p>사업자등록증 : 사진</p>
 
 									<h2 class="mb-3 mt-5"># 이용안내</h2>
 									<hr>
-									<p>이용시간 :</p>
-									<p>정기휴무:</p>
-									<p>지정 휴무일 :</p>
+									<p>이용시간 : ${dto1.loc_use_hour}</p>
+									<p>정기휴무: ${dto1.loc_use_day_off}</p>
+									<p>지정 휴무일 : ${dto1.loc_use_appoint_day_off}</p>
 
 								</div>
 								<!-- card-body end -->

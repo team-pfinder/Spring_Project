@@ -13,15 +13,34 @@
   
     <script type="text/javascript">
   
-  	//팝업창
-	function popupOpen()
+
+	/* 상세보기 버튼을 클릭했을 때 상세보기 팝업을 띄우는 구문 */
+	$(document).ready(function()
 	{
-		var popUrl = "adHostQnaPopup.jsp";
-		var popOption = "width=500, height=500, resizable=no, scrollbars=yes, status=no";
-		window.open(popUrl, "", popOption);
-	}
+		$(".detailBtn").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "hostqnapopup.action?qna_reply_code=" + $(this).val();
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		});
+	});
 	
-  
+	/* 삭제버튼 누르면 삭제가 되게 */
+	$(document).ready(function()
+	{
+		$(".deleteBtn").click(function()
+		{
+			// alert($(this).val());
+			
+			if (confirm("해당 게시글을 삭제하시겠습니까?"))
+			{
+				$(location).attr("href", "hostqnadelete.action?qna_reply_code=" + $(this).val());
+			}
+		});
+	});
+	
+  /*
 	//체크박스
 	$(document).ready(function()
 	{
@@ -42,6 +61,8 @@
 		});
 	});
       
+  */
+  
   </script>
 </head>
 

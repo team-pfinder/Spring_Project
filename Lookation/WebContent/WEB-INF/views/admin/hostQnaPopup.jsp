@@ -72,32 +72,32 @@
                <div class="div-table-body">
                   <div class="div-row">
                      <div class="div-col font-weight-bold">공간코드</div>
-                     <div class="div-col"><a href="#">LOC000001</a></div>
+                     <div class="div-col"><a href="#">${secondList.loc_code }</a></div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">작성일자</div>
-                     <div class="div-col">2020-12-25</div>
+                     <div class="div-col">${secondList.qna_reply_date }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">이용자</div>
-                     <div class="div-col">차은우</div>
+                     <div class="div-col">${secondList.member_nickname }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">이용자리뷰</div>
-                     <div class="div-col">불친절이컨셉인가요?진짜너무어이가없고기분이나쁩니다</div>
+                     <div class="div-col">${secondList.qna_content }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">호스트</div>
-                     <div class="div-col">붐따호스트</div>
+                     <div class="div-col">${secondList.host_nickname }</div>
                   </div>
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">호스트답글</div>
-                     <div class="div-col">꼬우면오지마세용!</div>
+                     <div class="div-col">${secondList.qna_reply_content }</div>
                   </div>
              
                </div> 
