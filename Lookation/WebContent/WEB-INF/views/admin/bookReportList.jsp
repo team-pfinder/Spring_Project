@@ -58,53 +58,53 @@
 
 	$(document).ready(function()
 	{
-		// 공간 신고 --------------------------------------------
+		// 예약 신고 --------------------------------------------
 		
 		// 신고처리 전 상세보기 버튼을 클릭했을 때
-		$(".locDetailBtn0").click(function()
+		$(".bookDetailBtn0").click(function()
 		{
 			// alert($(this).val());
-			var popUrl = "locpopup0.action?loc_report_code=" + $(this).val();
+			var popUrl = "bookpopup0.action?book_report_code=" + $(this).val();
 			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
 			window.open(popUrl, "", popOption);
 		});
 		
 		// 신고처리 후 상세보기 버튼을 클릭했을 때
-		$(".locDetailBtn1").click(function()
+		$(".bookDetailBtn1").click(function()
 		{
 			// alert($(this).val());
-			var popUrl = "locpopup1.action?loc_report_code=" + $(this).val();
+			var popUrl = "bookpopup1.action?book_report_code=" + $(this).val();
 			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
 			window.open(popUrl, "", popOption);
 		})
 		
 		// 신고처리 버튼 클릭 (인정 / 반려)
-		$(".locReportOK").click(function()	//-- 신고인정
+		$(".bookReportOK").click(function()	//-- 신고인정
 		{
 			// alert($(this).val());
-			$(location).attr("href", "locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
+			$(location).attr("href", "bookreportproc.action?book_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
 		});
-		$(".locReportNO").click(function()	//-- 신고반려
+		$(".bookReportNO").click(function()	//-- 신고반려
 		{
 			// alert($(this).val());
-			$(location).attr("href", "locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
+			$(location).attr("href", "bookreportproc.action?book_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
 		})
 		
 		// 블랙리스트 추가 버튼 클릭
-		$(".hostBlack").click(function()
+		$(".userBlack").click(function()
 		{
 			// alert($(this).val());
-			var popUrl = "hostblackform.action?host_email=" + $(this).val();
+			var popUrl = "userblackform.action?member_email=" + $(this).val();
 			var popOption = "width=500, height=500, resizable=no, scrollbars=yes, status=no";
 			window.open(popUrl, "", popOption);
 		})
 		
-		// -------------------------------------------- 공간 신고
+		// -------------------------------------------- 예약 신고
 		
 		// 예약신고 관리 페이지로
-		$(".bookReport").click(function()
+		$(".locReport").click(function()
 		{
-			$(location).attr("href", "bookreportlist.action");
+			$(location).attr("href", "reportlist.action");
 		});
 	});
 
@@ -140,16 +140,16 @@
 		                    <!-- DataTales Example -->
 		                    <div class="card shadow mb-4">
 		                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-					              <h6 class="m-0 font-weight-bold text-primary">공간신고처리</h6>
+					              <h6 class="m-0 font-weight-bold text-primary">예약신고처리</h6>
 					          
-					              <button type="button" class="btn btn-secondary bookReport">예약신고관리</button>
+					              <button type="button" class="btn btn-secondary locReport">공간신고관리</button>
 					            </div>
 		                        <div class="card-body">
 		                            <div class="table-responsive">
 		                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		                                	<thead>
 			                                    <tr>
-													<th>공간코드</th>
+													<th>예약코드</th>
 													<th>신고유형</th>
 													<th>피신고자정보</th>
 													<th>신고자정보</th>
@@ -160,36 +160,36 @@
 											</thead>
 											
 											<tbody>
-												<c:forEach var="reportDTO" items="${locBasicList }">
+												<c:forEach var="reportDTO" items="${bookBasicList }">
 													<tr>
-														<td>${reportDTO.loc_code }</td>
-														<td>${reportDTO.loc_report_type }</td>
+														<td>${reportDTO.book_code }</td>
+														<td>${reportDTO.book_report_type }</td>
 														<td>${reportDTO.host_nickname }</td>
 														<td>${reportDTO.member_nickname }</td>
-														<td>${reportDTO.loc_report_date }</td>
+														<td>${reportDTO.book_report_date }</td>
 														<c:choose>
 															<c:when test="${reportDTO.result_count == 0 }">
 																<td>
-																	<button type="button" class="btn btn-primary locDetailBtn0"
-																	value="${reportDTO.loc_report_code }">상세보기</button>
+																	<button type="button" class="btn btn-primary bookDetailBtn0"
+																	value="${reportDTO.book_report_code }">상세보기</button>
 																</td>
 																<td>
-																	<button type="button" class="btn btn-danger locReportOK"
-																	value="${reportDTO.loc_report_code }">인정</button>
-																	<button type="button" class="btn btn-secondary locReportNO"
-																	value="${reportDTO.loc_report_code }">반려</button>
+																	<button type="button" class="btn btn-danger bookReportOK"
+																	value="${reportDTO.book_report_code }">인정</button>
+																	<button type="button" class="btn btn-secondary bookReportNO"
+																	value="${reportDTO.book_report_code }">반려</button>
 																</td>
 															</c:when>
 															<c:otherwise>
 																<td>
-																	<button type="button" class="btn btn-primary locDetailBtn1"
-																	value="${reportDTO.loc_report_code }">처리결과보기</button>
+																	<button type="button" class="btn btn-primary bookDetailBtn1"
+																	value="${reportDTO.book_report_code }">처리결과보기</button>
 																</td>
 																<c:choose>
 																	<c:when test="${reportDTO.black_count ==0 }">
 																		<td>
-																			<button type="button" class="btn btn-danger hostBlack"
-																			value="${reportDTO.host_email }">블랙리스트 추가</button>
+																			<button type="button" class="btn btn-danger userBlack"
+																			value="${reportDTO.member_email }">블랙리스트 추가</button>
 																		</td>
 																	</c:when>
 																	<c:otherwise>

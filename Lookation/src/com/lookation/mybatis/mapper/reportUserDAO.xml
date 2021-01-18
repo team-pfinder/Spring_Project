@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IReportUserDAO">
+	
+	<insert id="add">
+		INSERT INTO LOC_REPORT(LOC_REPORT_CODE, LOC_CODE, LOC_REPORT_TYPE_CODE
+		                     , MEMBER_CODE, LOC_REPORT_REASON, LOC_REPORT_DATE)
+		VALUES(F_CODE('LRP', LRP_SEQ.NEXTVAL), #{loc_code}, #{loc_report_type_code}
+		     , #{member_code}, #{loc_report_reason}, SYSDATE);
+	</insert>
+	
+</mapper>

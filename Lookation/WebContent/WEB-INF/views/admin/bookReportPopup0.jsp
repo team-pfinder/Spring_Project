@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>reviewPopup.jsp</title>
+<title>locReportPopup1.jsp</title>
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <style>
 	table
@@ -24,7 +24,7 @@
 	}
 	table th
 	{
-		width: 100px;
+		width: 150px;
 		color: #4E73DF;
 	}
 	a
@@ -51,30 +51,47 @@
 <div class="outer">
 	<div class="inner">
 		<form>
-		<!-- userReview.jsp에서 review_code를 받아온다. -->
+		<!-- bookReportList.jsp에서 book_report_code를 받아옴 -->
 			<table>
+				<tr>
+					<th>신고접수코드</th>
+					<td>${bookDetailList0.book_report_code }</td>
+				</tr>
 				<tr>
 					<th>공간코드</th>
 					<td>
-						<a href="#">${detailList.loc_code }</a>
+						<a href="#">${bookDetailList0.book_code }</a>
 					</td>
 				</tr>
 				<tr>
-					<th>작성일자</th>
-					<td>${detailList.review_date }</td>
+					<th>신고유형</th>
+					<td>${bookDetailList0.book_report_type }</td>
 				</tr>
 				<tr>
-					<th>이용자</th>
-					<td>${detailList.member_nickname }</td>
+					<th>피신고자정보</th>
+					<td>${bookDetailList0.host_email }</td>
 				</tr>
 				<tr>
-					<th>작성된 리뷰</th>
-					<td>${detailList.review_content }</td>
+					<th>신고자정보</th>
+					<td>${bookDetailList0.member_email }</td>
+				</tr>
+				<tr>
+					<th>신고일자</th>
+					<td>${bookDetailList0.book_report_date }</td>
+				</tr>
+				<tr>
+					<th>신고사유</th>
+					<td>${bookDetailList0.book_report_reason }</td>
+				</tr>
+				<tr>
+					<th>이미지</th><!-- 이미지로 볼 수 있게 변경할 것 -->
+					<td>${bookDetailList0.book_report_img_url }</td>
 				</tr>
 			</table>
 		</form>
 	</div>
 </div>
+
 
 </body>
 </html>

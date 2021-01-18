@@ -8,7 +8,8 @@ public class adminUserDTO
 	private int count;
 	
 	// userReviewManager 에서 사용할 주요 속성 구성
-	
+	private String review_code, review_content, review_date, review_remove_code
+		, review_remove_date;
 	
 	// userQnaManager getter / setter 구성
 	public String getQna_code()
@@ -82,6 +83,48 @@ public class adminUserDTO
 	public void setCount(int count)
 	{
 		this.count = count;
+	}
+	
+	// adminUserReview getter / setter 구성
+	public String getReview_code()
+	{
+		return review_code;
+	}
+	public void setReview_code(String review_code)
+	{
+		this.review_code = review_code;
+	}
+	public String getReview_content()
+	{
+		return review_content;
+	}
+	public void setReview_content(String review_content)
+	{
+		this.review_content = review_content;
+	}
+	public String getReview_date()
+	{
+		return review_date;
+	}
+	public void setReview_date(String review_date)
+	{
+		this.review_date = review_date;
+	}
+	public String getReview_remove_code()
+	{
+		return review_remove_code;
+	}
+	public void setReview_remove_code(String review_remove_code)
+	{
+		this.review_remove_code = review_remove_code;
+	}
+	public String getReview_remove_date()
+	{
+		return review_remove_date;
+	}
+	public void setReview_remove_date(String review_remove_date)
+	{
+		this.review_remove_date = review_remove_date;
 	}
 	
 }

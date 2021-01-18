@@ -128,8 +128,7 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Q&A조회</h1>
-                    <p class="mb-4">온 QNA를 조회할 수 있읍니다.
-                     검색을 통해 특정 이용자QNA를 조회할 수 있읍니다.</p>
+                    <p class="mb-4">이용자가 작성한 Q&A를 조회하고 관리할 수 있습니다.</p>
 
                     <!-- DataTales Example -->
 		          <div class="card shadow mb-4">
@@ -166,7 +165,6 @@
 			                                    		<td>${adminUserDTO.member_email }</td>
 			                                    		<td>${adminUserDTO.loc_code }</td>
 			                                    		<td>${adminUserDTO.qna_content }</td>
-			                                    		<td>${adminUserDTO.count}</td>
 			                                    		<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.qna_code }">상세보기</button>

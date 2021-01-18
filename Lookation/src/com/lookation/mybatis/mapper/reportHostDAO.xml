@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IReportHostDAO">
+	
+	<insert id="add">
+	INSERT INTO BOOK_REPORT(BOOK_REPORT_CODE, BOOK_CODE, BOOK_REPORT_TYPE_CODE
+                      , HOST_CODE, BOOK_REPORT_REASON, BOOK_REPORT_DATE)
+	VALUES(F_CODE('BRP', BRP_SEQ.NEXTVAL), #{book_code}, #{book_report_type_code}
+		 , #{host_code}, #{book_report_reason}, SYSDATE)
+	</insert>
+	
+</mapper>
