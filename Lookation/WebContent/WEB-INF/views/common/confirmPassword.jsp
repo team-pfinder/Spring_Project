@@ -8,28 +8,11 @@
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
-	// 로그인 후 다시 요청할 액션
-	String requestUrl = "";
+	String requestUrl = (String)request.getSession().getAttribute("requestUrl");
+	String beforeUrl = (String)request.getSession().getAttribute("beforeUrl");
 	
-	// 로그인시 다시 요청하기 위한 이전 액션
-	String beforePage = request.getHeader("Referer");
-	
-	// 이전 액션 없이 링크를 직접 타고 들어왔다면 
-	// 메인 액션으로 이동하도록 한다.
-	if(beforePage == null)
-	{
-		if(identify.equals("host"))
-			requestUrl = "mainHost.action";
-		else if(identify.equals("member"))
-			requestUrl = "mainUser.action";
-	}
-	else
-	{
-		// 뒷부분 액션만 잘라오기
-		String[] subArr = beforePage.split("/");
-	    requestUrl = subArr[subArr.length-1];
-	}
 	pageContext.setAttribute("requestUrl", requestUrl);
+	pageContext.setAttribute("beforeUrl", beforeUrl);
 	
 	// 인증 결과 여부
 	// 이전 페이지에서 로그인 실패시 GET을 통해 들어온다.
@@ -176,12 +159,6 @@
 			
 			$("#confirmPwForm").submit();
 		});
-		
-		// cancel
-		$("#cancel").click( function()
-		{
-			alert("cancel");
-		});
 	});
 </script>
 
@@ -216,13 +193,13 @@
 				<div style="margin-top:30px;">
 					<c:if test="${identify eq 'host'}">
 						<button type="button" class="full" style="background: #ffffff;" id="cancel"
-							onclick="location.href='${requestUrl }'">
+							onclick="location.href='${beforeUrl }'">
 								<span style="color: black;">취소</span>
 							</button> 
 					</c:if>
 					<c:if test="${identify eq 'member'}">
 						<button type="button" class="full" style="background: #ffffff;" id="cancel"
-					        onclick="location.href='${requestUrl }'">
+					        onclick="location.href='${beforeUrl }'">
 					        	<span style="color: black;">취소</span>
 					        </button> 
 					</c:if> 
