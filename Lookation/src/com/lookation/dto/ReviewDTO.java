@@ -2,9 +2,14 @@ package com.lookation.dto;
 
 public class ReviewDTO
 {
+	// 이용자
 	private String review_code, loc_code, member_code, review_rate
 	, review_date, review_content
 	, review_remove_date;
+	
+	// 호스트
+	private String review_reply_code, review_reply_content
+	, review_reply_date, review_reply_remove_code, review_reply_remove_date;
 
 	public String getReview_code()
 	{
@@ -75,5 +80,57 @@ public class ReviewDTO
 	{
 		this.review_remove_date = review_remove_date;
 	}
+
+	public String getReview_reply_code()
+	{
+		return review_reply_code;
+	}
+
+	public void setReview_reply_code(String review_reply_code)
+	{
+		this.review_reply_code = review_reply_code;
+	}
+
+	public String getReview_reply_content()
+	{
+		return review_reply_content;
+	}
+
+	public void setReview_reply_content(String review_reply_content)
+	{
+		this.review_reply_content = review_reply_content;
+	}
+
+	public String getReview_reply_date()
+	{
+		return review_reply_date;
+	}
+
+	public void setReview_reply_date(String review_reply_date)
+	{
+		this.review_reply_date = review_reply_date;
+	}
+
+	public String getReview_reply_remove_code()
+	{
+		return review_reply_remove_code;
+	}
+
+	public void setReview_reply_remove_code(String review_reply_remove_code)
+	{
+		this.review_reply_remove_code = review_reply_remove_code;
+	}
+
+	public String getReview_reply_remove_date()
+	{
+		return review_reply_remove_date;
+	}
+
+	public void setReview_reply_remove_date(String review_reply_remove_date)
+	{
+		this.review_reply_remove_date = review_reply_remove_date;
+	}
+	
+	
 	
 }

@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_host.jsp"></c:import>
 <style type="text/css">
 body, html {
 width: 100%;
@@ -106,7 +106,8 @@ height: auto;
     opacity: 0;
     font-weight: 700;
     letter-spacing: .5px;
-    background-color: #00043c;
+    background-color: #ffd014;
+    color:black;
     padding: 5px 10px;
     border-radius: 20px;
     margin-left: 20px;
@@ -126,7 +127,7 @@ height: auto;
 	display: block;
 	font-weight: bold;
 	width: 25px;
-	border-bottom: 4px solid #ffd014;
+	border-bottom: 4px solid #00043c;
 	margin: 10px 0px;
 }
 
@@ -194,8 +195,6 @@ height: auto;
     width: 100%;
 }
 
-
-
 /*=== 별점 ===*/
 .set-star {
 	color: #fdbe34;
@@ -248,18 +247,18 @@ margin-top: 1.9em;
 	    var link = $('#myScrollspy a.dot');
 	    link.on('click',function(e){
 	        
-	        //href 속성을 통해, section id 타겟을 잡음
+	        // section id 태그 만들어서 이동할 수 있게 하기
 	        var target = $($(this).attr('href')); 
 	        
-	        //target section의 좌표를 통해 꼭대기로 이동
+	        // target section의 좌표를 통해 꼭대기로 이동
 	        $('html, body').animate({
 	            scrollTop: target.offset().top
-	        },600);
+	        }, 600);
 	        
-	        //active 클래스 부여
+	        // active 클래스 부여
 	        $(this).addClass('active');
 	
-	        // 앵커를 통해 이동할때, URL에 #id가 붙지 않도록 함.
+	        // #section3 이런거 안붙게
 	        e.preventDefault();
 	    });
 	    
@@ -279,134 +278,60 @@ margin-top: 1.9em;
 	    findPosition();
 	    /* 여기까지 scrollspy */
 	    
-	    /* 날짜 기본값 오늘로 */
-	    var now = new Date();
-		var day = ("0" + now.getDate()).slice(-2);
-		var month = ("0" + (now.getMonth() + 1)).slice(-2);
-		var today = now.getFullYear()+"-"+(month)+"-"+(day);
-		
-		// 최대 3개월까지만으로 제한하기
-		var maxmonth = ("0" + (now.getMonth() + 3)).slice(-2);
-		var maxdate = now.getFullYear()+"-"+(maxmonth)+"-"+(day);
-		
-		$("#selectDate").val(today);
-		$("#selectDate").attr("min", today);
-		$("#selectDate").attr("max", maxdate);
-		
-	    /* 숫자 버튼 증가 및 최소, 최댓값 설정 */
-	    $("#increase").on("click", function(){
-			
-		   	if($("#amount").val() >= 29)
-		    {
-		   		$("#amount").val(30);
-		    }
-		   	else
-		   	{
-		   		$("#amount").val(parseInt($("#amount").val()) + 1);
-		   	}
-	    });
-	    
-	    $("#decrease").on("click", function(){
-	    	
-	    	 if($("#amount").val() <= 0)
-	         {
-	         	$("#amount").val(0);
-	         }
-	    	 else
-	    	 {
-	    		$("#amount").val(parseInt($('#amount').val()) - 1);
-	    	 }
-	       
-	    });
-	    
-	    // 패키지 정보 가져오기
-		// 날짜가 변경되었을 경우 수행할 코드 처리
-		$("#selectDate").change(function()
+		// 리뷰 답글 작성 팝업
+		$(".writeReview").click(function()
 		{
-			// 『jquery.post()』 / 『jquery.get()』
-			// 『$.post()』 / 『$.get()』
-			//-- jQuery 에서 AJAX 를 써야 할 경우 지원해 주는 함수.
-			//   (서버측에서 요청한 데이터를 받아오는 기능의 함수)
-			
-			// ※ 이 함수(『$.post()』)의 사용 방법(방식)
-			//-- 『$.post(요청주소, 전송데이터, 응답액션처리)』
-			//   ·요청주소(url)
-			//    → 데이터를 요청할 파일에 대한 정보
-			//   ·전송데이터(data)
-			//    → 서버 측에 요청하는 과정에서 내가 전달할 파라미터
-			//   ·응답액션처리(function)
-			//    → 응답을 받을 수 있는 함수
-			//       여기서는 익명의 함수를 사용 → 단순 기능 구현 및 적용
-			// ※ 참고로 data 는 파라미터의 데이터타입을 그대로 취하게 되므로
-			//    html 이든, 문자열이든 상관이 없다.
-			$.post("locdetailajax.action", {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}, function(data)
-			{
-				// 받아서 처리할 내용
-			    for(var i=0; i<data.length; i++){
-
-                   $('#packageDiv').append(data[i] + '<br>')
-                   }
-				//$("#packageDiv").text(data);
-				alert(data);
-			});
-			
-		});
-		
-		// 이용자 QnA 수정하는 팝업
-		$(".modifyQna").click(function()
-		{
-			var url = "modifyformqna.action?identify=member&qna_code=" + $(this).val();
+			var url = "writereview.action?identify=host&reviewCode=" + $(this).val();
 			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 			window.open(url, "", option);
 		}); 
 		
-		// 이용자 Qna 삭제하는 팝업
-		$(".deleteQna").click(function()
+		// 리뷰 답글 수정하는 팝업
+		$(".modifyReview").click(function()
 		{
-			if(confirm("삭제하시겠습니까?"))
-			{
-				$(location).attr("href", "deleteqna.action?identify=member&qna_code=" + $(this).val());
-			}
+			var url = "modifyformreview.action?identify=host&review_reply_code=" + $(this).val();
+			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+			window.open(url, "", option);
 		}); 
-		
-		// 이용자 리뷰 삭제하는 팝업 
+	    
+		// 리뷰 답글 삭제
 		$(".deleteReview").click(function()
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deletereview.action?identify=member&review_code=" + $(this).val());
+				$(location).attr("href", "deletereviewreply.action?review_reply_code=" + $(this).val());
 			}
 		}); 
 		
-		// 이용자 리뷰 수정하는 팝업
-		$(".modifyReview").click(function()
+		// Qna 답글 작성 팝업
+		$(".writeQna").click(function()
 		{
-			var url = "modifyformreview.action?identify=member&review_code=" + $(this).val();
+			var url = "writeqna.action?identify=host&qnaCode=" + $(this).val();
 			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 			window.open(url, "", option);
 		}); 
 		
+		// QnA 답글 수정 팝업
+		$(".modifyQna").click(function()
+		{
+			var url = "modifyformqna.action?identify=host&qna_reply_code=" + $(this).val();
+			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+			window.open(url, "", option);
+		}); 
+				
+		// QnA 답글 삭제
+		$(".deleteQna").click(function()
+		{
+			if(confirm("삭제하시겠습니까?"))
+			{
+				$(location).attr("href", "deleteqnareply.action?qna_reply_code=" + $(this).val());
+			}
+		}); 
+		
+	
+		
 	});
 	
-	// 질문 작성하는 팝업
-	function writeQna()
-	{	
-		var locCode = document.getElementById("hiddenCode").value;
-		var url = "writeqna.action?identify=member&locCode="+ locCode + "&memCode=M000003";
-		// memCode 임시
-		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
-		window.open(url, "", option);
-	}
-	
-	// 후기 작성하는 팝업
-	function writeReview()
-	{	
-		var locCode = document.getElementById("hiddenCode").value;
-		var url = "writereview.action?identify=member&locCode="+ locCode + "&memCode=M000004";
-		// memCode 임시
-		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
-		window.open(url, "", option);
-	}
 	
 </script>
 </head>
@@ -416,7 +341,7 @@ margin-top: 1.9em;
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">
+				<input type="hidden" id="hiddenCode" value="${basicInfo.locationCode }">${basicInfo.locationCode }
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->
@@ -461,7 +386,7 @@ margin-top: 1.9em;
 		</div>
 			
 		<div class="row">
-			<div class="col-lg-8 p-md-3">
+			<div class="col-lg-12 p-md-3">
 
 
 			<!-- .navbar scrollspy로 이동할 부분 -->
@@ -470,7 +395,7 @@ margin-top: 1.9em;
 					<li><a data-scroll="section1" href="#section1" class="dot active"><span>공간소개</span></a><li>
 					<li><a data-scroll="section2" href="#section2" class="dot"><span>이용후기</span></a><li>
 					<li><a data-scroll="section3" href="#section3" class="dot"><span>위치안내</span></a><li>
-					<li><a data-scroll="section4" href="#section4" class="dot"><span>Q&A</span></a><li>
+					<li><a data-scroll="section4" href="#section4" class="dot"><span>질문/후기</span></a><li>
 				</ul>
 			</nav>
 
@@ -496,7 +421,7 @@ margin-top: 1.9em;
 				</div>
 			</section>
 			<!-- End .Section 1  -->
-
+			
 			<section id="" class="info-div">
 				<h4 class="info-sub">예약시 주의사항</h4>
 				<ol class="number-list">
@@ -508,16 +433,41 @@ margin-top: 1.9em;
 					</c:forEach>
 				</ol>
 			</section>
+			
+			<!-- 공간정보 -->
+			<section class="info-div">
+				<h4 class="info-sub">공간정보</h4>
+					<div class="spaceInfo">
+						<ol class="info-list">
+							<li class="list-divider">
+								<span class="sub">공간유형</span>
+								<span class="det">${basicInfo.locType }</span>
+							</li>
+							<li class="list-divider">
+								<span class="sub">영업시간</span>
+								<span class="det">${usingInfo.usingHour }</span>
+							</li>
+							<li class="list-divider">
+								<span class="sub">정기휴무일</span>
+								<span class="det">${usingInfo.dayOff }</span>
+							</li>
+							<li class="list-divider">
+								<span class="sub">지정휴무일</span>
+								<span class="det">${usingInfo.appointDayOff }</span>
+							</li>
+						</ol>
+					</div>
+			</section>
+			
+				
+			
 				
 			<!-- section 2 -->
 			<section id="section2" class="info-div">
 				<h4 class="info-sub">
 					이용후기<span class="set-star ml-3">${countReview }</span>
+					
 					<span class="ml-2" style="font-size: 10pt;">(평균별점 <span class="set-star icon-star mr-1"></span>${avgReviewRate }점)</span>
-
-					<!-- 이용후기 작성권한이 있을 경우(이용완료, 후기작성 안했는지 확인) -->
-					<!-- 에만 이용후기 작성버튼 표시  -->
-					<button class="btn btn-primary float-right" onclick="writeReview()">후기 작성하기</button>
 				</h4>
 				<br>
 
@@ -530,6 +480,7 @@ margin-top: 1.9em;
 					
 				<c:forEach var="rv" items="${review }">
 					<ul class="comment-list">	
+						
 							<li class="comment">
 								<h4>${rv.memberNickName }</h4>
 								<h6 class="float-right">
@@ -545,7 +496,7 @@ margin-top: 1.9em;
 								</c:if>
 								
 								<c:if test="${rv.removeCount eq 0}">
-									<p>${rv.content }</p>
+									<p class="pr-5">${rv.content }</p>
 									
 									<c:if test="${rv.rvimgCount ne 0 }">
 										<p>
@@ -554,20 +505,33 @@ margin-top: 1.9em;
 										</p>
 									</c:if>
 									
-									<c:if test="${rv.memCode == 'M000004'}">
-										<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
-										<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+									<c:if test="${rv.hostCode == 'H000003' && rv.count ne 1}">
+										<button type="button" class="reply border-0 writeReview" id="reviewCode" value="${rv.boardCode }">답글</button>
 									</c:if>
 								</c:if>
 								
-								<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
+								
+								
+								<c:if test="${rv.count eq 1}">
 									<li class="children children-reply">
 										<h4>${basicInfo.hostNickName }</h4>
 										<span class="meta mb-2">${rv.replyDate }</span>
-										<p class="">${rv.replyContent }</p>
+										
+										<c:if test="${rv.replyRemove eq 1 }">
+											<p class="pr-5">삭제된 리뷰답글입니다.</p>
+										</c:if>
+										
+										<c:if test="${rv.replyRemove eq 0 }">
+											<p class="pr-5">${rv.replyContent }</p>
+											<c:if test="${rv.hostCode == 'H000003'}">
+												<button type="button" class="reply border-0 modifyReview" value="${rv.replyCode }">수정</button> 
+												<button type="button" class="reply border-0 deleteReview" value="${rv.replyCode }">삭제</button>
+											</c:if>
+										</c:if>
 									</li>
 								</c:if>
 							</li>
+						
 					</ul>
 				</c:forEach><!-- .comment-list -->
 			
@@ -580,9 +544,6 @@ margin-top: 1.9em;
 				<div class="d-flex p-4 host-box mb-5">
 					<div class="host-info">
 						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
-						<p>
-							<a href="2_newDirectMessage.jsp" class="reply">호스트에게 DM</a>
-						</p>
 					</div>
 													
 						
@@ -607,7 +568,7 @@ margin-top: 1.9em;
 				<!-- 길찾기 버튼 -->
 			
 				<h4 class="info-sub">위치 안내</h4>
-				<div id="map" style="width:100% ;height:350px;"></div>
+				<div id="map" style="width:100%;height:350px;"></div>
 				<script>
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			    mapOption = {
@@ -651,8 +612,8 @@ margin-top: 1.9em;
 			</section>
 			<!-- End .Section 3  -->
 
-			<section id="" class="info-div mb-5">
-				<h4 class="info-sub mt-5">환불규정 안내</h4>
+			<section id="" class="info-div my-5">
+				<h4 class="info-sub">환불규정 안내</h4>
 				<ol class="number-list">
 					<li class="list-divider"><span class="sub mr-2">이용
 							7일전</span> <span class="det ml-5">총 금액의 100% 환불</span></li>
@@ -668,8 +629,6 @@ margin-top: 1.9em;
 			<section id="section4" class="mt-4">
 				<h4 class="info-sub">
 					Q&A<span class="set-star ml-3">${countQna }</span>
-					<!-- 로그인 했는지 확인 -->
-					<button class="btn btn-primary float-right" type="button" onclick="writeQna()">질문 작성하기</button>
 				</h4>
 				
 				<c:forEach var="qna" items="${qna }">
@@ -682,146 +641,34 @@ margin-top: 1.9em;
 								<p class="">이용자가 삭제한 게시글입니다.</p>
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
-								<p class="">${qna.qna_content }</p>
-								<c:if test="${qna.memCode == 'M000003'}">
-									<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
-									<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
+								<p class="pr-5">${qna.qna_content }</p>
+								
+								<c:if test="${qna.hostCode == 'H000003' && qna.count ne 1}">
+									<button type="button" class="reply border-0 writeQna" id="qnaCode" value="${qna.boardCode }">답글</button>
 								</c:if>
 							</c:if>
-							
 						</li>
 					
-						<c:if test="${qna.count eq 1 && qna.replyRemove eq 0 }">
+						<c:if test="${qna.count eq 1 }">
 							<li class="children-reply">
 								<h4>${basicInfo.hostNickName }</h4>
 								<span class="meta">${qna.replyDate }</span>
-								<p class="">${qna.replyContent }</p>
+								<c:if test="${qna.replyRemove eq 1}">
+									<p>삭제된 Q&A 답글입니다.</p>
+								</c:if>
+								<c:if test="${qna.replyRemove eq 0}">
+									<p class="pr-5">${qna.replyContent }</p>
+									<c:if test="${qna.hostCode == 'H000003'}">
+										<button type="button" class="reply border-0 modifyQna" value="${qna.replyCode }">수정</button> 
+										<button type="button" class="reply border-0 deleteQna" value="${qna.replyCode }">삭제</button>
+									</c:if>
+								</c:if>
 							</li>
 						</c:if>
 					</ul>
 				</c:forEach>
 			</section><!-- End .section4 -->
-		</div><!-- .col-lg-8 -->
-
-			<!-- 오른쪽 사이드바 -->
-		<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
-			<div class="sidebar-box ftco-animate p-3 mt-5">
-				
-				<form action="bookapply.action?loc_code=L000001&member_code=M000002" id="reserveForm" method="GET">
-					<div class="categories">
-						<h3>공간예약하기</h3>
-						<hr>
-						
-						<div class="memo">
-							<p class="text-center text-dark">호스트의 승인을 기다릴 필요 없이<br>지금 바로 예약하세요!</p>
-							<hr>
-						</div>
-						
-						<!-- 공간정보 -->
-						<div class="info">
-							<div class="spaceInfo">
-								<ol class="info-list">
-									<li class="list-divider">
-										<span class="sub">공간유형</span>
-										<span class="det">${basicInfo.locType }</span>
-									</li>
-									<li class="list-divider">
-										<span class="sub">영업시간</span>
-										<span class="det">${usingInfo.usingHour }</span>
-									</li>
-									<li class="list-divider">
-										<span class="sub">정기휴무일</span>
-										<span class="det">${usingInfo.dayOff }</span>
-									</li>
-									<li class="list-divider">
-										<span class="sub">지정휴무일</span>
-										<span class="det">${usingInfo.appointDayOff }</span>
-									</li>
-								</ol>
-							</div>
-						</div>
-						
-						
-						
-						<h4 class="mt-5">예약선택</h4>
-							<hr>
-						<!-- 예약하고 싶은 날짜를 선택하면 해당 날짜에 적용된 -->
-						<!-- 패키지정보가 나타남. -->
-						<!-- 선택한 날짜를 date 변수에 담고, 해당 날짜에 존재하는 패키지정보를 불러와서 출력한다... ? -->
-						
-						
-						<div class="py-2 calendar">
-							<input type="date" class="form-control" id="selectDate" min="2020-12">
-						</div>
-						
-						
-						<div class="content mt-3">
-							<div class="packageDiv">
-								<%-- <c:forEach var="i" items="${packageInfo }" varStatus="radioNum">
-									
-										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packPrice }">
-										${i.packageName }
-										<span class="ml-3 package-bundle">
-										<c:choose>
-											<c:when test="${i.packStart >= 13 && i.packEnd >= 24}">
-												<c:set var="startpm" value="${i.packStart - 12}" scope="session" />
-												<c:set var="nextam" value="${i.packEnd - 24}" scope="session" />
-												
-												오후 ${startpm }시 ~ 익일 오전 ${nextam }시
-											</c:when>
-										
-											<c:when test="${i.packStart <= 11 && i.packEnd >= 13 }">
-												<c:set var="endpm" value="${i.packEnd - 12}" scope="session" />
-												
-												오전 ${i.packStart }시 ~ 오후 ${endpm }시
-											</c:when>
-											
-											<c:otherwise>
-												오전 ${i.packStart }시 ~ 오후 ${i.packEnd }시
-											</c:otherwise>
-										</c:choose>
-										</span>
-										</label>
-										<div class="flex float-right vertical-down">
-											<strong>${i.packPrice }(원)</strong>
-										</div>
-								</c:forEach>  --%>
-							</div>
-						</div>
-							 
-						
-						<div class="heading mt-3 mb-2">
-							<h3>총 예약인원</h3>
-							<hr> 
-	                    </div>
-						<span class="pull-right mb-3">
-						최소인원
-						<span class="text-primary" id="minPeople">${basicInfo.minPeople }</span>명
-						최대인원 
-						<span class="text-danger" id="minPeople">${basicInfo.maxPeople }</span>명</span>
-						
-						<div class="text-center my-2 mt-2">
-							<div class="btn-group" style="width: 230px;">
-								<button type="button" class="btn btn-primary py-3 my-0 btn-group-addon"
-								id="decrease" >-</button>
-								<input type="text" id="amount" required="required"
-								class="form-control border-0" name="amount" value="${basicInfo.minPeople }" style="text-align:center;">
-								<button type="button" class="btn btn-primary py-0 mb-0 btn-group-addon"
-								id="increase">+</button>
-							</div>
-						</div>
-							
-						<div class="text-right my-4">
-							<!-- 가격 선택시 바뀌어야함 -->
-							<h3><span class="icon-won"></span>  60,000 원</h3>
-						</div>
-						
-						<!-- 결제하기 누르면 인원수 검증 -->
-						<button type="submit" class="btn btn-primary btn-lg btn-block">결제하기</button>
-						</div><!-- End .categories -->
-					</form><!-- End form -->
-				</div><!-- End .sidebar-box ftco-animate -->
-			</div><!-- End .col-md-4 -->
+		</div><!-- .col-lg-12 -->
 		</div><!-- End .row -->
 	</div><!-- End .container -->
 </div>
@@ -830,7 +677,7 @@ margin-top: 1.9em;
 
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <div>
-	<c:import url="${cp}/includes/footer_user.jsp"></c:import>
+	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 </div>
 </body>
 </html>

@@ -226,7 +226,7 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		Connection conn = dataSource.getConnection();
 		String sql = "SELECT QNA_CODE, MEMBER_NICKNAME, QNA_CONTENT, QNA_DATE, MEMBER_CODE" 
 				   + ", REPLYCOUNT, QNAREMOVECOUNT, QNAREPLYREMOVECOUNT"
-				   + ", QNA_REPLY_CONTENT, QNA_REPLY_DATE"
+				   + ", QNA_REPLY_CONTENT, QNA_REPLY_DATE, HOST_CODE, QNA_REPLY_CODE"
 				   + " FROM VIEW_QNA" 
 				   + " WHERE LOC_CODE=?";
 		
@@ -249,6 +249,8 @@ public class LocationDetailDAO implements ILocationDetailDAO
 			dto.setReplyRemove(rs.getString("QNAREPLYREMOVECOUNT"));
 			dto.setReplyContent(rs.getString("QNA_REPLY_CONTENT"));
 			dto.setReplyDate(rs.getString("QNA_REPLY_DATE"));
+			dto.setHostCode(rs.getString("HOST_CODE"));
+			dto.setReplyCode(rs.getString("QNA_REPLY_CODE"));
 			
 			result.add(dto);
 		}
@@ -292,7 +294,7 @@ public class LocationDetailDAO implements ILocationDetailDAO
 				   + ", REVIEW_CONTENT, REVIEW_DATE"
 				   + ", REVIEW_IMG_URL, RVIMGCOUNT, REPLYCOUNT, REVIEWREMOVECOUNT"
 				   + ", REPLYREMOVECOUNT, MEMBER_CODE, REVIEW_REPLY_CONTENT"
-				   + ", REVIEW_REPLY_DATE"
+				   + ", REVIEW_REPLY_DATE, HOST_CODE, REVIEW_REPLY_CODE"
 				   + " FROM VIEW_REVIEW WHERE LOC_CODE=?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -317,6 +319,8 @@ public class LocationDetailDAO implements ILocationDetailDAO
 			dto.setMemCode(rs.getString("MEMBER_CODE"));
 			dto.setReplyContent(rs.getString("REVIEW_REPLY_CONTENT"));
 			dto.setReplyDate(rs.getString("REVIEW_REPLY_DATE"));
+			dto.setHostCode(rs.getString("HOST_CODE"));
+			dto.setReplyCode(rs.getString("REVIEW_REPLY_CODE"));
 			
 			
 			result.add(dto);
@@ -345,6 +349,29 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		while(rs.next())
 		{
 			result = rs.getInt("COUNT");
+		}
+		
+		return result;
+	}
+
+	// 리뷰 평균 별점
+	@Override
+	public String avgReviewRate(String locCode) throws SQLException
+	{
+		String result = null;
+		
+		Connection conn = dataSource.getConnection();
+		String sql = "SELECT ROUND(AVG(NVL(REVIEW_RATE, 0)), 2) AS AVGSTAR"
+				   + " FROM REVIEW" 
+				   + " WHERE LOC_CODE=?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, locCode);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next())
+		{
+			result = rs.getString("AVGSTAR");
 		}
 		
 		return result;

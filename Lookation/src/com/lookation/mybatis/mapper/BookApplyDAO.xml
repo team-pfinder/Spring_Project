@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IBookApplyDAO">
+	
+	<select id="bookapplyBasic" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT LOC_CODE, LOC_NAME, LOC_TYPE, LOC_SHORT_INTRO
+		, MIN_PEOPLE, MAX_PEOPLE, HOST_CODE
+		FROM VIEW_BASIC_INFO
+		WHERE LOC_CODE = #{loc_code}
+	</select>
+	
+	<select id="bookapplyBizInfo" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT BIZ_NAME, BIZ_CEO, BIZ_LICENSE_NUMBER
+		, BIZ_ADDR, LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL 
+		FROM VIEW_BIZ_CONTACT
+		WHERE LOC_CODE = #{loc_code}
+	</select>
+	
+	<select id="bookapplyCaution" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT CAUTION_CONTENT 
+		FROM VIEW_CAUTION_CONTENT 
+		WHERE LOC_CODE=#{loc_code}
+	</select>
+	
+	<select id="mileageCheck" resultType="java.lang.Integer">
+		SELECT F_USER_BALANCE(#{member_code}) AS MILEAGE
+		FROM DUAL
+	</select>
+	
+	<insert id="insertBookList">
+		INSERT INTO BOOK_LIST (BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ)
+		VALUES(F_CODE('BC', BC_SEQ.NEXTVAL), #{member_code}, #{apply_package_code}, #{book_people}, SYSDATE, #{book_req})
+		
+	</insert>
+	
+	<select id="bookCheck" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT BOOK_CODE FROM 
+		(SELECT BOOK_CODE FROM BOOK_LIST WHERE MEMBER_CODE=#{member_code} 
+		ORDER BY BOOK_CODE DESC)
+		WHERE ROWNUM=1
+	</select>
+	
+	<insert id="actualBooker">
+		INSERT INTO ACTUAL_BOOKER (ACTUAL_BOOKER_CODE, BOOK_CODE, ACTUAL_BOOKER
+		, ACTUAL_BOOKER_TEL)
+		VALUES(F_CODE('AB', AB_SEQ.NEXTVAL), #{book_code}, #{actual_booker}
+		, #{actual_booker_tel})
+		
+	</insert>
+	
+	<insert id="insertBookPay">
+		INSERT INTO BOOK_PAY_LIST(BOOK_PAY_CODE, BOOK_CODE, BOOK_PAY_DATE)
+		VALUES(F_CODE('BP', BP_SEQ.NEXTVAL), #{book_code}, SYSDATE)
+	</insert>
+	
+</mapper>

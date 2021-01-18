@@ -12,7 +12,7 @@ import com.lookation.dao.ILocationDetailDAO;
 //※ Spring 이 제공하는 『Controller』 인터페이스를 구현함으로써
 //사용자 정의 컨트롤러 클래스를 구성한다.
 
-public class LocationDetailController implements Controller
+public class LocationDetailHostController implements Controller
 {
 	private ILocationDetailDAO dao;
 	
@@ -29,13 +29,10 @@ public class LocationDetailController implements Controller
 		String locCode = request.getParameter("locCode");
 		//String locCode = "L000003";
 	
-		String selectDate = request.getParameter("selectDate");
-		
 		try
 		{
 			mav.addObject("basicInfo", dao.basicInfo(locCode));
 			mav.addObject("usingInfo", dao.usingInfo(locCode));
-			mav.addObject("packageInfo", dao.packageInfo(locCode, selectDate));
 			mav.addObject("facilityInfo", dao.facilityInfo(locCode));
 			mav.addObject("cautionInfo", dao.cautionInfo(locCode));
 			mav.addObject("bizInfo", dao.bizInfo(locCode));
@@ -45,7 +42,7 @@ public class LocationDetailController implements Controller
 			mav.addObject("review", dao.review(locCode));
 			mav.addObject("avgReviewRate", dao.avgReviewRate(locCode));
 			
-			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
+			mav.setViewName("../WEB-INF/views/host/locationDetailHost.jsp");
 			
 		} catch (Exception e)
 		{

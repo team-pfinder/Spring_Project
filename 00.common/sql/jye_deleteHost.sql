@@ -1,29 +1,22 @@
 /*
-deleteAccount(호스트, 이용자 동일) 1
-●
-1. 탈퇴하기 누른 경우 호스트 회원의 모든 개인정보 삭제
-   (사업자정보(공간), 연락처(공간), 프로필정보, 계좌정보)
-2. 삭제 후 탈퇴 테이블에 INSERT
-♥
-사업자정보, 연락처는 지우고 공간은 삭제 테이블로 insert...
 호스트
 
+0. 프로필정보에서 회원코드 확인
 1. 예약내역 있으면 탈퇴 불가능
 2. 마일리지 남아있으면 탈퇴 불가능 
-3. 탈퇴내역에 해당 호스트 있는지 확인
-4. LOC_CONTACT에서 연락처 삭제
-5. BIZ_INFO에서 사업자정보 삭제
-6. LOC_REMOVE(LRM)에 삭제된 공간으로 INSERT
-7. 환전계좌에서 해당 계좌정보 DELETE
-8. HOST_BANK_INFO에서 해당 회원코드의 계좌정보 DELETE
-9. HOST_PROFILE에서 해당 회원코드인 회원정보 DELETE
-10. HOST_WITHDRAW(HW) 에 해당 회원코드 회원 INSERT
+3. LOC_CONTACT에서 연락처 삭제
+4. BIZ_INFO에서 사업자정보 삭제
+5. LOC_REMOVE(LRM)에 삭제된 공간으로 INSERT
+6. 환전계좌에서 해당 계좌정보 DELETE
+7. HOST_BANK_INFO에서 해당 회원코드의 계좌정보 DELETE
+8. HOST_PROFILE에서 해당 회원코드인 회원정보 DELETE
+9. HOST_WITHDRAW(HW) 에 해당 회원코드 회원 INSERT
 
 */
 
 --★ 호스트 삭제 순서
 
--- !!! 여러 개 - 해당 공간의 예약내역 확인
+--○ 해당 공간의 예약내역 확인
 SELECT B.BOOK_CODE, AP.APPLY_PACKAGE_CODE, AP.APPLY_DATE
 , P.PACKAGE_CODE, PF.LOC_CODE, L.HOST_CODE
 FROM BOOK_LIST B
@@ -40,16 +33,66 @@ WHERE AP.APPLY_DATE > SYSDATE AND L.HOST_CODE='H000003';
 SELECT COUNT(*) AS COUNT FROM BOOK_LIST B JOIN APPLY_PACKAGE AP ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE JOIN PACKAGE P ON AP.PACKAGE_CODE = P.PACKAGE_CODE JOIN PACKAGE_FORM PF ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE JOIN LOC L ON PF.LOC_CODE = L.LOC_CODE WHERE AP.APPLY_DATE > SYSDATE AND L.HOST_CODE='H000003'
 ;
 
--- ???????????마일리지 내역 확인
--- 보류
+-- 마일리지 내역 확인
+/*
+이용자가 예약을 취소할 경우, 해당 퍼센트만큼 차감된 가격이
+호스트에게 들어온다. [정산 내역 테이블은 그 퍼센트를 이미 차감한 금액임.] 
 
---○ 탈퇴내역에 해당 호스트 있는지 확인
+------------------------------
+    정산 내역(호스트)           CAL 테이블 
+-   마일리지 환전 내역(호스트)  HOST_EXCHANGE_LIST 테이블 HE
+-----------------------------------
+*/
+
+-- 호스트 정산 내역에서 가격 가져오기
+SELECT NVL(SUM(P.PACKAGE_PRICE), 0) AS PACKAGE_PRICE
+FROM CAL C 
+JOIN BOOK_LIST B
+ON C.BOOK_CODE = B.BOOK_CODE
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+WHERE HOST_CODE='H000001';
+
+
+-- 환전 내역 
+SELECT NVL(SUM(HOST_EXCHANGE_AMOUNT), 0) AS HOST_EXCHANGE_AMOUNT
+FROM HOST_EXCHANGE_LIST
+WHERE HOST_CODE='H000001';
+
+--○ 호스트 마일리지 잔액 구하기
+SELECT
+(SELECT NVL(SUM(P.PACKAGE_PRICE), 0)
+FROM CAL C 
+JOIN BOOK_LIST B
+ON C.BOOK_CODE = B.BOOK_CODE
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+WHERE HOST_CODE='H000003'
+)
+-
+(SELECT NVL(SUM(HOST_EXCHANGE_AMOUNT), 0)
+FROM HOST_EXCHANGE_LIST
+WHERE HOST_CODE='H000003'
+) AS MILEAGE
+FROM DUAL;
+
+-- 바인드 변수 선언
+VARIABLE V_CHANGE NUMBER;
+CALL PRC_HOST_MILEAGE('H000005', :V_CHANGE);
+
+--○ 멤버프로필 테이블에 있는지 확인 → 없으면 등록하지 않은 멤버
 SELECT COUNT(*) AS COUNT
-FROM HOST_WITHDRAW
-WHERE HOST_CODE='H000002';
+FROM HOST_PROFILE
+WHERE HOST_CODE = 'H000009';
+-->
+SELECT COUNT(*) AS COUNT FROM HOST_PROFILE WHERE HOST_CODE = 'H000009'
+;
 
-
--- !! 여러개] LOC 테이블에서 해당 회원코드의 공간코드 찾기(RETURN 객체)
+-- !! 여러개] LOC 테이블에서 해당 회원코드의 공간코드 찾기
 SELECT LOC_CODE
 FROM LOC
 WHERE HOST_CODE = 'H000006';

@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약 신청화면.jsp</title>
-<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 
@@ -64,7 +64,160 @@
     margin: 10px 0px;
 	}
 	
+	.vertical-top {
+	vertical-align: top;
+	margin-bottom: auto;
+	}
+	
+	/*=== 폼 입력 검증 ===*/
+	input.err
+	{
+		border-color: red;
+	}
+	
+	p.err 
+	{
+	    display: display;
+		font-size: 14px;
+		text-align: left;
+		color: red;
+	}
+	
+	
+	p.pass
+	{
+		display: none;
+	}
+	
 </style>
+<script type="text/javascript">
+
+
+	$(document).ready(function()
+	{
+		
+		// 전화번호 정규식
+		var regTel = /^\d{2,3}-\d{3,4}-\d{4}$/;
+		
+		// 전화번호 정규식 검사(입력시마다)
+		$("#tel").keyup(function()
+		{
+			//alert("나와");
+			if(!regTel.test($(this).val()))
+			{	
+				$(this).removeClass("full");
+				$(this).addClass("err");
+				$("p#tel").attr("class", "err");
+			}
+			else
+			{
+				$(this).removeClass("err");
+				$(this).addClass("full");
+				$("p#tel").attr("class", "pass");	
+			}
+		});
+		
+		/* 체크박스 전체 선택 */
+		$("#allConfirm").click(function()
+		{
+			//전체 선택 체크
+			if ($("#allConfirm").prop("checked"))
+			{
+				// 해당화면 전체 checkbox 체크하는 구문
+				$("[name=checkOne]").prop("checked", true);
+			}
+			// 전체 선택 해제
+			else
+			{
+				// 해당화면 전체 checkbox 체크 해제 하는 구문
+				$("[name=checkOne]").prop("checked", false);
+			}
+			
+			$("[name=checkOne]").each(function()
+			{
+				$(this).click(function()
+				{
+					oneCheckFunc( $(this) );
+				});
+			});
+		});
+		
+		// 서브밋 전 폼 입력값 확인
+		$(".submitBtn").click(function()
+		{
+			// 연락처 형식이 맞지 않을경우
+			if(!regTel.test($("input#tel").val()))
+			{
+				alert("연락처 형식이 알맞지 않습니다. 다시 입력해주세요.");
+				return;
+			}
+			
+	/* 		// 이메일 형식이 맞지 않을경우
+			if(!regEmail.test($("#email").val()))
+			{
+				alert("이메일 형식이 알맞지 않습니다. 다시 입력해주세요.");
+				return;
+			}
+			 */
+			// 예약자명이 누락되었을 경우
+			if($("#name").val()=="")
+			{
+				alert("예약자명이 누락되었습니다. 다시 입력해주세요.");
+				return;
+			}
+			
+			// 체크박스 전체 선택되지 않았을 경우
+			
+			if($("input[type=checkbox]").filter(':checked').size()<4)
+			{
+				alert("모든 이용약관에 동의해 주세요.");
+			};
+			
+			$("#bookForm").submit();
+			
+		});
+		
+	});
+	
+	// 전화번호 실시간 중복검사
+	function telAjaxRequest()
+	{
+		 $.post("ajaxmodifytel.action"
+	         , {tel : $("input#tel").val()}
+	         , function(data) 
+	           {
+	               $("span#tel").html(data);
+	           });
+	}
+	
+	// 체크박스 하나라도 해제되면
+	// □ 전체 동의 체크박스 해제
+	function oneCheckFunc( obj )
+	{
+		var allObj = $("#allConfirm");
+		var objName = $(obj).attr("name");
+
+		if( $(obj).prop("checked") )
+		{
+			checkBoxLength = $("[name="+ objName +"]").length;
+			checkedLength = $("[name="+ objName +"]:checked").length;
+
+			if( checkBoxLength == checkedLength ) {
+				allObj.prop("checked", true);
+			} else {
+				allObj.prop("checked", false);
+			}
+		}
+		else
+		{
+			allObj.prop("checked", false);
+		}
+	}
+	
+	
+	
+</script>
+
 </head>
 <body>
 
@@ -73,7 +226,7 @@
   	<div class="container">
     	<div class="row no-gutters slider-text align-items-end">
       		<div class="col-md-9 ftco-animate pb-5">
-      			<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span><a href="#">Space <i class="ion-ios-arrow-forward"></i></a></span></p>
+      			<p class="breadcrumbs mb-2"><span class="mr-2"><a href="home.action">Home <i class="ion-ios-arrow-forward"></i></a></span> <span><a href="redirect:locationdetail.action">Space <i class="ion-ios-arrow-forward"></i></a></span></p>
         		<h1 class="mb-0 bread">선택한 공간 예약하기</h1>
       		</div>
     	</div>
@@ -89,33 +242,40 @@
 				<p class="ftco-animate">
 					<img src="<%=cp%>/images/image_1.jpg" alt="템플릿 이미지" class="img-fluid">
 				</p>
-				
+				<input hidden="hidden" value="${check.mileage }" name="mileage">
 				<h2 class="mb-3 mt-5 font-weight-bold"># 공간 정보</h2><hr>
 				<div class="form-inline form-group">
-					<p class="col-md-2">공간설명</p>
-					<p class="col-md-10">공간설명 들어갈 자리</p>
+					<p class="col-md-2">공간명</p>
+					<p class="col-md-10">${basic.loc_name }</p>
 				</div>
 				
 				<div class="form-inline form-group">
 					<p class="col-md-2">공간유형</p>
-					<p class="col-md-10">파티룸</p>
+					<p class="col-md-10">${basic.loc_type }</p>
 				</div>
 				
 				<div class="form-inline form-group">
+					<p class="col-md-2">한줄소개</p>
+					<p class="col-md-10">${basic.loc_short_intro }</p>
+				</div>
+				
+			
+				<div class="form-inline form-group">
 					<p class="col-md-2">예약인원</p>
-					<p class="col-md-10">최소 1명 ~ 최대 8명</p>
+					<p class="col-md-10">최소 ${basic.min_people }명 ~ 최대 ${basic.max_people }명</p>
 				</div>
 
 				<h2 class="mb-3 mt-5 font-weight-bold"># 예약 정보</h2><hr>
 				
+				<!-- ※ 임시!!! 전페이지에서 받아와야 할 정보들 -->
 				<div class="form-inline form-group">
-					<p class="col-md-2">패키지명</p>
-					<p class="col-md-10">알록달록머시기패키지</p>
+					<p class="col-md-2 vertical-top">패키지명</p>
+					<p class="col-md-10" name="package_name">극락</p>
 				</div>
 				
 				<div class="form-inline form-group">
-					<p class="col-md-2">예약날짜</p>
-					<p class="col-md-10">2020. 12. 31. (목) 12시 ~ 15시</p>
+					<p class="col-md-2">예약일시</p>
+					<p class="col-md-10"><span name="apply_package_date">2020-12-31</span>일 <span name="package_start">12</span>시 ~ <span name="package_end">15</span>시</p>
 				</div>
 				
 				<div class="form-inline form-group">
@@ -124,7 +284,7 @@
 				</div>
 
 				<h2 class="mb-3 mt-5 font-weight-bold"># 예약자 정보</h2><hr>
-				<form class="ftco-animate">
+				<form class="ftco-animate" action="bookpay.action" method="post" id="bookForm">
 					<!-- 체크박스 클릭시 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴
 						 수정 가능 -->
 					<div class="text-right mr-3">
@@ -135,47 +295,57 @@
 					<div class="div-table">
 						<div class="div-table-body">
 							<div class="div-row">
-								<div class="div-col"><label for="1" class="control-label"><small class="text-danger">(*)</small>예약자명</label></div>
 								<div class="div-col">
-									<input type="text" id="1" class="form-control" placeholder="예약자명"
-										   required="required" maxlength="10">
+									<label for="name" class="control-label">
+									<small class="text-danger">(*)</small>예약자명
+									</label>
+								</div>
+								<div class="div-col">
+									<input type="text" id="name" name="actual_booker" class="form-control"
+									 	placeholder="예약자명" required="required" maxlength="10" style="width: 250px;">
 								</div>
 							</div>
 							
 							<div class="div-row">
-								<div class="div-col"><label for="2" class="control-label"><small class="text-danger">(*)</small>이메일</label></div>
+								<div class="div-col">
+									<label for="book_people" class="control-label">
+									<small class="text-danger">(*)</small>예약인원</label>
+								</div>
 								<div class="div-col">
 									<div class="form-inline form-group">
-										<input type="text" id="2" placeholder="이메일" class="form-control"
-												required="required" style="width: 170px;">@
-										<input type="text" placeholder="@xxx.com" class="form-control"
-												required="required" style="width: 200px;">
+										<input type="number" min=1 max=30 id="book_people" name="" class="form-control" style="width: 100px;"
+										placeholder="숫자만 입력해주세요.">
 									</div>
 								</div>
 							</div>
 							
 							<div class="div-row">
-								<div class="div-col"><label for="3" class="control-label"><small class="text-danger">(*)</small>연락처</label></div>
+								<div class="div-col">
+									<label for="3" class="control-label">
+									<small class="text-danger">(*)</small>연락처</label>
+								</div>
 								<div class="div-col">
 									<div class="form-inline form-group">
 										<!-- 숫자만 입력하도록 정규식 검증 -->
-										<input type="tel" id="3" class="form-control mr-2" style="width: 60px;" maxlength="3">
-										 - <input type="tel" class="form-control mx-2" style="width: 80px;" maxlength="4">
-										 - <input type="tel" class="form-control mx-2" style="width: 80px;" maxlength="4">
+										<input type="tel" id="actual_booker_tel" name="actual_booker_tel" class="form-control full" style="width: 250px;"
+										placeholder="'-' 포함하여 입력해주세요.">
 									</div>
+									<p class="pass" id="tel">연락처 형식이 알맞지 않습니다.</p>
 								</div>
 							</div>
 							
 							<div class="div-row">
 								<div class="div-col"><label for="4" class="control-label"><small class="text-danger">(*)</small>요청사항</label></div>
 								<div class="div-col">
-									<textarea class="form-control col-md-9" name="message"
-							placeholder="남기고 싶은 말을 적어주세요.(최대 100자)" maxlength="100"></textarea>
+									<textarea class="form-control" rows="4" name="book_req"
+									placeholder="남기고 싶은 말을 적어주세요. (최대 100자까지 입력 가능)"  maxlength="100" style="resize: none;"></textarea>
 								</div>
 							</div>
 							
 						</div><!-- End .div-table-body -->
 					</div><!-- End .div-table -->
+				</form>
+				
 						
 				<h2 class="mb-3 mt-5 font-weight-bold"># 호스트 정보</h2><hr>
 				<!-- 해당 공간의 호스트 사업자 정보 출력-->
@@ -184,65 +354,32 @@
 				<div class="hostInfo ftco-animate">
 					<div class="form-inline form-group">
 						<p class="col-md-2">공간상호</p>
-						<p class="col-md-10">파파존스 파티룸</p>
+						<p class="col-md-10">${bizinfo.biz_name}</p>
 					</div>
 
 					<div class="form-inline form-group">
 						<p class="col-md-2">대표자명</p>
-						<p class="col-md-10">진영은</p>
+						<p class="col-md-10">${bizinfo.biz_ceo}</p>
 					</div>
 
 					<div class="form-inline form-group">
 						<p class="col-md-2">소재지</p>
-						<p class="col-md-10">서울특별시 은평구 땡땡동 주소주소</p>
+						<p class="col-md-10">${bizinfo.biz_addr}</p>
 					</div>
 
 					<div class="form-inline form-group">
 						<p class="col-md-2">사업자번호</p>
-						<p class="col-md-10">123-45-67890</p>
+						<p class="col-md-10">${bizinfo.biz_license_number}</p>
 					</div>
 
 					<div class="form-inline form-group">
 						<p class="col-md-2 align-self-start">연락처</p>
 						<div class="col-md-10">
-							<p>010-1234-1234</p>
-							<p>papajon@lookation.com</p>
+							<p>${bizinfo.loc_tel}</p>
+							<p>${bizinfo.loc_main_tel}</p>
+							<p>${bizinfo.loc_email}</p>
 						</div>
 					</div>
-				</div>
-				
-				
-				<h2 class="mb-3 mt-5 font-weight-bold"># 예약시 주의사항</h2><hr>
-				<div class="ftco-animate">
-					<div class="div-table">
-						<div class="div-table-body">
-							<div class="div-row">
-								<div class="div-col font-weight-bold notice">1</div>
-								<div class="div-col">주의사항은 최대 50자까지 작성할 수 있습니다. 주의사항 50자가 얼마나 가는지 봐야 합니.</div>
-							</div>
-							
-							<div class="div-row">
-								<div class="div-col font-weight-bold notice">2</div>
-								<div class="div-col">물건을 깨트리면 보상하세요!</div>
-							</div>
-							
-							<div class="div-row">
-								<div class="div-col font-weight-bold notice">3</div>
-								<div class="div-col">출력시에는 DB에 있는 만큼만 출력되도록</div>
-							</div>
-							
-							<div class="div-row">
-								<div class="div-col font-weight-bold notice">4</div>
-								<div class="div-col">숫자는 자동으로 증가... 중간 번호의 주의사항이 이렇게 줄을 넘어가도 정렬이 유지되는지 확인중</div>
-							</div>
-							
-							<div class="div-row">
-								<div class="div-col font-weight-bold notice">5</div>
-								<div class="div-col">안녕하세요</div>
-							</div>
-							
-						</div><!-- End .div-table-body -->
-					</div><!-- End .div-table -->
 				</div>
 				
 				<h2 class="mb-3 mt-5 font-weight-bold"># 환불 규정</h2><hr>
@@ -251,7 +388,7 @@
 				<div class="ftco-animate">
 					<div class="memo">
 						<span class="text-body">이용 1일전 23:59까지만 취소 가능.</span>
-						<span class="text-danger">이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 문의하세요.</span><br><br>
+						<span class="text-danger mb-4">이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 						문의하세요.</span>
 					</div>
 			
 					
@@ -278,28 +415,66 @@
 				
 				
 				<div class="ftco-animate">
-					<span>약관 블라블라~</span>
+					<strong>이용약관</strong>
+					<div class="terms p-3" style="font-size: 0.8em; height: 100px; overflow-y: scroll;">
+						<div class="">
+							<p>제 1 조 (목적)</p>
+							이 약관은 주식회사 Lookation가 제공하는
+							Lookation(http://www.lookation.com)온라인 서비스 (이하 "서비스")의 이용과 관련하여
+							회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 한다.
+						</div>
+						<br>
+						<div>
+							<p>제 2 조 (정의)</p>
+							이 약관에서 사용하는 용어의 정의는 다음과 같다. 1. "서비스"라 함은 유휴 공간(이하 "공간") 정보의 공유 및
+							예약을 위하여 "회사"가 Lookation을 통해 제공하는 온라인 서비스를 일컫는다. 2. "사이트"라 함은
+							"회사"가 "서비스"를 운영하는 웹사이트를 의미한다. 현재는 https://www.lookation.com 이다.
+						</div>
+					</div>
 					
 					<!-- 체크박스 크기 조절  -->
 					<!-- 전체동의 클릭시 아래의 체크박스 4개 동시 체크 -->
-					<div class="text-right">
+					<div class="text-right mt-4">
 						<input type="checkbox" id="allConfirm" class="checkbox">
-						<label for="allConfirm">전체 동의</label><br></div>
-					<div>
-					
-					<!-- 전부 다 체크했는지 확인 -->
-					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 위 공간의 예약조건 확인 및 결제진행 동의</p>
-					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 환불규정 안내에 대한 동의</p>
-					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 개인정보 제3자 제공 동의</p>
-					<p><input type="checkbox"> <small class="text-danger">(필수)</small> 개인정보 수집 및 이용 동의</p>
-					<small class="text-danger"><span class="fa fa-check mr-2"></span> 서비스 이용약관 동의는 필수입니다.</small>
+						<label for="allConfirm">전체 동의</label><br>
 					</div>
-					<br><br>
+					
+					<div class="my-2">
+						<!-- 전부 다 체크했는지 확인 -->
+						<p>
+							<input type="checkbox" name="checkOne">
+							<small class="text-danger">(필수)</small> 
+							위 공간의 예약조건 확인 및 결제진행 동의
+						</p>
+						
+						<p>
+							<input type="checkbox" name="checkOne">
+							<small class="text-danger">(필수)</small> 
+							환불규정 안내에 대한 동의
+						</p>
+						
+						<p>
+							<input type="checkbox" name="checkOne">
+							<small class="text-danger">(필수)</small> 
+							개인정보 제3자 제공 동의
+						</p>
+						
+						<p>
+							<input type="checkbox" name="checkOne"> 
+							<small class="text-danger">(필수)</small> 
+							개인정보 수집 및 이용 동의
+						</p>
+						
+						<small class="text-danger"><span class="fa fa-check mr-2"></span> 
+							서비스 이용약관 동의는 필수입니다.</small>
+					</div>
 						
 					<!-- 버튼 클릭시 폼 내용 검증 -->
 					<!-- 검증 완료시 submit 후 DB 예약내역, 결제내역 테이블에 추가 -->
-					<div class="row">
-						<button class="btn btn-primary btn-block" type="button">동의하고 결제하기</button>
+					<div class="row my-5">
+						<button class="btn btn-primary btn-block submitBtn" type="button">
+							동의하고 결제하기
+						</button>
 					</div>
 					
 					<!-- 맨 위로 올라가는 버튼 만들기 -->
@@ -323,7 +498,8 @@
 								
 								<div class="div-row">
 									<div class="div-col font-weight-bold">패키지명</div>
-									<div class="div-col text-right det">최대 20자까지 작성할 수 있는 패키지</div>
+									<div class="div-col text-right det">
+									극락</div>
 								</div>
 								
 								<div class="div-row">
@@ -340,7 +516,7 @@
 						</div><!-- End .div-table -->
 						<div class="divider my-3"></div>
 						<div class="text-right">
-							<h3><span class="icon-won"></span>  60,000 원</h3>
+							<h3 name="package_price"><span class="icon-won mr-3"></span>60,000 원</h3>
 						</div>
 						<br>
 						
