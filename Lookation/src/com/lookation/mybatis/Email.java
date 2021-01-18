@@ -14,10 +14,14 @@ import com.lookation.util.IEmailService;
 @Controller
 public class Email
 {
+<<<<<<< Updated upstream
 
 	/*
 	@Autowired
 
+=======
+	//@Autowired
+>>>>>>> Stashed changes
 	private IEmailService emailService;
 	*/
 	@Autowired
