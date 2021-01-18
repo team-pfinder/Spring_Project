@@ -13,6 +13,24 @@
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
+<script type="text/javascript">
+
+	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
+	function cancel() {
+		
+		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
+						+ "(기존 작성 내용은 저장되지 않습니다.)");
+		
+		if (con == true) {
+			location.href = "mainHost.jsp";
+			return;
+		} else {
+			return;
+		}
+		
+	}
+</script>
+
 </head>
 <body>
 	<div>
@@ -67,141 +85,82 @@
 
 
 
-<form style="width: 800px; margin: 120px;">
+	<!-- form start --------------------------------------------->
+	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
+		  action="inputDetailInfo.jsp" method="POST"><!--onsubmit="handOver()" -->
+		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 	
-	<!-- 1. 이용시간 -->
-	
-	<div id="LocationUsingTime">
 		
-		<span style="font-size: 14pt; font-weight: bold;">이용시간 <span style="color: red">*</span></span>
-		<br><br>
-		<select class="form-control" name="locationStartTime" required="required">
-			<option>[==시간을 선택하세요.==]</option>
-			<option value="0시">0시</option>
-			<option value="1시">1시</option>
-			<option value="2시">2시</option>
-			<option value="3시">3시</option>
-			<option value="4시">4시</option>
-			<option value="5시">5시</option>
-			<option value="6시">6시</option>
-			<option value="7시">7시</option>
-			<option value="8시">8시</option>
-			<option value="9시">9시</option>
-			<option value="10시">10시</option>
-			<option value="11시">11시</option>
-			<option value="12시">12시</option>
-			<option value="13시">13시</option>
-			<option value="14시">14시</option>
-			<option value="15시">15시</option>
-			<option value="16시">16시</option>
-			<option value="17시">17시</option>
-			<option value="18시">18시</option>
-			<option value="19시">19시</option>
-			<option value="20시">20시</option>
-			<option value="21시">21시</option>
-			<option value="22시">22시</option>
-			<option value="23시">23시</option>
-			<option value="24시">24시</option>
-		</select>
-		~ <select class="form-control" name="LocationEndTime" required="required">
-			<option>[==시간을 선택하세요.==]</option>
-			<option value="0시">0시</option>
-			<option value="1시">1시</option>
-			<option value="2시">2시</option>
-			<option value="3시">3시</option>
-			<option value="4시">4시</option>
-			<option value="5시">5시</option>
-			<option value="6시">6시</option>
-			<option value="7시">7시</option>
-			<option value="8시">8시</option>
-			<option value="9시">9시</option>
-			<option value="10시">10시</option>
-			<option value="11시">11시</option>
-			<option value="12시">12시</option>
-			<option value="13시">13시</option>
-			<option value="14시">14시</option>
-			<option value="15시">15시</option>
-			<option value="16시">16시</option>
-			<option value="17시">17시</option>
-			<option value="18시">18시</option>
-			<option value="19시">19시</option>
-			<option value="20시">20시</option>
-			<option value="21시">21시</option>
-			<option value="22시">22시</option>
-			<option value="23시">23시</option>
-			<option value="24시">24시</option>			
-			<option value="익일 1시">익일 1시</option>
-			<option value="익일 2시">익일 2시</option>
-			<option value="익일 3시">익일 3시</option>
-			<option value="익일 4시">익일 4시</option>
-			<option value="익일 5시">익일 5시</option>
-			<option value="익일 6시">익일 6시</option>
-			<option value="익일 7시">익일 7시</option>
-			<option value="익일 8시">익일 8시</option>
-			<option value="익일 9시">익일 9시</option>
-			<option value="익일 10시">익일 10시</option>
-		</select>
-		<!-- 종료시간 : 시작시간보다 이후부터 
-		(최대 : 시작시간 + 34시까지)  -->
-		<br><br>
-		<span style="color: red;">※ 실제 이용 가능한 시간으로 설정해야 합니다.</span> <!-- 붉은색 글자 -->
+		<!-- 1. 이용시간 -->
 		
-	</div>
-	
-	<br><br><br>
-	
-	<!-- 2. 정기 휴무 -->
-	
-	<div id="locationRegularDayOff">
-	
-		<span style="font-size: 14pt; font-weight: bold;">정기 휴무일</span>
-		<br><br>
-		<input type="text" class="form-control" 
-				placeholder="정기 휴무일을 입력하세요. [최소 2자, 최대 20자]"
-				name="locationRegularDayOff">
-		<br>
-		
-	</div>
-	
-	<br><br><br>
-	
-	<!-- 3. 지정 휴무일 -->
-	
-	<div id="locationRegularDayOff">
-	
-		<span style="font-size: 14pt; font-weight: bold;">지정 휴무일</span>
-		<br><br>
-		<input type="text" name="LocationDayOff" class="form-control"
-			   placeholder="지정 휴무일을 입력하세요.[최소 2자, 최대 20자]">
-		<br>
-		<span></span> <!-- 글자 크기 작게 -->
-		
-	</div>
-
-
-
-<br><br><br>
-<div class="container">
-<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-					   (필수항목을 입력하지 않았을 경우,
-						입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-					    alert("필수항목을 입력해야합니다")된다.
-						그리고 입력하는 textbox로 입력커서가 이동한다. 
-						또한 다음페이지로 submit 되지 않는다.
-						
-						※ 다음 버튼 이동 순서
-						※ xxxUpdate.jsp 다음버튼 이동 순서 
-						   기본정보 → 연락처정보 → 사업자정보
-						   → 이용정보  → 상세정보  → 패키지정보 -->
-
-	<input type="submit" value="다음" class="btn btn-warning" style="width:300px;">
+		<div id="usingHour">
 			
-<!-- 취소 버튼 -->
-	<input type="button" class="btn btn-default" style="width:300px;" 
-			value="취소">
-	<!-- onclick="function()" -->
-</div>
-
+			<span style="font-size: 14pt; font-weight: bold;">이용시간 <span style="color: red">*</span></span>
+			<br><br>
+			<input type="text" class="form-control" id="inputUsingHour" required="required"
+				   placeholder="이용시간을 입력하세요(최대 34 시간, ex)오전 11시 ~ 오후 10시)">
+			<!-- 종료시간 : 시작시간보다 이후부터 
+			(최대 : 시작시간 + 34시까지)  -->
+			<br><br>
+			<span style="color: red;">※ 실제 이용 가능한 시간으로 설정해야 합니다.</span>
+			
+		</div>
+		
+		<br><br><br>
+		
+		<!-- 2. 정기 휴무일 -->
+		
+		<div id="dayOff">
+		
+			<span style="font-size: 14pt; font-weight: bold;">정기 휴무일 <span style="color: red">*</span></span>
+			<br><br>
+			<input type="text" class="form-control" required="required"
+				   id="inputDayOff" name="inputDayOff"
+				   placeholder="정기 휴무일을 입력하세요. (ex) 매월 둘째주 일요일, 월요일)">
+			<br>
+			
+		</div>
+		
+		<br><br><br>
+		
+		<!-- 3. 지정 휴무일 -->
+		
+		<div id="appointDayoff">
+		
+			<span style="font-size: 14pt; font-weight: bold;">지정 휴무일 <span style="color: red">*</span></span>
+			<br><br>
+			<input type="text" id="inputAppointDayoff" name="inputAppointDayoff"
+				   class="form-control" required="required"
+				   placeholder="지정 휴무일을 입력하세요. (ex) 4월 5일, 8월 9일, ...)">
+			<br>
+			<span></span> <!-- 글자 크기 작게 -->
+			
+		</div>
+	
+	
+	
+	<br><br><br>
+	
+	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
+						   (필수항목을 입력하지 않았을 경우,
+							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
+						    alert("필수항목을 입력해야합니다")된다.
+							그리고 입력하는 textbox로 입력커서가 이동한다. 
+							또한 다음페이지로 submit 되지 않는다.
+							
+							※ 다음 버튼 이동 순서
+							※ xxxUpdate.jsp 다음버튼 이동 순서 
+							   기본정보 → 연락처정보 → 사업자정보
+						    → 이용정보  → 상세정보  → 패키지정보 -->
+	
+		<div class="container" style="text-align: center;">
+			<input type="submit" value="다음" class="btn btn-warning" 
+				   style="width:45%; border-color: gray;">
+			
+		<!-- 취소 버튼 -->
+			<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
+					id="UsingInfoCancel" value="취소" onclick="cancel()">		
+		</div>	
 
 
 <br><br><br><br>
