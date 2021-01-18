@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IMainLocationInfo">
+	<select id="todayLocationList" resultType="com.lookation.dto.MainLocationDTO">
+		SELECT CODE, NAME, MAX, ADDR, URL, AVG, MIN
+		FROM (SELECT * 
+		      FROM TODAYS_LOC_NOT_REAL_VIEW
+		      ORDER BY DBMS_RANDOM.VALUE)
+		WHERE <![CDATA[ ROWNUM <= 3 ]]>
+		
+		<!-- SELECT CODE, NAME, MAX, ADDR, URL, AVG, MIN
+			 FROM (SELECT * 
+			      FROM TODAYS_LOC_REAL_VIEW
+			      ORDER BY DBMS_RANDOM.VALUE)
+		 	 WHERE <![CDATA[ ROWNUM <= 3 ]]>; -->
+	</select>
+	
+	<select id="todayReviewList" resultType="com.lookation.dto.MainLocationDTO">
+		SELECT CODE, NAME, MIN, URL, CONTENT, RATE
+		FROM (SELECT * 
+		      FROM TODAYS_REVIEW_VIEW 
+		      ORDER BY DBMS_RANDOM.VALUE)
+		WHERE <![CDATA[ ROWNUM <= 15 ]]>
+	</select>
+</mapper>

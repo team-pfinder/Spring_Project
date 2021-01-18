@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>createAccountSuccess(host).jsp</title>
+<title>createAccountSuccess.jsp</title>
 
 <style type="text/css">
 	*
@@ -96,7 +96,13 @@
 			<h2>회원가입이 <span>완료</span> 되었습니다.</h2>
 			<br>
 			
-			<p>호스트님의 회원가입을 축하합니다!</p> 
+			<c:if test="${identify eq 'host'}">
+				<p>호스트님의 회원가입을 축하합니다!</p> 
+			</c:if>
+			<c:if test="${identify eq 'member'}">
+				<p>이용자님의 회원가입을 축하합니다!</p> 
+			</c:if>
+			
 			<p>알차고 실속있는 서비스로 찾아뵙겠습니다.</p> 
 			<hr style="border: solid thin silver;
 			           margin: 50px 0px 35px 0px;">

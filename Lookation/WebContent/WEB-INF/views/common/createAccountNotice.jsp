@@ -108,8 +108,17 @@
 			           margin: 50px 0px 35px 0px;">
 			
 			<div class="buttonForm">
-				<button style="float: left; background: #ffffff">홈으로</button> 
-				<button style="float: right; border-width: 0px;">로그인</button> 
+				<c:if test="${identify eq 'host'}">
+					<button style="float: left; background: #ffffff"
+							onclick="location.href='hostmain.action'">홈으로</button> 
+				</c:if>
+				<c:if test="${identify eq 'member'}">
+					<button style="float: left; background: #ffffff"
+					        onclick="location.href='membermain.action'">홈으로</button> 
+				</c:if> 
+				<button style="float: right; border-width: 0px;"
+						onclick="location.href='loginform.action?identify=${identify}'">
+						로그인</button> 
 			</div>
 		</div>
 	</div>

@@ -8,6 +8,29 @@
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
+	// 로그인 후 다시 요청할 액션
+	String requestUrl = "";
+	
+	// 로그인시 다시 요청하기 위한 이전 액션
+	String beforePage = request.getHeader("Referer");
+	
+	// 이전 액션 없이 링크를 직접 타고 들어왔다면 
+	// 메인 액션으로 이동하도록 한다.
+	if(beforePage == null)
+	{
+		if(identify.equals("host"))
+			requestUrl = "mainHost.action";
+		else if(identify.equals("member"))
+			requestUrl = "mainUser.action";
+	}
+	else
+	{
+		// 뒷부분 액션만 잘라오기
+		String[] subArr = beforePage.split("/");
+	    requestUrl = subArr[subArr.length-1];
+	}
+	pageContext.setAttribute("requestUrl", requestUrl);
+	
 	// 인증 결과 여부
 	// 이전 페이지에서 로그인 실패시 GET을 통해 들어온다.
 	String result = request.getParameter("result");
@@ -176,7 +199,7 @@
 	
 	<div class="container" >
 		<div class="confirmBox">
-			<form action="confirmpassword.action?identify=${identify }" method="post" id="confirmPwForm">	
+			<form action="confirmpassword.action" method="post" id="confirmPwForm">	
 				<ul class="pw_info">
 					<li>
 						<p style="font-size: 16px; font-weight: bold;">인증을 위해 비밀번호를 입력하세요.</p>
@@ -187,12 +210,22 @@
 						</p>
 					</li>
 				</ul>
+				<input type="hidden" id="requestUrl" name="requestUrl" value="${requestUrl }"> 
 			</form>		
 				
 				<div style="margin-top:30px;">
-					<button type="button" class="full" style="background: #ffffff;" id="cancel">
-						<span style="color: black;">취소</span>
-					</button>
+					<c:if test="${identify eq 'host'}">
+						<button type="button" class="full" style="background: #ffffff;" id="cancel"
+							onclick="location.href='${requestUrl }'">
+								<span style="color: black;">취소</span>
+							</button> 
+					</c:if>
+					<c:if test="${identify eq 'member'}">
+						<button type="button" class="full" style="background: #ffffff;" id="cancel"
+					        onclick="location.href='${requestUrl }'">
+					        	<span style="color: black;">취소</span>
+					        </button> 
+					</c:if> 
 					<button type="button" class="full" id="submit"
 						style="float: right; border-width: 0px;">
 						<span style="color: black;">확인</span>

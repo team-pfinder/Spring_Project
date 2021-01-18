@@ -13,7 +13,7 @@
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
-<title>main(host).jsp</title>
+<title>main.jsp</title>
 
 <style type="text/css">
 
@@ -45,9 +45,9 @@
 </head>
 <body>
 	<div>
-        <c:import url="${cp}/includes/header_host.jsp"></c:import>
+        <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
     </div>
-	
+	 
 	<div class="container padding-vertical" style="text-align: center">
 		<h1 class="brand" style="font-size: 500%;">Look<span>ation.</span></h1>
 		<h1>지금 바로 공간을 공유해보세요!</h1>	
@@ -121,27 +121,27 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 d-flex">
               <div class="text d-flex align-items-center">
-                <strong class="number" data-number="5">0</strong>
+                <strong class="number" data-number="${countLocation }">0</strong>
               </div>
               <div class="text-2">
-              	<span>년 동안 지켜온<br>운영 노하우</span>
+              	<span>개의 <br>공유공간</span>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 d-flex">
               <div class="text d-flex align-items-center">
-                <strong class="number" data-number="1000">0</strong>
+                <strong class="number" data-number="${countBookDeal }">0</strong>
               </div>
               <div class="text-2">
-              	<span>건 예약거래 <br>성사</span>
+              	<span>건의 <br>예약거래 <br></span>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 d-flex">
               <div class="text d-flex align-items-center">
-                <strong class="number" data-number="378">0</strong>
+                <strong class="number" data-number="${countHost }">0</strong>
               </div>
               <div class="text-2">
               	<span>명의 <br>호스트</span>
@@ -151,7 +151,7 @@
           <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
             <div class="block-18 d-flex">
               <div class="text d-flex align-items-center">
-                <strong class="number" data-number="1200">0</strong>
+                <strong class="number" data-number="${countMember }">0</strong>
               </div>
               <div class="text-2">
               	<span>명의 <br>이용자</span>

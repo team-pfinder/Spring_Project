@@ -72,6 +72,8 @@ public class Email
 		emailService.sendHtml(email, "lookation", title, html);
 		
 		model.addAttribute("email", email);
+		model.addAttribute("result", "noSigned");
+		
 		return "../WEB-INF/views/common/sendConfirmAccount.jsp?identify" + identify;
 	}
 }

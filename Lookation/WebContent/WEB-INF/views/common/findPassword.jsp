@@ -135,12 +135,6 @@
 			
 			$("#sendFindPasswordForm").submit();
 		});
-		
-		// cancel
-		$("#cancel").click( function()
-		{
-			alert("cancel");
-		});
 	});
 	
 	var str;
@@ -165,10 +159,10 @@
 
 	<div>
 		<c:if test="${identify eq 'host' }">
-       		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+       		<c:import url="${cp}/includes/header_host?result=${result }&nick=${info.nick }.jsp"></c:import>
         </c:if>
         <c:if test="${identify eq 'member' }">
-       		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+       		<c:import url="${cp}/includes/header_user?result=${result }&nick=${info.nick }.jsp"></c:import>
         </c:if>
     </div>
 

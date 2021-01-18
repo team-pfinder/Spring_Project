@@ -28,9 +28,9 @@
 		<div class="container-fluid px-lg-5" >
 			<div class="col-md-9 py-5" style="float: none; margin:0 auto;">
 				<div class="row">
-					<div class="col-md-6 mb-md-0 mb-6">
+					<div class="col-md-4 mb-md-0 mb-4">
 						<h2 class="footer-heading"></h2>
-						<p>룩케이션은 통신판매중개자이며 통신판매 당사자가 아닙니다. 따라서 스페이스클라우드는 공간 거래정보 및 거래에 대해 책임지지 않습니다.</p>
+						<p>룩케이션은 통신판매중개자이며 통신판매 당사자가 아닙니다. 따라서 룩케이션은 공간 거래정보 및 거래에 대해 책임지지 않습니다.</p>
 					</div>
 					
 					<div class="col-md-8">

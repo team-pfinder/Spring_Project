@@ -121,26 +121,26 @@
 
 
 ################# 승범
-* signUp(user, host) 1  (o)
+* signUp(user, host) 1  (○)
 ●
 1. 입력 정보를 바탕으로 회원 데이터를 INSERT하는 쿼리문 
 ♥
 1. 정규식을 통해 확인 후 회원 가입이 가능하도록 구성
 
 
-* email(user, host) 1  (o)
+* email(user, host) 1  (○)
 ●
 ♥
 
 
-* createAccountNotice(user, host) 1  (o)
+* createAccountNotice(user, host) 1  (○)
 ●
 ♥
 1. 로그인 페이지 이동
 2. 홈으로 이동
 
 
-* login(user, host) 1 (o)
+* login(user, host) 1 (○)
 ●
 1. 이메일, 비밀번호 정보를 조건문으로 해당 회원 코드를 조회하는 쿼리문.
    1-1. 회원이 아니라면 로그인 되지 않음
@@ -149,7 +149,7 @@
 2. 회원이 아닌 경우 회원이 아니거나 비밀번호가 없다는 알림을 표시
 
 
-* confirmPassword(use, host) 1 (△)
+* confirmPassword(use, host) 1 (△) --
 ●
 1. 변경 클릭시 현재 비밀번호 조회하여 확인 쿼리문
 ♥
@@ -157,7 +157,7 @@
 2. 취소시 이전 페이지로(x)
 
 
-* profile(user, host) 1 (○)
+* profile(user, host) 1 (○) --
 ●
 1. 회원 코드를 바탕으로 프로필 상의 정보를 가져와야 한다.
    (닉네임, 이메일, 연락처, 가입일자, 블랙리스트 전환일{있다면...})
@@ -166,7 +166,7 @@
    1-1. 더불어 정규식검사로 수정가능 여부도 알려줘야한다.
 
 
-* changePassword(use, host) 1 (o)
+* changePassword(use, host) 1 (○) -- 
 ●
 1. 변경 클릭시 현재 비밀번호 조회하여 확인 쿼리문
 2. 변경 클릭시 비밀번호 갱신 쿼리문
@@ -175,7 +175,7 @@
 2. 취소 클릭시 이전 페이지로
 
 
-* findPassword(user, host) 1 (o)
+* findPassword(user, host) 1 (○)
 ●
 1. 링크를 보내기 전에 이메일을 조건문으로 회원 코드를 조회하는 쿼리문
    1-1. 회원이 아니라면 이메일을 보내지 않는다.
@@ -186,14 +186,14 @@
 
 
 
-* footer_user 1 (o)
-* footer_host 1 (o)
+* footer_user 1 (○)
+* footer_host 1 (○)
 
-* header_user 1 (o)
-* header_host 1 (o)
+* header_user 1 (○)
+* header_host 1 (○)
 
 
-* mainHost 3
+* mainHost 3 (○)
 ●
 1. 아래 통계 작성을 위해 필요한 정보를 조회하는 쿼리문
    (예약성사건, 호스트 수, 이용자 수)
@@ -202,7 +202,7 @@
 2. 공간 등록하기 버튼, FAQ 버튼 링크 
 
 
-* mainUser 3
+* mainUser 3 (○)
 ●
 1. 아래 통계 작성을 위해 필요한 정보를 조회하는 쿼리문
    (예약성사건, 호스트 수, 이용자 수)
@@ -216,7 +216,7 @@
 1. 오늘의 추천공간, 리뷰 클릭시 해당 공간으로 이동
 
 
-* mainAdmin 1
+* mainAdmin 1 (○)
 ●
 ♥
 -------------------------------------------------------------------- 스케쥴 최소 범위
