@@ -25,8 +25,16 @@ public class BankInfoAddPopupController implements Controller
 	{
 		ModelAndView mav = new ModelAndView();
 		
+		String identify = request.getParameter("identify");
+		String identifyCode = request.getParameter("identifyCode");
+		//String identify = "host";
+		//String identifyCode = "H000002";
+		
 		try
 		{
+			// 세션 설정
+			mav.addObject("identify", identify);
+			mav.addObject("identifyCode", identifyCode);
 			System.out.println("popup");
 			mav.setViewName("../WEB-INF/views/common/bankAccountAddPopup.jsp");
 		} catch (Exception e)

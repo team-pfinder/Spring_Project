@@ -9,14 +9,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- include head -->
 
-<title>mypageMain.jsp</title>
+<!-- include head -->
+<title>mypageMain(user).jsp</title>
 </head>
 <body>
-	<!-- include header_host.jsp -->
+	<!-- include header_user.jsp -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_user.jsp"></c:import>
 	</div>
 
 	<section class="hero-wrap hero-wrap-2"
@@ -42,12 +42,12 @@
 			<div class="row d-flex">
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="hostprofile.action" class="block-20 rounded"
+						<a href="#" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="hostprofile.action">프로필관리</a>
+								<a href="#">프로필관리</a>
 							</h3>
 						</div>
 					</div>
@@ -79,38 +79,25 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="hostexchange.action" class="block-20 rounded"
+						<a href="memberloadandexchange.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="hostexchange.action">환전 신청</a>
+								<a href="memberloadandexchange.action">충전/환전 신청</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="hostmileagehistory.action" class="block-20 rounded"
+						<a href="membermileagehistory.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="hostmilealgehistory.action">마일리지 내역(정산/환전)</a>
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_5.jpg');">
-						</a>
-						<div class="text mt-3 text-center">
-							<div class="meta mb-2"></div>
-							<h3 class="heading">
-								<a href="#">공간관리</a>
+								<a href="membermileagehistory.action">마일리지 내역</a>
 							</h3>
 						</div>
 					</div>
@@ -133,10 +120,8 @@
 
 	<!-- footer.jsp -->
 	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
-
-
 </body>
 </html>

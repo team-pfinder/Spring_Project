@@ -14,7 +14,7 @@ import com.lookation.util.IEmailService;
 @Controller
 public class Email
 {
-	@Autowired
+	//@Autowired
 	private IEmailService emailService;
 	
 	@Autowired

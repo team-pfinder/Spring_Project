@@ -19,14 +19,13 @@
 	{
 		$("#regBtn").click(function()
 		{
-	        url = "bankinfoaddpopup.action?identity=host";
+	        url = "bankinfoaddpopup.action?identify=${identify}&identifyCode=${identifyCode}";	//
 	        option = "width=600, height=670, toolbar=no, location=no, status=no, memubar=no, scrollbars=no, resizable=no, left=150, top=150";/* 크롬은 resizable 옵션 안먹음 */
 			window.open(url, "계좌 등록 팝업", option);
 		});
 		
 		$("#delBtn").click(function()
 		{
-			alert();
 			var send_array = Array();
 			var send_cnt = 0;
 			var chkbox = $(".checkSelect");
@@ -39,13 +38,15 @@
 			        send_cnt++;
 			    }
 			}
+			if(send_array.length == 0)
+			{
+				alert("삭제하고자 하는 계좌를 선택하세요.");
+				return;
+			}
 			
-			alert($("#array").val(send_array));
-			
-			// 배열 저장 끝--
 			if(confirm("선택하신 계좌를 정말 삭제 하시겠습니까?") == true)
 			{
-				$(location).attr("href", "studentdelete.action?sid=" + send_array);
+				$(location).attr("href", "bankinforemove.action?identify=${identify}&sid=" + send_array);
 			}
 			
 		});
@@ -142,14 +143,14 @@
 											
 											<c:choose>
 												<c:when test="${identify eq 'member'}">
-													<c:if test="${fn:length(bankInfoList) == 0}">
+													<c:if test="${fn:length(memberBankInfoList) == 0}">
 													<tr>
 														<th colspan="5">등록된 계좌가 존재하지 않습니다. <br> 계좌를 등록해주세요.</th>
 													</tr>
 													</c:if>
 		 											<c:forEach var="memberBankInfo" items="${memberBankInfoList }" varStatus="status">
 													<tr align="center">
-														<th><input type="checkbox"></th>
+														<th><input type="checkbox" name="box[]" class="checkSelect" value="${memberBankInfo.bankNumber}"></th>
 														<th>${status.count}</th>
 														<td>${memberBankInfo.bankNumber}</td>
 														<td>${memberBankInfo.bank}</td>
@@ -177,10 +178,20 @@
 										</tbody>
 									</table>
 									<div>
-										<button type="button" id="regBtn" class=" btn btn-warning" style="width:430px;" value="계좌등록"
-										${fn:length(hostBankInfoList) < 3 ? "" : "disabled=\"disabled\""}>계좌등록</button>
-										<button type="button" id="delBtn" class=" btn btn-warning" style="width:430px;" 
-										${fn:length(hostBankInfoList) != 0 ? "" : "disabled=\"disabled\""}>계좌삭제</button>
+									<c:choose>
+										<c:when test="${identify eq 'member'}">
+											<button type="button" id="regBtn" class=" btn btn-warning" style="width:49%;" value="계좌등록"
+											${fn:length(memberBankInfoList) < 3 ? "" : "disabled=\"disabled\""}>계좌등록</button>
+											<button type="button" id="delBtn" class=" btn btn-warning" style="width:49%;" 
+											${fn:length(memberBankInfoList) != 0 ? "" : "disabled=\"disabled\""}>계좌삭제</button>
+										</c:when>
+										<c:when test="${identify eq 'host'}">
+											<button type="button" id="regBtn" class=" btn btn-warning" style="width:49%;" value="계좌등록"
+											${fn:length(hostBankInfoList) < 3 ? "" : "disabled=\"disabled\""}>계좌등록</button>
+											<button type="button" id="delBtn" class=" btn btn-warning" style="width:49%;" 
+											${fn:length(hostBankInfoList) != 0 ? "" : "disabled=\"disabled\""}>계좌삭제</button>
+										</c:when>
+									</c:choose>	
 									</div>
 								</form>
 							</div>

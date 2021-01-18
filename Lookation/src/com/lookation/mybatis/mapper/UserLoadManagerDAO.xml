@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IUserLoadManagerDAO">
+	
+	<select id="loadRegList" resultType="com.lookation.dto.UserLoadManagerDTO">
+		SELECT MEMBER_EMAIL AS EMAIL, MEMBER_BANK_NUMBER AS BANKNUMBER, MEMBER_BANK AS BANK
+		     , MEMBER_BANK_HOLDER AS BANKHOLDER, LOAD_AMOUNT AS AMOUNT, LOAD_REG_DATE AS REGDATE
+		     , LOAD_TYPE AS LOADTYPE, LOAD_PROC_DATE AS PROCDATE
+		FROM LOAD_REG_LIST
+	</select>
+	
+</mapper>

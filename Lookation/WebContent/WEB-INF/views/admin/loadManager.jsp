@@ -247,16 +247,35 @@
 										<tr align="center">
 											<th>번호</th>
 											<th>E-Mail</th>
-											<th>예금주</th>
 											<th>계좌번호</th>
+											<th>은행명</th>
+											<th>예금주</th>
 											<th>금액</th>
-											<th>환전신청일</th>
+											<th>충전신청일</th>
 											<th>처리상태</th>
 											<th>처리일</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr align="center">
+										<c:forEach var="item" items="${list }" varStatus="status">
+										<tr>
+											<td>${status.count}</td>
+											<td>${item.email}</td>
+											<td>${item.bankNumber}</td>
+											<td>${item.bank }</td>
+											<td>${item.bankHolder }</td>
+											<td>${item.amount }</td>
+											<td>${item.regDate }</td>
+											<td>${item.loadType }</td>
+											<c:if></c:if>
+											<td>${item.procDate }</td>
+											<!-- <td>
+												<button class="btn btn-primary" id="" value="">처리</button>
+												<button class="btn btn-danger">반려</button>
+											</td>-->
+										</tr>
+										</c:forEach>
+									<!-- 	<tr align="center">
 											<td>1</td>
 											<td>dasd@test.com</td>
 											<td>안혜지</td>
@@ -389,7 +408,7 @@
 											<td>대기</td>
 											<td><button class="btn btn-primary" id="" value="">처리</button>
 												<button class="btn btn-danger">반려</button></td>
-										</tr>
+										</tr> -->
 									</tbody>
 								</table>
 							</div>

@@ -19,8 +19,6 @@ public interface IBankInfoDAO
 	// 이용자 계좌 갯수 카운트
 	public int memberBankInfoCount(String identifyCode) throws SQLException;
 
-	// 이용자 계좌 삭제 프로시저
-	
 	
 	
 	/* 호스트 */
@@ -34,7 +32,12 @@ public interface IBankInfoDAO
 	// 호스트 계좌 갯수 카운트
 	public int hostBankInfoCount(String identifyCode) throws SQLException;
 	
-	// 호스트 계좌 삭제 프로시저
+	
+	/* 프로시저 */
+	
+	// 이용자, 호스트 계좌 정보 삭제
+	public void bankInfoRemove(String identify, String sids) throws SQLException;;
+	
 	
 	
 

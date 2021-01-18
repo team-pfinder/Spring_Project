@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.ILoadAndExchangeDAO" >
+	
+	<select id="bankInfoList" resultType="com.lookation.dto.LoadAndExchangeDTO">
+ 		SELECT MEMBER_BANK_NUMBER AS BANKNUMBER, MEMBER_BANK AS BANK
+		FROM MEMBER M, MEMBER_BANK_INFO MBIF
+		WHERE M.MEMBER_CODE = MBIF.MEMBER_CODE
+		AND M.MEMBER_CODE = #{memberCode}
+
+	</select>	
+	
+	<select id="getBalance" resultType="java.lang.Integer">
+		SELECT F_USER_BALANCE(#{memberCode}) AS BALANCE
+		FROM DUAL
+	</select>
+	
+	<insert id="loadRegister" statementType="CALLABLE">
+		{CALL PRC_LOAD_REG(
+							#{memberCode, mode=IN}
+						  , #{bankNumber, mode=IN}
+						  , #{amount, mode=IN}
+						  )
+		}
+	</insert>
+	
+	<select id="loadRegisterNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
+		SELECT MBIF.MEMBER_CODE AS MEMBERCODE, MBIF.MEMBER_BANK_NUMBER AS BANKNUMBER, MBIF.MEMBER_BANK AS BANK, LR.LOAD_AMOUNT AS AMOUNT
+			 , TO_CHAR(LR.LOAD_REG_DATE,'YYYY-MM-DD HH24:MI:SS') AS REGDATE, TO_CHAR(LR.LOAD_REG_DATE + 2,'YYYY-MM-DD HH24:MI:SS') AS EXPIREDATE  
+		FROM MEMBER_BANK_INFO MBIF, LOAD_REG LR, LOAD_REG_BANK_INFO LRBIF
+		WHERE MBIF.MEMBER_BANK_NUMBER = LRBIF.MEMBER_BANK_NUMBER
+		  AND LRBIF.LOAD_REG_CODE = LR.LOAD_REG_CODE
+		  AND LR.LOAD_REG_DATE = (
+		  						  SELECT MAX(LOAD_REG_DATE)
+		                          FROM MEMBER_BANK_INFO A, LOAD_REG B
+		                          WHERE A.MEMBER_CODE = B.MEMBER_CODE
+		                            AND A.MEMBER_CODE = #{memberCode}
+		                         )
+	</select>
+	
+	
+	<insert id="exchangeRegister" statementType="CALLABLE">
+		{CALL PRC_USER_EXC_REG(
+							#{memberCode, mode=IN}
+						  , #{bankNumber, mode=IN}
+						  , #{amount, mode=IN}
+						  )
+		}
+	</insert>
+	
+	<select id="exchangeNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
+	SELECT MBIF.MEMBER_BANK AS BANK, MBIF.MEMBER_BANK_NUMBER AS BANKNUMBER, ME.MEMBER_EXCHANGE_DATE AS REGDATE
+		 , ME.MEMBER_EXCHANGE_AMOUNT AS AMOUNT, MBIF.MEMBER_BANK_HOLDER AS BANKHOLDER
+	FROM MEMBER_EXCHANGE_LIST ME, MEMBER_BANK_INFO MBIF, MEMBER_EXCHANGE_BANK_INFO MEBI
+	WHERE MBIF.MEMBER_BANK_NUMBER = MEBI.MEMBER_BANK_NUMBER
+  	  AND MEBI.MEMBER_EXCHANGE_CODE = ME.MEMBER_EXCHANGE_CODE
+      AND ME.MEMBER_EXCHANGE_DATE = (
+      								 SELECT MAX(MEMBER_EXCHANGE_DATE)
+      		                         FROM MEMBER_BANK_INFO A, MEMBER_EXCHANGE_LIST B
+            	                     WHERE A.MEMBER_CODE = B.MEMBER_CODE
+                	                   AND A.MEMBER_CODE = #{memberCode}
+                	                )
+	</select>
+
+</mapper>

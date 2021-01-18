@@ -9,8 +9,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LoadRegisterNotice.jsp</title>
-<c:import url="${cp }/includes/includes_home.jsp"></c:import>
+<!-- include NAV -->
+<c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<title>5-1.withdrawGuide.jsp</title>
 <style type="text/css">
 button
     {
@@ -26,7 +27,6 @@ button
 </style>
 </head>
 <body>
-
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
@@ -37,29 +37,28 @@ button
             	</div>
             </div>
             <div style="overflow:hidden; text-align:center;margin-top:-140px">
-				<h1><br><br><br>충전신청이 <b>완료</b> 되었습니다.</h1>
+				<h1><br><br><br>환전신청이 <b>완료</b> 되었습니다.</h1>
 				<hr>
-				<p style="font-size: 25px; text-align: left;">
-				계좌이체로 결제시 <span>입금대기 후 48시간 이내 
-				입금</span>해 주시지 않으면 <span style="color:red">결제 시스템 상 취소</span>로 진행됩니다.
-				충전내역은 마이페이지 마일리지 내역에서 확인하실 수 있습니다.
+				<p style="font-size: 25px; text-align:left">
+				선택하신 계좌로 환전처리가 완료되었습니다. 환전내역은 마이페이지 
+				마일리지 내역에서 확인하실 수 있습니다.   
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</p>
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12">	
 				<span style="text-align:left; font-size:23px">
-				<b>결제 신청일</b> : ${loadInfo.regdate}<br>
-				<b>결제 기한일</b> : ${loadInfo.expiredate}<br>
-				<b>선택하신 결제 수단</b> : ${loadInfo.bankNumber} (${loadInfo.bank})<br>
+				<b>환전 신청일</b> : ${exchangeInfo.regdate}<br>
 				
-				<b>룩케이션 계좌</b> : 554602-04-076182(국민은행)<br>
-				<b>예금주</b> : 룩케이션조윤상<br>
-				<b>결제 예정 금액</b> : ${loadInfo.amount}원 <br>
+				<b>환전 받으실 계좌</b> : ${exchangeInfo.bankNumber} (${exchangeInfo.bank})<br>
+				<b>예금주</b> : ${exchangeInfo.bankHolder }<br>
+				<b>예정 금액</b> : ${exchangeInfo.amount}원<br>
 				</span>
 				<hr><br>
 				
 				<div class="buttonForm">
 					<button style="float: left; background: #ffffff" onclick="location.href='#' ">홈으로</button>
-					<button style="float: right; border-width: 0px" onclick="location.href='mypageMain(user).jsp' ">
+					<button style="float: right; border-width: 0px" onclick="location.href='1.mypageMain(user).jsp' ">
 						<span style="font-color: black">마이페이지로</span>
 					</button>
 					<br><br><br><br><br><br>
@@ -67,15 +66,12 @@ button
 			</div>
 		</div>
 	</div>
-	
+			
 	<!-- footer.jsp -->
 	<div>
 		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
-<script>
-
-</script>
 
 </body>
 </html>

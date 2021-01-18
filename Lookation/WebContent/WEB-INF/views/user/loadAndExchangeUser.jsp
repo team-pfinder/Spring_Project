@@ -9,18 +9,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>5.mypageMileageLoadAndWithdraw.jsp</title>
+<title>마일리지 충전 & 환전</title>
 
 <script type="text/javascript">
+	
+	var i = 0;
+
 	function add10000()
 	{
-		document.getElementById("chargeAmount").value = parseInt(document
-				.getElementById("chargeAmount").value) + 10000;
+		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 10000;
+		document.getElementById("after").value = parseInt(document.getElementById("after").value) + 10000;
+		i += 10000;
+		alert(i);
 	}
 	function add50000()
 	{
-		document.getElementById("chargeAmount").value = parseInt(document
-				.getElementById("chargeAmount").value) + 50000;
+		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 50000;
+		document.getElementById("after").value = parseInt(document.getElementById("after").value) + 50000;
+		i += 50000;
+		alert(i);
 	}
 	
 	function calc()
@@ -47,6 +54,20 @@
 		document.getElementById("ex_remained").value = 0;
 	}
 	
+	
+	function cccSubmit()
+	{
+		alert(i);
+		var tag = document.createElement("input");
+		tag.setAttribute("type","hidden");
+		tag.setAttribute("name", "charge");
+		tag.setAttribute("value", i);
+		document.getElementById("addhidden").appendChild(tag);
+		
+		document.sub1.submit();
+	}
+
+
 </script>
 
 <style type="text/css">
@@ -118,9 +139,10 @@
 					<div class="tab-content" style="margin-top: 0px; margin-left: 10px;">
 						<!-- 첫번째 탭 -->
 						<c:import url="loadTabUser.jsp"></c:import>
+
 						
 						<!-- 두번째 탭 -->
-						<c:import url="../common/exchangeTab.jsp"></c:import>						
+						<c:import url="../user/exchangeTabUser.jsp"></c:import>						
 
 					</div>
 					<!-- END 탭구성 -->

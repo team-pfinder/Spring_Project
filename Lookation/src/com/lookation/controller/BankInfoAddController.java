@@ -26,15 +26,16 @@ public class BankInfoAddController implements Controller
 	{
 		ModelAndView mav = new ModelAndView();
 
+		String identify = request.getParameter("identify");
+		String identifyCode = request.getParameter("identifyCode");
 		
+		//String identify = "host";
+		//String identifyCode = "H000002";
+		System.out.println("BankInfoAddController - identify :" + identify + " identifyCode :" + identifyCode);
 		
-		//String identify = request.getParameter("identify");
-		String identify = "host";
-		System.out.println(identify);
-		 
-		System.out.println("dsd"); 
 		BankInfoDTO dto = new BankInfoDTO(); 
 		dto.setBank(request.getParameter("bank"));
+		dto.setIdentifyCode(identifyCode);			
 		dto.setBankNumber(request.getParameter("bankNum"));
 		dto.setBankHolder(request.getParameter("bankHol"));
 				
@@ -43,7 +44,7 @@ public class BankInfoAddController implements Controller
 			try
 			{
 				//if(dao.memberBankInfoCount(identifyCode) >= 3)
-				if(dao.memberBankInfoCount("M000002") >= 3)
+				if(dao.memberBankInfoCount(identifyCode) >= 3)
 				{
 					System.out.println("이용자 계좌 이미 3개");
 				}
@@ -52,7 +53,6 @@ public class BankInfoAddController implements Controller
 					dao.memberBankInfoAdd(dto);
 					mav.setViewName("../WEB-INF/views/common/timeout.jsp");
 				}
-
 			} catch (Exception e)
 			{
 				System.out.println(e.toString());
@@ -64,16 +64,14 @@ public class BankInfoAddController implements Controller
 			{
 				System.out.println("계좌 갯수 체크전");
 				//if(dao.memberBankInfoCount(identifyCode) >= 3)
-				if(dao.hostBankInfoCount("H000002") >= 3)
+				if(dao.hostBankInfoCount(identifyCode) >= 3)
 				{
 					System.out.println("호스트 계좌 이미 3개");
 				}
 				else 
 				{
-					System.out.println("인서트 하기 전");
 					dao.hostBankInfoAdd(dto);
 					mav.setViewName("../WEB-INF/views/common/timeout.jsp");
-					System.out.println("인서트 후");
 				}
 			} catch (Exception e)
 			{
