@@ -2,7 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
+	String identify = request.getParameter("identify");
+	String identifyCode = request.getParameter("identifyCode");
 %>
 
 <!DOCTYPE html>
@@ -20,12 +22,6 @@ String cp = request.getContextPath();
 		window.open(url, "계좌 등록 약관", option);
 	}
 	
-	function popupSubmit()
-	{
- 		$("#bankinfoform").action = "";
-		$("#bankinfoform").submit();
-	}
-
 
 </script>
 
@@ -58,8 +54,12 @@ String cp = request.getContextPath();
 			<div class="col-1"></div>
 			<div class="col-10">
 				
-				<form action="bankinfoadd.action" method="post" id="bankinfoform">
+				<form action="bankinfoadd.action" method="get" id="bankinfoform">
 					<div class="form-group has-success">
+						<!-- ------------------------------------------------------------ -->
+						<input type="hidden" name="identify" value="<%=identify%>">
+						<input type="hidden" name="identifyCode" value="<%=identifyCode%>">
+						<!-- ------------------------------------------------------------ -->
 						<label class="control-label" for="inputSuccess1">은행 선택</label>
 						<select class="form-control" id="bank" name="bank"  required >
 							<option value="" disabled selected hidden>등록할 계좌의 은행을 선택하세요...</option>
@@ -105,7 +105,7 @@ String cp = request.getContextPath();
 					<div>
 						<div class="col-6">
 							<div class="checkbox">
-								<label> <input type="checkbox" id="" value="option1">
+								<label> <input type="checkbox" id="" value="option1" required>
 									계좌등록 <a href="javascript:showPopup()"><b
 										style="color: black">약관</b></a> 동의
 								</label>

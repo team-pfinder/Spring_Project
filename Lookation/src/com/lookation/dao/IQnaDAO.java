@@ -10,20 +10,33 @@ public interface IQnaDAO
 	// 이용자 Q&A 작성
 	public int insertMemQna(QnaDTO dto);
 	
-	// 이용자 Q&A 수정
-	// 수정하려는거 불러와야돼 loc, mem 필요한데
+	// 이용자 Q&A 수정 폼
 	// 젤 중요한 거슨 ... 게시글코드
-	public QnaDTO updateForm(QnaDTO dto);
+	public QnaDTO updateQnaForm(String qna_code);
+	
+	// 이용자 Q&A 수정
+	public void updateMemQna(QnaDTO dto);
 	
 	// 이용자 Q&A 삭제
 	public int deleteMemQna(QnaDTO dto);
 	
+	
+	
 	/* 호스트 */
 	
 	// 호스트 Q&A 답글 작성
+	public int insertHostQna(QnaDTO dto);
 	
-	// 이용자 Q&A 답글 수정
+	// 호스트 Q&A 답글 수정폼
+	public QnaDTO updateQnaReplyForm(String qna_reply_code);
 	
-	// 이용자 Q&A 답글 삭제
+	// 호스트 Q&A 답글 수정
+	public void updateHostQna(QnaDTO dto);
+	
+	// 호스트 Q&A 답글 삭제
+	public int deleteHostQna(QnaDTO dto);
 
+
+
+	
 }

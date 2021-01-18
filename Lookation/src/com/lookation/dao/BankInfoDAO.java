@@ -1,5 +1,6 @@
 package com.lookation.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -94,7 +95,7 @@ public class BankInfoDAO implements IBankInfoDAO
 		int result = 0;
 		String sql = "SELECT COUNT(*) AS CNT"
 				  + " FROM MEMBER_BANK_INFO"
-				  + " WHERE MEMBER_CODE = " + identifyCode;
+				  + " WHERE MEMBER_CODE = " + "'" + identifyCode + "'";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery();
 		
@@ -140,13 +141,13 @@ public class BankInfoDAO implements IBankInfoDAO
 
 		int result = 0;
 		String sql = "INSERT INTO HOST_BANK_INFO(HOST_BANK_NUMBER, HOST_CODE, HOST_BANK, HOST_BANK_HOLDER)" +
-				    " VALUES(?, 'H000002', ?, ?)";
+				    " VALUES(?, ?, ?, ?)";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, dto.getBankNumber());
-		/* pstmt.setString(2, dto.getIdentifyCode()); */
-		pstmt.setString(2, dto.getBank());
-		pstmt.setString(3, dto.getBankHolder());
+		pstmt.setString(2, dto.getIdentifyCode());
+		pstmt.setString(3, dto.getBank());
+		pstmt.setString(4, dto.getBankHolder());
 		
 		result = pstmt.executeUpdate();
 		
@@ -180,6 +181,26 @@ public class BankInfoDAO implements IBankInfoDAO
 		return result;
 	}
 
+	@Override
+	public void bankInfoRemove(String identify, String bankNumber) throws SQLException
+	{
+		
+		Connection conn = dataSource.getConnection();
 
+		String sql = "{call PRC_BANKINFO_DELETE(?, ?)}";
+		CallableStatement cstmt = conn.prepareCall(sql);
+		cstmt.setString(1, identify);
+		cstmt.setString(2, bankNumber);
+		int result = cstmt.executeUpdate();
+		if (result > 0)
+		{
+			System.out.println(">> 프로시저 호출을 통해 계좌정보들 삭제 완료~!!!");
+		}
+
+		cstmt.close();
+		conn.close();
+		
+	}
 
 }
+

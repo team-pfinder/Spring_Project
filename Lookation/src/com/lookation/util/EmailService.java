@@ -1,10 +1,10 @@
 package com.lookation.util;
 
-import java.io.File;
+//import java.io.File;
 
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.core.io.FileSystemResource;
+//import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -59,11 +59,11 @@ public class EmailService implements IEmailService
 				helper.setSubject(subject);
 				helper.setText(content); 
 				
-				FileSystemResource file = new FileSystemResource(new File(filePath));
+				//FileSystemResource file = new FileSystemResource(new File(filePath));
 				
 				// [파일명].[확장자명] 만 자르기
-				String[] subArr = filePath.split("/");
-				helper.addAttachment(subArr[subArr.length - 1], file);
+				//String[] subArr = filePath.split("/");
+				//helper.addAttachment(subArr[subArr.length - 1], file);
 			}
 		};
 		

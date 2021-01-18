@@ -164,12 +164,6 @@
 			
 			$("#changePasswordForm").submit();
 		});
-		
-		// cancel
-		$("#cancel").click( function()
-		{
-			alert("cancel");
-		});
 	});
 	
 	
@@ -210,9 +204,18 @@
 
 
 				<div style="margin-top: 30px;">
-					<button type="button" class="full" style="background: #ffffff;" id="cancel">
-						<span style="color: black;">취소</span>
-					</button>
+					<c:if test="${identify eq 'host'}">
+						<button type="button" class="full" style="background: #ffffff;" id="cancel"
+							onclick="location.href='profile.action'">
+								<span style="color: black;">취소</span>
+							</button> 
+					</c:if>
+					<c:if test="${identify eq 'member'}">
+						<button type="button" class="full" style="background: #ffffff;" id="cancel"
+					        onclick="location.href='profile.action'">
+					        	<span style="color: black;">취소</span>
+					        </button> 
+					</c:if> 
 					<button type="button" class="full" id="submit"
 						style="float: right; border-width: 0px;">
 						<span style="color: black;">변경하기</span>

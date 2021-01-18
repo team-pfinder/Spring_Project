@@ -11,16 +11,44 @@
 		, #{loc_code} ,#{member_code}, #{qna_content}, SYSDATE)
 	</insert>
 	
-	
-	<select id="updateForm" resultType="com.lookation.dto.QnaDTO">
+	<select id="updateQnaForm" resultType="com.lookation.dto.QnaDTO">
 		SELECT QNA_CODE, LOC_CODE, QNA_CONTENT
 		FROM QNA
 		WHERE QNA_CODE=#{qna_code}
 	</select>
 	
+	<select id="updateQnaReplyForm" resultType="com.lookation.dto.QnaDTO">
+		SELECT QNA_REPLY_CODE, QNA_REPLY_CONTENT
+		FROM QNA_REPLY
+		WHERE QNA_REPLY_CODE =#{qna_reply_code}
+	</select>
+	
+	<update id="updateMemQna">
+		UPDATE QNA SET QNA_CONTENT = #{qna_content}, QNA_DATE=SYSDATE
+		WHERE QNA_CODE = #{qna_code}
+	</update>
 	
 	<insert id="deleteMemQna">
 		INSERT INTO QNA_REMOVE (QNA_REMOVE_CODE, QNA_CODE, QNA_REMOVE_DATE)
 		VALUES(F_CODE('QRM', QRM_SEQ.NEXTVAL), #{qna_code}, SYSDATE)
 	</insert>
+	
+	<insert id="insertHostQna">
+		INSERT INTO QNA_REPLY (QNA_REPLY_CODE, QNA_CODE, QNA_REPLY_CONTENT
+		, QNA_REPLY_DATE)
+		VALUES(F_CODE('QRE', QRE_SEQ.NEXTVAL), #{qna_code}, #{qna_reply_content}, SYSDATE)
+	</insert>
+	
+	<insert id="deleteHostQna">
+	INSERT INTO QNA_REPLY_REMOVE(QNA_REPLY_REMOVE_CODE, QNA_REPLY_CODE
+	, QNA_REPLY_REMOVE_DATE)
+	VALUES(F_CODE('QRERM', QRERM_SEQ.NEXTVAL), #{qna_reply_code}, SYSDATE) 
+	</insert>
+	
+	<update id="updateHostQna">
+		UPDATE QNA_REPLY
+		SET QNA_REPLY_CONTENT=#{qna_reply_content}, QNA_REPLY_DATE=SYSDATE
+		WHERE QNA_REPLY_CODE=#{qna_reply_code}
+	</update>
+	
 </mapper>

@@ -14,6 +14,105 @@
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
+<script type="text/javascript">
+	
+	$(function() {
+
+		$('#inputMinPeople').on("keyup", function ()
+		{
+			var inputMin = setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
+
+			var err = $(this).next();
+			err.css("display", "none");
+			
+				var inputMax = setMaxPeople($('#inputMaxPeople'), inputMin, 30, '최대 수용인원');
+				
+				if (inputMax != null && inputMin > inputMax) {
+						
+					err.html("최대 수용인원이 최소 수용인원 보다 작습니다.").css("display", "inline");
+					err.css("color", "red");
+				
+			}
+		});
+				
+	});
+				
+	
+	
+	// 최소 수용인원 수 제약 functiond
+	function setMinPeople(target, minNum, maxNum, name){
+		
+		target.on("keyup", function() {
+			
+			var err = $(this).next();
+			err.css("display", "none");
+			
+			// 글자 수 제한, 색 변경
+			if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+				
+				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
+				err.css("color", "red");
+				return;
+				
+			} else {
+				
+				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
+				err.css("color","green");
+				return target;
+			}
+		});
+	}
+	
+	// 최대 수용인원 수 제약 function
+	function setMaxPeople(target, minNum, maxNum, name){
+		
+		target.on("keyup", function() {
+			
+			var err = $(this).next();
+			err.css("display", "none");
+			
+			// 글자 수 제한, 색 변경
+			if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+				
+				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
+				err.css("color", "red");
+				return;
+				
+			} else {
+				
+				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
+				err.css("color","green");
+				return target;
+			}
+		});
+	}
+	  
+	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
+	/* function maxTest() {
+		
+		var inputMin = parseInt($.trim($('#inputMinPeople').val()));
+
+		return inputMin;
+	} */
+	
+	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
+	function cancel() {
+		
+		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
+						+ "(기존 작성 내용은 저장되지 않습니다.)");
+		
+		if (con == true) {
+			location.href = "mainHost.jsp";
+			return;
+		} else {
+			return;
+		}
+		
+	}
+	
+
+</script>
+	
 </head>
 <body>
 	<div>
@@ -69,91 +168,96 @@
          </div>
 
 
-
-<form style="width: 800px; margin: 120px;">
-
-	
-	<!-- 1. 이미지 -->
-	
-	<div id="LocationImages">
-	
-		<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
-		<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
-		<br><br>
-			<textarea class="form-control" placeholder="상세이미지를 추가하세요.(JPG, JPEG, PNG)"
-						name="locationImages"
-						cols="40" rows="10" required="required"></textarea>
-			<br>
-			<input type="button" class="form-control"
-					name="locationImagesInsert" value="상세이미지 추가 +">
+	<!-- form start --------------------------------------------->
+	<form style="width: 80%; margin: 120px;" id="inputDetailInfo" 
+		  action="inputPackageInfoForm.jsp" method="POST"><!--onsubmit="handOver()" -->
+		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
+		
+		
+		<!-- 1. 이미지 --><!-- ※ 보류 -->
+		
+		<div id="locDetailImg">
+		
+			<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
+			<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
 			<br><br>
-			<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
-				 <!-- 
-				 이미지가 추가될 때 마다 
-				 추가한 이미지를 썸네일 형태로 조회할 수 있음.
-				 그 썸네일 형태로 조회된 이미지를 클릭시 
-				 체크박스형태로 복수선택하여 x버튼으로 삭제가능
-				  -->
-	</div>
-
-<br><br><br>
-
-	<!-- 2. 최소 수용인원 -->
+				<textarea class="form-control" placeholder="상세이미지를 추가하세요.(JPG, JPEG, PNG)"
+							name="inputLocDetailImg"
+							cols="40" rows="10" required="required"></textarea>
+				<br>
+				<input type="button" class="form-control"
+						name="inputLocDetailImgBtn" value="상세이미지 추가 +">
+				<br><br>
+				<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
+					 <!-- 
+					 이미지가 추가될 때 마다 
+					 추가한 이미지를 썸네일 형태로 조회할 수 있음.
+					 그 썸네일 형태로 조회된 이미지를 클릭시 
+					 체크박스형태로 복수선택하여 x버튼으로 삭제가능
+					  -->
+		</div>
 	
-	<div id="MinAvailablePeople">
+	<br><br><br>
 	
-		<span style="font-size: 14pt; font-weight: bold;">최소 수용인원 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" required="required" class="form-control"
-				placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
-				name="MinAvailablePeople" >
+		<!-- 2. 최소 수용인원 -->
 		
-	</div>
-
-<br><br><br>
-	
-	
-	<!-- 3. 최대 수용인원 -->
+		<div id="minPeople">
 		
-		<div id="MaxAvailablePeople">
+			<span style="font-size: 14pt; font-weight: bold;">최소 수용인원 <span style="color: red">*</span></span>
+			<br><br>
+			<input type="text" required="required" class="form-control"
+					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
+					id="inputMinPeople" name="inputMinPeople">
+					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" --> 
+			<span id="err" style="font-weight: bold;"></span>
+			
+		</div>
+	
+	<br><br><br>
+		
+		
+		<!-- 3. 최대 수용인원 -->
+			
+		<div id="maxPeople">
 		
 			<span style="font-size: 14pt; font-weight: bold;">최대 수용인원 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" required="required" class="form-control"
 					placeholder="최대 수용인원을 입력하세요.[최소 수용인원 이상, 최대 30명 이하]"
-					name="MaxAvailablePeople" >
+					id="inputMaxPeople" name="inputMaxPeople">
+					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); -->
+			<span style="font-weight: bold;"></span>
 		</div>
-
-
-
-<br><br><br>
-<div class="container">
-
-<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-					   (필수항목을 입력하지 않았을 경우,
-						입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-					    alert("필수항목을 입력해야합니다")된다.
-						그리고 입력하는 textbox로 입력커서가 이동한다. 
-						또한 다음페이지로 submit 되지 않는다.
-						
-						※ 다음 버튼 이동 순서
-						※ xxxUpdate.jsp 다음버튼 이동 순서 
-						   기본정보 → 연락처정보 → 사업자정보
-						   → 이용정보  → 상세정보  → 패키지정보 -->
-
-	<input type="submit" value="다음" class="btn btn-warning" style="width:300px;">
+	
+	
+	
+	<br><br><br>
+	
+	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
+						   (필수항목을 입력하지 않았을 경우,
+							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
+						    alert("필수항목을 입력해야합니다")된다.
+							그리고 입력하는 textbox로 입력커서가 이동한다. 
+							또한 다음페이지로 submit 되지 않는다.
+							
+							※ 다음 버튼 이동 순서
+							※ xxxUpdate.jsp 다음버튼 이동 순서 
+							   기본정보 → 연락처정보 → 사업자정보
+						    → 이용정보  → 상세정보  → 패키지정보 -->
+	
+		<div class="container" style="text-align: center;">
+			<input type="submit" value="다음" class="btn btn-warning" 
+				   style="width:45%; border-color: gray;">
 			
-<!-- 취소 버튼 -->
-	<input type="button" class="btn btn-default" style="width:300px;" 
-			value="취소">
-	<!-- onclick="function()" -->
-</div>
+		<!-- 취소 버튼 -->
+			<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
+					id="detailInfo" value="취소" onclick="cancel()">		
+		</div>	
 
 	
+	<br><br><br><br>
 
-<br><br><br><br>
-
-</form>
+	</form>
 </div>
 
 </div>

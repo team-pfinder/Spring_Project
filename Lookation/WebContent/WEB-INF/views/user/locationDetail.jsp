@@ -107,9 +107,9 @@ height: auto;
     font-weight: 700;
     letter-spacing: .5px;
     background-color: #00043c;
-    padding: 10px 20px;
-    border-radius: 3px;
-    margin-left: 30px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-left: 20px;
     transform: translateX(20px);
     transition: all .3s ease;
 }
@@ -319,6 +319,7 @@ margin-top: 1.9em;
 	       
 	    });
 	    
+	    // 패키지 정보 가져오기
 		// 날짜가 변경되었을 경우 수행할 코드 처리
 		$("#selectDate").change(function()
 		{
@@ -341,34 +342,48 @@ margin-top: 1.9em;
 			$.post("locdetailajax.action", {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}, function(data)
 			{
 				// 받아서 처리할 내용
-				$("#packageDiv").html(data);
+			    for(var i=0; i<data.length; i++){
+
+                   $('#packageDiv').append(data[i] + '<br>')
+                   }
+				//$("#packageDiv").text(data);
 				alert(data);
 			});
 			
 		});
 		
-	
+		// 이용자 QnA 수정하는 팝업
 		$(".modifyQna").click(function()
 		{
-			$(location).attr("href", "modifyformqna.action?qna_code=" + $(this).val());
+			var url = "modifyformqna.action?identify=member&qna_code=" + $(this).val();
+			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+			window.open(url, "", option);
 		}); 
 		
-
+		// 이용자 Qna 삭제하는 팝업
 		$(".deleteQna").click(function()
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deleteqna.action?qna_code=" + $(this).val());
+				$(location).attr("href", "deleteqna.action?identify=member&qna_code=" + $(this).val());
 			}
 		}); 
 		
-		
+		// 이용자 리뷰 삭제하는 팝업 
 		$(".deleteReview").click(function()
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deletereview.action?review_code=" + $(this).val());
+				$(location).attr("href", "deletereview.action?identify=member&review_code=" + $(this).val());
 			}
+		}); 
+		
+		// 이용자 리뷰 수정하는 팝업
+		$(".modifyReview").click(function()
+		{
+			var url = "modifyformreview.action?identify=member&review_code=" + $(this).val();
+			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+			window.open(url, "", option);
 		}); 
 		
 	});
@@ -377,7 +392,7 @@ margin-top: 1.9em;
 	function writeQna()
 	{	
 		var locCode = document.getElementById("hiddenCode").value;
-		var url = "writeqna.action?locCode="+ locCode + "&memCode=M000003";
+		var url = "writeqna.action?identify=member&locCode="+ locCode + "&memCode=M000003";
 		// memCode 임시
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
@@ -387,7 +402,7 @@ margin-top: 1.9em;
 	function writeReview()
 	{	
 		var locCode = document.getElementById("hiddenCode").value;
-		var url = "writereview.action?locCode="+ locCode + "&memCode=M000004";
+		var url = "writereview.action?identify=member&locCode="+ locCode + "&memCode=M000004";
 		// memCode 임시
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
@@ -401,7 +416,7 @@ margin-top: 1.9em;
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" value="${basicInfo.locationCode }">${basicInfo.locationCode }
+				<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->
@@ -455,7 +470,7 @@ margin-top: 1.9em;
 					<li><a data-scroll="section1" href="#section1" class="dot active"><span>공간소개</span></a><li>
 					<li><a data-scroll="section2" href="#section2" class="dot"><span>이용후기</span></a><li>
 					<li><a data-scroll="section3" href="#section3" class="dot"><span>위치안내</span></a><li>
-					<li><a data-scroll="section4" href="#section4" class="dot"><span>질문/후기</span></a><li>
+					<li><a data-scroll="section4" href="#section4" class="dot"><span>Q&A</span></a><li>
 				</ul>
 			</nav>
 
@@ -498,6 +513,7 @@ margin-top: 1.9em;
 			<section id="section2" class="info-div">
 				<h4 class="info-sub">
 					이용후기<span class="set-star ml-3">${countReview }</span>
+					<span class="ml-2" style="font-size: 10pt;">(평균별점 <span class="set-star icon-star mr-1"></span>${avgReviewRate }점)</span>
 
 					<!-- 이용후기 작성권한이 있을 경우(이용완료, 후기작성 안했는지 확인) -->
 					<!-- 에만 이용후기 작성버튼 표시  -->
@@ -514,7 +530,6 @@ margin-top: 1.9em;
 					
 				<c:forEach var="rv" items="${review }">
 					<ul class="comment-list">	
-						<c:if test="${rv.removeCount eq 0}">
 							<li class="comment">
 								<h4>${rv.memberNickName }</h4>
 								<h6 class="float-right">
@@ -524,18 +539,25 @@ margin-top: 1.9em;
 								</h6>
 								
 								<div class="meta mb-2">${rv.date }</div>
-								<p>${rv.content }</p>
 								
-								<c:if test="${rv.memCode == 'M000004'}">
-									<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
-									<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+								<c:if test="${rv.removeCount eq 1}">
+									<p>삭제된 리뷰입니다.</p>
 								</c:if>
 								
-								<c:if test="${rv.rvimgCount ne 0 }">
-									<p>
-										<img class="review-img" src="<%=cp%>${rv.url}"
-											alt="리뷰사진">
-									</p>
+								<c:if test="${rv.removeCount eq 0}">
+									<p>${rv.content }</p>
+									
+									<c:if test="${rv.rvimgCount ne 0 }">
+										<p>
+											<img class="review-img" src="<%=cp%>${rv.url}"
+												alt="리뷰사진">
+										</p>
+									</c:if>
+									
+									<c:if test="${rv.memCode == 'M000004'}">
+										<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
+										<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+									</c:if>
 								</c:if>
 								
 								<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
@@ -546,7 +568,6 @@ margin-top: 1.9em;
 									</li>
 								</c:if>
 							</li>
-						</c:if>
 					</ul>
 				</c:forEach><!-- .comment-list -->
 			
@@ -586,7 +607,7 @@ margin-top: 1.9em;
 				<!-- 길찾기 버튼 -->
 			
 				<h4 class="info-sub">위치 안내</h4>
-				<div id="map" style="width:700px;height:350px;"></div>
+				<div id="map" style="width:100% ;height:350px;"></div>
 				<script>
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			    mapOption = {
@@ -617,7 +638,7 @@ margin-top: 1.9em;
 
 				        // 인포윈도우로 장소에 대한 설명을 표시합니다
 				        var infowindow = new kakao.maps.InfoWindow({
-				            content: '<div style="width:150px;text-align:center;padding:3px 0;font-size:0.8em;">${basicInfo.locName }</div>'
+				            content: '<div style="width:150px;text-align:center;padding:3px 0;color:black;font-size:0.8em;">${basicInfo.locName }</div>'
 				        });
 				        infowindow.open(map, marker);
 
@@ -626,12 +647,12 @@ margin-top: 1.9em;
 				    } 
 				});
 				</script>
-				<sub>※ 주소가 정확하지 않을 경우 실제 위치와 다를 수 있습니다.</sub>
+				<sub>※ 호스트가 입력한 주소가 정확하지 않을 경우 실제 위치와 다를 수 있습니다.</sub>
 			</section>
 			<!-- End .Section 3  -->
 
 			<section id="" class="info-div mb-5">
-				<h4 class="info-sub">환불규정 안내</h4>
+				<h4 class="info-sub mt-5">환불규정 안내</h4>
 				<ol class="number-list">
 					<li class="list-divider"><span class="sub mr-2">이용
 							7일전</span> <span class="det ml-5">총 금액의 100% 환불</span></li>
@@ -662,11 +683,12 @@ margin-top: 1.9em;
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
 								<p class="">${qna.qna_content }</p>
+								<c:if test="${qna.memCode == 'M000003'}">
+									<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
+									<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
+								</c:if>
 							</c:if>
-							<c:if test="${qna.memCode == 'M000003'}">
-								<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
-								<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
-							</c:if>
+							
 						</li>
 					
 						<c:if test="${qna.count eq 1 && qna.replyRemove eq 0 }">
@@ -684,7 +706,8 @@ margin-top: 1.9em;
 			<!-- 오른쪽 사이드바 -->
 		<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
 			<div class="sidebar-box ftco-animate p-3 mt-5">
-				<form action="reservation.action" id="reserveForm" method="post">
+				
+				<form action="bookapply.action?loc_code=L000001&member_code=M000002" id="reserveForm" method="GET">
 					<div class="categories">
 						<h3>공간예약하기</h3>
 						<hr>
@@ -734,10 +757,10 @@ margin-top: 1.9em;
 						
 						<div class="content mt-3">
 							<div class="packageDiv">
-								<c:forEach var="i" items="${packageInfo }" varStatus="radioNum">
+								<%-- <c:forEach var="i" items="${packageInfo }" varStatus="radioNum">
 									
 										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packPrice }">
-										${i.packageName }<br>
+										${i.packageName }
 										<span class="ml-3 package-bundle">
 										<c:choose>
 											<c:when test="${i.packStart >= 13 && i.packEnd >= 24}">
@@ -762,7 +785,7 @@ margin-top: 1.9em;
 										<div class="flex float-right vertical-down">
 											<strong>${i.packPrice }(원)</strong>
 										</div>
-								</c:forEach> 
+								</c:forEach>  --%>
 							</div>
 						</div>
 							 

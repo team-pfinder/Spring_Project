@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IReportDAO">
+	
+	<!-- 예약 신고 -->
+	<!-- reportList 페이지 기본 정보 쿼리문 -->
+	<select id="bookBasicList" resultType="com.lookation.dto.reportDTO">
+		SELECT BOOK_CODE, BOOK_REPORT_TYPE, MEMBER_EMAIL, HOST_EMAIL
+		     , BOOK_REPORT_DATE, RESULT_COUNT, BLACK_COUNT, BOOK_REPORT_CODE
+		     , HOST_NICKNAME, MEMBER_NICKNAME
+		FROM BOOK_REPORT_BASIC_VIEW
+		ORDER BY BOOK_REPORT_CODE DESC
+	</select>
+	
+	<!-- 신고처리 전 상세보기 조회 쿼리문 -->
+	<select id="bookDetailList0" parameterType="java.lang.String" resultType="com.lookation.dto.reportDTO">
+		SELECT BOOK_CODE, BOOK_REPORT_TYPE, MEMBER_EMAIL, HOST_EMAIL
+		     , BOOK_REPORT_DATE, BOOK_REPORT_REASON, BOOK_REPORT_IMG_URL
+		     , BOOK_REPORT_CODE, HOST_NICKNAME, MEMBER_NICKNAME
+		FROM BOOK_REPORT_DETAIL_VIEW_0
+		WHERE BOOK_REPORT_CODE = #{book_report_code}
+	</select>
+	
+	<!-- 신고처리 후 상세보기 조회 쿼리문 -->
+	<select id="bookDetailList1" parameterType="java.lang.String" resultType="com.lookation.dto.reportDTO">
+		SELECT BOOK_CODE, BOOK_REPORT_TYPE, MEMBER_EMAIL, HOST_EMAIL, BOOK_REPORT_DATE
+		     , BOOK_REPORT_REASON, BOOK_REPORT_IMG_URL
+		     , REPORT_PROC_TYPE, BOOK_REPORT_PROC_DATE, BLACK_COUNT
+		     , BOOK_REPORT_CODE, HOST_NICKNAME, MEMBER_NICKNAME
+		FROM BOOK_REPORT_DETAIL_VIEW_1
+		WHERE BOOK_REPORT_CODE = #{book_report_code}
+	</select>
+	
+	<!-- 신고처리 테이블 추가 쿼리문 -->
+	<insert id="bookReportProc" parameterType="map">
+		INSERT INTO BOOK_REPORT_PROC(BOOK_REPORT_PROC_CODE, BOOK_REPORT_CODE, REPORT_PROC_TYPE_CODE, BOOK_REPORT_PROC_DATE)
+		VALUES(F_CODE('BRPP', BRPP_SEQ.NEXTVAL), #{book_report_code}, #{report_proc_type_code}, SYSDATE)
+	</insert>
+	
+	<!-- 블랙리스트 추가 쿼리문 -->
+	<insert id="userBlackList" parameterType="java.lang.String">
+		INSERT INTO MEMBER_BLACKLIST(MEMBER_EMAIL, MEMBER_BLACKLIST_REASON, MEMBER_BLACKLIST_DATE)
+		VALUES(#{member_email}, #{member_blacklist_reason}, SYSDATE)
+	</insert>
+	
+	
+	
+	<!-- 공간 신고 -->
+	<!-- reportList 페이지 기본 정보 쿼리문 -->
+	<select id="locBasicList" resultType="com.lookation.dto.reportDTO">
+		SELECT LOC_CODE, LOC_REPORT_TYPE, HOST_NICKNAME, MEMBER_NICKNAME
+		     , LOC_REPORT_DATE, RESULT_COUNT, BLACK_COUNT, LOC_REPORT_CODE
+		     , HOST_NICKNAME, MEMBER_NICKNAME
+		FROM LOC_REPORT_BASIC_VIEW
+		ORDER BY LOC_REPORT_CODE DESC
+	</select>
+	
+	<!-- 신고처리 전 상세보기 조회 쿼리문 -->
+	<select id="locDetailList0" parameterType="java.lang.String" resultType="com.lookation.dto.reportDTO">
+		SELECT LOC_CODE, LOC_REPORT_TYPE, HOST_EMAIL, MEMBER_EMAIL
+		     , LOC_REPORT_REASON, LOC_REPORT_DATE, LOC_REPORT_IMG_URL, LOC_REPORT_CODE
+		     , HOST_NICKNAME, MEMBER_NICKNAME
+		FROM LOC_REPORT_DETAIL_VIEW_0
+		WHERE LOC_REPORT_CODE = #{loc_report_code}
+	</select>
+	
+	<!-- 신고처리 후 상세보기 조회 쿼리문 -->
+	<select id="locDetailList1" parameterType="java.lang.String" resultType="com.lookation.dto.reportDTO">
+		SELECT LOC_CODE, LOC_REPORT_TYPE, HOST_EMAIL, MEMBER_EMAIL, LOC_REPORT_REASON
+		     , LOC_REPORT_DATE, LOC_REPORT_IMG_URL, REPORT_PROC_TYPE
+		     , LOC_REPORT_PROC_DATE, BLACK_COUNT, LOC_REPORT_CODE
+		     , HOST_NICKNAME, MEMBER_NICKNAME
+		FROM LOC_REPORT_DETAIL_VIEW_1
+		WHERE LOC_REPORT_CODE = #{loc_report_code}
+	</select>
+	
+	<!-- 신고처리 테이블 추가 쿼리문 -->
+	<insert id="locReportProc" parameterType="map">
+		INSERT INTO LOC_REPORT_PROC(LOC_REPORT_PROC_CODE, LOC_REPORT_CODE, REPORT_PROC_TYPE_CODE, LOC_REPORT_PROC_DATE)
+		VALUES(F_CODE('LRPP', LRPP_SEQ.NEXTVAL), #{loc_report_code}, #{report_proc_type_code}, SYSDATE)
+	</insert>
+	
+	<!-- 블랙리스트 추가 쿼리문 -->
+	<insert id="hostBlackList" parameterType="map">
+		INSERT INTO HOST_BLACKLIST(HOST_EMAIL, HOST_BLACKLIST_REASON, HOST_BLACKLIST_DATE)
+		VALUES(#{host_email}, #{host_blacklist_reason}, SYSDATE)
+	</insert>
+</mapper>

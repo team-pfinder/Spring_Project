@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <!-- include head -->
 
-<title>mypageMain(host).jsp</title>
+<title>mypageMain.jsp</title>
 </head>
 <body>
 	<!-- include header_host.jsp -->
@@ -42,36 +42,36 @@
 			<div class="row d-flex">
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="mypageProfile(host).jsp" class="block-20 rounded"
+						<a href="hostprofile.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="mypageProfile(host).jsp">프로필관리</a>
+								<a href="hostprofile.action">프로필관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="mypageBankAccount(host).jsp" class="block-20 rounded"
+						<a href="commonbankinfo.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="mypageBankAccount(host).jsp">계좌관리</a>
+								<a href="commonbankinfo.action">계좌관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="mypageReservaionList(host).jsp" class="block-20 rounded"
+						<a href="#" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Exchange.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="mypageReservaionList(host).jsp">예약리스트</a>
+								<a href="#">예약리스트</a>
 							</h3>
 						</div>
 					</div>
@@ -79,50 +79,50 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="mypageMileageWithdraw(host).jsp" class="block-20 rounded"
+						<a href="hostexchange.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="mypageMileageWithdraw(host).jsp">환전 신청</a>
+								<a href="hostexchange.action">환전 신청</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="mypageMileageHistory(host).jsp" class="block-20 rounded"
+						<a href="hostmileagehistory.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="mypageMileageHistory(host).jsp">마일리지 내역(정산/환전)</a>
+								<a href="hostmilealgehistory.action">마일리지 내역(정산/환전)</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="LocationMgmt.jsp" class="block-20 rounded"
+						<a href="#" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="LocationMgmt.jsp">공간관리</a>
+								<a href="#">공간관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="mypageMyReviewAndQNA(host).jsp" class="block-20 rounded"
+						<a href="#" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_6.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="mypageMyReviewAndQNA(host).jsp">내가 작성한 글</a>
+								<a href="#">내가 작성한 글</a>
 							</h3>
 						</div>
 					</div>

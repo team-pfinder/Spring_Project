@@ -30,26 +30,26 @@
 			</div>
 
 			<div>
-				<form action="">
+				<form action="memberexchange.action" method="post">
 					<table class="table">
 						<tr>
 							<th>
 								<div class="row">
 									<b class="col-12">환전하실 금액을 입력하세요.</b>
-									<input type="text" class="form-control col-6 ml-3" id="ex_amount1" onkeyup="calc()"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+									<input type="text" class="form-control col-6 ml-3" id="ex_amount1" name="exchange" onkeyup="calc()"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 									<button type="button" class="btn btn-primary col-4 ml-3" onclick="setTotal()">전액 입력</button>
 								</div>
 							</th>
 						</tr>
 						<tr>
-							<th>현재보유한 마일리지<input type="text" class="form-control" id="cr_mileage" value="54000" disabled="disabled" /></th>
+							<th>현재보유한 마일리지<input type="text" class="form-control" id="cr_mileage" value=${balance} disabled="disabled" /></th>
 						</tr>
 						<tr>
 							<th>계좌 선택
-								<select class="form-control" name="" id="">
-									<option value="">쿸민은행</option>
-									<option value="">우리은행</option>
-									<option value="">롱협</option>
+								<select class="form-control" name="bankAccount" id="">
+									<c:forEach var="list" items="${bankInfoList}">	
+										<option value="${list.bankNumber}">${list.bankNumber} (${list.bank}) </option>
+									</c:forEach>
 								</select>
 							</th>
 						</tr>

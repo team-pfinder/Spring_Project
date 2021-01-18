@@ -15,10 +15,16 @@
 
 <script type="text/javascript">
 
-	function blindCancel()
+	$(document).ready(function()
 	{
-		alert("블라인드 해제 처리");
-	}
+		$(".blindRemove").click(function()
+		{
+			if(confirm("정말로 블라인드 해제하시겠습니까?"))
+			{
+				$(location).attr("href", "blindremove.action?loc_blind_code=" + $(this).val());
+			}
+		});
+	});
 
 </script>
 
@@ -55,7 +61,8 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">블라인드 관리</h1>
-                    <p class="mb-4">블라인드 관리 근데 해제 시켜줄 일이 있으려나...?</p>
+                    <p class="mb-4">블라인드 처리된 공간 게시물들을 조회할 수 있다. 블라인드 해제 처리도 가능하다.
+                    하지만, 권장하지 않는 기능이므로 왠만하면 사용하지 않는 것이 좋다.</p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -67,27 +74,32 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
 	                                    <tr>
-											<th>분류</th>
-											<th>회원번호</th>
-											<th>게시물번호</th>
-											<th>게시물</th>
+											<th>공간코드</th>
+											<th>호스트</th>
+											<th>호스트이메일</th>
+											<th>공간분류</th>
+											<th>공간명</th>
 											<th>블라인드처리일자</th>
 											<th>블라인드처리사유</th>
-											<th></th>
+											<th>블라인드 해제</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>공간게시글</td>
-											<td>786</td>
-											<td>3939</td>
-											<td>홍대파티룸</td>
-											<td>2020-12-26</td>
-											<td>탈퇴</td>
-											<td>
-												<button type="button" onclick="blindCancel()" class="btn btn-primary">블라인드 해제</button>
-											</td>
-									</tr>
+										<c:forEach var="dto" items="${list }">
+											<tr>
+												<td>${dto.loc_code }</td>
+												<td>${dto.host_nickname }</td>
+												<td>${dto.host_email }</td>
+												<td>${dto.loc_type }</td>
+												<td>${dto.loc_name }</td>
+												<td>${dto.loc_blind_date }</td>
+												<td>${dto.loc_blind_reason }</td>
+												<td>
+													<button type="button" class="btn btn-danger blindRemove"
+													value="${dto.loc_blind_code }">블라인드해제</button>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
                                 </table>
                             </div>

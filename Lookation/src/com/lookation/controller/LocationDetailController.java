@@ -26,10 +26,11 @@ public class LocationDetailController implements Controller
 	{
 		ModelAndView mav = new ModelAndView();
 		
-		//String locCode = request.getParameter("locCode");
-		String locCode = "L000003";
+		String locCode = request.getParameter("locCode");
+		//String locCode = "L000003";
 	
 		String selectDate = request.getParameter("selectDate");
+		
 		try
 		{
 			mav.addObject("basicInfo", dao.basicInfo(locCode));
@@ -42,6 +43,7 @@ public class LocationDetailController implements Controller
 			mav.addObject("countReview", dao.countReview(locCode));
 			mav.addObject("qna", dao.qna(locCode));
 			mav.addObject("review", dao.review(locCode));
+			mav.addObject("avgReviewRate", dao.avgReviewRate(locCode));
 			
 			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
 			

@@ -76,22 +76,23 @@ ul.precautions-list > li {
 
 <!-- 주소 API -->		
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script type="text/javascript">
 
 
 	$(document).ready(function() {
 
 		// 함수 호출
-		setInputFilter($('#locName'));
-		setInputLength($('#locName'), '공간명', 2, 20);
-		setSelectFilter($('#locType'), '공간 유형');
+		setInputFilter($('#inputLocName'));
+		setInputLength($('#inputLocName'), '공간명', 2, 20);
+		setSelectFilter($('#inputLocType'), '공간 유형');
 		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 4, 20);
 		setInputLength($('#inputIntro'), '공간 소개', 20, 400);
 		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
 		setInputLength($('#inputPrecautions'), '예약 시 주의사항', 20, 100);
 		
 		
-		// 시설 추가 function
+		// 시설 추가 버튼 클릭 이벤트 function
 		$('#inputFacilityBtn').on('click', function () {
 			
 			var val = $('#inputFacility').val();
@@ -120,7 +121,7 @@ ul.precautions-list > li {
 		    $('#inputFacility').val("");
 		});
 
-		// 예약 시 주의사항 추가 function
+		// 예약 시 주의사항 추가 버튼 클릭 이벤트 function
 		$('#inputPrecautionsBtn').on('click', function () {
 
 			var val = $('#inputPrecautions').val();
@@ -184,6 +185,45 @@ ul.precautions-list > li {
 	
 	// 함수 정의 ----------------------------------------------------------
 	
+	// setInputLength()
+	//-- 입력값, 입력대상, 최소 인원, 최대 인원 및 유효성 검사 결과 알림
+	function setInputLength(target, name, minLength, maxLength) {
+		target.on("keyup", function() {
+			var err = $(this).next();
+			err.css("display", "none");
+			
+			// 글자 수 제한, 색 변경
+			if (target.val().length > maxLength || target.val().length < minLength) {
+				
+				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
+				err.css("color", "red");
+				return;
+			}
+			else {
+				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
+				err.css("color","green");
+				return;
+			}
+		});
+	}
+
+	// 입력값에 대한 정규식 검사 function(한/영, 숫자, 특수문자 (  ) [ ] - , . )
+	function setInputFilter(target) {
+		target.on('keyup', function () {
+		    var originVal = $(target).val();
+		    var val = regExp($(target).val());
+
+		    if (originVal != val) {
+		    	
+		        // 같지 않은 경우
+		        $(target).val(val);
+		    } else {
+		        $(target).next().hide();
+		    }
+		});
+	}
+
+	// 공간유형 빈 값 선택 유효성 검사
 	function setSelectFilter(target, name) {
 		target.on('change', function () {
 			var val = $(this).val();
@@ -201,43 +241,6 @@ ul.precautions-list > li {
 		})
 	}
 	
-	// setInputLength()
-	//-- 입력값, 입력대상, 최소 인원, 최대 인원 및 유효성 검사 결과 알림
-	function setInputLength(target, name, minLength, maxLength) {
-		target.on("keyup", function() {
-			var err = $(this).next();
-			err.css("display", "none");
-			err.css("color", "red");
-			
-			// 글자 수 제한, 색 변경
-			if (target.val().length > maxLength || target.val().length < minLength) {
-				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
-				return;
-			}
-			else {
-				err.html("사용 가능한 " + name + "입니다.").css("color","green");
-				err.css("display","inline");
-				return;
-			}
-		});
-	}
-	
-	// 입력값에 대한 정규식 검사 function(한/영, 숫자, 특수문자 (  ) [ ] - , . )
-	function setInputFilter(target) {
-		target.on('keyup', function () {
-		    var originVal = $(target).val();
-		    var val = regExp($(target).val());
-
-		    if (originVal != val) {
-		    	
-		        // 같지 않은 경우
-		        $(target).val(val);
-		    } else {
-		        $(target).next().hide();
-		    }
-		});
-	}
-
 	// 이용할 수 없는 특수문자 입력 시 자동 제거 처리 function
 	function regExp(str){  
 		
@@ -271,6 +274,42 @@ ul.precautions-list > li {
 	        }
 	    }).open();
 	}
+	
+	/* 
+	// 다음 버튼 클릭시 입력 사항을 올바르게 입력했는지 검사하고 submit하는 function
+	// (대상 입력란 다음 창에 inline 되는 err 메세지가 없을 경우 submit)
+	
+	function next()	{
+		
+		if(document.myForm.err.css("color", "red") {
+	         return false;
+	    }
+	
+	}
+	
+	function checkIt(){
+		if (!document.myForm.pass.value){	                    // 자바스크립트 : 빈문자열 -> false 반환
+			alert("비밀번호를 입력하지 않았습니다.");
+			document.myForm.focus();
+			return false;
+		}
+	}
+	 */
+	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
+	function cancel() {
+		
+		 var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
+						+ "(기존 작성 내용은 저장되지 않습니다.)");
+		if (con == true) {
+			location.href = "mainHost.jsp";
+			return;
+		} else {
+			return;
+		}
+		
+	}
+	
+	
 /* 	
 	// submit 시 데이터 넘겨는 function(Controller 사용 전 임시)
 	function handOver() {
@@ -373,9 +412,9 @@ ul.precautions-list > li {
 			<!-- <label for="locName" style="font-weight: bold;">공간명 *</label> -->
 			<span style="font-size: 14pt; font-weight: bold;">공간명  <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" id="locName"
+			<input type="text" class="form-control" id="inputLocName" name="inputLocName"
 				   placeholder="공간명을 입력하세요. [최소 2자 ~ 최대 20자]" required="required">
-			<span id="err" style="font-weight: bold; display: none; color: red;"></span>
+			<span id="err" style="font-weight: bold;"></span>
 
 			<div style="padding-top: 40px;">
 				<span style="color: gray">* 사용 가능한 특수문자: ( , ) , [ , ] , - , .(마침표), ,(쉼표)</span> <!-- 글자크기 작게 -->
@@ -391,7 +430,7 @@ ul.precautions-list > li {
 		<div>
 			<span style="font-size: 14pt; font-weight: bold;">공간 유형  <span style="color: red">*</span></span>
 			<br><br>
-			<select id="locType" class="form-control" required="required">
+			<select id="inputLocType" class="form-control" required="required">
 				<option value="">[==공간 유형을 선택하세요.==]</option>
 				<option value="파티룸">파티룸</option>
 				<option value="클럽">클럽</option>
@@ -417,7 +456,7 @@ ul.precautions-list > li {
 			<input type="text" class="form-control" required="required" 
 				   placeholder="공간을 한 문장으로 소개해주세요. [최소 4자 ~ 최대 20자]" 
 				   id="inputShortIntro">
-			<span style="font-weight: bold; display: none; color: red;"></span>
+			<span style="font-weight: bold;"></span>
    		
 		</div>
 		
@@ -434,7 +473,7 @@ ul.precautions-list > li {
 			<textarea class="form-control" required="required" 
 					  placeholder="공간을 상세하게 소개해주세요. [최소 20자 ~ 최대 400자]"
 					  id="inputIntro" cols="40" rows="5"></textarea>
-		  	<span style="font-weight: bold; display: none; color: red;"></span>
+		  	<span style="font-weight: bold;"></span>
 		</div>
 		
 		
@@ -480,13 +519,14 @@ ul.precautions-list > li {
 				<li>
 					<textarea class="form-control" id="inputPrecautions" required="required"
 						placeholder="예약 시 주의사항은 [최소 20자 ~ 최대 100자] 로 입력하여 10개까지 추가 가능합니다."></textarea>
-					<span style="font-weight: bold; display: none; color: red;"></span>
+					<span style="font-weight: bold;"></span>
 				</li>
 			</ul>
 			<br>
 			<input type="button" class="form-control" id="inputPrecautionsBtn"
 				   name="inputPrecautionsBtn" value="예약 시 주의사항 추가 +">
 			<br><br>
+			
 			<div id="refund">
 				<span style="font-weight: bold; font-size: 12pt">※ 환불규정</span>
 					<br><br>
@@ -502,6 +542,16 @@ ul.precautions-list > li {
 		
 		
 		<!-- 7. 대표이미지 -->
+		<div>
+			<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
+			<br><br>
+			<div class="filebox"> 
+				<input class="upload-name" value="이미지 등록" disabled="disabled" style="width: 70%">
+				<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
+				<input type="file" id="ex_filename" class="upload-hidden">
+			</div>
+		</div>
+		
 		<!-- 
 		<div>
 		
@@ -540,13 +590,7 @@ ul.precautions-list > li {
 				</div>				   
 		</div>	
 			 -->
-		<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
-		<br><br>
-		<div class="filebox"> 
-			<input class="upload-name" value="이미지 등록" disabled="disabled" style="width: 70%">
-			<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
-			<input type="file" id="ex_filename" class="upload-hidden">
-		</div>
+		
 		
 
 	<br><br><br>
@@ -562,7 +606,7 @@ ul.precautions-list > li {
 			<input onclick="showDaumAddPop()" type="button" class="form-control"
 				   value="주소 등록">
 			<br><br>
-			<span style="font-size: 13pt; font-weight: bold;">상세 주소</span>
+			<span style="font-size: 13pt; font-weight: bold;">상세 주소 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control" required="required" 
 					id="inputDetailAddr" name="inputDetailAddr">
@@ -587,26 +631,29 @@ ul.precautions-list > li {
 							   → 이용정보  → 상세정보  → 패키지정보 -->
 	<div class="container" style="text-align: center;">
 		<input type="submit" value="다음" class="btn btn-warning" 
-			   style="width:45%; border-color: gray;">
+			   style="width:45%; border-color: gray;"> <!-- type="button" onsubmit="next()" -->
 		<!-- style="display: block; margin: 0px auto" -->
 		
 	<!-- 취소 버튼 -->
 		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
-				id="locationBasicInfoCancel" value="취소">
-		<!-- onclick="function()" -->
+				id="BasicInfoCancel" value="취소" onclick="cancel()">		
+		
 	</div>	
-	<!-- 
-	    <div>
-	       <button type="button" class="btn-warning" style="width:260px;" onclick="showPopup()">계좌등록</button>
-	       <button type="button" class="btn-warning" style="width:260px;" onclick="deleteAccount()">계좌삭제</button>
-	    </div>
-	 -->
 	
 	</form>
 </div>
 
 </div>
 	
+
+<!-- ※ 추가 구현해야하는 기능 -->
+
+<!-- 1. 시설, 주의사항 삭제버튼 클릭 시 최근에 추가한 시설, 주의사항 삭제 기능 -->
+<!-- 2. 시설, 주의사항 추가된 것이 1개이상이면 
+	    입력창에서 입력하지않아도 넘어갈 수 있도록 -->
+<!-- 3. 이미지 업로드 서버단에 저장 방법 -->
+<!-- 4. 이미지 업로드 시 입력창에 자동입력되는 파일명의 형태를 img 링크로 받아오는 방법 -->
+<!-- 5. jQuery hasClass 사용하여 제대로 입력되지않으면 submit 되지않도록 처리 -->	
 
 <br><br><br><br>
 	

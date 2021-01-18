@@ -33,17 +33,18 @@ public class LocationDetailAjaxController implements Controller
 	{
 		ModelAndView mav = new ModelAndView();
 		
-		// 데이터 수신(Location.jsp 페이지로부터... 로그인한 hostCode 수신)
+		// 데이터 수신(locationDetail.jsp 페이지로부터... 로그인한 memberCode 수신)
 		String selectDate = request.getParameter("selectDate");
-		String locCode = request.getParameter("locCode");
+		String loc_code = request.getParameter("locCode");
 		
-		//System.out.println(selectDate);
+		System.out.println(selectDate);
+		System.out.println(loc_code);
 		
 		ArrayList<LocationDetailDTO> packageInfo = new ArrayList<LocationDetailDTO>();
 		
 		try 
 		{
-			packageInfo = dao.packageInfo(locCode, selectDate);
+			packageInfo = dao.packageInfo(loc_code, selectDate);
 			
 			/* 파라미터 제대로 받으면 다시 수정 */
 			//mav.setViewName("redirect:locationdetail.action?locCode"+locCode);
@@ -52,7 +53,7 @@ public class LocationDetailAjaxController implements Controller
 			
 			// 테스트
 			System.out.println(packageInfo);
-			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
+			mav.setViewName("../WEB-INF/views/ajax/LocationDetailAjax.jsp");
 			
 			
 			

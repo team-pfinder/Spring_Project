@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IBlindManagerDAO">
+	
+	<select id="list" resultType="com.lookation.dto.blindManagerDTO">
+		SELECT LOC_CODE, HOST_EMAIL, HOST_NICKNAME, LOC_TYPE, LOC_NAME
+		     , LOC_BLIND_DATE, LOC_BLIND_REASON, LOC_BLIND_CODE
+		FROM BLINDVIEW
+	</select>
+	
+	<delete id="remove" parameterType="java.lang.String">
+		DELETE FROM LOC_BLIND
+		WHERE LOC_BLIND_CODE = #{loc_blind_code}
+	</delete>
+	
+</mapper>

@@ -3,12 +3,19 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	// 세션 접속시 id확인
+	//String id= (String)session.getAttribute("sessionID"); 
+
+	String identify = (String)request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 
@@ -68,7 +75,6 @@
   border-radius: 50%;
 }
 
-/* checking */
 .star-check:nth-of-type(1):checked ~ .stars [data-star-value="1"],
 .star-check:nth-of-type(2):checked ~ .stars [data-star-value="1"],
 .star-check:nth-of-type(2):checked ~ .stars [data-star-value="2"],
@@ -91,12 +97,22 @@
 <script type="text/javascript">
 
 	$(function()
-	{
-		var star = $(":input:radio[name=review_rate]:checked").val();
-		alert(star);
+	{	
+		$(".submitBtn").click(function()
+		{
+			if($("input[name=review_rate]:radio:checked").length == 0)
+			{
+				alert("별점을 선택해주세요"); 
+				return;
+			}
+			$("#reviewForm").submit();
+			window.close();
+			
+		});
+		
+		//$("input[@name=review_rate]").filter('input[@value='+sValue+']').attr("checked", "checked"); 
 
 	});
-	/* 별점 필수입력 확인하는것  */
 	
 </script>
 </head>
@@ -105,52 +121,89 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-			<form action="reviewinsert.action" id="reviewForm" method="post" target="redirect:locationdetail.action">
-				<div class="header">
-					<h3 class="title my-2">리뷰 작성하기</h3>
-					<hr>
-					<label class="label-name"> 별점 </label>
-
-					<div id="radio" class="star-rate float-right">
-						<input type="radio" class="star-check" value="1" name="review_rate"/>
-						<input type="radio" class="star-check" value="2" name="review_rate"/>
-						<input type="radio" class="star-check" value="3" name="review_rate"/>
-						<input type="radio" class="star-check" value="4" name="review_rate"/>
-						<input type="radio" class="star-check" value="5" name="review_rate"/>
-						
-						<div class="stars">
-							<span><i data-star-value="1" class="fa fa-star"></i></span>
-							<span><i data-star-value="2" class="fa fa-star"></i></span>
-							<span><i data-star-value="3" class="fa fa-star"></i></span>
-							<span><i data-star-value="4" class="fa fa-star"></i></span>
-							<span><i data-star-value="5" class="fa fa-star"></i></span>
+			<!-- 이용자 -->
+			<c:if test="${identify eq 'member'}"> 
+				<form action="reviewinsert.action" id="reviewForm" method="post" target="redirect:locationdetail.action">
+					<div class="header">
+						<h3 class="title my-2">리뷰 작성하기</h3>
+						<hr>
+						<label class="label-name"> 별점 </label>
+	
+						<div id="radio" class="star-rate float-right">
+							<input type="radio" class="star-check" value="1" name="review_rate"/>
+							<input type="radio" class="star-check" value="2" name="review_rate"/>
+							<input type="radio" class="star-check" value="3" name="review_rate"/>
+							<input type="radio" class="star-check" value="4" name="review_rate"/>
+							<input type="radio" class="star-check" value="5" name="review_rate"/>
+							
+							<div class="stars">
+								<span><i data-star-value="1" class="fa fa-star"></i></span>
+								<span><i data-star-value="2" class="fa fa-star"></i></span>
+								<span><i data-star-value="3" class="fa fa-star"></i></span>
+								<span><i data-star-value="4" class="fa fa-star"></i></span>
+								<span><i data-star-value="5" class="fa fa-star"></i></span>
+							</div>
 						</div>
-					</div>
-				</div><!-- End .header -->
-				
-				<div class="body">
-					<div class="form-group">
-						<input type="hidden" value="${locCode}" name="loc_code">
-						<input type="hidden" value="${memCode }" name="member_code">
-						<label for="content">내용</label>
-						<textarea class="form-control" id="content" name="review_content"
-							rows="8" maxlength="3000" required="required"></textarea>
-					</div>
+					</div><!-- End .header -->
 					
-					<div class="form-group">
-							<label for="image">사진 첨부</label>
-							<input type="file" id="image" class="form-control" />
+					<div class="body">
+						<div class="form-group">
+							<input type="hidden" value="${locCode}" name="loc_code">
+							<input type="hidden" value="${memCode }" name="member_code">
+							<label for="content">내용</label>
+							<textarea class="form-control" id="content" name="review_content"
+								rows="8" maxlength="3000" required="required"
+								placeholder="내용을 입력해주세요."></textarea>
+						</div>
+						
+						<div class="form-group">
+								<label for="image">사진 첨부</label>
+								<input type="file" id="image" class="form-control" />
+						</div>
+	
+					</div><!-- End .body -->
+					<hr>
+	
+					<div class="text-center">
+						<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
+						<button type="button" class="btn btn-primary submitBtn">작성하기</button>
 					</div>
-
-				</div><!-- End .body -->
-				<hr>
-
-				<div class="text-center">
-					<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-					<button type="submit" class="btn btn-primary" id="submitBtn" onClick="checkStar(); window.close();">작성하기</button>
-					<!-- 작성하기 버튼 클릭시 insert문 돌아가야 -->
-				</div>
-			</form>
+				</form>
+			</c:if>
+			
+			<!-- 호스트 -->
+			<c:if test="${identify eq 'host'}"> 
+				<form action="reviewreplyinsert.action" id="reviewForm" method="post" target="redirect:locationdetailhost.action">
+					<div class="header">
+						<h3 class="title my-2">리뷰 답글 작성하기</h3>
+						<hr>
+					</div><!-- End .header -->
+					
+					<!-- 리뷰 답글 작성시 필요한 review_code 받음-->
+					<%
+						String reviewCode = (String)request.getParameter("reviewCode");
+						pageContext.setAttribute("reviewCode", reviewCode);
+					%>
+					<div class="body">
+						<div class="form-group">
+							<input type="hidden" value="${reviewCode}" name="review_code">
+							<label for="content">내용</label>
+							<textarea class="form-control" id="content" name="review_reply_content"
+								rows="8" maxlength="3000" required="required"
+								placeholder="내용을 입력해주세요."></textarea>
+						</div>
+	
+					</div><!-- End .body -->
+					<hr>
+	
+					<div class="text-center">
+						<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
+						<button type="submit" class="btn btn-primary" onClick="window.close();">작성하기</button>
+						<!-- 작성하기 버튼 클릭시 insert문 돌아가야 -->
+					</div>
+				</form>
+			</c:if>
+			
 			</div><!-- End .col-md-12 -->
 		</div><!-- End .row -->
 
@@ -158,6 +211,5 @@
 	<!-- .container-fluid End -->
 
 
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>

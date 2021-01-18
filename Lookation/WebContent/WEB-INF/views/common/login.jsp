@@ -228,7 +228,7 @@
 				<div class="memory_box">
 					<input type="checkbox" id="memory"/>
 					<label for="memory">로그인 기억하기</label>
-					<a href="findPassword" style="float:right; font-weight:bold;"> 비밀번호 찾기</a>
+					<a href="findpasswordform.action?identify=${identify }" style="float:right; font-weight:bold;"> 비밀번호 찾기</a>
 				</div>
 				
 				<div style="margin-top:15px;">

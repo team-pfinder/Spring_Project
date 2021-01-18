@@ -51,29 +51,25 @@
 <div class="outer">
 	<div class="inner">
 		<form>
-		<!-- userReview.jsp에서 공간코드, 작성일자, 이용자이름, 리뷰전문을 받아온다. -->
+		<!-- userReview.jsp에서 review_code를 받아온다. -->
 			<table>
 				<tr>
 					<th>공간코드</th>
 					<td>
-						<a href="#">이전페이지에서 받아온 공간코드</a>
+						<a href="#">${detailList.loc_code }</a>
 					</td>
 				</tr>
 				<tr>
 					<th>작성일자</th>
-					<td>이전페이지에서 받아온 작성일자</td>
+					<td>${detailList.review_date }</td>
 				</tr>
 				<tr>
 					<th>이용자</th>
-					<td>이전페이지에서 받아온 이용자 이름</td>
+					<td>${detailList.member_nickname }</td>
 				</tr>
 				<tr>
 					<th>작성된 리뷰</th>
-					<td>이전페이지에서 받아온 리뷰 전문 표시 이거 길게 쓰면
-					어떻게 될지 궁금해서 한 번 실험해봅니다. 진짜 궁금쓰~
-					아 여행가고 싶다...해외여행..가고싶어..근데 갈 수 있을가...
-					코로나 진정되기 기다릴려면 몇 년 더 기다려야 할텐데
-					사실 해외는 더 노답이라ㅋㅋ...개노답이다 진짜 인생 아!!</td>
+					<td>${detailList.review_content }</td>
 				</tr>
 			</table>
 		</form>

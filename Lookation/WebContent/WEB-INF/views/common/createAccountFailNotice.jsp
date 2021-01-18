@@ -115,15 +115,15 @@
 			<div class="buttonForm">
 				<c:if test="${identify eq 'host'}">
 					<button style="float: left; background: #ffffff"
-							onclick="location.href='#'">홈으로</button> 
+							onclick="location.href='hostmain.action'">홈으로</button> 
 				</c:if>
 				<c:if test="${identify eq 'member'}">
 					<button style="float: left; background: #ffffff"
-					        onclick="location.href='#'">홈으로</button> 
+					        onclick="location.href='membermain.action'">홈으로</button> 
 				</c:if>
 				
 				<button style="float: right; border-width: 0px;"
-				        onclick="location.href='${path}/actions/signupform.action?identify=${identify}'">
+				        onclick="location.href='signupform.action?identify=${identify}'">
 				        회원가입
 				 </button>  
 				

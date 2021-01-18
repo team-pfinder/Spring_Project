@@ -80,31 +80,22 @@ size-big
 	width: 120%;
 	height: 120%;
 }
+
+#img
+{
+	transition: background-size ease-out 200ms;
+	background-size: auto 100%;
+}
+
+#img:hover
+{
+	transition: background-size ease-out 200ms;
+	background-size: auto 120%;
+}
+
 </style>
 
-<script type="text/javascript">
-	
-	$(function()
-	{	
-		/* 가로세로 동시에 적용 안되는 문제.. */
-		$("div.box-up").hover(function()		
-		{
-			$(this).animate({
-				backgroundSize: "120%"
-			}, 150)
-			
-			//$(this).css("background-size", "120% 120%");
-		},function()
-		{
-			$(this).animate({
-				backgroundSize: "100%"
-			}, 150)
-			
-			//$(this).css("background-size", "100% 100%");
-		});
-			
-	});
-	
+<script type="text/javascript">	
 </script>
 </head>
 
@@ -227,7 +218,7 @@ size-big
 			<div class="row mb-4 mx-5 mt-4">
 
 				<div class="col-md-4 mb-4 ftco-animate">
-					<div class="box-up z-depth-5 flex-center sumnail"
+					<div class="box-up z-depth-5 flex-center sumnail" id="img"
 						style="background-image: url('<%=cp%>/images/todaysPlace01.png');"></div>
 					<div class="box-down z-depth-5 flex-center">
 						<h2 class="font-default padding-side padding-upside">Mango_Studio</h2>
@@ -246,8 +237,8 @@ size-big
 				</div>
 
 				<div class="col-md-4 mb-4 ftco-animate">
-					<div class="box-up sumnail z-depth-5 flex-center"
-						style="background-image: url('<%=cp%>/images/todaysPlace02.png');"></div>
+					<div class="box-up sumnail z-depth-5 flex-center" id="img"
+						style="background-image: url('<%=cp%>/images/todaysPlace02.png');" ></div>
 					<div class="box-down z-depth-5 flex-center">
 						<h2 class="font-default padding-side padding-upside">성수로운공간</h2>
 						<a class="padding-side"> <span
@@ -265,7 +256,7 @@ size-big
 				</div>
 
 				<div class="col-md-4 mb-4 ftco-animate">
-					<div class="box-up sumnail z-depth-5 flex-center"
+					<div class="box-up sumnail z-depth-5 flex-center" id="img"
 						style="background-image: url('<%=cp%>/images/todaysPlace03.png');"></div>
 					<div class="box-down z-depth-5 flex-center">
 						<h2 class="font-default padding-side padding-upside">홍대 호리존
@@ -299,79 +290,19 @@ size-big
         </div>
         <div class="row ftco-animate">
           <div class="col-md-12">
-            <div class="carousel-testimony owl-carousel ftco-owl">
+            <div class="carousel-testimony owl-carousel ftco-owl">            
               <div class="item" >
-                <div class="testimony-wrap py-4" style="background-image: url('<%=cp%>/images/reviewPlace01.png');">
+                <div class="testimony-wrap py-4" <%-- style="background-image: url('<%=cp%>/images/reviewPlace01.png');" --%>>
                 	<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
                   <div class="text">
-                    <p class="mb-4" style="color:#000000;">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(<%=cp%>/images/person_1.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Marketing Manager</span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4" style="background-image: url('<%=cp%>/images/reviewPlace02.png');">
-                	<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                  <div class="text">
-                    <p class="mb-4" style="color:#000000;">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(<%=cp%>/images/person_2.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Marketing Manager</span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4" style="background-image: url('<%=cp%>/images/reviewPlace03.png');">
-                	<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                  <div class="text">
-                    <p class="mb-4" style="color:#000000;">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(<%=cp%>/images/person_3.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Marketing Manager</span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4" style="background-image: url('<%=cp%>/images/reviewPlace01.png');">
-                	<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                  <div class="text">
-                    <p class="mb-4" style="color:#000000;">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(<%=cp%>/images/person_1.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Marketing Manager</span>
-		                  </div>
-	                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="testimony-wrap py-4" style="background-image: url('<%=cp%>/images/reviewPlace02.png');">
-                	<div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                  <div class="text">
-                    <p class="mb-4" style="color:#000000;">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    <div class="d-flex align-items-center">
-                    	<div class="user-img" style="background-image: url(<%=cp%>/images/person_2.jpg)"></div>
-                    	<div class="pl-3">
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Marketing Manager</span>
-		                  </div>
-	                  </div>
+                  	<br>
+                  	<h2>공간제목</h2>
+                    <p class="mb-4" style="color:#000000;">패키지 가격.</p>
+                    <hr>
+                    <div class="align-items-center">
+                    	<img alt="" src="<%=cp%>/images/star/star_rate_0.png" style="width:40%;">
+                    	<p style="color:#000000; margin-top:3%;">리뷰 내용</p>
+	                </div>
                   </div>
                 </div>
               </div>

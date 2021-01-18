@@ -18,29 +18,95 @@
 	{
 		text-align: center;
 	}
+	
+	ul.tabs
+	{
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+	}
+	ul.tabs li
+	{
+		background: none;
+		color: #222;
+		display: inline-block;
+		padding: 10px 15px;
+		cursor: pointer;
+	}
+	
+	ul.tabs li.current
+	{
+		background: #ededed;
+		color: #222;
+	}
+	
+	.tab-content
+	{
+		display: none;
+		background: #ededed;
+		padding: 15px;
+	}
+	
+	.tab-content.current
+	{
+		display: inherit;
+	}
 
 </style>
 
 <script type="text/javascript">
 
-	function process1()
+	$(document).ready(function()
 	{
-		alert("신고 처리 프로세스");
-	}
-	
-	function process2()
-	{
-		alert("신고 반려 프로세스");
+		// 공간 신고 --------------------------------------------
 		
-		// 신고 처리 사유를 작성하는 페이지 또는 텍스트박스 필요
-	}
-	
-	function blacklist()
-	{
-		var popUrl = "blackListPopup.jsp";
-		var popOption = "width=500, height=300, resizable=no, scrollbars=yes, status=no";
-		window.open(popUrl, "", popOption);
-	}
+		// 신고처리 전 상세보기 버튼을 클릭했을 때
+		$(".locDetailBtn0").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "locpopup0.action?loc_report_code=" + $(this).val();
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		});
+		
+		// 신고처리 후 상세보기 버튼을 클릭했을 때
+		$(".locDetailBtn1").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "locpopup1.action?loc_report_code=" + $(this).val();
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		})
+		
+		// 신고처리 버튼 클릭 (인정 / 반려)
+		$(".locReportOK").click(function()	//-- 신고인정
+		{
+			// alert($(this).val());
+			$(location).attr("href", "locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
+		});
+		$(".locReportNO").click(function()	//-- 신고반려
+		{
+			// alert($(this).val());
+			$(location).attr("href", "locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
+		})
+		
+		// 블랙리스트 추가 버튼 클릭
+		$(".hostBlack").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "hostblackform.action?host_email=" + $(this).val();
+			var popOption = "width=500, height=500, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		})
+		
+		// -------------------------------------------- 공간 신고
+		
+		// 예약신고 관리 페이지로
+		$(".bookReport").click(function()
+		{
+			$(location).attr("href", "bookreportlist.action");
+		});
+	});
 
 </script>
 
@@ -69,82 +135,80 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">신고처리</h1>
-                    <p class="mb-4">이용자와 호스트가 신고한 내용들을 볼 수 있는 페이지.
-                    신고처리가 되면...ajax 처리를 통해서...바로...볼 수 있다...신고완료 리스트...</p>
+                    <p class="mb-4">이용자 혹은 호스트가 신고한 내역을 확인하고 처리할 수 있다.</p>
 					
-					
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">신고처리리스트</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                	<thead>
-	                                    <tr>
-											<th>컨텐츠정보</th>
-											<th>신고사유</th>
-											<th>피신고자정보</th>
-											<th>신고자정보</th>
-											<th>신고일자</th>
-											<th>신고처리결과</th>	<!-- 처리 했으면 처리결과를 보여주고 처리안했으면 버튼이 노출되게..할 수 있나? -->
-										</tr>
-									</thead>
-									
-									<tbody>
-										<tr>
-											<td>컨텐츠정보1</td>
-											<td>신고사유1</td>
-											<td>피신고자정보1</td>
-											<td>신고자정보1</td>
-											<td>신고일자1</td>
-											<td>
-												<button type="button" onclick="process1()" class="btn btn-primary">인정</button>
-												<button type="button" onclick="process2()" class="btn btn-secondary">반려</button>
-												<button type="button" onclick="blacklist()" class="btn btn-danger">블랙리스트추가</button>
-											</td>
-										</tr>
-										<tr>
-											<td>컨텐츠정보2</td>
-											<td>신고사유2</td>
-											<td>피신고자정보2</td>
-											<td>신고자정보2</td>
-											<td>신고일자2</td>
-											<td>
-												<button type="button" onclick="process1()" class="btn btn-primary">인정</button>
-												<button type="button" onclick="process2()" class="btn btn-secondary">반려</button>
-												<button type="button" onclick="blacklist()" class="btn btn-danger">블랙리스트추가</button>
-											</td>
-										</tr>
-										<tr>
-											<td>컨텐츠정보3</td>
-											<td>신고사유3</td>
-											<td>피신고자정보3</td>
-											<td>신고자정보3</td>
-											<td>신고일자3</td>
-											<td>
-												신고반려
-											</td>
-										</tr>
-										<tr>
-											<td>컨텐츠정보4</td>
-											<td>신고사유4</td>
-											<td>피신고자정보4</td>
-											<td>신고자정보4</td>
-											<td>신고일자4</td>
-											<td>
-												신고인정
-											</td>
-									</tr>
-									</tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
+		                    <!-- DataTales Example -->
+		                    <div class="card shadow mb-4">
+		                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					              <h6 class="m-0 font-weight-bold text-primary">공간신고처리</h6>
+					          
+					              <button type="button" class="btn btn-secondary bookReport">예약신고관리</button>
+					            </div>
+		                        <div class="card-body">
+		                            <div class="table-responsive">
+		                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		                                	<thead>
+			                                    <tr>
+													<th>공간코드</th>
+													<th>신고유형</th>
+													<th>피신고자정보</th>
+													<th>신고자정보</th>
+													<th>신고일자</th>
+													<th>상세보기</th>
+													<th>신고처리</th>
+												</tr>
+											</thead>
+											
+											<tbody>
+												<c:forEach var="reportDTO" items="${locBasicList }">
+													<tr>
+														<td>${reportDTO.loc_code }</td>
+														<td>${reportDTO.loc_report_type }</td>
+														<td>${reportDTO.host_nickname }</td>
+														<td>${reportDTO.member_nickname }</td>
+														<td>${reportDTO.loc_report_date }</td>
+														<c:choose>
+															<c:when test="${reportDTO.result_count == 0 }">
+																<td>
+																	<button type="button" class="btn btn-primary locDetailBtn0"
+																	value="${reportDTO.loc_report_code }">상세보기</button>
+																</td>
+																<td>
+																	<button type="button" class="btn btn-danger locReportOK"
+																	value="${reportDTO.loc_report_code }">인정</button>
+																	<button type="button" class="btn btn-secondary locReportNO"
+																	value="${reportDTO.loc_report_code }">반려</button>
+																</td>
+															</c:when>
+															<c:otherwise>
+																<td>
+																	<button type="button" class="btn btn-primary locDetailBtn1"
+																	value="${reportDTO.loc_report_code }">처리결과보기</button>
+																</td>
+																<c:choose>
+																	<c:when test="${reportDTO.black_count ==0 }">
+																		<td>
+																			<button type="button" class="btn btn-danger hostBlack"
+																			value="${reportDTO.host_email }">블랙리스트 추가</button>
+																		</td>
+																	</c:when>
+																	<c:otherwise>
+																	<td>
+																		블랙리스트처리됨
+																	</td>
+																	</c:otherwise>
+																</c:choose>
+															</c:otherwise>
+														</c:choose>
+													</tr>
+												</c:forEach>
+											</tbody>
+		                                </table>
+		                            </div>
+		                        </div>
+		                </div>
+		                <!-- /.container-fluid -->
                 </div>
-                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->

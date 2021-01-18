@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
+
+	String result = request.getParameter("result");
+	String nick = request.getParameter("nick");
+	
+	pageContext.setAttribute("result", result);
+	pageContext.setAttribute("nick", nick);
 %>
 <!DOCTYPE html>
 <html>
@@ -37,7 +43,17 @@
 		{
 			$(this).css("color","white");
 		});
+		
 	});
+	
+	function logout()
+	{
+		if(confirm("정말 로그아웃 하시겠습니까?"))
+		{
+			alert("로그아웃 되었습니다.");
+			location.href = "hostlogout.action";
+		}
+	}
 </script>
 
 <style type="text/css">
@@ -159,16 +175,18 @@ a#sub
 				style="padding-top: 1.8rem; padding-right: 40px;">
 				<form action="#">
 					<!-- 로그인 전 -->
-					<!--
-					<a id="menuWhite">로그인 하세요.</a>
-					<a href="login" id="menu">&emsp;로그인</a>
-					<a href="sign_out" id="menu">&emsp;회원가입</a>
-					-->
+					<c:if test="${result eq 'noSigned' }">
+						<a id="menuWhite">로그인 하세요.</a>
+						<a href="loginform.action?identify=host" id="menu">&emsp;로그인</a>
+						<a href="signupform.action?identify=host" id="menu">&emsp;회원가입</a>
+					</c:if>
 
 					<!-- 로그인 후 -->
-					<a id="menuWhite"><span id="menu">xxxx</span>님 환영합니다.</a> 
-					<a href="profile" id="menu">&emsp;프로필</a> 
-					<a href="logout" id="menu">&emsp;로그아웃</a>
+					<c:if test="${result eq 'signed' }">
+						<a id="menuWhite"><span id="menu">${nick }</span>님 환영합니다.</a> 
+						<a href="profile.action?identify=host" id="menu">&emsp;프로필</a> 
+						<a href="javascript:logout()" id="menu">&emsp;로그아웃</a>
+					</c:if>
 				</form>
 			</div>
 

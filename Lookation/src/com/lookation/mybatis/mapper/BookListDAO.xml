@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IBookListDAO">
+	
+	<select id="bookList" resultType="com.lookation.dto.BookListDTO">
+		SELECT BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, LOC_CODE
+		, APPLY_DATE, PACKAGE_CODE, PACKAGE_NAME
+		, PACKAGE_START, PACKAGE_END
+		, BOOK_HOUR, HOST_CANCEL, MEMBER_CANCEL, REFUND, LOC_NAME
+		FROM VIEW_BOOKLIST
+		WHERE MEMBER_CODE = #{member_code}
+		ORDER BY APPLY_DATE
+	</select>
+	
+	<select id="bookDetails" resultType="com.lookation.dto.BookListDTO">
+		SELECT BOOK_CODE, MEMBER_CODE
+		, APPLY_DATE, PACKAGE_NAME
+		, PACKAGE_START, PACKAGE_END
+		, BOOK_HOUR, HOST_CANCEL, MEMBER_CANCEL, REFUND, LOC_NAME
+		, ACTUAL_BOOKER, ACTUAL_BOOKER_TEL
+		, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ, PACKAGE_PRICE
+		, BIZ_NAME, BIZ_CEO, BIZ_LICENSE_NUMBER
+		, MEMBER_CANCEL_REASON, HOST_CANCEL_REASON
+		, MEMBER_EMAIL, LOC_ADDR, LOC_DETAIL_ADDR
+		, MEMBER_NICKNAME
+		FROM VIEW_BOOKLIST
+		WHERE BOOK_CODE = #{book_code}
+	</select>
+</mapper>

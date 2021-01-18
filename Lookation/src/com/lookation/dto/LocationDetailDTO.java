@@ -8,8 +8,18 @@ public class LocationDetailDTO
 	, addr, detailAddr, hostNickName, locRegDate, usingHour, dayOff, appointDayOff
 	, boardCode, memCode, content, date, memberNickName, reviewRate
 	, count, url, rvimgCount, qna_content
-	, replyRemove, removeCount, hostCode, replyContent, replyDate; 
+	, replyRemove, removeCount, hostCode, replyContent, replyDate, replyCode; 
 	
+	public String getReplyCode()
+	{
+		return replyCode;
+	}
+
+	public void setReplyCode(String replyCode)
+	{
+		this.replyCode = replyCode;
+	}
+
 	public String getQna_content()
 	{
 		return qna_content;

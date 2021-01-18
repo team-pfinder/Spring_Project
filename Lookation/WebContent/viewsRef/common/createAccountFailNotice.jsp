@@ -16,7 +16,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>createAccountSuccess(host).jsp</title>
+<title>createAccountSuccess.jsp</title>
 
 <style type="text/css">
 	*
