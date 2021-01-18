@@ -71,7 +71,7 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">도움말 목록</h6>
           
-              <button type="button" class="btn btn-secondary" href="helpmanagerinsertform.action" >글 작성</button>
+              <button type="button" class="btn btn-secondary" >글 작성</button>
               </div>
             
             
