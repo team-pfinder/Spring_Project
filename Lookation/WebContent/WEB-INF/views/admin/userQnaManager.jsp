@@ -166,6 +166,7 @@
 			                                    		<td>${adminUserDTO.member_email }</td>
 			                                    		<td>${adminUserDTO.loc_code }</td>
 			                                    		<td>${adminUserDTO.qna_content }</td>
+			                                    		<td>${adminUserDTO.count}</td>
 			                                    		<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.qna_code }">상세보기</button>

@@ -12,15 +12,33 @@ String cp = request.getContextPath();
   <title>호스트 리뷰 조회</title>
   <script type="text/javascript">
   
-  	//팝업창
-	function popupOpen()
+  	//상세보기 버튼을 클릭 시 팝업창 
+	$(document).ready(function()
 	{
-		var popUrl = "adHostReviewPopup.jsp";
-		var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
-		window.open(popUrl, "", popOption);
-	}
+		$(".detailBtn").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "hostreviewpopup.action?review_reply_code=" + $(this).val();
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		});
+	});
 	
-  
+	// 삭제버튼 클릭 시 삭제
+	$(document).ready(function()
+	{
+		$(".deleteBtn").click(function()
+		{
+			// alert($(this).val());
+			
+			if (confirm("해당 게시글을 삭제하시겠습니까?"))
+			{
+				$(location).attr("href", "hostreviewdelete.action?reivew_reply_code=" + $(this).val());
+			}
+		});
+	});
+
+/*  
 	//체크박스
 	$(document).ready(function()
 	{
@@ -40,7 +58,7 @@ String cp = request.getContextPath();
 			}
 		});
 	});
-      
+ */    
   </script>
 
 </head>
@@ -85,8 +103,6 @@ String cp = request.getContextPath();
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
 				<tr align="center">
-					<th><input type="checkbox" id="checkAll"></th>
-					<th>번호</th>
 					<th>리뷰답글코드</th>
 					<th>이용자리뷰</th>
 					<th>답글</th>
@@ -96,111 +112,54 @@ String cp = request.getContextPath();
 				</tr>
 			</thead>
                <tbody>
+               <c:forEach var="AdminHostDTO" items="${r_firstList }">
+               	<c:choose>
+                	<c:when test="${AdminHostDTO.count == 0 }">
 				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>1</td>
-
-					<td>RVRE000001</td>
-					
-					<td>친구들과너무즐거운시간이었습니다</td>
-
-					<td>넹:) 너무감사합니다!</td>
-					
-					<td>김호스트</td>
-					
-					<td>2021.01.01</td>
-
-					<td>
-						<!-- 상세보기/삭제기능 -->
-						<button type="button" class="btn btn-warning " onclick="popupOpen()">상세보기</button>  
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
+					<td>${AdminHostDTO.review_reply_code } </td>
+								
+								<td>${AdminHostDTO.review_content }</td>
+			
+								<td>${AdminHostDTO.review_reply_content }</td>
+								
+								<td>${AdminHostDTO.host_nickname }</td>
+								
+								<td>${AdminHostDTO.review_reply_date }</td>
+			
+								<td>
+									<!-- 상세보기/삭제기능 -->
+									<button type="button" class="btn btn-warning detailBtn"
+									value="${AdminHostDTO.review_reply_code }">상세보기</button>  
+									<button type="button" class="btn btn-danger deleteBtn" 
+									value="${AdminHostDTO.review_reply_code }">삭제</button>
+								</td>
 				</tr>
 				
-				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>2</td>
-		
-					<td>RVRE000002</td>
-					
-					<td>인생샷을너무마음에들어요</td>
-
-					<td>다른테마도이용해보세요!</td>
-					
-					<td>권호스트</td>
-					
-					<td>2020.12.31</td>
-
-					<td>
-						<!-- 상세보기/삭제기능 -->
-						<button type="button" class="btn btn-warning " onclick="popupOpen()">상세보기</button>  
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
-				</tr>
+			</c:when>
+							<c:otherwise>
+	                     		<tr style="display: none;">
+		                      		<td>${AdminHostDTO.review_reply_code } </td>
+									
+									<td>${AdminHostDTO.review_content }</td>
 				
-				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>3</td>
-
-					<td>RVRE000003</td>
-					
-					<td>너무너무별로였어요!붐따</td>
-
-					<td>오지마세용</td>
-					
-					<td>벧호스트</td>
-					
-					<td>2020.12.23</td>
-
-					<td>
-						<!-- 상세보기/삭제기능 -->
-						<button type="button" class="btn btn-warning " onclick="popupOpen()">상세보기</button>  
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
-				</tr>
+									<td>${AdminHostDTO.review_reply_content }</td>
+									
+									<td>${AdminHostDTO.host_nickname }</td>
+									
+									<td>${AdminHostDTO.review_reply_date }</td>
 				
-				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>4</td>
-
-					<td>RVRE000004</td>
-					
-					<td>잘~~놀다갑니다</td>
-
-					<td>또놀러오세요</td>
-					
-					<td>조호스트</td>
-					
-					<td>2020.12.24</td>
-
-					<td>
-						<!-- 상세보기/삭제기능 -->
-						<button type="button" class="btn btn-warning " onclick="popupOpen()">상세보기</button>  
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
-				</tr>
-				
-				<tr align="center">
-				<td><input type="checkbox" /></td>
-					<td>5</td>
-
-					<td>RVRE000005</td>
-					
-					<td>어쩔수없이이용하는데</td>
-
-					<td>싫으면오지말던가</td>
-					
-					<td>붐따호스트</td>
-					
-					<td>2020.12.25</td>
-
-					<td>
-						<!-- 상세보기/삭제기능 -->
-						<button type="button" class="btn btn-warning " onclick="popupOpen()">상세보기</button>  
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
-				</tr>
-			</tbody>
+									<td>
+										<!-- 상세보기/삭제기능 -->
+										<button type="button" class="btn btn-warning detailBtn"
+										value="${AdminHostDTO.review_reply_code }">상세보기</button>  
+										<button type="button" class="btn btn-danger deleteBtn" 
+										value="${AdminHostDTO.review_reply_code }">삭제</button>
+								   </td>
+								</tr>
+                        	</c:otherwise>
+							</c:choose>
+							</c:forEach>
+						</tbody>
                   
                 </table>
               </div>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IhostReviewManagerDAO">
+	
+	<!-- hostQnaManager 페이지 qna 목록 쿼리문 -->
+	<select id="r_firstList" resultType="com.lookation.dto.AdminHostDTO">
+		SELECT REVIEW_REPLY_CODE,REVIEW_CONTENT,REVIEW_REPLY_CONTENT,HOST_NICKNAME,REVIEW_REPLY_DATE,COUNT
+		FROM RW_REPLY_VIEW
+	</select>
+	
+	<!-- 상세보기 클릭 보여지는 쿼리문 -->
+	<select id="r_secondList" parameterType="java.lang.String" resultType="com.lookation.dto.AdminHostDTO">
+		SELECT LOC_CODE, REVIEW_REPLY_DATE, MEMBER_NICKNAME, REVIEW_CONTENT
+		,HOST_NICKNAME,REVIEW_REPLY_CONTENT
+		FROM RW_REPLY_SECOND_VIEW
+		WHERE REVIEW_REPLY_CODE = #{review_reply_code}
+	</select>
+	
+
+	<insert id="r_remove" parameterType="java.lang.String">
+		INSERT INTO REVIEW_REPLY_REMOVE(REVIEW_REPLY_REMOVE_CODE, REVIEW_REPLY_CODE, REVIEW_REPLY_REMOVE_DATE)
+		VALUES (F_CODE('RVRERM', RVRERM_SEQ.NEXTVAL), #{review_reply_code}, SYSDATE)
+	</insert>
+	
+
+</mapper>

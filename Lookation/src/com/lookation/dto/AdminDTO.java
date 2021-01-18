@@ -2,9 +2,9 @@
 	# Admin.java
  ====================*/
 
-package com.lookation.util;
+package com.lookation.dto;
 
-public class Admin
+public class AdminDTO
 {
 	//주요 속성 구성
 	private String admin_id;
