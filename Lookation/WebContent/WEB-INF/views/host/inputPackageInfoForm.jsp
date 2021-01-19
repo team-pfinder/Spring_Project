@@ -8,10 +8,68 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LocationPackageInsert.jsp</title>
+<title>inputPackageInfoForm.jsp</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
+<script type="text/javascript">
+	
+	
+	// 패키지 추가 버튼 클릭시 inputPackageInfo.jsp 팝업
+	function input()
+	{
+		location.href = "inputPackageInfo.jsp";
+	}
+	
+	// 패키지 수정 버튼 클릭시 modifyPacakgeInfo.jsp 팝업
+	// 선택한 라디오버튼의 값을 받아와 해당 패키지의 정보가 입력된 상태로 보여짐
+	function mod()
+	{
+		location.href = "modifyPackageInfo.jsp";
+	}
+	
+	// 패키지 삭제 버튼 클릭 시 
+	// 선택한 라디오버튼의 값을 받아와 해당 패키지의 정보를 모두 삭제
+	// (DB 상에서는 폐기된 패키지로 insert)
+	function del()
+	{
+		/* location.href = "modifyPacakgeInfo.jsp"; */
+	}
+	
+	
+	// 공간 등록 및 검수 신청 버튼 클릭시
+	// 여태까지의 공간 입력 정보를 DB에 insert 하고
+	// 공간 검수 신청 confirm 처리 후 공간 관리페이지로 이동하는 function
+	function locConfirm() {
+		
+		var conf = confirm("현재까지의 공간 입력정보를 저장하고 검수 신청을 하시겠습니까?");
+		
+		if (conf == true) {
+			location.href = "locationList.jsp";
+			return;
+		} else {
+			return;
+		}
+		
+	}
+	
+	
+	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
+	function cancel() {
+		
+		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
+						+ "(기존 작성 내용은 저장되지 않습니다.)");
+		
+		if (con == true) {
+			location.href = "mainHost.jsp";
+			return;
+		} else {
+			return;
+		}
+		
+	}
+	
+</script>
 </head>
 <body>
 	<div>
@@ -55,157 +113,107 @@
    
    <!-- Page Heading -->
    <h1 class="mb-2 text-gray-800">패키지정보 입력</h1>
-   <p class="mb-4"> 패키지정보를 수정하세요. <a target="_blank" href="#">이전으로</a>.</p>
+   <p class="mb-4"> 패키지정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
       
       <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
       
       
       <div class="card shadow mb-4">
          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-default">패키지정보 수정</h6>
+            <h6 class="m-0 font-weight-bold text-default">패키지정보 입력</h6>
          </div>
 
 
 
-<form style="width: 800px; margin: 120px;">
-
-	<!-- 1. 패키지명 -->
-	
-	<div id="locationPackageName">
-	
-		<span style="font-size: 14pt; font-weight: bold;">패키지명 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" name="locationPackageName"
-			   class="form-control"
-			   placeholder="패키지명을 입력하세요. [최소 2자 ~ 최대 20자]">
-	</div>
-	
-	<br><br><br>
-	
-	<!-- 2. 패키지 시작시간, 패키지 종료시간 -->
-	
-	<div id="locationPackageTime">
+	<!-- form start --------------------------------------------->
+	<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm"><!--onsubmit="handOver()" -->
+		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 		
-		<span style="font-size: 14pt; font-weight: bold;">이용시간 <span style="color: red">*</span></span>
-		<br><br>
-		<select id="locationPackageStart" class="form-control" name="locationPackageStart">
-			<option>[==시간을 선택하세요.==]</option>
-			<option value="0시">0시</option>
-			<option value="1시">1시</option>
-			<option value="2시">2시</option>
-			<option value="3시">3시</option>
-			<option value="4시">4시</option>
-			<option value="5시">5시</option>
-			<option value="6시">6시</option>
-			<option value="7시">7시</option>
-			<option value="8시">8시</option>
-			<option value="9시">9시</option>
-			<option value="10시">10시</option>
-			<option value="11시">11시</option>
-			<option value="12시">12시</option>
-			<option value="13시">13시</option>
-			<option value="14시">14시</option>
-			<option value="15시">15시</option>
-			<option value="16시">16시</option>
-			<option value="17시">17시</option>
-			<option value="18시">18시</option>
-			<option value="19시">19시</option>
-			<option value="20시">20시</option>
-			<option value="21시">21시</option>
-			<option value="22시">22시</option>
-			<option value="23시">23시</option>
-			<option value="24시">24시</option>
-		</select><br>
-		~ 
-		<select id="locationPacakgeEnd" class="form-control" name="locationPacakgeEnd">
-			<option>[==시간을 선택하세요.==]</option>
-			<option value="0시">0시</option>
-			<option value="1시">1시</option>
-			<option value="2시">2시</option>
-			<option value="3시">3시</option>
-			<option value="4시">4시</option>
-			<option value="5시">5시</option>
-			<option value="6시">6시</option>
-			<option value="7시">7시</option>
-			<option value="8시">8시</option>
-			<option value="9시">9시</option>
-			<option value="10시">10시</option>
-			<option value="11시">11시</option>
-			<option value="12시">12시</option>
-			<option value="13시">13시</option>
-			<option value="14시">14시</option>
-			<option value="15시">15시</option>
-			<option value="16시">16시</option>
-			<option value="17시">17시</option>
-			<option value="18시">18시</option>
-			<option value="19시">19시</option>
-			<option value="20시">20시</option>
-			<option value="21시">21시</option>
-			<option value="22시">22시</option>
-			<option value="23시">23시</option>
-			<option value="24시">24시</option>
-			<option value="익일 1시">익일 1시</option>
-			<option value="익일 2시">익일 2시</option>
-			<option value="익일 3시">익일 3시</option>
-			<option value="익일 4시">익일 4시</option>
-			<option value="익일 5시">익일 5시</option>
-			<option value="익일 6시">익일 6시</option>
-			<option value="익일 7시">익일 7시</option>
-			<option value="익일 8시">익일 8시</option>
-			<option value="익일 9시">익일 9시</option>
-			<option value="익일 10시">익일 10시</option>
-		</select><br>
+		<!-- 1. 현재 패키지 (추가된 패키지 현황) --> 
+		<div id="currentPackage">
+			<span style="font-size: 14pt; font-weight: bold;">현재패키지 <span style="color: red">*</span></span>
+				<br><br>
+				<table class="table table-bordered table-hover" id="InsertedPacakge">
+					<tr>
+						<th>-</th>
+						<th>패키지명</th>
+						<th>패키지 시작시간</th>
+						<th>패키지 종료시간</th>
+						<th>패키지 가격</th>
+					</tr>
+					<tr>
+						<td>
+							<input type="radio" name="selectPackage">
+						</td>						
+						<td>올나잇(18시~익일 3시)</td>  <!-- 패키지명 -->
+						<td>18시</td>					<!-- 패키지 시작시간 -->
+						<td>익일 3시</td>				<!-- 패키지 종료시간 -->
+						<td>100,000원</td>				<!-- 패키지 가격 -->
+					</tr>
+					<tr>
+						<td>
+							<input type="radio" name="selectPackage">
+						</td>							<!-- LocationPackageInsert.jsp 에서 -->
+						<td>저녁시간</td>				<!-- 패키지가 추가될때마다 tr,td노드가 추가 -->
+						<td>10시</td>
+						<td>23시</td>
+						<td>100,000원</td>
+					</tr>
+					
+					<!--	 :	 	-->
+				</table>
+		</div>
+	
+	<br><br>
+	
+		<!-- 2. 패키지 추가하기 -->
+		<!--    → inputPackageInfo.jsp로 이동 -->
+		<input type="button" class="form-control" value="패키지 추가"
+			   onclick="input()">
 		
-		<!-- 종료시간 : 시작시간보다 이후부터 
-		(최대 : 시작시간 + 34시까지)  -->
-		<br>
-		<span style="color: red;">※ 실제 이용 가능한 시간으로 설정해야 합니다.</span> <!-- 붉은색 글자 -->
+		<!-- 3. 패키지 수정하기 
+				→ 현재 패키지 중 하나를 선택후 수정버튼 클릭, 
+				   선택하지않으면 alert("패키지를 선택하세요."), onsubmit="false"
+				→ modifyPackageInfo.jsp로 이동 -->
+		<input type="button" class="form-control" value="패키지 수정"
+			   onclick="mod()"> <!-- onclick="function()" -->
 		
-	</div>
+		<!-- 4. 패키지 삭제하기
+				→ 현재 패키지 중 하나를 선택후 삭제버튼 클릭, onsubmit="false"
+				   선택하지않으면 alert("패키지를 선택하세요.") -->
+		<input type="button" class="form-control" value="패키지 삭제"> 
+		<!-- onclick="function()" 
+			 → 삭제시 선택된 패키지의 현재패키지 리스트에서 
+			 	모든 컬럼의 내용을 지운다(view에서만) -->
 	
-	<br><br><br>
 	
-	<!-- 3. 패키지 가격 -->
+	<br><br><br><br>
 	
-	<div id="locationPackagePrice">
-	
-		<span style="font-size: 14pt; font-weight: bold;">패키지 가격 <span style="color: red">*</span></span>
-		<br><br>
-		<input type="text" class="form-control"
-			   placeholder="패키지가격을 입력하세요. [최소 1,000원 ~ 최대 1,000,000원(부가세포함)]"
-			   name="locationPackagePrice">
-		<br><br>
+	<div class="container" style="text-align: center;">
+		<input type="submit" class="btn btn-warning"
+				id="inputPackageInfoFormConfirm" style="width:45%; border-color: gray;"
+				onclick="locConfirm()" value="공간 등록 및 검수 신청">
+		 <!-- onclick="function()" submit → LocationPacakgeMgmt.jsp -->
 		
+		<!-- 취소 버튼 -->
+		<input type="button" id="inputPackageInfoFormCancel"
+				   class="btn btn-default" style="align-content:center; width:45%; border-color: gray;"  
+				   onclick="cancel()" value="취소"> <!-- onclick="function()" -->
+	
 	</div>
 
-<div class="container">
-<br><br><br>
-
-<!-- 저장 버튼 -->
-	<input type="submit" value="저장" class="btn btn-warning" 
-		   id="locationPacakgeInsertSave" style="width:300px;">
-	<!-- onclick="function()" → LocationPacakgeForm.jsp 테이블의 리스트형태로 저장 -->
-
-<!-- 취소 버튼 -->
-<input type="button" class="btn btn-default" 
-	id="locationPacakgeInsertCancel" style="width: 300px;"
-	value="취소"> <!-- onclick="function()" -->
-
-
-
-</div>
-
 	
+	<br><br><br><br>
 
-<br><br><br><br>
+	</form>
+</div>
 
-</form>
 </div>
-</div>
+	<br><br><br><br>
+	
 <div>
 	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </div>
-
 </body>
 </html>
