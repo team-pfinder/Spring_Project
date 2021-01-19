@@ -71,13 +71,13 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">도움말 목록</h6>
           
-              <button type="button" class="btn btn-secondary" >글 작성</button>
+              <button type="button" class="btn btn-secondary" onclick="location.href='helpinsertform.action'" >글 작성</button>
               </div>
             
             
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable">
                   <thead>
 				<tr align="center">
 					<th>도움말 코드</th>
@@ -95,7 +95,7 @@
 
 					 <td>${HelpDTO.help_code }</td>
 					
-					<td>${HelpDTO.board_type }</td>
+					<td>${HelpDTO.board_type}</td>
 
 					<td>${HelpDTO.help_title }</td>
 
@@ -105,9 +105,11 @@
 
 					<td>
 						<!-- 수정기능 -->
-						<button type="button" class="btn btn-warning">수정</button> 
+						<button type="button" class="btn btn-warning" value="${HelpDTO.help_code}" 
+						onclick="location.href='../actions/helpupdateform.action?help_code=' + this.value;">수정</button> 
 						<!-- 삭제기능 -->
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
+						<button type="button" class="btn btn-danger " value="${HelpDTO.help_code}" 
+						onclick="location.href='../actions/helpdelete.action?help_code=' + this.value;">삭제</button>
 					</td>
 				</tr>
 

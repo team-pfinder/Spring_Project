@@ -15,8 +15,11 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
   
-  <!-- Sidebar -->
-<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
+  	<!-- Sidebar -->
+  	<div>
+	<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
+	</div>
+<%--  	<%@include file="../includes/Admin_Sidebar.jsp" %> --%>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -26,31 +29,33 @@
       <div id="content">
       
       <!-- header -->
-<c:import url="${cp}/includes/header.jsp"></c:import>
-        <!-- End of header -->
+      
+     <div>
+	 <c:import url="${cp}/includes/header.jsp"></c:import>
+	 </div>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
           <!-- Page Heading -->
           <h1 class="h3 mb-2 text-gray-800">공지사항</h1>
-          <p class="mb-4"> 요기는 공지사항 목록이지롱 게시물 클릭하면 해당 게시물 수정 페이지로 기기 <a target="_blank" href="https://datatables.net">공지사항 목록 테스트</a>.</p>
+          <p class="mb-4"> 공지사항 목록입니다</p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">공지사항 목록</h6>
           
-              <button type="button" class="btn btn-secondary">글 작성</button>
+              <button type="button" class="btn btn-secondary" onclick="location.href='noticeinsertform.action'">글 작성</button>
               </div>
             
             
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="dataTable">
                   <thead>
 				<tr align="center">
-					<th>글 번호</th>
+					<th>공지사항코드</th>
 					<th>중요</th>
 					<th>제목</th>
 					<th>내용</th>
@@ -58,64 +63,33 @@
 					<th>수정/삭제</th>
 				</tr>
 			</thead>
+			
                <tbody>
+               <c:forEach var="NoticeDTO" items="${A_noticeList }">
 				<tr align="center">
 
-					<td>1</td>
-					<th></th>
-
-					<td align="left">[업데이트] 결제 기능이 추가되었습니다.</td>
-
-					<td>할 수 있을 ...</td>
+					<td>${NoticeDTO.notice_code }</td>
 					
-					<td>2021-01-09</td>
+					<td>${NoticeDTO.important_notice }</td>
+
+					<td align="left">${NoticeDTO.notice_title }</td>
+
+					<td>${NoticeDTO.notice_content }</td>
+					
+					<td>${NoticeDTO.notice_date }</td>
 
 					<td>
 						<!-- 수정기능 -->
-						<button type="button" class="btn btn-warning">수정</button> 
+						<button type="button" class="btn btn-warning" value="${NoticeDTO.notice_code }" 
+						onclick="location.href='../actions/noticeupdateform.action?notice_code=' + this.value;">수정</button> 
 						<!-- 삭제기능 -->
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
+						<button type="button" class="btn btn-danger " value="${NoticeDTO.notice_code }" 
+						onclick="location.href='../actions/noticedelete.action?notice_code=' + this.value;">삭제</button>
+						<!-- <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button> -->
 					</td>
 				</tr>
-
-				<tr align="center">
-
-					<td>2</td>
-					
-					<td>중요</td>
-
-					<td align="left">[공지] 사회적 거리두기 2.5단계 시행에 따른 공간이용 안내사항 </td>
-
-					<td>지겹어,,</td>
-					
-					<td>2021-01-09</td>
-
-					<td>
-						<!-- 수정기능 -->
-						<button type="button" class="btn btn-warning">수정</button> 
-						<!-- 삭제기능 -->
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
-				</tr>
-				<tr align="center">
-
-					<td>3</td>
-					
-					<td></td>
-
-					<td align="left">[공지] 룩케이션 운영정책 일부 개정 안내</td>
-
-					<td>안읽겠지...</td>
-					
-					<td>2021-01-09</td>
-
-					<td>
-						<!-- 수정기능 -->
-						<button type="button" class="btn btn-warning">수정</button> 
-						<!-- 삭제기능 -->
-						<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button>
-					</td>
-				</tr>
+				
+			</c:forEach>
 			</tbody>
                   
                 </table>
@@ -153,7 +127,7 @@
 
       </div>
       <!-- End of Main Content -->
-      
+
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IHelpDAO">
+
+	<!-- help(유저들 도움말) 목록 쿼리문 -->
+	<select id="U_helpList" resultType="com.lookation.dto.HelpDTO">
+		SELECT BOARD_TYPE, HELP_TITLE, HELP_DATE
+		FROM HELP_VIEW
+	</select>
+</mapper>
