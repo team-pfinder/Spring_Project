@@ -20,9 +20,9 @@
 	if(beforePage == null)
 	{
 		if(identify.equals("host"))
-			requestUrl = "mainHost.action";
+			requestUrl = "hostMain.action";
 		else if(identify.equals("member"))
-			requestUrl = "mainUser.action";
+			requestUrl = "memberMain.action";
 	}
 	else
 	{

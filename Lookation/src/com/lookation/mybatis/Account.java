@@ -102,15 +102,40 @@ public class Account
 			return "redirect:loginform.action?identify=" + identify;	
 		}	                                                                      
 		
+		// 검증 후 요청되는 액션
+		String requestUrl = request.getParameter("requestUrl");
+		if(requestUrl != null && 
+				!requestUrl.contains("confirmpasswordform.action"))
+			session.setAttribute("requestUrl", requestUrl);
+		
+		// 이전 액션
+		String beforePage = request.getHeader("Referer");
+		String beforeUrl = "";
+		if(beforePage == null)
+		{
+			if(identify.equals("host"))
+				beforeUrl = "hostMain.action";
+			else if(identify.equals("member"))
+				beforeUrl = "memberMain.action";
+		}
+		else
+		{
+			// 뒷부분 액션만 잘라오기
+			String[] subArr = beforePage.split("/");
+			beforeUrl = subArr[subArr.length-1];
+		}
+		
+		// 취소를 눌렀을때 요청되는 액션
+		if(!beforeUrl.contains("confirmpasswordform.action"))
+			session.setAttribute("beforeUrl", beforeUrl);
+
+		
 		return "../WEB-INF/views/common/confirmPassword.jsp?identify=" + identify;
 	}
 	
 	@RequestMapping(value="/actions/confirmpassword.action", method=RequestMethod.POST)
 	public String confirmPassword(HttpServletRequest request, Model model)
 	{
-		
-		
-		
 		// 세션에서 코드를 통한 검증
 		HttpSession session = request.getSession();
 		String identify = (String)session.getAttribute("identify");    
@@ -123,17 +148,12 @@ public class Account
 			return "redirect:loginform.action?identify=" + identify;	
 		}
 		
-		String requestUrl = request.getParameter("requestUrl");	
-		//  액션이 아닌 요청 액션이 필요하므로
-		if(!requestUrl.contains("loginform.action"))
-		{
-			session.setAttribute("requestUrl", requestUrl);
-		}
-		
 		// 패스워드 검증	
 		AccountDTO account = new AccountDTO();
 		account.setCode(accountCode);
 		account.setPw(request.getParameter("pw"));
+		
+		System.out.println("test");
 		
 		int count = 0;
 		if(identify.equals("member"))
@@ -157,7 +177,7 @@ public class Account
 		else
 		{
 			// 세션에 저장했던 이전 요청 액션을 가지고 온다.
-			requestUrl = (String)session.getAttribute("requestUrl");
+			String requestUrl = (String)session.getAttribute("requestUrl");
 		
 			// 다음 요청 페이지를 요청해야 함
 			// 뭔지는 상황마다 다르다.

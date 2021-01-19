@@ -267,7 +267,7 @@
 											<td>${item.amount }</td>
 											<td>${item.regDate }</td>
 											<td>${item.loadType }</td>
-											<c:if></c:if>
+											<%-- <c:if></c:if> --%>
 											<td>${item.procDate }</td>
 											<!-- <td>
 												<button class="btn btn-primary" id="" value="">처리</button>

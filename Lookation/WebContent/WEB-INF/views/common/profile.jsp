@@ -176,10 +176,10 @@
 <body>
 	<div>
 		<c:if test="${identify eq 'host' }">
-			 <c:import url="${cp}/includes/header_host.jsp"></c:import>
+			 <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 		</c:if>
 		<c:if test="${identify eq 'member' }">
-			 <c:import url="${cp}/includes/header_user.jsp"></c:import>
+			 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 		</c:if>
     </div>
 	
@@ -239,7 +239,7 @@
 					<th>비밀번호</th>
 					<td>
 						<div>
-							<a class="clickAble" href="confirmpasswordform.action?identify=${identify }" >
+							<a class="clickAble" href="confirmpasswordform.action?identify=${identify }&requestUrl=changepasswordform.action" >
 								변경하기
 							</a>
 						</div>

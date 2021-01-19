@@ -89,10 +89,10 @@
 <body class="back-default">
 	<div>
 		<c:if test="${identify eq 'host' }">
-       		<c:import url="${cp}/includes/header_host?result=${result }&nick=${info.nick }.jsp"></c:import>
+       		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
         </c:if>
         <c:if test="${identify eq 'member' }">
-       		<c:import url="${cp}/includes/header_user?result=${result }&nick=${info.nick }.jsp"></c:import>
+       		<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
         </c:if>
     </div>
 
@@ -113,7 +113,14 @@
 			           margin: 50px 0px 35px 0px;">
 			
 			<div class="buttonForm">
-				<button style="border-width: 0px;" id="home">홈으로</button> 
+				 <c:if test="${identify eq 'host'}">
+					 <button style="border-width: 0px;" id="home"
+					 onclick="location.href='hostmain.action'">홈으로</button> 
+				 </c:if>
+				 <c:if test="${identify eq 'member' }">
+				 	<button style="border-width: 0px;" id="home"
+					 onclick="location.href='membermain.action'">홈으로</button> 
+				 </c:if>
 			</div>
 		</div>
 	</div>
