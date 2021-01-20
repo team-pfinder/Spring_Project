@@ -5,21 +5,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>공지사항 글쓰기</title>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 
+<script type="text/javascript">
+$(document).ready(function()
+		{
+			$("#btn_list").click(function()
+			{
+				
+				if(confirm("공지사항 입력을 취소하시겠습니까?"))
+				{
+					$(location).attr("href","noticemanager.action");
+				}
+			});
+			
+			$("#btn_submit").click(function()
+			{
+				
+				$("#insertForm").submit();
+			});
+		});
+</script>
 </head>
-
 <body id="page-top">
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-		<!-- Sidebar -->
-<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>>
-
-		<!-- End of Sidebar -->
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -28,7 +42,6 @@
 			<div id="content">
 
 <c:import url="${cp}/includes/header.jsp"></c:import>
-
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
@@ -40,20 +53,20 @@
 							<!-- general form elements -->
 							<div class="box box-primary">
 								<div class="box-header">
-									<h3 class="box-title">공지사항 등록하기</h3>
+									<h3 class="box-title">도움말 등록하기</h3>
 								</div>
 								<br>
 
 								<!-- /.box-header -->
-								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
+								<form id='insertForm' role="form" action="noticeinsert.action" method="post" >
 									<div class="box-body">
 										<label for="exampleInputEmail1">중요도</label>
 										<div class="form-group">
-											<select class="form-control" id="mainCategory" name="cate_prtcode"
+											<select class="form-control" id="mainCategory" name="important_notice_code"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>일반</option>
-												<option>중요 공지</option>
+												<option value="IN000002">일반공지</option>
+												<option value="IN000001">중요공지</option>
 											</select>
 											
 
@@ -61,39 +74,44 @@
 
 										<div class="form-group">
 											<label for="exampleInputEmail1">제목</label> 
-											<input type="text" id="pro_name" name="pro_name"
-												class="form-control">
+											<input type="text" id="notice_title" name="notice_title" class="form-control">
 										</div>
 
 
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
-											<textarea class="form-control" id="pro_detail"
-												name="pro_detail" rows="8"></textarea>
+											<textarea class="form-control" id="notice_content" name="notice_content" rows="8"></textarea>
 										</div>
 
 										<div class="form-group">
-											<label for="exampleInputEmail1">Upload Image</label> <input
-												type="file" id="file1" name="file1" class="form-control" />
+											<label for="exampleInputEmail1">Upload Image</label> 
+											<input type="file" id="file1" name="file1" class="form-control" />
 										</div>
-									</div>
+									</div><!-- .box-body -->
+								</form>
 							</div>
-							<!-- /.container-fluid -->
+						</div>
+					</div><!-- /.row	 -->			
+				</div><!-- /.container-fluid -->
 							
 							<div class="box-footer">
-                           <div>
-                              <hr>
-                           </div>
+								<div>
+									<hr>
+								</div>
 
-                           <ul class="mailbox-attachments clearfix uploadedList">
-                           </ul>
+								<ul class="mailbox-attachments clearfix uploadedList">
+								</ul>
 
-                           <button id="btn_submit" type="button" class="btn btn-primary">글 등록</button>
-                        </div>
-                     </form>
+								<button id="btn_submit" type="button" class="btn btn-primary">등록하기</button>
+								<button id="btn_list" type="button" class="btn btn-primary" onclick="location.href='noticemanager.action'">취소하기</button>
+							</div>
+							
+                 </div>
+                 </div>
+ 
                   </div>
 
-						</div>
+                  </div>
 						<!-- End of Main Content -->
 
 						<!-- Footer -->

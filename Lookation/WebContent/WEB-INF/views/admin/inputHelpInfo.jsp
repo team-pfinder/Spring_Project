@@ -3,14 +3,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
-
+<html>
 <head>
-
-<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+<meta charset="UTF-8">
 <title>도움말 글쓰기</title>
-
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+<script type="text/javascript">
+$(document).ready(function()
+		{
+			$(".resethelp").click(function()
+			{
+				
+				if(confirm("공지사항 입력을 취소하시겠습니까?"))
+				{
+					$(location).attr("href","helpmanager.action");
+				}
+			});
+			
+			$("#btn_submit").click(function()
+			{
+				//alert("나야");
+				$("#insertForm").submit();
+			});
+		});
+</script>
 </head>
-
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -41,60 +58,70 @@
 								<br>
 
 								<!-- /.box-header -->
-								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
+								<form id="insertForm" role="form" action="helpinsert.action" method="post" >
 									<div class="box-body">
 									<label for="exampleInputEmail1">카테고리</label>
 										<div class="form-group">
-											<select class="form-control" id="mainCategory" name="cate_prtcode"
+											<select class="form-control" id="mainCategory" name="board_type_code"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>회원</option>
-												<option>공간이용 및 후기</option>
-												<option>호스트되기</option> 
-												<option>공간조회</option>
-												<option>공간등록</option>
-												<option>공간정보관리</option> 
-												<option>가격 및 일정</option>
-												<option>예약 및 결제</option>
-												<option>취소 및 환불</option> 
-												<option>기타</option>
+												<option value="BT000010">회원</option> 
+												<option value="BT000001">호스트되기</option>
+												<option value="BT000002">공간등록</option>
+												<option value="BT000003">공간조회</option> 
+												<option value="BT000004">공간정보관리</option>
+												<option value="BT000005">예약및결제</option>
+												<option value="BT000006">취소및환불</option> 
+												<option value="BT000007">공간이용및후기</option>
+												<option value="BT000008">공간정보관리</option>
+												<option value="BT000009">기타</option> 
+												
 												
 											</select>
 
 										</div>
 
 										<div class="form-group">
-											<label for="exampleInputEmail1">제목</label> <input
-												type="text" id="pro_name" name="pro_name"
-												class="form-control">
+											<label for="exampleInputEmail1">제목</label> 
+											<input type="text" id="help_title" name="help_title" class="form-control">
 										</div>
 
 
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
-											<textarea class="form-control" id="pro_detail"
-												name="pro_detail" rows="8"></textarea>
+											<textarea class="form-control" id="help_content" name="help_content" rows="8"></textarea>
 										</div>
 
 										<div class="form-group">
-											<label for="exampleInputEmail1">Upload Image</label> <input
-												type="file" id="file1" name="file1" class="form-control" />
+											<label for="exampleInputEmail1">Upload Image</label> 
+											<input type="file" id="file1" name="file1" class="form-control" />
 										</div>
-									</div>
+									</div><!-- .box-body -->
+								</form>
 							</div>
-							<!-- /.container-fluid -->
+						</div>
+					</div><!-- /.row	 -->			
+				</div><!-- /.container-fluid -->
 							
 							<div class="box-footer">
-                           <div>
-                              <hr>
-                           </div>
+								<div>
+									<hr>
+								</div>
 
-                           <ul class="mailbox-attachments clearfix uploadedList">
-                           </ul>
+								<ul class="mailbox-attachments clearfix uploadedList">
+								</ul>
 
-                           <button id="btn_submit" type="button" class="btn btn-primary">글 등록</button>
-                        </div>
-                     </form>
+								<div class="faqBtn" style="float: right;">
+									<input type="button" value="취소하기" class="resethelp">
+									<!-- <input type="button" value="등록하기" onclick="submitForm()"> -->
+								</div>
+
+								<button id="btn_submit" type="button" class="btn btn-primary">글등록</button>
+							</div>
+							
+                 </div>
+                 </div>
+ 
                   </div>
 
 						</div>
@@ -145,25 +172,7 @@
 					</div>
 				</div>
 				
-				<script>
-				$(document).ready(function(){
-			         
-			         /* CkEditor 설정 */
-			         // config.js 외 개별설정. JSON문법 스타일 사용한 설정 구문
-			         var ckeditor_config = {
-			            resize_enable: false,
-			            enterMode: CKEDITOR.ENTER_BR,
-			            shiftEnterMode: CKEDITOR.ENTER_P,
-			            toolbarCanCollapse: true,
-			            removePlugins : "elementspath", 
-			            /* 파일 업로드 기능
-			               CkEditor를 이용해 업로드 할 때 아래 주소에 업로드   
-			            */
-			            
-			            
-			         };
-			         CKEDITOR.replace("pro_detail", ckeditor_config);
-				</script>
+				
 </body>
 
 </html>

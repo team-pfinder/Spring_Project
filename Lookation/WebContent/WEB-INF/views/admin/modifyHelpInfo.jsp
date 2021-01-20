@@ -4,34 +4,49 @@
 
 
 <!DOCTYPE html>
-
+<html>
 <head>
-
-<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+<meta charset="UTF-8">
 <title>도움말 수정하기</title>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+
+<script type="text/javascript">
+$(document).ready(function()
+		{
+			$("#btn_list").click(function()
+			{
+				
+				if(confirm("목록으로 돌아가시겠습니까?"))
+				{
+					$(location).attr("href","helpmanager.action");
+				}
+			});
+			
+			$("#btn_submit").click(function()
+			{
+				
+				$("#updateForm").submit();
+			});
+		});
+</script>
 
 </head>
-
 <body id="page-top">
-
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-
-<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
-
+	<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
+		
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 
 			<!-- Main Content -->
 			<div id="content">
-
-<c:import url="${cp}/includes/header.jsp"></c:import>
-
+			<c:import url="${cp}/includes/header.jsp"></c:import>
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- 상품등록 폼 -->
+					<!-- 도움말 등록 폼 -->
 					<div class="row">
 						<!-- left column -->
 						<div class="col-md-12">
@@ -43,46 +58,52 @@
 								<br>
 
 								<!-- /.box-header -->
-								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
+								<form id='updateForm' role="form" action="helpupdate.action" method="post">
 									<div class="box-body">
-										<label for="exampleInputEmail1">카테고리</label>
+									<input type="hidden" value="${search.help_code }" name="help_code">
+									<label for="exampleInputEmail1">카테고리</label>
 										<div class="form-group">
-											<select class="form-control" id="mainCategory" name="cate_prtcode"
+											<select class="form-control" id="mainCategory" name="board_type_code"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>회원</option>
-												<option>공간이용 및 후기</option>
-												<option>호스트되기</option> 
-												<option>공간조회</option>
-												<option>공간등록</option>
-												<option>공간정보관리</option> 
-												<option>가격 및 일정</option>
-												<option>예약 및 결제</option>
-												<option>취소 및 환불</option> 
-												<option>기타</option>
+												<option value="BT000010">회원</option> 
+												<option value="BT000001">호스트되기</option>
+												<option value="BT000002">공간등록</option>
+												<option value="BT000003">공간조회</option> 
+												<option value="BT000004">공간정보관리</option>
+												<option value="BT000005">예약및결제</option>
+												<option value="BT000006">취소및환불</option> 
+												<option value="BT000007">공간이용및후기</option>
+												<option value="BT000008">공간정보관리</option>
+												<option value="BT000009">기타</option> 
 											</select>
+										</div><!-- end form-group -->
 
-										</div>
-
+										
 										<div class="form-group">
-											<label for="exampleInputEmail1">제목</label> <input
-												type="text" id="pro_name" name="pro_name"
-												class="form-control">
+											<label for="exampleInputEmail1">제목</label> 
+											<input type="text" id="help_title" name="help_title" class="form-control" 
+											value="${search.help_title }">
 										</div>
 
 
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
-											<textarea class="form-control" id="pro_detail"
-												name="pro_detail" rows="8"></textarea>
+											<textarea class="form-control" id="help_content" name="help_content" rows="8" >
+											${search.help_content }
+											</textarea>
 										</div>
 
 										<div class="form-group">
 											<label for="exampleInputEmail1">Upload Image</label> 
-											<p>이자리에기존에있던파일이있어야겠죠?</p>
 											<input type="file" id="file1" name="file1" class="form-control" />
 										</div>
-									</div>
+										
+									</div><!-- end box-body -->
+								
+								</form>
+								</div>
+								</div>
 							</div>
 							<!-- /.container-fluid -->
 							
@@ -95,9 +116,9 @@
                            </ul>
 
                            <button id="btn_submit" type="button" class="btn btn-primary">수정하기</button>
-                           <button id="btn_submit" type="button" class="btn btn-primary">목록으로</button>
+                           <button id="btn_list" type="button" class="btn btn-primary" onclick="location.href='helpmanager.action'">목록으로</button>
                         </div>
-                     </form>
+                     
                   </div>
 
 						</div>
@@ -119,10 +140,14 @@
 				</div>
 				<!-- End of Page Wrapper -->
 
+				
+				
 				<!-- Scroll to Top Button-->
 				<a class="scroll-to-top rounded" href="#page-top"> <i
 					class="fas fa-angle-up"></i>
 				</a>
+
+
 
 				<!-- Logout Modal-->
 				<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
@@ -147,8 +172,8 @@
 						</div>
 					</div>
 				</div>
-				
-				<script>
+	
+			<!-- 	<script>
 				$(document).ready(function(){
 			         
 			         /* CkEditor 설정 */
@@ -166,7 +191,7 @@
 			            
 			         };
 			         CKEDITOR.replace("pro_detail", ckeditor_config);
-				</script>
+				</script> -->
 </body>
 
 </html>
