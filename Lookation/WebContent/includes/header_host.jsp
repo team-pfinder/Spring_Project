@@ -117,7 +117,7 @@ a#sub
 			<!-- 좌상단 -->
 			<div class="col">
 				<!-- 로고 -->
-				<a class="navbar-brand" href="index.html">Look<span>ation.</span> <span style="color: black; font-size: 18px;">호스트센터</span></a>
+				<a class="navbar-brand" href="hostmain.action">Look<span>ation.</span> <span style="color: black; font-size: 18px;">호스트센터</span></a>
 			</div>
 			<!-- 우상단 -->
 			<div class="col d-flex justify-content-end">

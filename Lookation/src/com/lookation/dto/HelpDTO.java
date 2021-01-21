@@ -3,7 +3,12 @@ package com.lookation.dto;
 public class HelpDTO
 {	
 	//관리자 도움말 주요 속성 구성
-	private String help_code, board_type, help_title, help_content,help_date;
+	private String help_code
+				, board_type
+				, help_title
+				, help_content
+				, help_date
+				, board_type_code;
 	
 	//getter, setter 구성
 	public String getHelp_code()
@@ -54,5 +59,15 @@ public class HelpDTO
 	public void setHelp_date(String help_date)
 	{
 		this.help_date = help_date;
+	}
+
+	public String getBoard_type_code()
+	{
+		return board_type_code;
+	}
+
+	public void setBoard_type_code(String board_type_code)
+	{
+		this.board_type_code = board_type_code;
 	}
 }

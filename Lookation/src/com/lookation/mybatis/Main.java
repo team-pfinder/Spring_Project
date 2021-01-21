@@ -88,7 +88,7 @@ public class Main
 		session.removeAttribute("identify");
 		session.removeAttribute("accountCode");
 		
-		return "redirect:hostmain.action";
+		return "redirect:membermain.action";
 	}
 	
 	
@@ -128,7 +128,7 @@ public class Main
 		session.removeAttribute("identify");
 		session.removeAttribute("accountCode");
 		
-		return "redirect:membermain.action";
+		return "redirect:hostmain.action";
 	}
 	
 	@RequestMapping(value="/actions/adminmain.action", method = RequestMethod.GET)

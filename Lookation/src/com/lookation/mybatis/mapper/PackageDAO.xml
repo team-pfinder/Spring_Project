@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IPackageDAO">
+
+<select id="packageFormList" parameterType="java.lang.String"
+resultType="com.lookation.dto.PackageDTO">
+	SELECT P.PACKAGE_CODE AS CODE, P.PACKAGE_NAME AS NAME
+     , P.PACKAGE_START AS TIME_START, P.PACKAGE_END AS TIME_END
+     , P.PACKAGE_PRICE AS PRICE
+	FROM PACKAGE P JOIN PACKAGE_FORM PF
+	ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+	        LEFT OUTER JOIN PACKAGE_REMOVE PR
+	        ON P.PACKAGE_CODE = PR.PACKAGE_CODE
+	WHERE PF.LOC_CODE = #{locationCode}
+	  AND PR.PACKAGE_REMOVE_CODE IS NULL
+	ORDER BY P.PACKAGE_START
+</select>
+
+<select id="packageApplyList" parameterType="java.lang.String"
+resultType="com.lookation.dto.PackageDTO">
+	SELECT CODE, APPLY_CODE, NAME
+	     , TIME_START, TIME_END
+	     , PRICE, APPLY_DATE
+	FROM APPLY_PACKAGE_VIEW
+	WHERE BOOK_CODE IS NULL
+</select>
+
+
+<select id="countApply" resultType="java.lang.Integer">
+	SELECT COUNT(*) AS COUNT
+	FROM APPLY_PACKAGE
+	WHERE APPLY_PACKAGE_CODE = #{apply_code}
+</select>
+
+
+<insert id="insertApply">
+	INSERT INTO APPLY_PACKAGE(APPLY_PACKAGE_CODE, PACKAGE_CODE, APPLY_DATE)
+	VALUES(F_CODE('AP', AP_SEQ.NEXTVAL), #{code}, TO_DATE(#{apply_date}, 'YYYY-MM-DD'))
+</insert>
+
+
+<update id="updateApply">
+	UPDATE APPLY_PACKAGE
+	SET APPLY_DATE = #{apply_date}
+	WHERE APPLY_PACKAGE_CODE = #{apply_code}
+</update>
+
+
+<delete id="deleteApply">
+	DELETE 
+	FROM APPLY_PACKAGE
+	WHERE APPLY_PACKAGE_CODE = #{apply_code}
+</delete>
+	
+</mapper>

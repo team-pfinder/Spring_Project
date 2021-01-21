@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.INoticeManagerDAO">
+
+	<!-- NoticeManager(관리자 도움말) 목록 쿼리문 -->
+	<select id="A_noticeList" resultType="com.lookation.dto.NoticeDTO">
+		SELECT NOTICE_CODE, IMPORTANT_NOTICE, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE
+		FROM NOTICE_VIEW
+	</select>
+	
+	<!-- NoticeManager(관리자 공지사항) <<작성>> 쿼리문 -->
+	<insert id="add">
+		INSERT INTO NOTICE (NOTICE_CODE, IMPORTANT_NOTICE_CODE, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE)
+    	VALUES(F_CODE('N',N_SEQ.NEXTVAL),#{important_notice_code},#{notice_title},#{notice_content},SYSDATE)
+	</insert>
+	
+	<!-- NoticeManager(관리자 공지사항) <<삭제>> 쿼리문 -->
+	<delete id="remove">
+		DELETE FROM NOTICE WHERE NOTICE_CODE = #{notice_code}
+	</delete>
+	
+	<!-- NoticeManager(관리자 공지사항) <<수정>> 쿼리문 -->
+ 	<update id="update">
+		UPDATE NOTICE SET IMPORTANT_NOTICE_CODE = #{important_notice_code}
+  		  , NOTICE_TITLE = #{notice_title}
+          , NOTICE_CONTENT = #{notice_content}
+          , NOTICE_DATE = SYSDATE
+		WHERE NOTICE_CODE = #{notice_code}
+	</update>
+	
+	<select id="search" resultType="com.lookation.dto.NoticeDTO">
+ 		SELECT NOTICE_CODE,IMPORTANT_NOTICE_CODE,NOTICE_TITLE,NOTICE_CONTENT,NOTICE_DATE
+		FROM NOTICE
+		WHERE NOTICE_CODE = #{notice_code}
+ 	</select>
+</mapper>

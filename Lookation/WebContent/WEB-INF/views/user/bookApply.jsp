@@ -1,8 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
 %>
 
 <!DOCTYPE html>
@@ -98,7 +100,9 @@
 		
 		// 전화번호 정규식
 		var regTel = /^\d{2,3}-\d{3,4}-\d{4}$/;
-		
+		// 이름 정규식
+		var regName = /^[가-힣]{2,10}$/;
+
 		// 전화번호 정규식 검사(입력시마다)
 		$("#tel").keyup(function()
 		{
@@ -114,6 +118,39 @@
 				$(this).removeClass("err");
 				$(this).addClass("full");
 				$("p#tel").attr("class", "pass");	
+			}
+		});
+		
+		// 이름 정규식 검사(입력시마다)
+		$("#name").keyup(function()
+		{
+			if(!regName.test($(this).val()))
+			{	
+				$(this).removeClass("full");
+				$(this).addClass("err");
+				$("p#name").attr("class", "err");
+			}
+			else
+			{
+				$(this).removeClass("err");
+				$(this).addClass("full");
+				$("p#name").attr("class", "pass");	
+			}
+		});
+		
+		
+		/* 기존 회원정보로 세팅 */
+		$("#setProfile").change(function()
+		{
+			if($("#setProfile").is(":checked"))
+			{
+				$("#name").prop("value", $("#hiddenName").val());
+				$("#tel").prop("value", $("#hiddenTel").val());
+			}
+			else
+			{
+				$("#name").prop("value", "");
+				$("#tel").prop("value", "");
 			}
 		});
 		
@@ -152,13 +189,6 @@
 				return;
 			}
 			
-	/* 		// 이메일 형식이 맞지 않을경우
-			if(!regEmail.test($("#email").val()))
-			{
-				alert("이메일 형식이 알맞지 않습니다. 다시 입력해주세요.");
-				return;
-			}
-			 */
 			// 예약자명이 누락되었을 경우
 			if($("#name").val()=="")
 			{
@@ -171,26 +201,18 @@
 			if($("input[type=checkbox]").filter(':checked').size()<4)
 			{
 				alert("모든 이용약관에 동의해 주세요.");
+				return;
 			};
 			
 			$("#bookForm").submit();
 			
 		});
 		
+		
+		
 	});
 	
-	// 전화번호 실시간 중복검사
-	function telAjaxRequest()
-	{
-		 $.post("ajaxmodifytel.action"
-	         , {tel : $("input#tel").val()}
-	         , function(data) 
-	           {
-	               $("span#tel").html(data);
-	           });
-	}
-	
-	// 체크박스 하나라도 해제되면
+	// 체크박스 하나라도 해제시
 	// □ 전체 동의 체크박스 해제
 	function oneCheckFunc( obj )
 	{
@@ -238,7 +260,8 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-8 w-100 p-md-5 res-form-box">
-				
+				<input type="hidden" value="${profile.member_name }" id="hiddenName"> 
+				<input type="hidden" value="${profile.member_tel }" id="hiddenTel">
 				<p class="ftco-animate">
 					<img src="<%=cp%>/images/image_1.jpg" alt="템플릿 이미지" class="img-fluid">
 				</p>
@@ -270,17 +293,17 @@
 				<!-- ※ 임시!!! 전페이지에서 받아와야 할 정보들 -->
 				<div class="form-inline form-group">
 					<p class="col-md-2 vertical-top">패키지명</p>
-					<p class="col-md-10" name="package_name">극락</p>
+					<p class="col-md-10">${selectPack.package_name }</p>
 				</div>
 				
 				<div class="form-inline form-group">
 					<p class="col-md-2">예약일시</p>
-					<p class="col-md-10"><span name="apply_package_date">2020-12-31</span>일 <span name="package_start">12</span>시 ~ <span name="package_end">15</span>시</p>
+					<p class="col-md-10">${fn:substring(selectPack.apply_date, 0, 10)} ${selectPack.package_start}시 ~ ${selectPack.package_end}시 (총 ${selectPack.hours} 시간)</p>
 				</div>
 				
 				<div class="form-inline form-group">
 					<p class="col-md-2">예약인원</p>
-					<p class="col-md-10">1명</p>
+					<p class="col-md-10">${book_people }</p>
 				</div>
 
 				<h2 class="mb-3 mt-5 font-weight-bold"># 예약자 정보</h2><hr>
@@ -288,7 +311,7 @@
 					<!-- 체크박스 클릭시 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴
 						 수정 가능 -->
 					<div class="text-right mr-3">
-						<input type="checkbox" id="loadUserInfo" class="form-control-m">
+						<input type="checkbox" id="setProfile" class="form-control-m">
 						<label for="loadUserInfo">입력한 회원정보와 동일</label><br>
 					</div>
 						 
@@ -301,22 +324,13 @@
 									</label>
 								</div>
 								<div class="div-col">
-									<input type="text" id="name" name="actual_booker" class="form-control"
-									 	placeholder="예약자명" required="required" maxlength="10" style="width: 250px;">
-								</div>
-							</div>
-							
-							<div class="div-row">
-								<div class="div-col">
-									<label for="book_people" class="control-label">
-									<small class="text-danger">(*)</small>예약인원</label>
-								</div>
-								<div class="div-col">
 									<div class="form-inline form-group">
-										<input type="number" min=1 max=30 id="book_people" name="" class="form-control" style="width: 100px;"
-										placeholder="숫자만 입력해주세요.">
+									<input type="text" id="name" name="actual_booker" class="form-control"
+									 	placeholder="예약자명" required="required" maxlength="20" style="width: 250px;">
 									</div>
+									<p class="pass" id="name">예약자명의 형식이 잘못되었습니다.</p>
 								</div>
+								
 							</div>
 							
 							<div class="div-row">
@@ -327,8 +341,8 @@
 								<div class="div-col">
 									<div class="form-inline form-group">
 										<!-- 숫자만 입력하도록 정규식 검증 -->
-										<input type="tel" id="actual_booker_tel" name="actual_booker_tel" class="form-control full" style="width: 250px;"
-										placeholder="'-' 포함하여 입력해주세요.">
+										<input type="tel" id="tel" name="actual_booker_tel" class="form-control" style="width: 250px;"
+										placeholder="'-' 포함하여 입력해주세요." required="required">
 									</div>
 									<p class="pass" id="tel">연락처 형식이 알맞지 않습니다.</p>
 								</div>
@@ -337,11 +351,15 @@
 							<div class="div-row">
 								<div class="div-col"><label for="4" class="control-label"><small class="text-danger">(*)</small>요청사항</label></div>
 								<div class="div-col">
-									<textarea class="form-control" rows="4" name="book_req"
+									<textarea class="form-control" rows="4" name="book_req" required="required"
 									placeholder="남기고 싶은 말을 적어주세요. (최대 100자까지 입력 가능)"  maxlength="100" style="resize: none;"></textarea>
 								</div>
 							</div>
 							
+							<!-- 임시 코드 -->
+							<input type="hidden" value="${profile.member_code }" name="member_code">
+							<input type="hidden" value="${apply_package_code }" name="apply_package_code">
+							<input type="hidden" value="${book_people }" name="book_people">
 						</div><!-- End .div-table-body -->
 					</div><!-- End .div-table -->
 				</form>
@@ -388,7 +406,7 @@
 				<div class="ftco-animate">
 					<div class="memo">
 						<span class="text-body">이용 1일전 23:59까지만 취소 가능.</span>
-						<span class="text-danger mb-4">이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 						문의하세요.</span>
+						<span class="text-danger mb-4">이용당일(첫 날) 환불은 불가능합니다. 관련 사항은 호스트에게 직접 문의하세요.</span>
 					</div>
 			
 					
@@ -493,30 +511,31 @@
 							<div class="div-table-body">
 								<div class="div-row">
 									<div class="div-col font-weight-bold">예약날짜</div>
-									<div class="div-col text-right det">2020.12.31(목)</div>
+									<div class="div-col text-right det">${fn:substring(selectPack.apply_date, 0, 10)}</div>
 								</div>
 								
 								<div class="div-row">
 									<div class="div-col font-weight-bold">패키지명</div>
 									<div class="div-col text-right det">
-									극락</div>
+									${selectPack.package_name}</div>
 								</div>
 								
 								<div class="div-row">
 									<div class="div-col font-weight-bold">예약시간</div>
-									<div class="div-col text-right det">12시 ~ 15시(3시간)</div>
+									<div class="div-col text-right det">
+								${selectPack.package_start}시 ~ ${selectPack.package_end}시 총 ${selectPack.hours} 시간</div>
 								</div>
 								
 								<div class="div-row">
 									<div class="div-col font-weight-bold">예약인원</div>
-									<div class="div-col text-right det">5명</div>
+									<div class="div-col text-right det">${book_people}</div>
 								</div>
 								
 							</div><!-- End .div-table-body -->
 						</div><!-- End .div-table -->
 						<div class="divider my-3"></div>
 						<div class="text-right">
-							<h3 name="package_price"><span class="icon-won mr-3"></span>60,000 원</h3>
+							<h3><span class="icon-won mr-3"></span>${selectPack.package_price } 원</h3>
 						</div>
 						<br>
 						

@@ -5,35 +5,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>공지사항 수정하기</title>
+<c:import url="${cp}/includes/includes_admin.jsp"></c:import>
+
+<script type="text/javascript">
+$(document).ready(function()
+		{
+			$("#btn_list").click(function()
+			{
+				
+				if(confirm("목록으로 돌아가시겠습니까?"))
+				{
+					$(location).attr("href","noticemanager.action");
+				}
+			});
+			
+			$("#btn_submit").click(function()
+			{
+				
+				$("#updateForm").submit();
+			});
+		});
+</script>
 
 </head>
-
 <body id="page-top">
-
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-
-		<!-- Sidebar -->
-<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
-
-		<!-- End of Sidebar -->
-
+	<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
+		
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 
 			<!-- Main Content -->
 			<div id="content">
-
-<c:import url="${cp}/includes/header.jsp"></c:import>
-
+			<c:import url="${cp}/includes/header.jsp"></c:import>
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- 상품등록 폼 -->
+					<!-- 도움말 등록 폼 -->
 					<div class="row">
 						<!-- left column -->
 						<div class="col-md-12">
@@ -45,38 +56,44 @@
 								<br>
 
 								<!-- /.box-header -->
-								<form id='insertForm' role="form" action="/admin/product/insert" method="post" enctype="multipart/form-data">
+								<form id='updateForm' role="form" action="noticeupdate.action" method="post" >
 									<div class="box-body">
+									<input type="hidden" value="${search.notice_code }" name="notice_code">
 										<label for="exampleInputEmail1">중요도</label>
 										<div class="form-group">
-											<select class="form-control" id="mainCategory" name="cate_prtcode"
+											<select class="form-control" id="mainCategory" name="important_notice_code"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
 												<option value="default">전체</option>
-												<option>일반</option>
-												<option>중요 공지</option>
+												<option value="IN000002">일반공지</option>
+												<option value="IN000001">중요공지</option>
 											</select>
-											
+										</div><!-- end form-group -->
 
-										</div>
-
+										
 										<div class="form-group">
-											<label for="exampleInputEmail1">제목</label> <input
-												type="text" id="pro_name" name="pro_name"
-												class="form-control">
+											<label for="exampleInputEmail1">제목</label> 
+											<input type="text" id="help_title" name="notice_title" class="form-control" 
+											value="${search.notice_title }">
 										</div>
 
 
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
-											<textarea class="form-control" id="pro_detail"
-												name="pro_detail" rows="8"></textarea>
+											<textarea class="form-control" id="notice_content" name="notice_content" rows="8" >
+											${search.notice_content }
+											</textarea>
 										</div>
 
 										<div class="form-group">
-											<label for="exampleInputEmail1">Upload Image</label> <input
-												type="file" id="file1" name="file1" class="form-control" />
+											<label for="exampleInputEmail1">Upload Image</label> 
+											<input type="file" id="file1" name="file1" class="form-control" />
 										</div>
-									</div>
+										
+									</div><!-- end box-body -->
+								
+								</form>
+								</div>
+								</div>
 							</div>
 							<!-- /.container-fluid -->
 							
@@ -89,9 +106,9 @@
                            </ul>
 
                            <button id="btn_submit" type="button" class="btn btn-primary">수정하기</button>
-                           <button id="btn_submit" type="button" class="btn btn-primary">목록으로</button>
+                           <button id="btn_list" type="button" class="btn btn-primary" onclick="location.href='noticemanager.action'">목록으로</button>
                         </div>
-                     </form>
+                     
                   </div>
 
 						</div>
@@ -113,10 +130,14 @@
 				</div>
 				<!-- End of Page Wrapper -->
 
+				
+				
 				<!-- Scroll to Top Button-->
 				<a class="scroll-to-top rounded" href="#page-top"> <i
 					class="fas fa-angle-up"></i>
 				</a>
+
+
 
 				<!-- Logout Modal-->
 				<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
@@ -141,8 +162,8 @@
 						</div>
 					</div>
 				</div>
-				
-				<script>
+	
+			<!-- 	<script>
 				$(document).ready(function(){
 			         
 			         /* CkEditor 설정 */
@@ -160,7 +181,7 @@
 			            
 			         };
 			         CKEDITOR.replace("pro_detail", ckeditor_config);
-				</script>
+				</script> -->
 </body>
 
 </html>

@@ -14,16 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class Email
 {
-//<<<<<<< Updated upstream
 
-	/*
+
 	@Autowired
-
-=======
-	//@Autowired
->>>>>>> Stashed changes
 	private IEmailService emailService;
-	*/
+
+	
 	@Autowired
 	private SqlSession sqlSession;
 	

@@ -34,20 +34,32 @@ public class BookApply
 	
 	// BookApply 화면으로 이동
 	@RequestMapping(value="/actions/bookapply.action", method = RequestMethod.GET)
-	/*public String bookapplyBasic(ModelMap model, String loc_code, String member_code)*/
-	public String bookapplyBasic(Model model, BookApplyDTO dto)
+	public String bookapplyBasic(Model model, BookApplyDTO dto, HttpServletRequest request)
 	{	
 		IBookApplyDAO dao = sqlSession.getMapper(IBookApplyDAO.class);
 		
-		// loc_code가 안받아져 ... 
-
-		// ※ 임시
-		String member_code = "M000001";
-		String loc_code = "L000001";
+		// ※ 임시 ------------------------------------------------------
+		String member_code = "M000002";
+		String loc_code = "L000002";
+		// --------------------------------------------------------------
 		
+		// 이전 폼(locationDetail) 에서
+		// apply_package_code 와 book_people 입력한 내용 받아옴
+		String apply_package_code = request.getParameter("apply_package_code"); 
+		String book_people = request.getParameter("book_people");
+		
+		// 공간정보 출력
 		model.addAttribute("loc_code", loc_code);
+		model.addAttribute("profile", dao.setProfile(member_code));
 		model.addAttribute("basic", dao.bookapplyBasic(loc_code));
 		model.addAttribute("bizinfo", dao.bookapplyBizInfo(loc_code));
+		
+		// 선택한 패키지의 정보 출력
+		model.addAttribute("selectPack", dao.bookPackage(apply_package_code));
+		model.addAttribute("apply_package_code", apply_package_code);
+		model.addAttribute("book_people", book_people);
+		
+		System.out.println(apply_package_code + "+" + book_people);
 		
 		return "../WEB-INF/views/user/bookApply.jsp";
 	}
@@ -55,47 +67,32 @@ public class BookApply
 	
 	// 예약 및 결제
 	@RequestMapping(value="/actions/bookpay.action", method = RequestMethod.POST)
-	public String MileageCheck(ModelMap model, BookApplyDTO dto)
+	public String MileageCheck(ModelMap model, BookApplyDTO dto, String member_code)
 	{
 		IBookApplyDAO dao = sqlSession.getMapper(IBookApplyDAO.class);
 		
-		// 멤버 코드 임시
-		String member_code = "M000001";
-		
 		// 해당 멤버의 마일리지 잔액 가져오기
 		int mileage = dao.mileageCheck(member_code);
+		//System.out.println("마일리지 : " + mileage);
 		
-		// 패키지 금액 가져오기
-		/* 패키지 정보 임시 */
-		int package_price = 10000;
-		String apply_pakcage_code = "AP000001"; // 1~3
-		int book_people = 4;
+		/* 패키지 정보 임시로 전페이지 라디오버튼에 심어놓음 */
 		
-		
-		if(mileage >= package_price)
+		// 마일리지 가격이 더 크면
+		if(mileage >= dto.getPackage_price())
 		{
+			// 예약내역 테이블 추가
+			dao.insertBookList(dto);
 			
-			System.out.println(book_people);
-			// 예약내역에 추가
+			// 실예약자, 결제내역 테이블 추가
+			dao.actualBooking(dto);
 			
-			dao.insertBookList(member_code);
-			// 해당 예약내역의 예약코드 받아옴
-			String book_code = dao.bookCheck(member_code);
-			
-			System.out.println(book_code);
-			
-			// 실예약자 추가
-			dao.actualBooker(book_code);
-			
-			// 결제내역테이블 추가 
-			dao.insertBookPay(dto);
+			model.addAttribute("notice", dao.bookNotice(member_code));
 			
 			return "../WEB-INF/views/user/bookApplyNotice.jsp";
-			
 		}
 		else
 		{
-			return "../WEB-INF/views/ajax/AccountAjax.jsp";
+			return "../WEB-INF/views/user/mypageMember.jsp";
 		}
 		
 	}

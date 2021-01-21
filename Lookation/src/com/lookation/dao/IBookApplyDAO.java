@@ -12,19 +12,17 @@ public interface IBookApplyDAO
 	
 	public BookApplyDTO bookapplyBizInfo(String loc_code);
 	
-	public BookApplyDTO bookapplyCaution(String loc_code);
-	
-	public BookApplyDTO bookapplyPackage(String loc_code, String package_appply_date);
+	public BookApplyDTO bookPackage(String apply_package_code);
+
+	public BookApplyDTO setProfile(String member_code);
 	
 	public int mileageCheck(String member_code);
 	
-	public int insertBookList(String member_code);
+	public int insertBookList(BookApplyDTO dto);
 	
-	public String bookCheck(String member_code);
+	public int actualBooking(BookApplyDTO dto);
 	
-	public BookApplyDTO actualBooker(String book_code);
-	
-	public int insertBookPay(BookApplyDTO dto);
+	public BookApplyDTO bookNotice(String member_code);
 
 	
 }
