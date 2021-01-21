@@ -5,6 +5,7 @@
 	String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
+<html>
 <head>
 <meta charset="UTF-8">
 
@@ -12,7 +13,7 @@
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>충전신청 관리</title>
 
-<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->	<!-- ※ 페이징처리 안됨.. 제이쿼리 → 자스 -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	<!-- ※ 페이징처리 안됨.. 제이쿼리 → 자스 -->
 <script type="text/javascript">
 	$(document).ready(function()
 	{
@@ -106,8 +107,7 @@
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<table class="table table-bordered" id="dataTable" width="100%"
-									cellspacing="0">
+								<table class="table table-bordered" id="dataTable" width="100%"	cellspacing="0">
 									<thead>
 										<tr align="center">
 											<th>번호</th>
@@ -137,8 +137,8 @@
 												<c:when test="${item.loadType eq null}">
 													<td>충전대기</td>
 													<td>
-														<button class="btn btn-primary approval" id="approval" name="approval" value="${item.regCode}">승인</button>
-														<button class="btn btn-danger denial" id="denial" name="denial" value="${item.regCode}">반려</button>
+														<button class="btn btn-primary mt-0 mb-0 approval" id="approval" name="approval" value="${item.regCode}">승인</button>
+														<button class="btn btn-danger mt-0 mb-0 denial" id="denial" name="denial" value="${item.regCode}">반려</button>
 													</td>
 												</c:when>
 												<c:when test="${not empty item.loadType}">
