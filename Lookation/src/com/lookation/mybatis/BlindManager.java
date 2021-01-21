@@ -11,7 +11,7 @@ import com.lookation.dao.IBankInfoDAO;
 import com.lookation.dao.IBlindManagerDAO;
 
 @Controller
-public class blindManagerController
+public class BlindManager
 {
 	@Autowired
 	private SqlSession sqlSession;

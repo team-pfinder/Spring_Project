@@ -11,7 +11,7 @@ import com.lookation.dto.reportHostDTO;
 
 
 @Controller
-public class reportHostController
+public class ReportHost
 {
 	@Autowired
 	private SqlSession sqlSession;

@@ -392,6 +392,22 @@
 	// JSON을 이용해 적용된 패키지 정보를 컨트롤러로 전송한다.
 	function applyAjaxRequest()
 	{
+		var arrName = new Array();
+		
+		for (var i = 0; i < array.length; i++) {
+			arrName.push(array[i]);
+		}
+	
+		var data = {'name' : arrName};
+		
+		$.ajax({
+			type : 'post',
+			url : 'nextSite.action',
+			dataType: 'json',
+			data        : formData,
+			success		: function(data) {result = data;}
+		}); 
+			
 	    var arrApply_code = new Array();
 		var arrCode = new Array();
 		var arrDate = new Array();
