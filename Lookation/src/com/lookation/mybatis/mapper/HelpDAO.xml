@@ -6,7 +6,15 @@
 
 	<!-- help(유저들 도움말) 목록 쿼리문 -->
 	<select id="U_helpList" resultType="com.lookation.dto.HelpDTO">
-		SELECT BOARD_TYPE, HELP_TITLE, HELP_DATE
+		SELECT HELP_CODE, BOARD_TYPE, HELP_TITLE, HELP_DATE
 		FROM HELP_VIEW
 	</select>
+
+	<!-- help(유저들 도움말) 게시물 상세보기 쿼리문	--> 
+	<select id="U_detailList" resultType="com.lookation.dto.HelpDTO">
+		SELECT HELP_CODE,BOARD_TYPE, HELP_TITLE, HELP_CONTENT, HELP_DATE
+		FROM HELP_VIEW
+		WHERE HELP_CODE= #{help_code}
+	</select>
+
 </mapper>

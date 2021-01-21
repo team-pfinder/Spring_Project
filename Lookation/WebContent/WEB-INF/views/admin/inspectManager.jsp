@@ -83,7 +83,7 @@ String cp = request.getContextPath();
 					<td>
 						<!-- 검수처리기능 -->
 						<button type="button" class="btn btn-primary detailBtn"
-								value="${inspect_reg_code }">검수처리</button> 
+								value="${InspectLocationDTO.inspect_reg_code }">검수처리</button> 
 					</td>
 				<!-- 
 				<tr align="center">

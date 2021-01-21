@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
-
+	String cp = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -12,9 +11,25 @@ String cp = request.getContextPath();
 <meta charset="UTF-8">
 <title>공지사항</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+<style type="text/css">
+
+.showBtn {
+opacity: 0%;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function()
+{	
+	$(".showBtn").click(function()
+	{
+		$(location).attr("href", "noticedetail.action?notice_code=" + $(this).val());
+	});
+});
+</script>
 </head>
 <body>
-
+<!-- 공지사항 이용자인지 호스트인지 몰라서 헤더 보류했구만,, , -->
 <!-- Header -->
 <div class="container pt-5">
 	<div class="row justify-content-between">
@@ -67,82 +82,123 @@ String cp = request.getContextPath();
     	<div class="row no-gutters slider-text align-items-end">
       		<div class="col-md-9 ftco-animate pb-5">
       			<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span> My Page <i class="ion-ios-arrow-forward"></i></span></p>
-        		<h1 class="mb-0 bread">도움말</h1>
+        		<h1 class="mb-0 bread">공지사항</h1>
       		</div>
     	</div>
   	</div>
 </section>
 
+ 
+
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-12">
+					<div class="wrapper">
+						<div class="row no-gutters mb-5">
 
 
-<section class="ftco-section ftco-degree-bg">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 ftco-animate">
-          <input type="hidden" value="${U_detailList.help_code }" name="help_code">
-            <h1 class="mb-3">${U_detailList.help_title }</h1>
-            <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-            <div class="meta">${U_detailList.help_date }</div>
-            <hr>
-            <br>
-            <p>${U_detailList.help_content }</p>
-            
-            
-            <div class="tag-widget post-tag-container mb-5 mt-5">
-              <div class="tagcloud">
-                <a href="#" class="tag-cloud-link">#${U_detailList.board_type }</a>
-                <!-- <a href="#" class="tag-cloud-link">Sport</a>
-                <a href="#" class="tag-cloud-link">Tech</a>
-                <a href="#" class="tag-cloud-link">Travel</a>
-                 -->
-              </div>
-            </div>
-              
-            <!-- 버튼 -->  
-            <div class="form-group">
-              <input type="submit" value="목록으로" class="btn py-3 px-4 btn-primary" style="float: right;">
-            </div>
+							<div class="card-body">
+								<div align="center">
+										<form action="#" class="searchform order-lg-last">
+        								<div class="form-group d-flex">
+           								<input type="text" class="form-control pl-3" placeholder="Search">
+           									<button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
+         								</div>
+       								</form>
+								</div>
+								<div class="table-responsive">
+									<table class="table table-bordered" id="dataTable" width="100%"
+										cellspacing="0">
+										<thead>
+											<tr>
+												<th>유형</th>
+												<th>제목</th>
+												<th>작성자</th>
+												<th>작성일자</th>
+											</tr>
+										</thead>
+										
+										<tbody>	
+											<c:forEach var="NoticeDTO" items="${U_noticeList }">
+											
+											<tr align="center">
+											
+												<td>${NoticeDTO.important_notice}</td>
+												<td>${NoticeDTO.notice_title }
+												<input type="button" value="${NoticeDTO.notice_code }" class="showBtn"></td>
+												<td><span class="icon-person"></span>Admin</td>
+												<td><span class="icon-calendar mr-1"></span>${NoticeDTO.notice_date }</td>
+												
+												
+											</tr>
+											
+	
 
-          
+										</c:forEach>
+										</tbody>
 
-          </div> <!-- end class="col-lg-8 ftco-animate" -->
-          
-          <!-- 사이드 -->
-          <div class="col-lg-4 sidebar pl-lg-5 ftco-animate">
-            
-            <div class="sidebar-box ftco-animate">
-              <div class="categories">
-                <h3>Categories</h3>
-                <li><a href="#">Construction <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">House Renovation <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Painting <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Architecture Design <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Interior Design <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Preconstruction Planning <span class="ion-ios-arrow-forward"></span></a></li>
-              </div>
-            </div>
-
-            <div class="sidebar-box ftco-animate">
-              <h3>이전 이후 공지</h3>
-              <div class="block-21 mb-4 d-flex">
-                <div class="text">
-                  <h3 class="heading"><a href="#">▲도움말1</a></h3>
-                  <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> Jan. 30, 2020</a></div>
-                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                  </div>
-                </div>
-              </div>
-              <div class="block-21 mb-4 d-flex">
-                <div class="text">
-                  <h3 class="heading"><a href="#">▼도움말3</a></h3>
-                  <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> Jan. 30, 2020</a></div>
-                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                  </div>
-                </div>
-              </div>
+									</table>
+								</div>
+							</div>
+						</div>
 						
+						<div class="row">
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-map-marker"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span>Address:</span> 198 West 21th Street, Suite 721 New
+											York NY 10016
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-phone"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span>Phone:</span> <a href="tel://1234567920">+ 1235
+												2355 98</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-paper-plane"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="dbox w-100 text-center">
+									<div
+										class="icon d-flex align-items-center justify-content-center">
+										<span class="fa fa-globe"></span>
+									</div>
+									<div class="text">
+										<p>
+											<span>Website</span> <a href="#">yoursite.com</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -260,7 +316,7 @@ String cp = request.getContextPath();
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
 
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+
 
 	<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 

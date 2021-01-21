@@ -106,7 +106,7 @@
 					<td>
 						<!-- 수정기능 -->
 						<button type="button" class="btn btn-warning" value="${HelpDTO.help_code}" 
-						onclick="location.href='../actions/helpupdateform.action?help_code=' + this.value;">수정</button> 
+						onclick="location.href='../actions/helpupdateform.action?help_code=' + this.value;">수정</button>			 											 
 						<!-- 삭제기능 -->
 						<button type="button" class="btn btn-danger " value="${HelpDTO.help_code}" 
 						onclick="location.href='../actions/helpdelete.action?help_code=' + this.value;">삭제</button>
