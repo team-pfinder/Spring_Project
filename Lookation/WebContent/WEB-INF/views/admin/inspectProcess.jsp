@@ -16,7 +16,7 @@ String cp = request.getContextPath();
 <script src="../js/jquery.min.js"></script>
 <script src="../js/owl.carousel.min.js"></script>
 
-
+<!-- 어서오세욤......여기가 프로세스 jsp 부분이예여  -->
 
 <title>검수처리</title>
 
@@ -54,8 +54,8 @@ $(document).ready(function()
 		{
 			if (confirm("검수 처리 승인하시겠습니까?"))
 			{
-			 //alert($(this).val());
-			$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() );
+			 alert($(this).val());
+			// $(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() );
 			}
 		});
 		$(".inspectNO").click(function()	//-- 검수반려
@@ -85,15 +85,15 @@ $(document).ready(function()
 	<!-- 전체 페이지 -->
 	<div id="wrapper">
 
-		<!-- 사이드 메뉴
-		<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import> -->
+		<!-- 사이드 메뉴 -->
+		<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
 
 		<!-- 메인 페이지 -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
 
-				<!-- Header
-<c:import url="${cp}/includes/header.jsp"></c:import> -->
+				<!-- Header -->
+<c:import url="${cp}/includes/header.jsp"></c:import>
 
 				<!-- 주요 내용 -->
 				<div class="container-fluid">
@@ -213,7 +213,7 @@ $(document).ready(function()
 								<!-- 여기부분은 저거 inspect_reg_code 잘받아오나보려고 dto1. 일케해놧는데 상관없나? -->
 							<button id="btn_submit" type="button"
 								class="btn btn-success btn-block inspectOK"
-								value="${dto1.inspect_reg_code }">완료</button>
+								value="code000001">완료</button> 이거 실행해서 한번만눌러볼래
 							<br>
 							<button id="btn_submit" type="button"
 								class="btn btn-danger btn-block inspectNO"

@@ -6,20 +6,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import com.lookation.util.IEmailService;
+import com.lookation.util.EmailManager;
 
 //※ Spring 이 제공하는 『Controller』 인터페이스를 구현함으로써
 //사용자 정의 컨트롤러 클래스를 구성한다.
 
 public class SendSignUpEmailController implements Controller
 {
-	private IEmailService util;
-
-	public void setUtil(IEmailService util)
-	{
-		this.util = util;
-	}
-
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
@@ -102,7 +95,7 @@ public class SendSignUpEmailController implements Controller
 		String titleType = (identify.equals("host") ? "호스트" : "이용자");
 		String title = "■■■■■ " + titleType + " 계정생성 인증 메일입니다.  ■■■■■";
 		
-		util.sendHtml(email, "Lookation", title, html);
+		EmailManager.sendHtml(email, "Lookation", title, html);
 		
 		/*
 		 * 	

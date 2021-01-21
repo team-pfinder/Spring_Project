@@ -17,9 +17,6 @@
 	String originalFileName = request.getParameter("originalFileName");
 	
 	// 파일 다운로드
-	System.out.println(savePath);
-	
 	out.clear();
 	boolean flag = FileManager.doFileDownload(saveFileName, originalFileName, savePath, response);
-	System.out.println(flag);
 %>
