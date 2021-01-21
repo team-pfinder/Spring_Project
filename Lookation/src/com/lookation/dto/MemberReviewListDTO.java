@@ -2,9 +2,23 @@ package com.lookation.dto;
 
 public class MemberReviewListDTO
 {
-	String member_code, review_code, loc_code
+	private String member_code, review_code, loc_code
 	, review_content, review_date, loc_name, removecount, member_nickname
 	, review_rate;
+	
+	private int count;
+	
+	
+	
+	public int getCount()
+	{
+		return count;
+	}
+
+	public void setCount(int count)
+	{
+		this.count = count;
+	}
 
 	public String getMember_code()
 	{

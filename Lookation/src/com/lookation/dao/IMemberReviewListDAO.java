@@ -7,6 +7,9 @@ import com.lookation.dto.MemberReviewListDTO;
 
 public interface IMemberReviewListDAO
 {
+	// 게시글 전체 개수세기
+	public int countReview(String member_code);
+		
 	// 이용자 리뷰 List
 	public ArrayList<MemberReviewListDTO> memReviewList(String member_code);
 	
