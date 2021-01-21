@@ -63,7 +63,6 @@ public class Email
 		String titleType = (identify.equals("host") ? "호스트" : "이용자");
 		String title = "■■■■■ " + titleType + " 비밀번호 변경 인증 메일입니다.  ■■■■■";
 		
-
 		EmailManager.sendHtml(email, "lookation", title, html);
 
 		

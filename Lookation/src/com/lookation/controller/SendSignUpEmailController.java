@@ -8,7 +8,6 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import com.lookation.util.EmailManager;
 
-
 //※ Spring 이 제공하는 『Controller』 인터페이스를 구현함으로써
 //사용자 정의 컨트롤러 클래스를 구성한다.
 
