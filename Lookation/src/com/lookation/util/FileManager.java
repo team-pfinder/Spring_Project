@@ -3,6 +3,7 @@ package com.lookation.util;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -17,37 +18,34 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class FileManager
 {
-	public static ArrayList<String> upload(HttpServletRequest request, String saveFolderName)
+	
+	public static MultipartRequest upload(HttpServletRequest request, String saveFolderName) 
+			throws IOException
 	{
 		// 올린 파일들의 경로정보를 받아온다.(상대경로 /Lookaion 부터)
-		ArrayList<String> result = new ArrayList<String>();
-		
 		String realFolder = "";
-		String fileName = "";
 		int maxSize = 1024*1024*5;
 		String encType = "utf-8";
 		ServletContext sContext = request.getServletContext();
 		realFolder = sContext.getRealPath(saveFolderName);
 		
-		try
-		{	
-			MultipartRequest multi = new MultipartRequest(request, 
-					realFolder, maxSize, encType, new DefaultFileRenamePolicy());
-			Enumeration<?> files = multi.getFileNames(); 
-			 
-			while(files.hasMoreElements())
-			{
-				String file = (String)files.nextElement();
-				fileName = multi.getFilesystemName(file);
-				result.add(fileName);
-			}			
-		}
-		catch(Exception e)
+		return new MultipartRequest(request, 
+				realFolder, maxSize, encType, new DefaultFileRenamePolicy());
+	}
+	
+	public static ArrayList<String> getFileNames(MultipartRequest multi)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		String fileName = "";
+
+		Enumeration<?> files = multi.getFileNames();
+		while (files.hasMoreElements())
 		{
-			System.out.println(e.toString());
+			String file = (String) files.nextElement();
+			fileName = multi.getFilesystemName(file);
+			result.add(fileName);
 		}
-		
-		System.out.println(result.size());
+
 		return result;
 	}
 	
