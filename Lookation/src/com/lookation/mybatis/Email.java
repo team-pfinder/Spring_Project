@@ -16,12 +16,11 @@ public class Email
 {
 
 
-	/*
-	 * @Autowired private IEmailService emailService;
-	 */
+	@Autowired
+//	private IEmailService emailService;
 
 	
-	@Autowired
+//	@Autowired
 	private SqlSession sqlSession;
 	
 	@RequestMapping(value="/actions/sendconfirmemail.action", method=RequestMethod.POST)

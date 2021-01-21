@@ -238,6 +238,11 @@ margin-top: 1.9em;
 	margin: 0;
 }
 
+/*=== 글자 튀어나가는것 ===*/
+p {
+	word-break:break-all;
+}
+
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
@@ -381,8 +386,9 @@ margin-top: 1.9em;
 			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 			window.open(url, "", option);
 		}); 
-		
 	
+	});
+
 	// 질문 작성하는 팝업
 	function writeQna()
 	{	
@@ -402,8 +408,6 @@ margin-top: 1.9em;
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
 	}
-	
-	});
 	
 </script>
 </head>

@@ -21,10 +21,12 @@ public class Package
 {
 	@Autowired
 	public SqlSession sqlSession;
+
 	
 	// 패키지 적용폼
 	@RequestMapping(value="/actions/packageapplyform.action", method=RequestMethod.GET)
 	public String packageApplyForm(HttpServletRequest request, Model model)
+
 	{
 		/* 나중에
 		// 세션 검사 
@@ -116,6 +118,5 @@ public class Package
 		
 		return "";
 	}
-	
-	
+
 }

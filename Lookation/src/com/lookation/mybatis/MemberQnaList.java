@@ -1,7 +1,6 @@
 package com.lookation.mybatis;
 
 
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lookation.dao.IMemberQnaListDAO;
 import com.lookation.dto.MemberQnaListDTO;
-import com.lookation.util.Pager;
 
 @Controller
 public class MemberQnaList
@@ -25,7 +23,7 @@ public class MemberQnaList
 	public String memberQnaList(String member_code, Model model)
 	{
 		/* 임시 --------------------------- */
-		member_code= "M000001";
+		member_code= "M000003";
 		/* -------------------------------- */
 		IMemberQnaListDAO dao = sqlSession.getMapper(IMemberQnaListDAO.class);
 		

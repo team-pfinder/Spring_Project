@@ -32,8 +32,24 @@ public class Search
 		
 		// 파라미터 키워드값 받음
 		String keyword = request.getParameter("keyword");
+		String order = request.getParameter("order");
+		
 		model.addAttribute("view", dao.searchKeyword(keyword));
 		
+		System.out.println(keyword + "&" + order);
+		
 		return "/WEB-INF/views/user/search.jsp";
-	};
+	}
+	
+	@RequestMapping(value="/actions/searchorder.action", method = RequestMethod.GET)
+	public String searchOrder(Model model, HttpServletRequest request)
+	{
+		ISearchDAO dao = sqlSession.getMapper(ISearchDAO.class);
+		
+		// 파라미터 키워드값 받음
+		String order = request.getParameter("order");
+		System.out.println("22"+order);
+		
+		return "redirect:search.action?order="+order;
+	}
 }
