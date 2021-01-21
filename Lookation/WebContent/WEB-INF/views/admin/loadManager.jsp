@@ -13,7 +13,7 @@
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>충전신청 관리</title>
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	<!-- ※ 페이징처리 안됨.. 제이쿼리 → 자스 -->
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->	<!-- ※ 페이징처리 안됨.. 제이쿼리 → 자스 -->
 <script type="text/javascript">
 	$(document).ready(function()
 	{
