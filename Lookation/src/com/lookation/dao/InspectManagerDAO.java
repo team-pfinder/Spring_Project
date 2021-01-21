@@ -248,7 +248,39 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	      return result;
 	   }
 	   
-	  
-	//검수 승인
-	//검수 반려
+	   	// 여기서 매개변수 inspect_reg_code 아니라 여기관련 dto 받아서
+	   // dto.getXXX 로 세개 맞게 세팅해줘야하고
+	   // inspect_type_code는 완료/반려에 맞게 입력하니까 ?가 아니라 --> 저걸 지우고여기서
+	   // 숫자 입력해도 될 것 같고
+	   // inspect_proc_reason은 이전 폼에서 받고
+	   // inspect_reg_code는 select문 써서(이거 찾는 메소드 하나 더 추가) 받아와서 넣어야할듯...
+	   
+		 //검수처리(완료) 
+		@Override
+		public int Inspect(InspectLocationDTO dto) throws SQLException
+		{
+			int result = 0;
+			
+			Connection conn = dataSource.getConnection();
+			
+			
+			String sql = "INSERT INTO INSPECT_PROC_LIST (INSPECT_PROC_CODE"
+						+ ", INSPECT_REG_CODE, INSPECT_TYPE_CODE" 
+						+ ", INSPECT_PROC_REASON ,INSPECT_PROC_DATE)" 
+						+ " VALUES (F_CODE('IP', IP_SEQ.NEXTVAL), ?, ?, ?, SYSDATE)"; 
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getInspect_reg_code());
+			pstmt.setString(2, dto.getInspect_type_code());
+			pstmt.setString(3, dto.getInspect_proc_reason());
+			
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			conn.close();
+			
+			return result;
+		}
+
 }

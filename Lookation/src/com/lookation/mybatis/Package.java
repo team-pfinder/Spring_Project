@@ -17,7 +17,7 @@ public class Package
 {
 	@Autowired
 	public SqlSession sqlSession;
-	
+	/*
 	// 패키지
 	@RequestMapping(value="/actions/packageInfo.action", method=RequestMethod.GET)
 	public String packageInfo(HttpServletRequest request, Model model)
@@ -58,4 +58,5 @@ public class Package
 		String result = "noSigned";
 		return "";
 	}
+	*/
 }

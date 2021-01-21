@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.INoticeDAO">
+
+	<!-- Notice(유저들 [1.중요/2.일반]- 최근 날짜순 공지사항) 목록 쿼리문 -->
+	<select id="U_noticeList" resultType="com.lookation.dto.NoticeDTO">
+		SELECT NOTICE_CODE, IMPORTANT_NOTICE, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE,IMPORTANT_NOTICE_CODE
+		FROM UNOTICE_VIEW
+        ORDER BY IMPORTANT_NOTICE_CODE ASC , NOTICE_DATE DESC
+	</select>
+	
+	<!-- Notice(유저들 공지사항) 게시물 상세보기 쿼리문	-->
+	<select id="U_ndetailList" resultType="com.lookation.dto.NoticeDTO">
+		SELECT NOTICE_CODE, IMPORTANT_NOTICE, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_DATE,IMPORTANT_NOTICE_CODE
+		FROM UNOTICE_VIEW
+		WHERE NOTICE_CODE= #{notice_code }
+	</select>
+
+</mapper>

@@ -10,7 +10,7 @@ public interface IInspectManagerDAO
 	//검수 신청
 	public ArrayList<InspectLocationDTO> list() throws SQLException;
 	
-	//검수처리
+	//검수신청항목
 	public InspectLocationDTO prlist(String inspect_reg_code) throws SQLException;
 	//패키지
 	public InspectLocationDTO pakageInfo(String inspect_reg_code) throws SQLException;
@@ -24,4 +24,8 @@ public interface IInspectManagerDAO
 	
 	//사이트 
 	public InspectLocationDTO urlInfo(String inspect_reg_code) throws SQLException;
+	
+	//검수처리
+	public int Inspect(InspectLocationDTO dto) throws SQLException;
+	
 }
