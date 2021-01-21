@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.ICautionDAO">
+	<!-- 
+	<update id="modifyCaution" parameterType="com.lookation.dto.cautionDTO">
+		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">		
+			SELECT LOC_BASIC_INFO_CODE
+            FROM CAUTION
+            WHERE CAUTION_CONTENT = #{caution_content}  >> 기존
+		</selectKey>
+		
+		UPDATE CAUTION
+		SET CAUTION_CONTENT = #{}
+		WHERE LOC_BASIC_INFO_CODE = #{LOC_BASIC_INFO_CODE}
+
+	</update>
+	 -->
+	
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IPackageFormInfoDAO">
+	
+	<insert id="inputPackageFormInfo" parameterType="com.lookation.dto.packageFormInfoDTO">
+				
+		INSERT INTO PACKAGE_FORM(PACKAGE_FORM_CODE, LOC_CODE)
+		VALUES(F_CODE('PF', PF_SEQ.NEXTVAL), #{loc_code});
+
+	</insert>
+	
+</mapper>

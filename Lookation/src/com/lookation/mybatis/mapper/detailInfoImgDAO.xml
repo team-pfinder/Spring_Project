@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IDetailInfoImgDAO">
+	
+	<update id="modifyDetailInfo" parameterType="com.lookation.dto.detailInfoImgDTO">
+		
+		<selectKey keyProperty="LOC_DETAIL_INFO_CODE" resultType="java.lang.String" order="BEFORE">
+			SELECT LOC_DETAIL_INFO_CODE
+		    FROM LOC_DETAIL_IMG
+		    WHERE LOC_DETAIL_IMG_URL=#{loc_detail_img_url}
+		</selectKey>
+				
+		
+		UPDATE LOC_DETAIL_IMG
+		SET LOC_DETAIL_IMG_URL = #{} <!-- 새로 추가할 이미지 url.. -->
+		WHERE LOC_DETAIL_INFO_CODE = #{LOC_DETAIL_INFO_CODE}
+		
+	</update>
+	
+</mapper>
