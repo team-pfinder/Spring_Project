@@ -16,8 +16,9 @@ public class Email
 {
 
 
-	@Autowired
-	private IEmailService emailService;
+	/*
+	 * @Autowired private IEmailService emailService;
+	 */
 
 	
 	@Autowired
