@@ -19,10 +19,75 @@ public class InspectLocationDTO
 	
 	private String loc_web_url;
 	
+	private String inspect_reg_code;
+	
+	private String inspect_proc_code,inspect_type_code,inspect_proc_reason,inspect_proc_type,
+					inspect_type, inspect_proc_date;
+	
 
 	// InspectManager, InspectProcess
 	// getter / setter 구성
-	private String inspect_reg_code;
+	
+	public String getInspect_proc_code()
+	{
+		return inspect_proc_code;
+	}
+
+	public void setInspect_proc_code(String inspect_proc_code)
+	{
+		this.inspect_proc_code = inspect_proc_code;
+	}
+
+	public String getInspect_proc_date()
+	{
+		return inspect_proc_date;
+	}
+
+	public void setInspect_proc_date(String inspect_proc_date)
+	{
+		this.inspect_proc_date = inspect_proc_date;
+	}
+
+	public String getInspect_type_code()
+	{
+		return inspect_type_code;
+	}
+
+	public void setInspect_type_code(String inspect_type_code)
+	{
+		this.inspect_type_code = inspect_type_code;
+	}
+
+	public String getInspect_proc_reason()
+	{
+		return inspect_proc_reason;
+	}
+
+	public void setInspect_proc_reason(String inspect_proc_reason)
+	{
+		this.inspect_proc_reason = inspect_proc_reason;
+	}
+
+	public String getInspect_proc_type()
+	{
+		return inspect_proc_type;
+	}
+
+	public void setInspect_proc_type(String inspect_proc_type)
+	{
+		this.inspect_proc_type = inspect_proc_type;
+	}
+
+	public String getInspect_type()
+	{
+		return inspect_type;
+	}
+
+	public void setInspect_type(String inspect_type)
+	{
+		this.inspect_type = inspect_type;
+	}
+
 	public String getInspect_reg_code()
 	{
 		return inspect_reg_code;
