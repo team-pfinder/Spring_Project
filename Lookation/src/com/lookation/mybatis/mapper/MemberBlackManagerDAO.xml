@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IMemberBlackManagerDAO">
+	
+	<select id="listBlackMem" resultType="com.lookation.dto.MemberBlackManagerDTO">
+		SELECT MEMBER_CODE, MEMBER_EMAIL, MEMBER_NICKNAME
+		, MEMBER_BLACKLIST_REASON, YESBLACK
+		FROM VIEW_MEMBERBLACKLIST
+	</select>
+	
+	<select id="searchMemEmail" resultType="java.lang.String">
+		SELECT MEMBER_EMAIL
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_CODE = #{member_code}
+	</select>
+	
+	<insert id="regBlackMem">
+		INSERT INTO MEMBER_BLACKLIST(MEMBER_EMAIL
+		, MEMBER_BLACKLIST_REASON, MEMBER_BLACKLIST_DATE)
+		VALUES(#{member_email}, #{member_blacklist_reason}, SYSDATE)
+	</insert>
+	
+	<delete id="delBlackMem" parameterType="java.lang.String">
+		DELETE 
+		FROM MEMBER_BLACKLIST
+		WHERE MEMBER_EMAIL = #{member_email}
+	</delete>
+	
+	<select id="viewReportMem" resultType="com.lookation.dto.MemberBlackManagerDTO" parameterType="java.lang.String">
+		SELECT BOOK_REPORT_CODE, BOOK_CODE, BOOK_REPORT_TYPE
+		, BOOK_REPORT_REASON, BOOK_REPORT_DATE, MEMBER_CODE
+		FROM VIEW_MEMBER_REPORTDETAILS
+		WHERE MEMBER_CODE = #{member_code}
+	</select>
+	
+</mapper>

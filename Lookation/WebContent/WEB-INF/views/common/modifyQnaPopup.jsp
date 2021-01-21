@@ -9,6 +9,10 @@
 
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
+	
+	// 부모창 주소 받기
+	String reqpage = (String)request.getParameter("reqpage");
+	pageContext.setAttribute("reqpage", reqpage);
 %>
 <!DOCTYPE html>
 <html>
@@ -16,35 +20,65 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
-
 </head>
 <body>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<!-- 이용자 -->
-				<c:if test="${identify eq 'member'}"> 
-					<form action="modifyqna.action" method="post" target="redirect:locationdetail.action">
-						<div class="header">
-							<h3 class="title my-2">Q&A 수정하기</h3>
-						</div><!-- End .header -->
+				<c:if test="${identify eq 'member'}"> 	
+				
+					<c:choose>
+						<c:when test="${reqpage eq 'list'}">
+							<form action="modifyqnainlist.action" method="post" class="modifyForm" target="redirect:userqnalist.action">
+								<div class="header">
+									<h3 class="title my-2">Q&A 수정하기</h3>
+								</div><!-- End .header -->
+								
+								
+								<div class="body">
+									<div class="form-group">
+										<input type="hidden" value="${modify.qna_code }" name="qna_code">
+										<label for="content">내용</label>
+										<textarea class="form-control" id="content" name="qna_content"
+											rows="8" maxlength="3000">${modify.qna_content }</textarea>
+									</div>
+								</div><!-- End .body -->
+								<hr>
+				
+								<div class="text-center">
+									<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
+									<button type="submit" class="btn btn-primary" "id="submitBtn"  onClick="self.close();">작성하기</button>
+								</div>
+							</form>
+						</c:when>
 						
-						
-						<div class="body">
-							<div class="form-group">
-								<input type="hidden" value="${modify.qna_code }" name="qna_code">
-								<label for="content">내용</label>
-								<textarea class="form-control" id="content" name="qna_content"
-									rows="8" maxlength="3000">${modify.qna_content }</textarea>
-							</div>
-						</div><!-- End .body -->
-						<hr>
-		
-						<div class="text-center">
-							<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="window.close();">작성하기</button>
-						</div>
-					</form>
+						<c:otherwise>
+							<form action="modifyqna.action" method="post" class="modifyForm" target="redirect:locationdetail.action">
+								<div class="header">
+									<h3 class="title my-2">Q&A 수정하기</h3>
+								</div><!-- End .header -->
+								
+								
+								<div class="body">
+									<div class="form-group">
+										<input type="hidden" value="${modify.qna_code }" name="qna_code">
+										<label for="content">내용</label>
+										<textarea class="form-control" id="content" name="qna_content"
+											rows="8" maxlength="3000">${modify.qna_content }</textarea>
+									</div>
+								</div><!-- End .body -->
+								<hr>
+				
+								<div class="text-center">
+									<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
+									<button type="submit" class="btn btn-primary" id="submitBtn" onClick="self.close();">작성하기</button>
+								</div>
+							</form>
+						</c:otherwise>
+					
+					</c:choose>			
+					
 				</c:if>
 				
 				<!-- 호스트 -->

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.ISearchDAO">
+	
+	<!-- 검색 페이지 처음 로딩시 보이는 쿼리문 -->
+	<select id="searchLoc" resultType="com.lookation.dto.SearchDTO">
+		SELECT LOC_TYPE, LOC_NAME, LOC_ADDR, THUMBNAIL_URL
+		, REVIEW_COUNT, PRICE, AVG_RATE, MAX_PEOPLE, APPLY_DATE
+		FROM SEARCHVIEW
+	</select>
+	
+	<!-- 키워드로 검색하기 -->
+	<select id="searchKeyword" resultType="com.lookation.dto.SearchDTO">
+		SELECT DISTINCT LOC_TYPE, LOC_NAME, LOC_ADDR, NVL(AVG_RATE, 0) AS AVG_RATE, PRICE, MAX_PEOPLE, THUMBNAIL_URL
+		FROM SEARCHVIEW
+		WHERE PRICE IS NOT NULL
+		AND (LOC_TYPE LIKE '%'||#{keyword}||'%'
+		 OR LOC_NAME LIKE '%'||#{keyword}||'%'
+		 OR LOC_ADDR LIKE '%'||#{keyword}||'%')
+	</select>
+</mapper>

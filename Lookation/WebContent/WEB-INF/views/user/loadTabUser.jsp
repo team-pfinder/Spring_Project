@@ -32,7 +32,7 @@
 							<div class="col-md-7">
 								<table class="table">
 									<tr>
-										<th >
+										<th>
 											<p>버튼으로 금액 입력</p> 
 											<input type="button" class="btn-sm btn-warning" style="width:48%" onclick="add10000()" value="10000원" />
 											<input type="button" class="btn-sm btn-warning" style="width:48%" onclick="add50000()" value="50000원" />
@@ -70,12 +70,12 @@
 								<table class="table">
 									<tr>
 										<th>충전 전 마일리지<input type="text" class="form-control"
-											value="${balance}" id="balance" name="balance" disabled="disabled"/>
+											value="${balance}" id="balance" name="balance" disabled="disabled">
 										</th>
 									</tr>
 									<tr>
 										<th>충전 후 마일리지<input type="text" class="form-control"
-											value="${balance}" id="after" name="after" />
+											value="${balance}" id="after" name="after" disabled="disabled">
 										</th>
 									</tr>
 								</table>

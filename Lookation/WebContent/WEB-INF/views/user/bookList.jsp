@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
@@ -128,8 +129,11 @@
 							</thead>
 							<tbody class="text-center">
 								<c:forEach var="book" items="${bookList }">
+									<fmt:parseDate var="apply_date" value="${book.apply_date }" pattern="yyyy-MM-dd"/>
+									<fmt:formatDate value="${now}" pattern="yyyy-MM-dd"/>
+										
 									<tr>
-										<td>${book.apply_date} ${book.package_start}시 ~
+										<td>${fn:substring(book.apply_date, 0, 10)} ${book.package_start}시 ~
 										
 										<c:choose>
 										<c:when test="${book.package_end > 24}">
@@ -142,8 +146,6 @@
 										, ${book.book_hour }시간</td>
 										<td>${book.loc_name }</td>
 										
-										<fmt:parseDate var="apply_date" value="${book.apply_date }" pattern="yyyy-MM-dd" scope="session"/>
-										<fmt:formatDate value="${now}" pattern="yyyy-MM-dd"/>
 										
 										<c:choose>
 											<c:when test="${apply_date < now} ">
@@ -159,19 +161,6 @@
 											
 											<c:when test="${book.member_cancel eq 1 || book.host_cancel eq 1}">
 												<td class="text-danger">예약취소</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-													disabled="disabled">
-													취소
-													</button>
-													<button type="button" value="${book.book_code}" class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails" >
-													상세보기
-													</button>
-												</td>
-											</c:when>
-											<c:when test="${book.refund eq 1}">
-												<td class="text-gon">환불완료</td>
 												<td>
 													<button type="button" value="${book.book_code}"
 													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"

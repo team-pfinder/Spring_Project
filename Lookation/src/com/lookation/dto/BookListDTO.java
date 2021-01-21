@@ -7,9 +7,32 @@ public class BookListDTO
 	, package_end, book_hour, host_cancel, member_cancel
 	, refund, loc_name
 	, actual_booker, actual_booker_tel, book_people, book_date
-	, book_req, package_price, biz_name, biz_ceo, biz_license_number
+	, book_req, biz_name, biz_ceo, biz_license_number
 	, member_cancel_reason, host_cancel_reason, member_email
 	, loc_addr, loc_detail_addr, member_nickname;
+	
+	private int days, package_price;
+	
+	
+	public int getPackage_price()
+	{
+		return package_price;
+	}
+
+	public void setPackage_price(int package_price)
+	{
+		this.package_price = package_price;
+	}
+
+	public int getDays()
+	{
+		return days;
+	}
+
+	public void setDays(int days)
+	{
+		this.days = days;
+	}
 
 	public String getMember_nickname()
 	{
@@ -239,16 +262,6 @@ public class BookListDTO
 	public void setBook_req(String book_req)
 	{
 		this.book_req = book_req;
-	}
-
-	public String getPackage_price()
-	{
-		return package_price;
-	}
-
-	public void setPackage_price(String package_price)
-	{
-		this.package_price = package_price;
 	}
 
 	public String getBiz_name()

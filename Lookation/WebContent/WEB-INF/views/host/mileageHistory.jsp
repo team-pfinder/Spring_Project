@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -23,6 +25,27 @@
       color: black !important;
       font-weight: bold !important;
    }
+   
+#li1, #li2 {
+  width: 100%;
+  text-align: center;
+}
+
+#li1 a, #li2 a {
+	color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+}
+#li1 a.active, #li2 a.active{
+    background: #fdbe34;
+    color: #fff;
+    border: 1px solid transparent;
+}   
 </style>
 
 </head>
@@ -88,67 +111,52 @@
 								</div>
 								<!-- 카드바디 -->
 								<div class="card-body">
-									<form action="">
-										<table class="table table-bordered">
+									<table id="products1" class="table table-condensed table-hover" style="text-align:center">
+										<form action="" id="setRows1">
+										    <input type="hidden" name="rowPerPage1" value="5">
+										</form>
+										
+										<thead>
 											<tr>
 												<th>번호</th>
 												<th>공간명</th>
-												<th>예약코드</th>
-												<th>정산 마일리지</th>
-												<th>정산일</th>
+												<th>이용자</th>
+												<th>예약일</th>
+												<th>결제마일리지</th>
+												<th>정산마일리지</th>
+												<th>상태</th>
+												<th>취소일</th>
 											</tr>
+										</thead>											
+										
+										<tbody>
+											<c:if test="${fn:length(calHistory) == 0}">
 											<tr>
-												<th colspan="5">정산 내역이 존재하지 않습니다.</th>
+												<th colspan="9">정산 내역이 존재하지 않습니다.</th>
 											</tr>
+											</c:if>											
+
+											<c:forEach var="item" items="${calHistory}" varStatus="status">
 											<tr>
-												<td>1</td>
-												<td>어승승의 어승승승</td>
-												<td>cal000001</td>
-												<td>25000</td>
-												<td>2020-12-31</td>
-											</tr>
-											<tr>
-												<td>2</td>
-												<td>어승승의 어승승승</td>
-												<td>cal000002</td>
-												<td>25000</td>
-												<td>2020-12-31</td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>어승승의 어승승승</td>
-												<td>cal000003</td>
-												<td>25000</td>
-												<td>2020-12-31</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>어승승의 어승승승</td>
-												<td>cal000004</td>
-												<td>25000</td>
-												<td>2020-12-31</td>
-											</tr>
-										</table>
-									</form>
+												<th>${status.count }</th>
+												<td>${item.lname }</td>
+												<td>${item.nickname }</td>
+												<td>${item.applyDate }</td>
+												<td>${item.price }</td>
+												<td>${item.calAmount }</td>
+												<td>${item.status }</td>
+												<c:if test="${item.refundDate eq null }">
+													<td>${item.hostCancelDate }</td>
+												</c:if>
+												<c:if test="${item.hostCancelDate eq null }">
+													<td>${item.refundDate }</td>
+												</c:if>
+											</tr>	
+											</c:forEach>
+										</tbody>
+									</table>
 								</div>
 							</div>
-							<!-- 페이징 처리할 부분 -->
-							<div class="row mt-5">
-								<div class="col-3"></div>
-								<div class="col-4 text-center">
-									<div class="block-27">
-										<ul>
-											<li><a href="#">&lt;</a></li>
-											<li class="active"><span>1</span></li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#">5</a></li>
-											<li><a href="#">&gt;</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>						
 						</div>	
 
 						<!-- 두번째 탭 -->
@@ -161,76 +169,38 @@
 								</div>
 								<!-- 카드바디 -->
 								<div class="card-body">
-									<form action="">
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th>번호</th>
-													<th>금액</th>
-													<th>계좌번호</th>
-													<th>은행명</th>
-													<th>환전처리일</th>
-												</tr>
-											</thead>
-											<tbody>	
-												<tr>
-													<th colspan="5">환전 내역이 존재하지 않습니다.</th>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td>38400</td>
-													<td>554602-04-076182</td>
-													<td>국민은행</td>
-													<td>2020-12-31</td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>8400</td>
-													<td>554602-04-076182</td>
-													<td>국민은행</td>
-													<td>2021-01-04</td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td>14000</td>
-													<td>87848-04-77412</td>
-													<td>우리은행</td>
-													<td>2020-01-05</td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td>14000</td>
-													<td>87848-04-77412</td>
-													<td>우리은행</td>
-													<td>2020-01-05</td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td>14000</td>
-													<td>87848-04-77412</td>
-													<td>우리은행</td>
-													<td>2020-01-05</td>
-												</tr>
-											</tbody>	
-										</table>
-									</form>
-								</div>
-							</div>
-							<!-- 페이징 처리할 부분 -->
-							<div class="row mt-5">
-								<div class="col-3"></div>
-								<div class="col-4 text-center">
-									<div class="block-27">
-										<ul>
-											<li><a href="#">&lt;</a></li>
-											<li class="active"><span>1</span></li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#">5</a></li>
-											<li><a href="#">&gt;</a></li>
-										</ul>
-									</div>
+									<table id="products2" class="table table-condensed table-hover" style="text-align:center">
+									<form action="" id="setRows2">
+									    <input type="hidden" name="rowPerPage2" value="5">
+									</form>	
+									<thead>
+										<tr>
+											<th>번호</th>
+											<th>계좌번호</th>
+											<th>은행명</th>
+											<th>환전금액</th>
+											<th>환전처리일</th>
+										</tr>
+									</thead>
+										<tbody>	
+										
+										<c:if test="${fn:length(exchangeHistory) == 0}">
+										<tr>
+											<th colspan="9">환전 내역이 존재하지 않습니다.</th>
+										</tr>
+										</c:if>											
+
+										<c:forEach var="item" items="${exchangeHistory}" varStatus="status">
+										<tr>
+											<th>${status.count }</th>
+											<td>${item.bankNumber }</td>
+											<td>${item.bank }</td>
+											<td>${item.amount }</td>
+											<td>${item.exchangeDate }</td>
+										</tr>	
+										</c:forEach>
+										</tbody>	
+									</table>
 								</div>
 							</div>
 						</div>	
@@ -251,6 +221,157 @@
 		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
+
+<script type="text/javascript">
+
+var $setRows = $('#setRows1');
+
+$setRows.submit(function (e) {
+  e.preventDefault();
+  var rowPerPage = $('[name="rowPerPage1"]').val() * 1;// 1 을  곱하여 문자열을 숫자형로 변환
+
+//    console.log(typeof rowPerPage);
+
+  var zeroWarning = 'Sorry, but we cat\'t display "0" rows page. + \nPlease try again.'
+  if (!rowPerPage) {
+    alert(zeroWarning);
+    return;
+  }
+  $('#li1').remove();
+  var $products = $('#products1');
+
+  $products.after("<div class='text-center' id='li1'>");
+
+
+  var $tr = $($products).find('tbody tr');
+  var rowTotals = $tr.length;
+//  console.log(rowTotals);
+
+  var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+  var i = 0;
+
+  for (; i < pageTotal; i++) {
+    $('<a href="#"></a>')
+        .attr('rel', i)
+        .html(i + 1)
+        .appendTo('#li1');
+  }
+
+  $tr.addClass('off-screen')
+      .slice(0, rowPerPage)
+      .removeClass('off-screen');
+
+  var $pagingLink = $('#li1 a');
+  $pagingLink.on('click', function (evt) {
+    evt.preventDefault();
+    var $this = $(this);
+    if ($this.hasClass('active')) {
+      return;
+    }
+    $pagingLink.removeClass('active');
+    $this.addClass('active');
+
+    // 0 => 0(0*4), 4(0*4+4)
+    // 1 => 4(1*4), 8(1*4+4)
+    // 2 => 8(2*4), 12(2*4+4)
+    // 시작 행 = 페이지 번호 * 페이지당 행수
+    // 끝 행 = 시작 행 + 페이지당 행수
+
+    var currPage = $this.attr('rel');
+    var startItem = currPage * rowPerPage;
+    var endItem = startItem + rowPerPage;
+
+    $tr.css('opacity', '0.0')
+        .addClass('off-screen')
+        .slice(startItem, endItem)
+        .removeClass('off-screen')
+        .animate({opacity: 1}, 300);
+
+  });
+
+  $pagingLink.filter(':first').addClass('active');
+
+});
+
+$setRows.submit();	
+
+
+
+</script>
+<script type="text/javascript">
+
+var $setRows = $('#setRows2');
+
+$setRows.submit(function (e) {
+  e.preventDefault();
+  var rowPerPage = $('[name="rowPerPage2"]').val() * 1;// 1 을  곱하여 문자열을 숫자형로 변환
+
+//    console.log(typeof rowPerPage);
+
+  var zeroWarning = 'Sorry, but we cat\'t display "0" rows page. + \nPlease try again.'
+  if (!rowPerPage) {
+    alert(zeroWarning);
+    return;
+  }
+  $('#li2').remove();
+  var $products = $('#products2');
+
+  $products.after("<div class='text-center' id='li2'>");
+
+
+  var $tr = $($products).find('tbody tr');
+  var rowTotals = $tr.length;
+//  console.log(rowTotals);
+
+  var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+  var i = 0;
+
+  for (; i < pageTotal; i++) {
+    $('<a href="#"></a>')
+        .attr('rel', i)
+        .html(i + 1)
+        .appendTo('#li2');
+  }
+
+  $tr.addClass('off-screen')
+      .slice(0, rowPerPage)
+      .removeClass('off-screen');
+
+  var $pagingLink = $('#li2 a');
+  $pagingLink.on('click', function (evt) {
+    evt.preventDefault();
+    var $this = $(this);
+    if ($this.hasClass('active')) {
+      return;
+    }
+    $pagingLink.removeClass('active');
+    $this.addClass('active');
+
+    // 0 => 0(0*4), 4(0*4+4)
+    // 1 => 4(1*4), 8(1*4+4)
+    // 2 => 8(2*4), 12(2*4+4)
+    // 시작 행 = 페이지 번호 * 페이지당 행수
+    // 끝 행 = 시작 행 + 페이지당 행수
+
+    var currPage = $this.attr('rel');
+    var startItem = currPage * rowPerPage;
+    var endItem = startItem + rowPerPage;
+
+    $tr.css('opacity', '0.0')
+        .addClass('off-screen')
+        .slice(startItem, endItem)
+        .removeClass('off-screen')
+        .animate({opacity: 1}, 300);
+
+  });
+
+  $pagingLink.filter(':first').addClass('active');
+
+});
+
+$setRows.submit();	
+
+</script>
 
 </body>
 </html>

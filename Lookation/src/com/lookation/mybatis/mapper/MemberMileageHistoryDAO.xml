@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IMemberHistoryListDAO">
+	
+	<select id="payHistory" resultType="com.lookation.dto.MemberPayHistoryDTO">
+		SELECT MEMBER_CODE AS MCODE, LOC_CODE AS LCODE, LOC_NAME AS NAME, PACKAGE_PRICE AS PRICE, TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS PAYDATE
+		FROM PAYMENT_HISTORY
+		WHERE MEMBER_CODE = #{memberCode}
+		ORDER BY APPLY_DATE DESC
+	</select>
+
+	<select id="loadHistory" resultType="com.lookation.dto.MemberLoadHistoryDTO">
+		SELECT MEMBER_BANK_NUMBER AS BANKNUMBER, MEMBER_BANK AS BANK
+			  , LOAD_AMOUNT AS AMOUNT, TO_CHAR(LOAD_REG_DATE ,'YYYY-MM-DD') AS REGDATE
+		      , LOAD_TYPE AS LOADTYPE, TO_CHAR(LOAD_PROC_DATE ,'YYYY-MM-DD') AS PROCDATE
+		FROM LOAD_REG_HISTORY
+		WHERE MEMBER_CODE = #{memberCode}
+		ORDER BY REGDATE DESC
+	</select>
+
+	<select id="exchangeHistory" resultType="com.lookation.dto.MemberExchangeHistoryDTO">
+		SELECT MEMBER_BANK_NUMBER AS BANKNUMBER, MEMBER_BANK AS BANK
+			 , MEMBER_EXCHANGE_AMOUNT AS AMOUNT, TO_CHAR(MEMBER_EXCHANGE_DATE ,'YYYY-MM-DD') AS EXCHANGEDATE
+		FROM MEMBER_EXCHANGE_HISTORY
+		WHERE MEMBER_CODE = #{memberCode}
+		ORDER BY EXCHANGEDATE DESC
+	</select>
+
+	<select id="refundHistory" resultType="com.lookation.dto.MemberRefundHistoryDTO">
+		SELECT TYPE AS TYPE, LOC_NAME AS LNAME, TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLYDATE
+			 , PACKAGE_PRICE AS PRICE, TO_CHAR(MEMBER_CANCEL_DATE ,'YYYY-MM-DD') AS CANCELDATE, 환불금액 AS REFUNDAMOUNT
+		FROM REFUND_HISTORY
+		WHERE MEMBER_CODE = #{memberCode}
+		ORDER BY CANCELDATE DESC
+	</select>
+	
+	
+	
+</mapper>

@@ -171,12 +171,12 @@
 		<input type="button" class="form-control" value="패키지 추가"
 			   onclick="input()">
 		
-		<!-- 3. 패키지 수정하기 
+		<!-- 3. 패키지 수정하기 (사용 X)
 				→ 현재 패키지 중 하나를 선택후 수정버튼 클릭, 
 				   선택하지않으면 alert("패키지를 선택하세요."), onsubmit="false"
 				→ modifyPackageInfo.jsp로 이동 -->
-		<input type="button" class="form-control" value="패키지 수정"
-			   onclick="mod()"> <!-- onclick="function()" -->
+		<!-- <input type="button" class="form-control" value="패키지 수정"
+			   onclick="mod()"> onclick="function()" -->
 		
 		<!-- 4. 패키지 삭제하기
 				→ 현재 패키지 중 하나를 선택후 삭제버튼 클릭, onsubmit="false"

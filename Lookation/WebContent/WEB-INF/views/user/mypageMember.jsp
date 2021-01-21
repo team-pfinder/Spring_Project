@@ -79,12 +79,12 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="memberloadandexchange.action" class="block-20 rounded"
+						<a href="loadandexchange.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="memberloadandexchange.action">충전/환전 신청</a>
+								<a href="loadandexchange.action">충전/환전 신청</a>
 							</h3>
 						</div>
 					</div>

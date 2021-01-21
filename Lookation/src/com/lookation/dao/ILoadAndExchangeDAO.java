@@ -6,23 +6,41 @@ import com.lookation.dto.LoadAndExchangeDTO;
 
 public interface ILoadAndExchangeDAO
 {
+	
+	/* 이용자 조회/충전/환전 */
 
-	// 계좌 리스트 조회
-	public ArrayList<LoadAndExchangeDTO> bankInfoList(LoadAndExchangeDTO dto);
+	// 이용자 계좌 리스트 조회
+	public ArrayList<LoadAndExchangeDTO> memberBankInfoList(LoadAndExchangeDTO dto);
 
 	// 이용자 잔액 조회
-	public int getBalance(LoadAndExchangeDTO dto);
+	public int memberGetBalance(LoadAndExchangeDTO dto);
 	
 	// 이용자 충전 신청
-	public int loadRegister(LoadAndExchangeDTO dto);
+	public int memberLoadRegister(LoadAndExchangeDTO dto);
 	
 	// 이용자 충전 안내
-	public LoadAndExchangeDTO loadRegisterNotice(String identifyCode);
+	public LoadAndExchangeDTO memberLoadRegisterNotice(String identifyCode);
 	
 	// 이용자 환전 신청
-	public int exchangeRegister(LoadAndExchangeDTO dto);
+	public int memberExchangeRegister(LoadAndExchangeDTO dto);
 	
 	// 이용자 환전 안내
-	public LoadAndExchangeDTO exchangeNotice(String identifyCode);
+	public LoadAndExchangeDTO memberExchangeNotice(String identifyCode);
+	
+	/* ---------------------------------------------------------------------------------- */
+	/* 호스트 조회/환전 */
+	
+	// 호스트 계좌 리스트 조회
+	public ArrayList<LoadAndExchangeDTO> hostBankInfoList(LoadAndExchangeDTO dto);
+	
+	// 호스트 잔액 조회
+	public int hostGetBalance(LoadAndExchangeDTO dto);
+
+	// 호스트 환전 신청
+	public int hostExchangeRegister(LoadAndExchangeDTO dto);
+
+	// 호스트 환전 안내
+	public LoadAndExchangeDTO hostExchangeNotice(String identifyCode);
+
 	
 }

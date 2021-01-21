@@ -2,11 +2,9 @@
 // - 상세공간페이지에서 날짜 선택시 해당하는 날짜에 있는 패키지
 //   가져옴
 
-
 package com.lookation.controller;
 
-
-
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,42 +19,59 @@ import com.lookation.dto.LocationDetailDTO;
 public class LocationDetailAjaxController implements Controller
 {
 	private ILocationDetailDAO dao;
-	
+
 	public void setDao(ILocationDetailDAO dao)
 	{
 		this.dao = dao;
 	}
 
-
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		ModelAndView mav = new ModelAndView();
-		
+
 		// 데이터 수신(locationDetail.jsp 페이지로부터... 로그인한 memberCode 수신)
 		String selectDate = request.getParameter("selectDate");
-		String loc_code = request.getParameter("locCode");
-		
+		String locCode = request.getParameter("locCode");
+
 		System.out.println(selectDate);
-		System.out.println(loc_code);
-		
+		System.out.println(locCode);
+		String parseJson = "";
+
 		ArrayList<LocationDetailDTO> packageInfo = new ArrayList<LocationDetailDTO>();
-		
-		try 
+
+		try
 		{
-			packageInfo = dao.packageInfo(loc_code, selectDate);
+			packageInfo = dao.packageInfo(locCode, selectDate);
+			String tmp = "";
 			
-			/* 파라미터 제대로 받으면 다시 수정 */
-			//mav.setViewName("redirect:locationdetail.action?locCode"+locCode);
-			mav.addObject("packageInfo", packageInfo);
+			// AJAX용 JSON 만들기
+			for (int i = 0; i < packageInfo.size(); i++)
+			{
+				  tmp +="{\"packageName\":"+ packageInfo.get(i).getPackageName()
+				  +",\"packStart\":"+ "\"" + packageInfo.get(i).getPackStart() + "\""
+				  +",\"packPrice\":"+ "\"" + packageInfo.get(i).getPackPrice() + "\""
+				  +",\"applyDate\":"+ "\"" + packageInfo.get(i).getApplyDate() + "\""
+				  +",\"packEnd\":" + "\"" + packageInfo.get(i).getPackEnd()+ "\"";
+				  
+				  if(i==packageInfo.size()-1){ tmp += "}"; }else{ tmp += "},"; }
+			}
 			
+			response.setContentType("text/html;charset=utf-8");
+
+			PrintWriter out=response.getWriter();
+
+
+			parseJson = "[" + tmp + "]";
 			
-			// 테스트
-			System.out.println(packageInfo);
-			mav.setViewName("../WEB-INF/views/ajax/LocationDetailAjax.jsp");
-			
-			
-			
+			out.print(parseJson.toString()); 
+
+			mav.addObject("test", parseJson);
+			//mav.addObject("packageInfo", packageInfo);
+
+			System.out.println("tmp 출력 =======" + parseJson);
+			mav.setViewName("../WEB-INF/views/common/locationdetail.jsp");
+
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());

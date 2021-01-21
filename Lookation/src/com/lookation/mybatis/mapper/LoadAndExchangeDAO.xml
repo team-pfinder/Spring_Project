@@ -4,29 +4,34 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.ILoadAndExchangeDAO" >
 	
-	<select id="bankInfoList" resultType="com.lookation.dto.LoadAndExchangeDTO">
+	<!-- 이용자 조회/충전/환전 -->
+	
+	<!-- 이용자 계좌 리스트 조회 -->
+	<select id="memberBankInfoList" resultType="com.lookation.dto.LoadAndExchangeDTO">
  		SELECT MEMBER_BANK_NUMBER AS BANKNUMBER, MEMBER_BANK AS BANK
 		FROM MEMBER M, MEMBER_BANK_INFO MBIF
 		WHERE M.MEMBER_CODE = MBIF.MEMBER_CODE
-		AND M.MEMBER_CODE = #{memberCode}
-
+		AND M.MEMBER_CODE = #{identifyCode}
 	</select>	
 	
-	<select id="getBalance" resultType="java.lang.Integer">
+	<!-- 이용자 잔액조회 -->
+	<select id="memberGetBalance" resultType="java.lang.Integer">
 		SELECT F_USER_BALANCE(#{memberCode}) AS BALANCE
 		FROM DUAL
 	</select>
 	
-	<insert id="loadRegister" statementType="CALLABLE">
+	<!-- 이용자 충전신청 -->
+	<insert id="memberLoadRegister" statementType="CALLABLE">
 		{CALL PRC_LOAD_REG(
-							#{memberCode, mode=IN}
+							#{identifyCode, mode=IN}
 						  , #{bankNumber, mode=IN}
 						  , #{amount, mode=IN}
 						  )
 		}
 	</insert>
 	
-	<select id="loadRegisterNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
+	<!-- 이용자 충전신청 안내 -->
+	<select id="memberLoadRegisterNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
 		SELECT MBIF.MEMBER_CODE AS MEMBERCODE, MBIF.MEMBER_BANK_NUMBER AS BANKNUMBER, MBIF.MEMBER_BANK AS BANK, LR.LOAD_AMOUNT AS AMOUNT
 			 , TO_CHAR(LR.LOAD_REG_DATE,'YYYY-MM-DD HH24:MI:SS') AS REGDATE, TO_CHAR(LR.LOAD_REG_DATE + 2,'YYYY-MM-DD HH24:MI:SS') AS EXPIREDATE  
 		FROM MEMBER_BANK_INFO MBIF, LOAD_REG LR, LOAD_REG_BANK_INFO LRBIF
@@ -36,21 +41,22 @@
 		  						  SELECT MAX(LOAD_REG_DATE)
 		                          FROM MEMBER_BANK_INFO A, LOAD_REG B
 		                          WHERE A.MEMBER_CODE = B.MEMBER_CODE
-		                            AND A.MEMBER_CODE = #{memberCode}
+		                            AND A.MEMBER_CODE = #{identifyCode}
 		                         )
 	</select>
 	
-	
-	<insert id="exchangeRegister" statementType="CALLABLE">
+	<!-- 이용자 환전신청 -->
+	<insert id="memberExchangeRegister" statementType="CALLABLE">
 		{CALL PRC_USER_EXC_REG(
-							#{memberCode, mode=IN}
+							#{identifyCode, mode=IN}
 						  , #{bankNumber, mode=IN}
 						  , #{amount, mode=IN}
 						  )
 		}
 	</insert>
 	
-	<select id="exchangeNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
+	<!-- 이용자 환전신청 안내 -->
+	<select id="memberExchangeNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
 	SELECT MBIF.MEMBER_BANK AS BANK, MBIF.MEMBER_BANK_NUMBER AS BANKNUMBER, ME.MEMBER_EXCHANGE_DATE AS REGDATE
 		 , ME.MEMBER_EXCHANGE_AMOUNT AS AMOUNT, MBIF.MEMBER_BANK_HOLDER AS BANKHOLDER
 	FROM MEMBER_EXCHANGE_LIST ME, MEMBER_BANK_INFO MBIF, MEMBER_EXCHANGE_BANK_INFO MEBI
@@ -60,8 +66,48 @@
       								 SELECT MAX(MEMBER_EXCHANGE_DATE)
       		                         FROM MEMBER_BANK_INFO A, MEMBER_EXCHANGE_LIST B
             	                     WHERE A.MEMBER_CODE = B.MEMBER_CODE
-                	                   AND A.MEMBER_CODE = #{memberCode}
+                	                   AND A.MEMBER_CODE = #{identifyCode}
                 	                )
+	</select>
+
+	<!-- 호스트 조회/환전 -->
+	
+	<!-- 호스트 계좌 리스트 조회 -->
+	<select id="hostBankInfoList" resultType="com.lookation.dto.LoadAndExchangeDTO">
+		SELECT HOST_BANK_NUMBER AS BANKNUMBER, HOST_BANK AS BANK
+		FROM VIEW_HOST_BANK_INFO
+		WHERE HOST_CODE IN (#{identifyCode})
+	</select>
+
+	<!-- 호스트 잔액 조회 -->
+	<select id="hostGetBalance" resultType="java.lang.Integer">
+		SELECT F_HOST_BALANCE(#{identifyCode}) AS BALANCE
+		FROM DUAL
+	</select>
+
+	<!-- 호스트 환전신청 -->
+	<insert id="hostExchangeRegister" statementType="CALLABLE">
+		{CALL PRC_HOST_EXC_REG(
+					#{identifyCode, mode=IN}
+				  , #{bankNumber, mode=IN}
+				  , #{amount, mode=IN}
+				  )
+		}
+	</insert>
+
+	<!-- 호스트 환전신청 안내 -->
+	<select id="hostExchangeNotice" resultType="com.lookation.dto.LoadAndExchangeDTO">
+		SELECT HBIF.HOST_BANK AS BANK, HBIF.HOST_BANK_NUMBER AS BANKNUMBER, HE.HOST_EXCHANGE_DATE AS REGDATE
+     		 , HE.HOST_EXCHANGE_AMOUNT AS AMOUNT, HBIF.HOST_BANK_HOLDER AS BANKHOLDER
+		FROM HOST_EXCHANGE_LIST HE, HOST_BANK_INFO HBIF, HOST_EXCHANGE_BANK_INFO HEBI
+		WHERE HBIF.HOST_BANK_NUMBER = HEBI.HOST_BANK_NUMBER
+  		  AND HEBI.HOST_EXCHANGE_CODE = HE.HOST_EXCHANGE_CODE
+  		  AND HE.HOST_EXCHANGE_DATE = (
+          		                       SELECT MAX(HOST_EXCHANGE_DATE)
+                		               FROM HOST_BANK_INFO A, HOST_EXCHANGE_LIST B
+                        		       WHERE A.HOST_CODE = B.HOST_CODE
+                                	     AND A.HOST_CODE = #{identifyCode}
+                                	   )
 	</select>
 
 </mapper>
