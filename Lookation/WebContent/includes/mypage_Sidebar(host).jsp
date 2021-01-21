@@ -19,7 +19,7 @@
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="#">예약 리스트 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li><a href="hostexchange.action">환전
+				<li><a href="loadandexchange.action">환전
 						신청 <span class="ion-ios-arrow-forward"></span>
 				</a></li>
 				<li><a href="hostmileagehistory.action">마일리지 내역 <span

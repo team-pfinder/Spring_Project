@@ -1,27 +1,11 @@
 package com.lookation.dto;
 
-public class UserLoadManagerDTO
+public class MemberLoadHistoryDTO
 {
-	private String regCode, email, bankNumber, bank, bankHolder, regDate, loadType, procDate;
+	private String bankNumber, bank, regDate, loadType, procDate;
 	private int amount;
-	
+
 	// getter / setter 구성
-	public String getRegCode()
-	{
-		return regCode;
-	}
-	public void setRegCode(String regCode)
-	{
-		this.regCode = regCode;
-	}
-	public String getEmail()
-	{
-		return email;
-	}
-	public void setEmail(String email)
-	{
-		this.email = email;
-	}
 	public String getBankNumber()
 	{
 		return bankNumber;
@@ -37,14 +21,6 @@ public class UserLoadManagerDTO
 	public void setBank(String bank)
 	{
 		this.bank = bank;
-	}
-	public String getBankHolder()
-	{
-		return bankHolder;
-	}
-	public void setBankHolder(String bankHolder)
-	{
-		this.bankHolder = bankHolder;
 	}
 	public String getRegDate()
 	{

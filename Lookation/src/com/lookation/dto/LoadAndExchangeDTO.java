@@ -2,7 +2,7 @@ package com.lookation.dto;
 
 public class LoadAndExchangeDTO
 {
-	private String memberCode, bankNumber, bank, regdate, expiredate, bankHolder;
+	private String identifyCode, bankNumber, bank, regdate, expiredate, bankHolder;
 	private int balance, amount;
 	
 	// getter / setter 구성
@@ -14,13 +14,13 @@ public class LoadAndExchangeDTO
 	{
 		this.bankHolder = bankHolder;
 	}
-	public String getMemberCode()
+	public String getIdentifyCode()
 	{
-		return memberCode;
+		return identifyCode;
 	}
-	public void setMemberCode(String memberCode)
+	public void setIdentifyCode(String identifyCode)
 	{
-		this.memberCode = memberCode;
+		this.identifyCode = identifyCode;
 	}
 	public String getBankNumber()
 	{

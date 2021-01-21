@@ -10,9 +10,9 @@ public interface IUserLoadManagerDAO
 	public ArrayList<UserLoadManagerDTO> loadRegList();
 	
 	// 충전 신청 승인 처리
-	public int loadRegApprove();
+	public int loadRegApprove(String regCode);
 	
 	// 충전 신청 반려 처리
-	public int loadRegDeny();
+	public int loadRegDeny(String regCode);
 
 }

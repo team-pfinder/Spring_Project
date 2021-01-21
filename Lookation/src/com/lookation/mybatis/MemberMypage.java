@@ -57,7 +57,8 @@ public class MemberMypage
 	@RequestMapping(value ="/actions/membermileagehistory.action", method = RequestMethod.GET)
 	public String mypageHistoryHost(Model model)
 	{
-		return "../WEB-INF/views/user/mileageHistory.jsp";
+		return "redirect:/actions/membermileagehistorylist.action";
+		//return "../WEB-INF/views/user/mileageHistory.jsp";
 	}
 	
 	

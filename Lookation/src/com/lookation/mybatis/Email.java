@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.lookation.util.IEmailService;
+//import com.lookation.util.IEmailService;
 
 @Controller
 public class Email
 {
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
 
 	/*
 	@Autowired
@@ -76,7 +76,7 @@ public class Email
 		String titleType = (identify.equals("host") ? "호스트" : "이용자");
 		String title = "■■■■■ " + titleType + " 비밀번호 변경 인증 메일입니다.  ■■■■■";
 		
-		emailService.sendHtml(email, "lookation", title, html);
+//		emailService.sendHtml(email, "lookation", title, html);
 		
 		model.addAttribute("email", email);
 		model.addAttribute("result", "noSigned");
