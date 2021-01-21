@@ -2,18 +2,34 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title>도움말</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+<style type="text/css">
+
+.showBtn {
+opacity: 0%;
+}
+</style>
+<script type="text/javascript">
+$(document).ready(function()
+{	
+	$(".showBtn").click(function()
+	{
+		$(location).attr("href", "helpdetail.action?help_code=" + $(this).val());
+	});
+});
+</script>
 </head>
 <body>
-
+<!-- 공지사항 이용자인지 호스트인지 몰라서 헤더 보류했구만,, , -->
 <!-- Header -->
 <div class="container pt-5">
 	<div class="row justify-content-between">
@@ -66,7 +82,7 @@ String cp = request.getContextPath();
     	<div class="row no-gutters slider-text align-items-end">
       		<div class="col-md-9 ftco-animate pb-5">
       			<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span> My Page <i class="ion-ios-arrow-forward"></i></span></p>
-        		<h1 class="mb-0 bread">공지사항</h1>
+        		<h1 class="mb-0 bread">도움말</h1>
       		</div>
     	</div>
   	</div>
@@ -102,11 +118,13 @@ String cp = request.getContextPath();
 												<th>작성일자</th>
 											</tr>
 										</thead>
-										<tbody>
+										
+										<tbody>	
 											<c:forEach var="HelpDTO" items="${U_helpList }">
 											<tr align="center">
 												<td>${HelpDTO.board_type}</td>
-												<td><a href="#">${HelpDTO.help_title }</a></td>
+												<td>${HelpDTO.help_title }
+												<input type="button" value="${HelpDTO.help_code }" class="showBtn"></td>
 												<td><span class="icon-person"></span>Admin</td>
 												<td><span class="icon-calendar"></span>${HelpDTO.help_date }</td>
 											</tr>
@@ -294,7 +312,7 @@ String cp = request.getContextPath();
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg>
 	</div>
 
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+
 
 	<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 

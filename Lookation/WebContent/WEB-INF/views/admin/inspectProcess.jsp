@@ -47,6 +47,25 @@ $(document).ready(function()
 			owl.trigger('prev.owl.carousel',
 			[ 300 ]);
 		}) */
+		
+		
+		// 검수처리 버튼 클릭 (승인 / 반려)   이렇게 받아오긴하는데 이건 
+		$(".inspectOK").click(function()	//-- 검수승인
+		{
+			if (confirm("검수 처리 승인하시겠습니까?"))
+			{
+			 //alert($(this).val());
+			$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() );
+			}
+		});
+		$(".inspectNO").click(function()	//-- 검수반려
+		{
+			if (confirm("검수 처리 반려하시겠습니까?"))
+			{
+			 //alert($(this).val());
+			$(location).attr("href", "inspecetinsert.action?insepect_reg_code=" + $(this).val() );
+			}
+		})
 	});
 </script>
 
@@ -66,15 +85,15 @@ $(document).ready(function()
 	<!-- 전체 페이지 -->
 	<div id="wrapper">
 
-		<!-- 사이드 메뉴 -->
-<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
+		<!-- 사이드 메뉴
+		<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import> -->
 
 		<!-- 메인 페이지 -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
 
-				<!-- Header-->
-<c:import url="${cp}/includes/header.jsp"></c:import>
+				<!-- Header
+<c:import url="${cp}/includes/header.jsp"></c:import> -->
 
 				<!-- 주요 내용 -->
 				<div class="container-fluid">
@@ -117,7 +136,7 @@ $(document).ready(function()
 									<hr>
 									<p>휴대폰 : ${dto1.loc_tel}</p>
 									<p>대표 전화 : ${dto1.loc_main_tel}</p>
-									<p>이메일 : ${loc_mail} <!-- 이메일을 불러오면 백지상태 -->
+									<p>이메일 : ${dto1.loc_email} <!-- 이메일을 불러오면 백지상태 -->
 									
 									<h2 class="mb-3 mt-5"># 사업자정보</h2>
 									<hr>
@@ -190,12 +209,23 @@ $(document).ready(function()
 							<div>
 								<hr>
 							</div>
-
+							<form action="" method="post">
+								<!-- 여기부분은 저거 inspect_reg_code 잘받아오나보려고 dto1. 일케해놧는데 상관없나? -->
 							<button id="btn_submit" type="button"
-								class="btn btn-success btn-block">완료</button>
+								class="btn btn-success btn-block inspectOK"
+								value="${dto1.inspect_reg_code }">완료</button>
 							<br>
 							<button id="btn_submit" type="button"
-								class="btn btn-danger btn-block"">반려</button>
+								class="btn btn-danger btn-block inspectNO"
+								value="${dto1.inspect_reg_code }">반려</button>
+								
+								<!-- 반려 사유 쓰는 창  -->
+							<div class="card mt-4 mb-4 py-3 border-left-danger">
+								<input type="text" name="inspect_proc_reason" style="text-align:center; width:600px; height:50px; outline:hidden;">
+							</div>
+							<!--  -->
+							<input type="hidden" value="${dto1.inspect_reg_code }">
+							</form>
 						</div>
 					</div>
 					<!-- row end -->

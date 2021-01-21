@@ -79,18 +79,18 @@ String cp = request.getContextPath();
       <div class="container">
         <div class="row">
           <div class="col-lg-8 ftco-animate">
-          <input type="hidden" value="${U_detailList.help_code }" name="help_code">
-            <h1 class="mb-3">${U_detailList.help_title }</h1>
+          <input type="hidden" value="${U_ndetailList.notice_code }" name="notice_code">
+            <h1 class="mb-3">${U_ndetailList.notice_title }</h1>
             <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-            <div class="meta">${U_detailList.help_date }</div>
+            <div class="meta">${U_ndetailList.notice_date }</div>
             <hr>
             <br>
-            <p>${U_detailList.help_content }</p>
+            <p>${U_ndetailList.notice_content }</p>
             
             
             <div class="tag-widget post-tag-container mb-5 mt-5">
               <div class="tagcloud">
-                <a href="#" class="tag-cloud-link">#${U_detailList.board_type }</a>
+                <a href="#" class="tag-cloud-link">#${U_ndetailList.important_notice }</a>
                 <!-- <a href="#" class="tag-cloud-link">Sport</a>
                 <a href="#" class="tag-cloud-link">Tech</a>
                 <a href="#" class="tag-cloud-link">Travel</a>

@@ -41,15 +41,14 @@ public class InspectProcessController implements Controller
 			InspectLocationDTO dto5 = new InspectLocationDTO();
 			
 
-			inspect_reg_code = "IR000001"; //이고
+			//inspect_reg_code = "IR000001"; //이고
 			// 이거 getParameter로 받아오려면
 			/*
 			 insepetManager.jsp 에서 get Method로 inspectprocess.action 요청해서
 			 url 끝이 .action?inspect_reg_code='IR000001' 일때만 
 			 request.getParameter 이용해서 파라미터 값 받아올 수 있는데,
-			 우린 아직 페이지 연결이 되지 않아서 임시로 입력해줘야함... 그래서
-			 적어놓는거야
-			 * */
+			 우린 아직 페이지 연결이 되지 않아서 임시로 입력
+			 */
 			
 			
 			dto1 = dao.prlist(inspect_reg_code);

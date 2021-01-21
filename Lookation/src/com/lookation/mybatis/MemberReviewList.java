@@ -21,11 +21,11 @@ public class MemberReviewList
 	@RequestMapping(value = "/actions/userreviewlist.action", method = RequestMethod.GET)
 	public String userReviewList(String member_code, Model model)
 	{
-		member_code= "M000003";
+		member_code= "M000004";
 		IMemberReviewListDAO dao = sqlSession.getMapper(IMemberReviewListDAO.class);
 		
-		model.addAttribute("reviewList", dao.userReviewList(member_code));
-		model.addAttribute("nickName", dao.userNickName(member_code));
+		model.addAttribute("reviewList", dao.memReviewList(member_code));
+		model.addAttribute("nickName", dao.memNickName(member_code));
 		
 		return "/WEB-INF/views/user/userReviewList.jsp";
 	}

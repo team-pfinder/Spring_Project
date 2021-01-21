@@ -4,22 +4,18 @@ package com.lookation.util;
 
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
-public class EmailService implements IEmailService
+public class EmailManager
 {
-	private JavaMailSenderImpl mailSender;
-	
-	public void setMailSender(JavaMailSenderImpl mailSender)
-	{
-		this.mailSender = mailSender;
-	}
+	@Autowired
+	private static JavaMailSenderImpl mailSender;
 
-	@Override
-	public void sendSimple(String to, String from, String subject, String content)
+	public static void sendSimple(String to, String from, String subject, String content)
 	{
 		final MimeMessagePreparator preparator = new MimeMessagePreparator()
 		{
@@ -45,8 +41,7 @@ public class EmailService implements IEmailService
 		}
 	}
 
-	@Override
-	public void sendAttach(String to, String from, String subject, String content, String filePath)
+	public static void sendAttach(String to, String from, String subject, String content, String filePath)
 	{
 		final MimeMessagePreparator preparator = new MimeMessagePreparator()
 		{
@@ -76,8 +71,7 @@ public class EmailService implements IEmailService
 		}
 	}
 
-	@Override
-	public void sendHtml(String to, String from, String subject, String html)
+	public static void sendHtml(String to, String from, String subject, String html)
 	{
 		final MimeMessagePreparator preparator = new MimeMessagePreparator()
 		{

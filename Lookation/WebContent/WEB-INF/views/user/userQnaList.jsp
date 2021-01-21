@@ -13,6 +13,7 @@
 <title>Lookation</title>
 <c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <style type="text/css">
 
 
@@ -26,12 +27,57 @@ tr > td > a {
 	color: gray;
 }
 
+
+.paginate_button {
+	margin-left : 6px;
+	margin-right: 6px;
+	color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+    cursor: pointer;
+    
+    align-content: center;
+}
+
+.paginate_button:active {
+    background: #fdbe34;
+    color: #fff;
+    border: 1px solid transparent;
+    }
+
 </style>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript" ></script>
+
 <script type="text/javascript">
 
 
 $(function(){
 	
+	$("#dataTable").DataTable({
+		
+		// 표시 건수기능 숨기기
+		lengthChange: false,
+		// 검색 기능 숨기기
+		searching: false,
+		// 정렬 기능 숨기기
+		ordering: false,
+		// 정보 표시 숨기기
+		info: false,
+		
+		 "language": {
+		        "emptyTable": "데이터가 없어요.",
+		        
+		        "paginate": {
+		            "next": ">",
+		            "previous": "<"
+		        }
+		    },
+	});
 	
 	// 이용자 QnA 수정하는 팝업
 	$(".modifyQna").click(function()
@@ -156,6 +202,6 @@ $(function(){
 </div><!-- .container End -->	
 
 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+
 </body>
 </html>
