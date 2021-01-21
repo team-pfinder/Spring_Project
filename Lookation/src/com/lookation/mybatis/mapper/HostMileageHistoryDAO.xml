@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IHostHistoryListDAO">
+
+	<select id="calHistory" resultType="com.lookation.dto.HostCalHistoryDTO">
+		SELECT LOC_NAME AS LNAME, MP.MEMBER_NICKNAME AS NICKNAME, PACKAGE_PRICE AS PRICE, STATUS AS STATUS, AMOUNT AS CALAMOUNT
+		, TO_CHAR(BOOK_REFUND_DATE,'YYYY-MM-DD') AS REFUNDDATE, TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLYDATE, TO_CHAR(HOST_CANCEL_DATE,'YYYY-MM-DD') AS HOSTCANCELDATE
+		FROM CAL_HISTORY C JOIN MEMBER_PROFILE MP
+		ON C.MEMBER_CODE = MP.MEMBER_CODE
+		WHERE HOST_CODE = #{hostCode}
+		ORDER BY APPLY_DATE DESC
+	</select>
+
+	<select id="exchangeHistory" resultType="com.lookation.dto.HostExchangeHistoryDTO">
+		SELECT HOST_BANK_NUMBER AS BANKNUMBER, HOST_BANK AS BANK, HOST_EXCHANGE_AMOUNT AS AMOUNT, TO_CHAR(HOST_EXCHANGE_DATE,'YYYY-MM-DD') AS EXCHANGEDATE
+		FROM HOST_EXCHANGE_HISTORY
+		WHERE HOST_CODE =  #{hostCode}
+		ORDER BY HOST_EXCHANGE_DATE DESC
+	</select>
+	
+</mapper>

@@ -76,15 +76,11 @@
 				
 				<c:choose>
 				<c:when test="${apply_date < now} ">
-					<td>이용완료</td>
+					<span class="ml-4">이용완료</span>
 				</c:when>
 
-				<c:when test="${details }.member_cancel eq 1 || book.host_cancel eq 1}">
-					<td class="text-danger">예약취소</td>
-				</c:when>
-				
-				<c:when test="${book.refund eq 1}">
-					<td class="text-gon">환불완료</td>
+				<c:when test="${details.member_cancel eq 1 || book.host_cancel eq 1}">
+					<span class="text-danger ml-4">예약취소</span>
 				</c:when>
 				
 				<c:otherwise>

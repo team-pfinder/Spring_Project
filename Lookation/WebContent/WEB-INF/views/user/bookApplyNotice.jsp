@@ -30,7 +30,6 @@
 					</div>
 					<div class="text">
 						<h3 class="font-weight-bold">성공적으로 결제완료되었습니다.</h3>
-						<h6>결제내역은 회원정보에 등록된 이메일로 전송되었습니다.</h6>
 					</div>
 				</div>
 			</div>
@@ -45,37 +44,42 @@
 	
 					<div class="form-inline form-group">
 						<span class="col-md-2 font-weight-bold">예약자명</span>
-						<span class="col-md-10">진영은</span>
+						<span class="col-md-10">${notice.actual_booker}</span>
 					</div>
 	
 					<div class="form-inline form-group">
 						<span class="col-md-2 font-weight-bold">연락처</span>
-						<span class="col-md-10">010-1234-1234</span>
+						<span class="col-md-10">${notice.actual_booker_tel }</span>
 					</div>
 	
 					<div class="form-inline form-group">
-						<span class="col-md-2 font-weight-bold">이메일</span>
-						<span class="col-md-10">papajon@lookation.com</span>
+						<span class="col-md-2 font-weight-bold">선택한 패키지</span>
+						<span class="col-md-10">${notice.package_name }</span>
 					</div>
-	
+					
+					<div class="form-inline form-group">
+						<span class="col-md-2 font-weight-bold">예약시간</span>
+						<span class="col-md-10">${notice.apply_date } ${notice.package_start }시 ~ ${notice.package_end }시</span>
+					</div>
+					
 					<div class="form-inline form-group">
 						<span class="col-md-2 font-weight-bold">인원수</span>
-						<span class="col-md-10">3명</span>
-					</div>
-	
-					<div class="form-inline form-group">
-						<span class="col-md-2 align-self-start font-weight-bold">요청사항</span>
-						<span class="col-md-10">고통을 멈춰주세요</span>
+						<span class="col-md-10">${notice.book_people }</span>
 					</div>
 					
 					<div class="form-inline form-group">
 						<span class="col-md-2 font-weight-bold">결제금액</span>
-						<span class="col-md-10">200,000</span>
+						<span class="col-md-10">${notice.package_price }</span>
+					</div>
+					
+					<div class="form-inline form-group">
+						<span class="col-md-2 align-self-start font-weight-bold">요청사항</span>
+						<span class="col-md-10">${notice.book_req }</span>
 					</div>
 				
 				<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
 				<div class="text-center">
-					<button class="btn btn-primary" type="button">메인 화면으로 돌아가기</button>
+					<button class="btn btn-primary" type="button" onclick="location:href='membermain.action'">메인 화면으로 돌아가기</button>
 				</div>
 			
 			</div><!-- End .col-md-12  -->

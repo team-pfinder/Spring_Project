@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.IBookApplyDAO">
 	
+	<!-- 공간 기본정보 항목 -->
 	<select id="bookapplyBasic" resultType="com.lookation.dto.BookApplyDTO">
 		SELECT LOC_CODE, LOC_NAME, LOC_TYPE, LOC_SHORT_INTRO
 		, MIN_PEOPLE, MAX_PEOPLE, HOST_CODE
@@ -11,6 +12,7 @@
 		WHERE LOC_CODE = #{loc_code}
 	</select>
 	
+	<!-- 공간 사업자 항목 -->
 	<select id="bookapplyBizInfo" resultType="com.lookation.dto.BookApplyDTO">
 		SELECT BIZ_NAME, BIZ_CEO, BIZ_LICENSE_NUMBER
 		, BIZ_ADDR, LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL 
@@ -18,41 +20,58 @@
 		WHERE LOC_CODE = #{loc_code}
 	</select>
 	
-	<select id="bookapplyCaution" resultType="com.lookation.dto.BookApplyDTO">
-		SELECT CAUTION_CONTENT 
-		FROM VIEW_CAUTION_CONTENT 
-		WHERE LOC_CODE=#{loc_code}
+	<!-- 선택한 패키지 정보 조회 -->
+	<select id="bookPackage" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT PACKAGE_NAME, APPLY_PACKAGE_CODE
+		, PACKAGE_START, PACKAGE_END, PACKAGE_PRICE, APPLY_DATE
+		, NVL(PACKAGE_END, 0) - NVL(PACKAGE_START, 0) AS HOURS
+		FROM VIEW_APPLY_PACKAGE_INFO
+		WHERE APPLY_PACKAGE_CODE = #{apply_package_code}
 	</select>
 	
+	<!-- 멤버 정보 받아오기 -->
+	<select id="setProfile" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT MEMBER_CODE, MEMBER_NAME, MEMBER_TEL
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_CODE=#{member_code}
+	</select>
+	
+	<!-- 마일리지 체크  -->	
 	<select id="mileageCheck" resultType="java.lang.Integer">
 		SELECT F_USER_BALANCE(#{member_code}) AS MILEAGE
 		FROM DUAL
 	</select>
 	
+	<!-- 예약리스트에 추가 -->
 	<insert id="insertBookList">
-		INSERT INTO BOOK_LIST (BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ)
+		INSERT INTO BOOK_LIST(BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ)
 		VALUES(F_CODE('BC', BC_SEQ.NEXTVAL), #{member_code}, #{apply_package_code}, #{book_people}, SYSDATE, #{book_req})
-		
 	</insert>
 	
-	<select id="bookCheck" resultType="com.lookation.dto.BookApplyDTO">
-		SELECT BOOK_CODE FROM 
-		(SELECT BOOK_CODE FROM BOOK_LIST WHERE MEMBER_CODE=#{member_code} 
-		ORDER BY BOOK_CODE DESC)
-		WHERE ROWNUM=1
+	<!-- 예약번호 확인, 실예약자, 결제내역 추가 -->
+	<insert id="actualBooking" statementType="CALLABLE">
+		{CALL PRC_BOOK_CODE_INSERT(
+									#{member_code, mode=IN}
+									, #{actual_booker, mode=IN}
+									, #{actual_booker_tel, mode=IN}
+									)
+		}
+	</insert>
+	
+	<!-- 예약확인 알림(bookApplyNotice.jsp) -->
+	<select id="bookNotice" resultType="com.lookation.dto.BookApplyDTO">
+		SELECT BOOK_CODE, ACTUAL_BOOKER, ACTUAL_BOOKER_TEL, BOOK_PEOPLE, BOOK_REQ
+		, APPLY_DATE, PACKAGE_NAME, PACKAGE_START, PACKAGE_END
+		, PACKAGE_PRICE
+		FROM VIEW_BOOKAPPLYNOTICE
+		WHERE BOOK_CODE = (SELECT BOOK_CODE
+		                     FROM 
+		                    (SELECT BOOK_CODE 
+		                       FROM BOOK_LIST 
+		                      WHERE MEMBER_CODE=#{member_code} 
+		                   ORDER BY BOOK_CODE DESC)
+		                   WHERE ROWNUM=1)
 	</select>
 	
-	<insert id="actualBooker">
-		INSERT INTO ACTUAL_BOOKER (ACTUAL_BOOKER_CODE, BOOK_CODE, ACTUAL_BOOKER
-		, ACTUAL_BOOKER_TEL)
-		VALUES(F_CODE('AB', AB_SEQ.NEXTVAL), #{book_code}, #{actual_booker}
-		, #{actual_booker_tel})
-		
-	</insert>
-	
-	<insert id="insertBookPay">
-		INSERT INTO BOOK_PAY_LIST(BOOK_PAY_CODE, BOOK_CODE, BOOK_PAY_DATE)
-		VALUES(F_CODE('BP', BP_SEQ.NEXTVAL), #{book_code}, SYSDATE)
-	</insert>
 	
 </mapper>

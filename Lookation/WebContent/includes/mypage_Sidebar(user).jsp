@@ -19,7 +19,7 @@
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="#">예약 리스트 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li><a href="memberloadandexchange.action">충전 및 환전
+				<li><a href="loadandexchange.action">충전 및 환전
 						신청 <span class="ion-ios-arrow-forward"></span>
 				</a></li>
 				<li><a href="membermileagehistory.action">마일리지 내역 <span

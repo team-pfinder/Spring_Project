@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
-<title>DeclarationManager.jsp</title>
+<title>reportList.jsp</title>
 
 <style type="text/css">
 

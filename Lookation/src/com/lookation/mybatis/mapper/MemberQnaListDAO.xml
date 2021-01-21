@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IMemberQnaListDAO">
+	
+	<!-- userQnaList 페이지 로드 -->
+	<select id="memberQnaList" resultType="com.lookation.dto.MemberQnaListDTO">
+		SELECT QNA_CODE, LOC_CODE, MEMBER_CODE
+		, QNA_CONTENT, QNA_DATE, LOC_NAME
+		, REMOVECOUNT
+		FROM VIEW_USER_QNA
+		WHERE MEMBER_CODE = #{member_code}
+	</select>
+	
+	<!-- 멤버 닉네임 조회 -->
+	<select id="memberNickName" resultType="com.lookation.dto.MemberQnaListDTO">
+		SELECT MEMBER_NICKNAME
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_CODE = #{member_code}
+	</select>
+	
+	<!-- QnA 수정 -->
+	<update id="modifyqnalist">
+		UPDATE QNA SET QNA_CONTENT = #{qna_content}, QNA_DATE=SYSDATE
+		WHERE QNA_CODE = #{qna_code}
+	</update>
+	
+	<!-- Q&A 삭제 -->
+	<insert id="deleteqnalist">
+		INSERT INTO QNA_REMOVE (QNA_REMOVE_CODE, QNA_CODE, QNA_REMOVE_DATE)
+		VALUES(F_CODE('QRM', QRM_SEQ.NEXTVAL), #{qna_code}, SYSDATE)
+	</insert>
+	
+</mapper>

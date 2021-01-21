@@ -28,4 +28,26 @@
 		FROM VIEW_BOOKLIST
 		WHERE BOOK_CODE = #{book_code}
 	</select>
+	
+	<select id="refundPrice" resultType="com.lookation.dto.BookListDTO">
+		SELECT BOOK_CODE, BOOK_HOUR, LOC_NAME
+		, APPLY_DATE, PACKAGE_START, PACKAGE_END
+		, PACKAGE_PRICE, BOOK_DATE
+		, TO_DATE(APPLY_DATE, 'YYYY-MM-DD') - TRUNC(TO_DATE(SYSDATE, 'YYYY-MM-DD')) AS DAYS
+		FROM VIEW_BOOKLIST
+		WHERE BOOK_CODE = #{book_code}
+	</select>
+	
+	<insert id="memberCancel" >
+		INSERT INTO MEMBER_CANCEL_LIST (MEMBER_CANCEL_CODE, BOOK_CODE
+		, MEMBER_CANCEL_REASON, MEMBER_CANCEL_DATE)
+		VALUES(F_CODE('MC', MC_SEQ.NEXTVAL), #{book_code}, #{member_cancel_reason}, SYSDATE)
+	</insert>
+	
+	<insert id="memberRefund">
+		INSERT INTO BOOK_REFUND_LIST (BOOK_REFUND_CODE, BOOK_CODE, BOOK_REFUND_DATE)
+		VALUES(F_CODE('BRF', BRF_SEQ.NEXTVAL), #{book_code}, SYSDATE)
+	</insert>
+	
+	
 </mapper>

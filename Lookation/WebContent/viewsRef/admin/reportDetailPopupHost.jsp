@@ -71,7 +71,7 @@
 <body class="">
 <!-- 회원 신고내역 확인하려고 할 경우 팝업 -->
 
-	<div class="">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-12 px-4 pb-3 pt-4 mx-4 bd-box">
 				<span class="ml-3">신고횟수 : </span>

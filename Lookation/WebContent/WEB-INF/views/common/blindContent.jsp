@@ -4,7 +4,7 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
-	/* 분기 필요 */
+	/* identify 들고오는게 필요할거같은데 */
 %>
 <!DOCTYPE html>
 <html>
@@ -42,7 +42,7 @@
 
 	function back()
 	{
-		alert("이전페이지로 돌아가기");
+		window.history.back();
 	}
 
 </script>
@@ -56,37 +56,40 @@
 		
 	-->
 
-	<!-- 경로변경 필요 -->
-	<!-- Lookation 로고 및 메뉴 include -->
-	<!-- 분기 필요 -->
-	<div>
-		<c:import url="${cp}/includes/header_user.jsp"></c:import>
-	</div>
-	
-	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
-	</div>
+	<c:choose>
+		<c:when test = "${identify eq 'member'}">
+			<!-- include header_user.jsp -->
+			<div>
+				<c:import url="${cp}/includes/header_user.jsp"></c:import>
+			</div>
+		</c:when>
+		<c:when test = "${identify eq 'host'}">
+			<!-- include header_host.jsp -->
+			<div>
+				<c:import url="${cp}/includes/header_host.jsp"></c:import>
+			</div>
+		</c:when>
+	</c:choose>	
 	
 	
 
 <div class="outer">
 	<div class="inner">
-		운영정책을 위반하여 블라인드 처리된 공간게시글 입니다.	<!-- align : center -->
+		운영정책을 위반하여 블라인드 처리된 공간게시글 입니다.
 		<br><br>
 		<button type="button" onclick="back()" class="btn btn-primary">되돌아가기</button> <!-- align : center -->
 	</div>
 </div>
 
 
-	<!-- 경로변경 필요 -->
-	<!-- 분기 필요 -->
-	<div>
-		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-	</div>
-	
-	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	</div>
+	<c:choose>
+		<c:when test="${identify eq 'member'}">
+			<c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:when>
+		<c:when test="${identify eq 'host'}">
+			<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:when>
+	</c:choose>
 	
 	<!-- 자바스크립트 include -->
 	<c:import url="${cp }/includes/includes_home_end.jsp"></c:import>

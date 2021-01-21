@@ -13,16 +13,39 @@ public class BookApplyDTO
 	, loc_intro, min_people, max_people
 	, host_code, package_code, package_name
 	, package_start, package_end
-	, package_price, apply_date
+	, apply_date
 	, biz_name, biz_ceo, biz_license_number
 	, biz_addr, loc_email, loc_tel, loc_main_tel
 	, member_code, mileage
 	, book_code, apply_package_code, book_date, book_req
 	, actual_booker, actual_booker_tel
-	, book_pay_date;
+	, book_pay_date, member_tel, member_name
+	, hours;
 	
-	private int book_people;
+	private int book_people, package_price;
 	
+	
+	
+	public String getHours()
+	{
+		return hours;
+	}
+
+	public void setHours(String hours)
+	{
+		this.hours = hours;
+	}
+
+	public int getPackage_price()
+	{
+		return package_price;
+	}
+
+	public void setPackage_price(int package_price)
+	{
+		this.package_price = package_price;
+	}
+
 	public String getMember_code()
 	{
 		return member_code;
@@ -153,16 +176,6 @@ public class BookApplyDTO
 		this.package_end = package_end;
 	}
 
-	public String getPackage_price()
-	{
-		return package_price;
-	}
-
-	public void setPackage_price(String package_price)
-	{
-		this.package_price = package_price;
-	}
-
 	public String getApply_date()
 	{
 		return apply_date;
@@ -273,7 +286,6 @@ public class BookApplyDTO
 		this.apply_package_code = apply_package_code;
 	}
 
-	
 	public int getBook_people()
 	{
 		return book_people;
@@ -332,6 +344,26 @@ public class BookApplyDTO
 	public void setBook_pay_date(String book_pay_date)
 	{
 		this.book_pay_date = book_pay_date;
+	}
+
+	public String getMember_tel()
+	{
+		return member_tel;
+	}
+
+	public void setMember_tel(String member_tel)
+	{
+		this.member_tel = member_tel;
+	}
+
+	public String getMember_name()
+	{
+		return member_name;
+	}
+
+	public void setMember_name(String member_name)
+	{
+		this.member_name = member_name;
 	}
 	
 	

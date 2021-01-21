@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -12,6 +13,56 @@
 <title>Lookation</title>
 <c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<style type="text/css">
+
+
+table{
+width: 100%;
+table-layout: fixed;
+}
+
+table thead tr{
+width: 100%;
+}
+
+
+td {
+	text-overflow : ellipsis; 
+	overflow : hidden; 
+	white-space : nowrap;
+	block: inline-block;
+}
+
+tr > td > a {
+	color: gray;
+}
+
+</style>
+<script type="text/javascript">
+
+
+$(function(){
+
+	// 이용자 리뷰 수정하는 팝업
+	$(".modifyreview").click(function()
+	{
+		var url = "modifyformreview.action?identify=member&review_code=" + $(this).val() + "&reqpage=list";
+		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
+		window.open(url, "", option);
+	}); 
+
+	// 이용자 리뷰 삭제하는 팝업 
+	$(".deletereview").click(function()
+	{
+		if(confirm("삭제하시겠습니까?"))
+		{
+			$(location).attr("href", "deletereviewinlist.action?review_code=" + $(this).val());
+		}
+	}); 
+	
+});
+</script>
+
 </head>
 <body>
 
@@ -21,8 +72,8 @@
     	<div class="row no-gutters slider-text align-items-end">
       		<div class="col-md-9 ftco-animate pb-5">
       			<p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span><a href="myPage.html"> My Page <i class="ion-ios-arrow-forward"></i></a></span>
-      			<span><a href="index.html"> 작성글 리스트 <i class="ion-ios-arrow-forward"></i></a></span></p>
-        		<h1 class="mb-0 bread">Q&A</h1>
+      			</p>
+        		<h1 class="mb-0 bread">리뷰</h1>
       		</div>
     	</div>
   	</div>
@@ -35,125 +86,62 @@
 
 
 <div class="container">
-	<br>
 	<div class="row mt-4">
 		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
 		<div class="col-md-10">
 			<!-- Page Heading -->
 		<div class="memo">
-			<h1 class="mb-2 text-gray-800">내가 작성한 글</h1>
+			<h1 class="mb-2 text-gray-800">리뷰</h1>
 			<p class="mb-4">
 				<!-- 작성자 닉네임 출력 -->
-				<span class="text-primary">거북이</span>님의 작성글입니다. <span>행 클릭시
-					해당 게시글이 있는 위치로 이동합니다 </span><a target="_blank" href="#"> 이전으로</a>.
+				<span class="text-primary font-weight-bold">${nickName.member_nickname }</span>님의 작성글입니다.공간명 클릭시
+					해당 게시글이 있는 위치로 이동합니다.
 			</p>
 		</div><!-- End .memo -->
 
 			<div class="card shadow mb-4">
 				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-default">작성글보기(Q&A)</h6>
+					<h6 class="m-0 font-weight-bold text-default">작성글보기(리뷰)</h6>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive align-self-center">
-						<table class="table table-bordered table-hover" id="dataTable">
+						<table class="table" id="dataTable">
 							<colgroup>
-								<col style="width: 7%">
-								<col style="width: 23%">
-								<col style="width: 30%">
-								<col style="width: 20%">
+								<col style="width: 25%">
+								<col style="width: 10%">
+								<col style="width: 35%">
+								<col style="width: 15%">
 								<col style="width: 15%">
 							</colgroup>
-							
 							
 							<!-- 예약정보 조회 및 검색 -->
 							<thead class="text-center">
 								<tr>
-									<th>#</th>
-									<!-- 번호순 -->
 									<th>공간명</th>
+									<th>별점</th>
 									<th>내용</th>
 									<th>작성일</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody data-link="row" class="rowlink text-center">
-								<tr>
-									<td>UR000001</td>
-									<td>바다</td>
-									<!-- 문의내용은 첫줄만 표시 -->
-									<td>오늘은 날씨가 많이 춥네요...</td>
-									<!-- 글 수정시 작성일은 수정일로 변경(update)된다. -->
-									<td>2021-01-01</td>
-									<td>
-										<!-- 글수정버튼 -->
-										<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-										<!-- 글삭제버튼 -->
-										<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-										<!-- ※ 이동방법 결정 -->
-										<!-- 1. 해당 행 클릭시 해당 글로 이동 -->
-										<!-- 2. 수정, 삭제버튼 클릭시 각각 수정창, 삭제창 뜨게 -->
-									</td>
-								</tr>
-								<tr>
-									<td>UR000001</td>
-									<td>일이삼사오육칠...</td>
-									<td>난방이 잘 되어 있는지 궁금합니다. 추위를 ... </td>
-									<td>2021-07-14</td>
-									<td>
-											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-									</td>
-								</tr>
-								<tr>
-									<td>UR000001</td>
-									<td>파파존스 호러 어쩌구 저쩌구</td>
-									<td>파파존스 피자 할인 되나요? ... </td>
-									<td>2021-07-12</td>
-									<td>
-											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-									</td>
-								</tr>
-								<tr>
-									<td>UR000001</td>
-									<td>질문이 너무 많은 공간</td>
-									<td>진동벨 가져갈테니 내일 아침 6시에 울려주 ...</td>
-									<td>2021-03-14</td>
-									<td>
-											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-									</td>
-								</tr>
-								<tr>
-									<td>UR000001</td>
-									<td>브라이덜샤워</td>
-									<td>제 브라덜도 데려가도 되나요? ... </td>
-									<td>2021-02-14</td>
-									<td>
-											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-									</td>
-								</tr>
-								<tr>
-									<td>UR000001</td>
-									<td>루프탑 빌려주는 곳</td>
-									<td>냉장고를 사용할 수 있는지 궁 ... </td>
-									<td>2021-02-14</td>
-									<td>
-											<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-											<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-									</td>
-								</tr>
-								<tr>
-									<td>UR000001</td>
-									<td>새해맞이공간</td>
-									<td>새해 할인없나요??</td>
-									<td>2021-01-01</td>
-									<td>
-										<button type="button" class="btn-xs btn-warning rounded border-0">수정</button>
-										<button type="button" class="btn-xs btn-dark rounded border-0">삭제</button>
-									</td>
-								</tr>
+								<c:forEach var="review" items="${reviewList }">
+								
+									<c:if test="${review.removecount ne 1 }">
+										<tr>
+											<!-- 공간이름 클릭시 이동 -->
+											<td><a href="#">${review.loc_name }</a></td>
+											<td><span class="icon-star mr-1 text-warning"></span>${review.review_rate }점</td>
+											<td title="${review.review_content }">${review.review_content }</td>
+											<!-- 날짜 YYYY-MM-DD 형태로 자름 -->
+											<td>${fn:substring(review.review_date, 0, 10)}</td>
+											<td>
+												<button type="button" class="btn-xs btn-warning rounded border-0 modifyreview" value="${review.review_code }">수정</button> 
+												<button type="button" class="btn-xs btn-danger rounded border-0 deletereview" value="${review.review_code }">삭제</button>
+											</td>
+										</tr>
+									</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
