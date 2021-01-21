@@ -11,7 +11,7 @@ import com.lookation.dao.ISampleDAO;
 import com.lookation.dao.IuserReviewManagerDAO;
 
 @Controller
-public class userReviewManagerController
+public class UserReviewManager
 {
 	@Autowired
 	private SqlSession sqlSession;

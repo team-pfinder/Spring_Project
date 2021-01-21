@@ -10,14 +10,20 @@ String cp = request.getContextPath();
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>RefundPolicy.jsp</title>
+<title>refundPolicy.jsp</title>
 
 <style>
+	
+	div.container div
+	{
+		font-size: 10pt;
+	}
 	
 	div.container  p
 	{
 		color: #fdbe34;
 		font-weight: bold;
+		font-size: 15pt;
 	}
 
 </style>
@@ -28,16 +34,20 @@ String cp = request.getContextPath();
 </head>
 <body>
 
-	<!-- 경로변경 필요 -->
-	<!-- Lookation 로고 및 메뉴 include -->
-	<!-- 분기 필요 -->
-	<div>
-		<c:import url="${cp}/includes/header_user.jsp"></c:import>
-	</div>
-		
-	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
-	</div>
+	<c:choose>
+		<c:when test = "${identify eq 'member'}">
+			<!-- include header_user.jsp -->
+			<div>
+				<c:import url="${cp}/includes/header_user.jsp"></c:import>
+			</div>
+		</c:when>
+		<c:when test = "${identify eq 'host'}">
+			<!-- include header_host.jsp -->
+			<div>
+				<c:import url="${cp}/includes/header_host.jsp"></c:import>
+			</div>
+		</c:when>
+	</c:choose>	
 
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -60,26 +70,52 @@ String cp = request.getContextPath();
 	<div class="container" style="margin: 10% 10% 10% 10%;">
 		<div>
 			본 정책은 Lookation 회원 이용약관에 따라 작성되었으며 본 정책에서
-			사용되는 용어의 정의는 Lookation 회원 이용약관과 동일하다.
+			사용되는 용어의 정의는 Lookation 회원 이용약관과 동일합니다.
 		</div>
 		<br>
 		<div>
 			<p>1. 정산</p>
-			이용자는 Lookation을 이용하기 위해 충전한 마일리지를 다시 환전받을 수 있다.
+			- 이용자는 Lookation을 이용하기 위해 충전한 마일리지를 다시 환전받을 수 있습니다.
+			환전 가능 최소금액은 1,000원 부터 가능합니다. <br>
+			- 호스트는 이용자가 공간을 이용완료 하였을 때 수수료 10%를 제외한 마일리지가
+			자동으로 들어오게 되며, 이 마일리지를 환전받을 수 있습니다. 이용자와 마찬가지로
+			환전 가능 최소금액은 1,000원입니다.
+			- 환전 신청 시 미리 입력해둔 계좌번호를 선택할 수 있습니다. 계좌 정보가 입력이 되어있지
+			않은 경우에는, 계좌를 추가한 후에 환전을 받을 수 있습니다. 최대 3개의 계좌를 입력할 수 있으며
+			환전 받을 때 계좌를 선택할 수 있습니다.<br>
+			- 마일리지가 남아있는 경우에는 회원 탈퇴를 진행할 수 없으므로, 정산을 받은 후 진행해야합니다.
+			이는 블랙리스트로 지정된 회원도 적용되는 부분입니다.
 		</div>
+		<br>
 		
-		후략...
+		<div>
+			<p>2. 환불</p>
+			- 이용자는 예약한 공간을 이용 전날 23:59까지 취소를 할 수 있으며 아래의 환불 규정에
+			따라 마일리지를 환불 받을 수 있게 됩니다. 환불 규정은 이용일을 기준으로 합니다.<br>
+			<br>
+			(i) ~7일 전 : 100% 환불 <br>
+			(ii) 6 ~ 1일 전 : 50% 환불 <br>
+			(iii) 예약 당일 : 환불 불가 (취소 불가) <br>
+			(iv) 예외 : 호스트가 예약을 취소한 경우 : 100% 환불<br>
+			<br>
+			- 호스트는 이용자와는 다르게 당일 갑작스런 상황으로 공간을 이용할 수 없을 상황을 고려하여
+			당일 이용시작 시각 전까지 취소를 할 수 있습니다.
+			(단, 계속되는 당일 취소와 신고가 누적되면 블랙리스트로 지정될 수 있음)
+			<br>
+			-만일 이용자의 예약 취소를 한 경우, 호스트는 <br>
+			(결제금액 * (1-환불비율))*0.9 만큼의 마일리지를 받을 수 있습니다.
+		</div>
 		
 	</div>
 
-	<!-- 분기 필요 -->
-	<div>
-		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-	</div>
-	
-	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	</div>
+	<c:choose>
+		<c:when test="${identify eq 'member'}">
+			<c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:when>
+		<c:when test="${identify eq 'host'}">
+			<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:when>
+	</c:choose>
 	
 	
 	<!-- 자바스크립트 include -->

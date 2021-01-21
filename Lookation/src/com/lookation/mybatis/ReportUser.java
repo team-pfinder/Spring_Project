@@ -10,7 +10,7 @@ import com.lookation.dao.IReportUserDAO;
 import com.lookation.dto.reportUserDTO;
 
 @Controller
-public class reportUserController
+public class ReportUser
 {
 	@Autowired
 	private SqlSession sqlSession;

@@ -14,7 +14,7 @@ import com.lookation.dao.IuserQnaManagerDAO;
 //사용자 정의 컨트롤러 클래스를 구성한다.
 
 @Controller
-public class userQnaManagerController
+public class UserQnaManager
 {
 	@Autowired
 	private SqlSession sqlSession;

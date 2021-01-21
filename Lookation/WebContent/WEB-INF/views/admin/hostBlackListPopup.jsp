@@ -22,10 +22,21 @@
 	{
 		$("#btn").click(function()
 		{
-			if(confirm("정말로 이 계정을 블랙리스트 처리하시겠습니까?"))
+			<%-- if(confirm("정말로 이 계정을 블랙리스트 처리하시겠습니까?"))
 			{
 				$(location).attr("href", "hostblack.action?host_email=<%=host_email%>" + "&host_blacklist_reason=" + $("#host_blacklist_reason").val());
-			}
+			} --%>
+			
+			
+			$.ajax({
+				type : "get"
+				, url : "hostblack.action?host_email=<%=host_email%>" + "&host_blacklist_reason=" + $("#host_blacklist_reason").val()
+				, complete : function()
+				{
+					window.opener.parent.location.reload();
+					window.self.close();
+				}
+			});
 			
 		});
 	});
@@ -70,13 +81,15 @@
 
 <div class="outer">
 	<div class="inner">
-		<span>블랙리스트에 추가하려는 이용자 또는 호스트</span><br>
-		<input type="text" class="form-control" id="host_email"
-		value="<%=host_email %>" readonly="readonly"> <br>
-		<span>블랙리스트 사유</span><br>
-		<input type="text" class="form-control" id="host_blacklist_reason"
-		placeholder="블랙리스트 사유 입력"><br>
-		<button type="button" class="btn btn-primary" id="btn">블랙리스트 등록</button>
+		<form method="get" name="myForm">
+			<span>블랙리스트에 추가하려는 이용자 또는 호스트</span><br>
+			<input type="text" class="form-control" id="host_email"
+			value="<%=host_email %>" readonly="readonly"> <br>
+			<span>블랙리스트 사유</span><br>
+			<input type="text" class="form-control" id="host_blacklist_reason"
+			placeholder="블랙리스트 사유 입력"><br>
+			<button type="button" class="btn btn-primary" id="btn">블랙리스트 등록</button>
+		</form>
 	</div>
 </div>
 
