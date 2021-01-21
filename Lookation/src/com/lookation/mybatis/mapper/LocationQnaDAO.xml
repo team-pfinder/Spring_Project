@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lookation.dao.IQnaDAO">
+<mapper namespace="com.lookation.dao.ILocationQnaDAO">
 	
 	<insert id="insertMemQna">
 		INSERT INTO QNA(QNA_CODE, LOC_CODE, MEMBER_CODE
@@ -11,13 +11,13 @@
 		, #{loc_code} ,#{member_code}, #{qna_content}, SYSDATE)
 	</insert>
 	
-	<select id="updateQnaForm" resultType="com.lookation.dto.QnaDTO">
+	<select id="updateQnaForm" resultType="com.lookation.dto.LocationQnaDTO">
 		SELECT QNA_CODE, LOC_CODE, QNA_CONTENT
 		FROM QNA
 		WHERE QNA_CODE=#{qna_code}
 	</select>
 	
-	<select id="updateQnaReplyForm" resultType="com.lookation.dto.QnaDTO">
+	<select id="updateQnaReplyForm" resultType="com.lookation.dto.LocationQnaDTO">
 		SELECT QNA_REPLY_CODE, QNA_REPLY_CONTENT
 		FROM QNA_REPLY
 		WHERE QNA_REPLY_CODE =#{qna_reply_code}

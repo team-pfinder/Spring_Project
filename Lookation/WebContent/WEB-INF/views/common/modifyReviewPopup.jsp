@@ -9,6 +9,10 @@
 
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
+	
+	// 부모창 주소 받기
+	String reqpage = (String)request.getParameter("reqpage");
+	pageContext.setAttribute("reqpage", reqpage);
 %>
 
 <!DOCTYPE html>
@@ -122,50 +126,101 @@
 			<div class="col-md-12">
 				<!-- 이용자 -->
 				<c:if test="${identify eq 'member'}"> 
-					<form action="modifyreview.action" method="post" id="reviewForm" target="redirect:locationdetail.action">
-						<div class="header">
-							<h3 class="title">리뷰 수정하기</h3>
-							<hr>
-							<label class="label-name"> 별점 </label>
-		
-							<div id="radio" class="star-rate float-right">
-								<input type="radio" class="star-check" value="1" name="review_rate"/>
-								<input type="radio" class="star-check" value="2" name="review_rate"/>
-								<input type="radio" class="star-check" value="3" name="review_rate"/>
-								<input type="radio" class="star-check" value="4" name="review_rate"/>
-								<input type="radio" class="star-check" value="5" name="review_rate"/>
-								
-								<div class="stars">
-									<span><i data-star-value="1" class="fa fa-star"></i></span>
-									<span><i data-star-value="2" class="fa fa-star"></i></span>
-									<span><i data-star-value="3" class="fa fa-star"></i></span>
-									<span><i data-star-value="4" class="fa fa-star"></i></span>
-									<span><i data-star-value="5" class="fa fa-star"></i></span>
+				
+					<c:choose>
+						<c:when test="${reqpage eq 'list'}">
+							<form action="modifyreviewinlist.action" method="post" id="reviewForm" target="redirect:userreviewlist.action">
+								<div class="header">
+									<h3 class="title">리뷰 수정하기</h3>
+									<hr>
+									<label class="label-name"> 별점 </label>
+				
+									<div id="radio" class="star-rate float-right">
+										<input type="radio" class="star-check" value="1" name="review_rate"/>
+										<input type="radio" class="star-check" value="2" name="review_rate"/>
+										<input type="radio" class="star-check" value="3" name="review_rate"/>
+										<input type="radio" class="star-check" value="4" name="review_rate"/>
+										<input type="radio" class="star-check" value="5" name="review_rate"/>
+										
+										<div class="stars">
+											<span><i data-star-value="1" class="fa fa-star"></i></span>
+											<span><i data-star-value="2" class="fa fa-star"></i></span>
+											<span><i data-star-value="3" class="fa fa-star"></i></span>
+											<span><i data-star-value="4" class="fa fa-star"></i></span>
+											<span><i data-star-value="5" class="fa fa-star"></i></span>
+										</div>
+									</div>
+								</div>
+							
+								<div class="body">
+									<div class="form-group">
+										<input type="hidden" value="${modifyReview.review_code }" name="review_code">
+										<label for="content">내용</label>
+										<textarea class="form-control" id="content" name="review_content"
+											rows="8" maxlength="3000">${modifyReview.review_content }</textarea>
+									</div>
+			
+									<div class="form-group">
+										<label for="image">사진 첨부</label>
+										<input type="file" id="image"
+											class="form-control">
+									</div>
+									
+									<div class="text-center">
+										<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
+										<button type="button" class="btn btn-primary submitBtn">수정하기</button>
+									</div>
+								</div><!-- End .body -->
+							</form>
+						</c:when>
+					<c:otherwise>
+						<form action="modifyreview.action" method="post" id="reviewForm" target="redirect:locationdetail.action">
+							<div class="header">
+								<h3 class="title">리뷰 수정하기</h3>
+								<hr>
+								<label class="label-name"> 별점 </label>
+			
+								<div id="radio" class="star-rate float-right">
+									<input type="radio" class="star-check" value="1" name="review_rate"/>
+									<input type="radio" class="star-check" value="2" name="review_rate"/>
+									<input type="radio" class="star-check" value="3" name="review_rate"/>
+									<input type="radio" class="star-check" value="4" name="review_rate"/>
+									<input type="radio" class="star-check" value="5" name="review_rate"/>
+									
+									<div class="stars">
+										<span><i data-star-value="1" class="fa fa-star"></i></span>
+										<span><i data-star-value="2" class="fa fa-star"></i></span>
+										<span><i data-star-value="3" class="fa fa-star"></i></span>
+										<span><i data-star-value="4" class="fa fa-star"></i></span>
+										<span><i data-star-value="5" class="fa fa-star"></i></span>
+									</div>
 								</div>
 							</div>
-						</div>
-					
-						<div class="body">
-							<div class="form-group">
-								<input type="hidden" value="${modifyReview.review_code }" name="review_code">
-								<label for="content">내용</label>
-								<textarea class="form-control" id="content" name="review_content"
-									rows="8" maxlength="3000">${modifyReview.review_content }</textarea>
-							</div>
-	
-							<div class="form-group">
-								<label for="image">사진 첨부</label>
-								<input type="file" id="image"
-									class="form-control">
-							</div>
-							
-							<div class="text-center">
-								<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
-								<button type="button" class="btn btn-primary submitBtn">수정하기</button>
-							</div>
-						</div><!-- End .body -->
-					</form>
+						
+							<div class="body">
+								<div class="form-group">
+									<input type="hidden" value="${modifyReview.review_code }" name="review_code">
+									<label for="content">내용</label>
+									<textarea class="form-control" id="content" name="review_content"
+										rows="8" maxlength="3000">${modifyReview.review_content }</textarea>
+								</div>
+		
+								<div class="form-group">
+									<label for="image">사진 첨부</label>
+									<input type="file" id="image"
+										class="form-control">
+								</div>
+								
+								<div class="text-center">
+									<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
+									<button type="button" class="btn btn-primary submitBtn">수정하기</button>
+								</div>
+							</div><!-- End .body -->
+						</form>
+					</c:otherwise>
+					</c:choose>
 				</c:if>	
+				
 					
 				<!-- 호스트 -->
 				

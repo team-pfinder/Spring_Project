@@ -1,6 +1,6 @@
 package com.lookation.dto;
 
-public class ReviewDTO
+public class LocationReviewDTO
 {
 	// 이용자
 	private String review_code, loc_code, member_code, review_rate

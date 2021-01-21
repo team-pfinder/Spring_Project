@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IHostBlackManagerDAO">
+	
+	<select id="listBlackHost" resultType="com.lookation.dto.HostBlackManagerDTO">
+		SELECT HOST_CODE, HOST_EMAIL, HOST_NICKNAME
+		, HOST_BLACKLIST_REASON, YESBLACK
+		FROM VIEW_HOSTBLACKLIST
+	</select>
+	
+	<select id="searchEmail" resultType="java.lang.String">
+		SELECT HOST_EMAIL
+		FROM HOST_PROFILE
+		WHERE HOST_CODE = #{host_code}
+	</select>
+	
+	<insert id="regBlackHost">
+		INSERT INTO HOST_BLACKLIST(HOST_EMAIL
+		, HOST_BLACKLIST_REASON, HOST_BLACKLIST_DATE)
+		VALUES(#{host_email}, #{host_blacklist_reason}, SYSDATE)
+	</insert>
+	
+	<delete id="delBlackHost" parameterType="java.lang.String">
+		DELETE 
+		FROM HOST_BLACKLIST
+		WHERE HOST_EMAIL = #{host_email}
+	</delete>
+	
+	<select id="viewReportHost" resultType="com.lookation.dto.HostBlackManagerDTO" parameterType="java.lang.String">
+		SELECT HOST_CODE, LOC_REPORT_CODE
+		, LOC_REPORT_REASON, LOC_REPORT_DATE
+		, LOC_REPORT_TYPE, REPORT_PROC_TYPE
+		FROM VIEW_HOST_REPORTDETAILS
+		WHERE HOST_CODE =#{host_code}
+	</select>
+	
+</mapper>

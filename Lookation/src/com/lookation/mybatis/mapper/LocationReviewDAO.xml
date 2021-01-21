@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lookation.dao.IReviewDAO">
+<mapper namespace="com.lookation.dao.ILocationReviewDAO">
 	
 	<insert id="insertMemReview">
 		INSERT INTO REVIEW(REVIEW_CODE, LOC_CODE, MEMBER_CODE, REVIEW_RATE, REVIEW_CONTENT
@@ -11,13 +11,13 @@
 		, #{member_code}, #{review_rate}, #{review_content}, SYSDATE)
 	</insert>
 	
-	<select id="updateReviewForm" resultType="com.lookation.dto.ReviewDTO" >
+	<select id="updateReviewForm" resultType="com.lookation.dto.LocationReviewDTO" >
 		SELECT REVIEW_CODE, LOC_CODE, REVIEW_CONTENT, REVIEW_RATE
 		FROM REVIEW
 		WHERE REVIEW_CODE=#{review_code}
 	</select>
 	
-	<select id="updateReviewReplyForm" resultType="com.lookation.dto.ReviewDTO" >
+	<select id="updateReviewReplyForm" resultType="com.lookation.dto.LocationReviewDTO" >
 		SELECT REVIEW_REPLY_CODE, REVIEW_REPLY_CONTENT
 		FROM REVIEW_REPLY
 		WHERE REVIEW_REPLY_CODE=#{review_reply_code}

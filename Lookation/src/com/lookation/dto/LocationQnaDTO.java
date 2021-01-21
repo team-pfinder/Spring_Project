@@ -1,6 +1,6 @@
 package com.lookation.dto;
 
-public class QnaDTO
+public class LocationQnaDTO
 {
 	// 이용자 QNA
 	private String qna_code, loc_code, member_code, qna_date

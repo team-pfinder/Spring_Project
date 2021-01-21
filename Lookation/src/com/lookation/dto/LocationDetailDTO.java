@@ -10,6 +10,14 @@ public class LocationDetailDTO
 	, count, url, rvimgCount, qna_content
 	, replyRemove, removeCount, hostCode, replyContent, replyDate, replyCode; 
 	
+	private String packageName, applyDate;
+	
+	private String bizName, bizCeo, bizCeoType, bizMainType, bizSubType
+	, bizLicenseNum, facility, caution;
+	
+	private int minPeople, maxPeople, packStart, packEnd, packPrice;
+
+	
 	public String getReplyCode()
 	{
 		return replyCode;
@@ -39,13 +47,6 @@ public class LocationDetailDTO
 	{
 		this.rvimgCount = rvimgCount;
 	}
-
-	private String packageName, applyDate;
-	
-	private String bizName, bizCeo, bizCeoType, bizMainType, bizSubType
-	, bizLicenseNum, facility, caution;
-	
-	private int minPeople, maxPeople, packStart, packEnd, packPrice;
 
 		
 	public String getUrl()

@@ -323,33 +323,29 @@ margin-top: 1.9em;
 		// 날짜가 변경되었을 경우 수행할 코드 처리
 		$("#selectDate").change(function()
 		{
-			// 『jquery.post()』 / 『jquery.get()』
-			// 『$.post()』 / 『$.get()』
-			//-- jQuery 에서 AJAX 를 써야 할 경우 지원해 주는 함수.
-			//   (서버측에서 요청한 데이터를 받아오는 기능의 함수)
+			var htmlText="";
 			
-			// ※ 이 함수(『$.post()』)의 사용 방법(방식)
-			//-- 『$.post(요청주소, 전송데이터, 응답액션처리)』
-			//   ·요청주소(url)
-			//    → 데이터를 요청할 파일에 대한 정보
-			//   ·전송데이터(data)
-			//    → 서버 측에 요청하는 과정에서 내가 전달할 파라미터
-			//   ·응답액션처리(function)
-			//    → 응답을 받을 수 있는 함수
-			//       여기서는 익명의 함수를 사용 → 단순 기능 구현 및 적용
-			// ※ 참고로 data 는 파라미터의 데이터타입을 그대로 취하게 되므로
-			//    html 이든, 문자열이든 상관이 없다.
-			$.post("locdetailajax.action", {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}, function(data)
-			{
-				// 받아서 처리할 내용
-			    for(var i=0; i<data.length; i++){
+			$.ajax({
+				url : "locdetailajax.action"
+				, type : "get"
+				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
+			    , dataType : "json"
+				, success : function(args) {
+					
+					/* $.each(data, function() {
+					     alert(this["packageName"]);
+					     alert(this.packageName);
+					}); */
 
-                   $('#packageDiv').append(data[i] + '<br>')
-                   }
-				//$("#packageDiv").text(data);
-				alert(data);
-			});
-			
+					for(var idx=0; idx<args.test.length; idx++){
+						$("#pacakgeDiv").append("<input type='radio'>"+ args.test[idx].packageName);
+					}
+				}
+			    , error:function(e){
+			    	alert(e.responseText);
+			    	
+			    }
+				});
 		});
 		
 		// 이용자 QnA 수정하는 팝업
@@ -386,7 +382,6 @@ margin-top: 1.9em;
 			window.open(url, "", option);
 		}); 
 		
-	});
 	
 	// 질문 작성하는 팝업
 	function writeQna()
@@ -408,6 +403,8 @@ margin-top: 1.9em;
 		window.open(url, "", option);
 	}
 	
+	});
+	
 </script>
 </head>
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="15">
@@ -423,7 +420,7 @@ margin-top: 1.9em;
 			 	<div class="tagcloud mb-5">
 	                <a href="#" class="tag-cloud-link">${basicInfo.locType }</a>
              	</div>
-             	
+             	<div id="print"></div>
              	
 				<!--- carousel --->
 				<!-- 상세이미지 슬라이더 -->
@@ -602,9 +599,6 @@ margin-top: 1.9em;
 				</div>
 				
 				<!-- 지도 위치 -->
-				<!-- 주소 및 -->
-				<!-- 전화번호 -->
-				<!-- 길찾기 버튼 -->
 			
 				<h4 class="info-sub">위치 안내</h4>
 				<div id="map" style="width:100% ;height:350px;"></div>
@@ -627,7 +621,6 @@ margin-top: 1.9em;
 				geocoder.addressSearch(addr, function(result, status) {
 					
 				     if (status === kakao.maps.services.Status.OK) {	// 검색완료시
-
 				        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
 				        // 결과값으로 받은 위치를 마커로 표시
@@ -707,7 +700,7 @@ margin-top: 1.9em;
 		<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
 			<div class="sidebar-box ftco-animate p-3 mt-5">
 				
-				<form action="bookapply.action?loc_code=L000001&member_code=M000002" id="reserveForm" method="GET">
+				<form action="bookapply.action" id="reserveForm" method="GET">
 					<div class="categories">
 						<h3>공간예약하기</h3>
 						<hr>
@@ -757,9 +750,9 @@ margin-top: 1.9em;
 						
 						<div class="content mt-3">
 							<div class="packageDiv">
-								<%-- <c:forEach var="i" items="${packageInfo }" varStatus="radioNum">
+<%-- 								<c:forEach var="i" items="${test }" varStatus="radioNum">
 									
-										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packPrice }">
+										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packageCode }">
 										${i.packageName }
 										<span class="ml-3 package-bundle">
 										<c:choose>
@@ -785,7 +778,13 @@ margin-top: 1.9em;
 										<div class="flex float-right vertical-down">
 											<strong>${i.packPrice }(원)</strong>
 										</div>
-								</c:forEach>  --%>
+								</c:forEach> 
+								 --%>
+								<input type="radio" name="apply_package_code" id="1" value="AP000001">
+							    <label><span class="ml-3 package-bundle" > 오후 10시 ~ 익일 오전 10시</span></label>
+							    <div class="flex float-right vertical-down">
+									<strong>60000(원)</strong>
+								</div>
 							</div>
 						</div>
 							 
@@ -805,7 +804,7 @@ margin-top: 1.9em;
 								<button type="button" class="btn btn-primary py-3 my-0 btn-group-addon"
 								id="decrease" >-</button>
 								<input type="text" id="amount" required="required"
-								class="form-control border-0" name="amount" value="${basicInfo.minPeople }" style="text-align:center;">
+								class="form-control border-0" name="book_people" value="${basicInfo.minPeople }" style="text-align:center;">
 								<button type="button" class="btn btn-primary py-0 mb-0 btn-group-addon"
 								id="increase">+</button>
 							</div>

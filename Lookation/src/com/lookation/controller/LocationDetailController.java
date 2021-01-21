@@ -29,13 +29,13 @@ public class LocationDetailController implements Controller
 		String locCode = request.getParameter("locCode");
 		//String locCode = "L000003";
 	
-		String selectDate = request.getParameter("selectDate");
+		//String selectDate = request.getParameter("selectDate");
 		
 		try
 		{
 			mav.addObject("basicInfo", dao.basicInfo(locCode));
 			mav.addObject("usingInfo", dao.usingInfo(locCode));
-			mav.addObject("packageInfo", dao.packageInfo(locCode, selectDate));
+			//mav.addObject("packageInfo", dao.packageInfo(locCode, selectDate));
 			mav.addObject("facilityInfo", dao.facilityInfo(locCode));
 			mav.addObject("cautionInfo", dao.cautionInfo(locCode));
 			mav.addObject("bizInfo", dao.bizInfo(locCode));

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IMemberReviewListDAO">
+	
+	<!-- userReviewList 페이지 로드 -->
+	<select id="memReviewList" resultType="com.lookation.dto.MemberReviewListDTO">
+		SELECT REVIEW_CODE, MEMBER_CODE
+		, REVIEW_CONTENT, REVIEW_RATE, REVIEW_DATE, LOC_NAME
+		, REMOVECOUNT
+		FROM VIEW_USER_REVIEW
+		WHERE MEMBER_CODE = #{member_code}
+	</select>
+	
+	<!-- 멤버 닉네임 조회 -->
+	<select id="memNickName" resultType="com.lookation.dto.MemberReviewListDTO">
+		SELECT MEMBER_NICKNAME
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_CODE = #{member_code}
+	</select>
+	
+	<!-- 리뷰 수정 -->
+	<update id="modifyreviewlist">
+		UPDATE REVIEW
+		SET REVIEW_RATE=#{review_rate}, REVIEW_CONTENT=#{review_content}
+		, REVIEW_DATE=SYSDATE
+		WHERE REVIEW_CODE =#{review_code}
+	</update>
+	
+	<!-- 리뷰 삭제 -->
+	<insert id="deletereviewlist">
+		INSERT INTO REVIEW_REMOVE(REVIEW_REMOVE_CODE
+		, REVIEW_CODE, REVIEW_REMOVE_DATE)
+		VALUES(F_CODE('RVRM', RV_SEQ.NEXTVAL), #{review_code}, SYSDATE)
+	</insert>
+	
+</mapper>

@@ -23,7 +23,7 @@ public class ProfileFormController implements Controller
 			
 			// 불러올 view 세팅 
 			// (jsp이름 or redirect:[액션명].action
-			mav.setViewName("../WEB-INF/views/common/profile_test.jsp");
+			mav.setViewName("../WEB-INF/views/common/profile.jsp");
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());

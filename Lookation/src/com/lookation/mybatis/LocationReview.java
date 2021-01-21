@@ -10,11 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.lookation.dao.IReviewDAO;
-import com.lookation.dto.ReviewDTO;
+import com.lookation.dao.ILocationReviewDAO;
+import com.lookation.dto.LocationReviewDTO;
 
 @Controller
-public class Review
+public class LocationReview
 {
 	@Autowired
 	private SqlSession sqlSession;
@@ -44,24 +44,12 @@ public class Review
 		return "../WEB-INF/views/common/writeReviewPopup.jsp";
 	}
 	
-	// 리뷰 수정 팝업으로 이동 
-	/*
-	 * @RequestMapping(value="/actions/modifyformreview.action", method =
-	 * RequestMethod.GET) public String modifyFormReview(String review_code,
-	 * ModelMap model) {
-	 * 
-	 * IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
-	 * model.addAttribute("modifyReview", dao.updateReviewForm(review_code));
-	 * 
-	 * return "/WEB-INF/views/common/modifyReviewPopup.jsp"; }
-	 */
-	
 	@RequestMapping(value="/actions/modifyformreview.action", method = RequestMethod.GET)
 	public String reviewModifyForm(Model model, HttpServletRequest request)
 	{	
 		// 호스트인지 멤버인지 담을 변수
 		String check = request.getParameter("identify");
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		
 		// 수정 폼의 경우 각각 다른 메소드를 수행해야 한다.
@@ -87,9 +75,9 @@ public class Review
 	
 	// 이용자 : 리뷰 작성
 	@RequestMapping(value="/actions/reviewinsert.action", method = RequestMethod.POST)
-	public String insertReview(ReviewDTO dto)
+	public String insertReview(LocationReviewDTO dto)
 	{
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.insertMemReview(dto);
 		
@@ -99,9 +87,9 @@ public class Review
 	
 	// 이용자 : 리뷰 수정
 	@RequestMapping(value="/actions/modifyreview.action", method = RequestMethod.POST)
-	public String modifyReview(ReviewDTO dto)
+	public String modifyReview(LocationReviewDTO dto)
 	{
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.updateMemReview(dto);
 		
@@ -112,9 +100,9 @@ public class Review
 	
 	// 이용자 : 리뷰 삭제 
 	@RequestMapping(value="/actions/deletereview.action", method = RequestMethod.GET)
-	public String deleteReview(ReviewDTO dto)
+	public String deleteReview(LocationReviewDTO dto)
 	{
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.deleteMemReview(dto);
 		
@@ -123,9 +111,9 @@ public class Review
 	
 	// 호스트 : 리뷰 답글 작성
 	@RequestMapping(value="/actions/reviewreplyinsert.action", method = RequestMethod.POST)
-	public String insertReviewReply(ReviewDTO dto)
+	public String insertReviewReply(LocationReviewDTO dto)
 	{
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.insertHostReview(dto);
 		return "redirect:locationdetailhost.action";
@@ -134,9 +122,9 @@ public class Review
 	
 	// 호스트 : 리뷰 답글 수정
 	@RequestMapping(value="/actions/modifyreviewreply.action", method = RequestMethod.POST)
-	public String modifyReviewReply(ReviewDTO dto)
+	public String modifyReviewReply(LocationReviewDTO dto)
 	{
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.updateHostReview(dto);
 		
@@ -146,9 +134,9 @@ public class Review
 	
 	// 호스트 : 리뷰 답글 삭제
 	@RequestMapping(value="/actions/deletereviewreply.action", method = RequestMethod.GET)
-	public String deleteReviewReply(ReviewDTO dto)
+	public String deleteReviewReply(LocationReviewDTO dto)
 	{
-		IReviewDAO dao = sqlSession.getMapper(IReviewDAO.class);
+		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.deleteHostReview(dto);
 		

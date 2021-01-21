@@ -10,7 +10,7 @@
 <head>
 <meta charset="utf-8">
 <title>Lookation</title>
-<c:import url="${cp}/01.ksb/head(user).jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 </head>
 <body>

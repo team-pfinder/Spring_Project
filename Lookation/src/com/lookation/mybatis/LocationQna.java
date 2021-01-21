@@ -10,11 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.lookation.dao.IQnaDAO;
-import com.lookation.dto.QnaDTO;
+import com.lookation.dao.ILocationQnaDAO;
+import com.lookation.dto.LocationQnaDTO;
 
 @Controller
-public class Qna
+public class LocationQna
 {
 	@Autowired
 	private SqlSession sqlSession;
@@ -52,7 +52,7 @@ public class Qna
 	{	
 		// 호스트인지 멤버인지 담을 변수
 		String check = request.getParameter("identify");
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 
 		if(check.equals("member"))
 		{
@@ -73,9 +73,9 @@ public class Qna
 	
 	// 이용자 : QnA 작성
 	@RequestMapping(value="/actions/qnainsert.action", method = RequestMethod.POST)
-	public String insertQna(QnaDTO dto)
+	public String insertQna(LocationQnaDTO dto)
 	{
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.insertMemQna(dto);
 		
@@ -85,9 +85,9 @@ public class Qna
 	
 	// 이용자 : QnA 수정
 	@RequestMapping(value="/actions/modifyqna.action", method = RequestMethod.POST)
-	public String modifyQna(QnaDTO dto)
+	public String modifyQna(LocationQnaDTO dto)
 	{
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.updateMemQna(dto);
 		
@@ -97,9 +97,9 @@ public class Qna
 	
 	// 이용자 : QnA 삭제 
 	@RequestMapping(value="/actions/deleteqna.action", method = RequestMethod.GET)
-	public String deleteQna(QnaDTO dto)
+	public String deleteQna(LocationQnaDTO dto)
 	{
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.deleteMemQna(dto);
 		
@@ -110,9 +110,9 @@ public class Qna
 	
 	// 호스트 : QnA 답글 작성
 	@RequestMapping(value = "/actions/qnareplyinsert.action", method = RequestMethod.POST)
-	public String insertQnaReply(QnaDTO dto)
+	public String insertQnaReply(LocationQnaDTO dto)
 	{
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 
 		dao.insertHostQna(dto);
 
@@ -123,9 +123,9 @@ public class Qna
 	
 	// 호스트 : Qna 답글 수정
 	@RequestMapping(value="/actions/modifyrqnareply.action", method=RequestMethod.POST)
-	public String modifyQnaReply(QnaDTO dto)
+	public String modifyQnaReply(LocationQnaDTO dto)
 	{
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.updateHostQna(dto);
 		
@@ -135,15 +135,14 @@ public class Qna
 	
 	// 호스트 : QnA 답글 삭제
 	@RequestMapping(value = "/actions/deleteqnareply.action", method = RequestMethod.GET)
-	public String deleteQnaReply(QnaDTO dto)
+	public String deleteQnaReply(LocationQnaDTO dto)
 	{
-		IQnaDAO dao = sqlSession.getMapper(IQnaDAO.class);
+		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.deleteHostQna(dto);
 		
 		return "redirect:locationdetailhost.action";
 		
 	}
-	
-	
+
 }
