@@ -37,6 +37,45 @@ tr > td > a {
 	color: gray;
 }
 
+   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  padding: 3px 10px;
+}
+.off-screen {
+  display: none;
+}
+#li1, #li2, #li3, #li2 {
+  width: 100%;
+  text-align: center;
+}
+
+#li1 a, #li2 a, #li3 a, #li4 a {
+	color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+}
+#li1 a.active, #li2 a.active, #li3 a.active, #li4 a.active {
+    background: #fdbe34;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.empty {
+height: 200px;
+
+}
+
 </style>
 <script type="text/javascript">
 
@@ -85,8 +124,8 @@ $(function(){
 <!--  -->
 
 
-<div class="container">
-	<div class="row mt-4">
+<div class="container mb-5">
+	<div class="row mt-4 mb-5">
 		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
 		<div class="col-md-10">
 			<!-- Page Heading -->
@@ -105,7 +144,10 @@ $(function(){
 				</div>
 				<div class="card-body">
 					<div class="table-responsive align-self-center">
-						<table class="table" id="dataTable">
+						<table class="table" id="products1">
+						<form action="" id="setRows1">
+						    <input type="hidden" name="rowPerPage1" value="10">
+						</form>
 							<colgroup>
 								<col style="width: 25%">
 								<col style="width: 10%">
@@ -151,28 +193,84 @@ $(function(){
 		</div><!-- End .col-md-10 -->
 		
 	</div><!-- End .row -->
-		
-	<!-- 페이징 처리할 부분 -->
-    <div class="row mt-5">
-      <div class="col text-center">
-        <div class="block-27">
-          <ul>
-            <li><a href="#">&lt;</a></li>
-            <li class="active"><span>1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&gt;</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-	<br><br><br><br>
-	
-	
+	<div class="empty"></div>
 </div><!-- .container End -->	
+<script type="text/javascript">
 
+var $setRows = $('#setRows1');
+
+$setRows.submit(function (e) {
+  e.preventDefault();
+  var rowPerPage = $('[name="rowPerPage1"]').val() * 1;// 1 을  곱하여 문자열을 숫자형로 변환
+
+//    console.log(typeof rowPerPage);
+
+  var zeroWarning = 'Sorry, but we cat\'t display "0" rows page. + \nPlease try again.'
+  if (!rowPerPage) {
+    alert(zeroWarning);
+    return;
+  }
+  $('#li1').remove();
+  var $products = $('#products1');
+
+  $products.after("<div class='text-center' id='li1'>");
+
+
+  var $tr = $($products).find('tbody tr');
+  var rowTotals = $tr.length;
+//  console.log(rowTotals);
+
+  var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+  var i = 0;
+
+  for (; i < pageTotal; i++) {
+    $('<a href="#"></a>')
+        .attr('rel', i)
+        .html(i + 1)
+        .appendTo('#li1');
+  }
+
+  $tr.addClass('off-screen')
+      .slice(0, rowPerPage)
+      .removeClass('off-screen');
+
+  var $pagingLink = $('#li1 a');
+  $pagingLink.on('click', function (evt) {
+    evt.preventDefault();
+    var $this = $(this);
+    if ($this.hasClass('active')) {
+      return;
+    }
+    $pagingLink.removeClass('active');
+    $this.addClass('active');
+
+    // 0 => 0(0*4), 4(0*4+4)
+    // 1 => 4(1*4), 8(1*4+4)
+    // 2 => 8(2*4), 12(2*4+4)
+    // 시작 행 = 페이지 번호 * 페이지당 행수
+    // 끝 행 = 시작 행 + 페이지당 행수
+
+    var currPage = $this.attr('rel');
+    var startItem = currPage * rowPerPage;
+    var endItem = startItem + rowPerPage;
+
+    $tr.css('opacity', '0.0')
+        .addClass('off-screen')
+        .slice(startItem, endItem)
+        .removeClass('off-screen')
+        .animate({opacity: 1}, 300);
+
+  });
+
+  $pagingLink.filter(':first').addClass('active');
+
+});
+
+$setRows.submit();	
+
+
+
+</script>
 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
