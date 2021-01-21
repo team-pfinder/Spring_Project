@@ -236,51 +236,55 @@ body {
 							<c:choose>
 								<c:when test="${not empty msg}">
 									<c:if test="${m.horm eq 1}">
-										<c:if test="${m.imgcount eq 0}">
-											<div class="message">
-												<div class="send">
-													<p class="text">${m.msg_content}</p>
+										<c:choose>
+											<c:when test="${m.imgcount eq 0}">
+												<div class="message">
+													<div class="send">
+														<p class="text">${m.msg_content}</p>
+													</div>
 												</div>
-											</div>
-											<div class="message float-right">
-												<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
-											</div>
-										</c:if>
-										
-										<c:if test="${m.imgcount eq 1}">
-											<div class="message">
-												<div class="send">
-													<p class="text">
-														<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
-													</p>
+												<div class="message float-right">
+													<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
 												</div>
-											</div>
-											<div class="message float-right">
-												<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
-											</div>
-										</c:if>
+											</c:when>
+											
+											<c:when test="${m.imgcount eq 1}">
+												<div class="message">
+													<div class="send">
+														<p class="text">${m.msg_img_url }
+															<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
+														</p>
+													</div>
+												</div>
+												<div class="message float-right">
+													<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+												</div>
+											</c:when>
+										</c:choose>
 									</c:if>
 										
 									<c:if test="${m.horm eq 0}">
-										<c:if test="${m.imgcount eq 0}">
-											<div class="message">
-												<p class="text">${m.msg_content }</p>
-											</div>
-											<div class="message">
-												<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
-											</div>
-										</c:if>
-										
-										<c:if test="${m.imgcount eq 1}">
-											<div class="message">
-												<p class="text">${m.msg_img_url }
-													<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
-												</p>
-											</div>
-											<div class="message">
-												<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
-											</div>
-										</c:if>
+										<c:choose>
+											<c:when test="${m.imgcount eq 0}">
+												<div class="message">
+													<p class="text">${m.msg_content }</p>
+												</div>
+												<div class="message">
+													<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+												</div>
+											</c:when>
+											
+											<c:when test="${m.imgcount eq 1}">
+												<div class="message">
+													<p class="text">${m.msg_img_url }
+														<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
+													</p>
+												</div>
+												<div class="message">
+													<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+												</div>
+											</c:when>
+										</c:choose>
 									</c:if>
 								</c:when>
 							

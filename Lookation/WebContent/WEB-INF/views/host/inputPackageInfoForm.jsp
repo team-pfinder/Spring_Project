@@ -124,11 +124,44 @@
          </div>
 
 
-
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
+	<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm" 
+		  action="${pageContext.request.contextPath}/inputpackageinfoform.action" method="POST"><!--onsubmit="handOver()" -->
 		
+		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
+		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
+		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
+		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
+		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
+		
+		<input type="hidden" name="inputEmail" value="${contactDTO.inputEmail }" />
+		<input type="hidden" name="inputContact" value="${contactDTO.inputContact }" />
+		<input type="hidden" name="inputMainContact" value="${contactDTO.inputMainContact }" />
+		
+		<input type="hidden" name="inputBizName" value="${businessInfoDTO.inputBizName }" />
+		<input type="hidden" name="inputBizCeo" value="${businessInfoDTO.inputBizCeo }" />
+		<input type="hidden" name="inputBizNum" value="${businessInfoDTO.inputBizNum }" />
+		<input type="hidden" name="inputBizLicense" value="${businessInfoDTO.inputBizLicense }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputBizCeoType" value="${businessInfoDTO.inputBizCeoType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputBizMainType" value="${businessInfoDTO.inputBizMainType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputBizSubType" value="${businessInfoDTO.inputBizSubType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputAddr" value="${businessInfoDTO.inputAddr }" />
+		<input type="hidden" name="inputDetailAddr" value="${businessInfoDTO.inputDetailAddr }" />
+		
+		<input type="hidden" name="inputUsingHour" value="${usingInfoDTO.inputUsingHour }">
+		<input type="hidden" name="inputDayOff" value="${usingInfoDTO.inputDayOff }">
+		<input type="hidden" name="inputAppointDayoff" value="${usingInfoDTO.inputAppointDayoff }">
+			
+		<input type="hidden" name="inputLocDetailImg" value="${detailInfoDTO.inputLocDetailImg }"><!-- ※ 체크 -->
+		<input type="hidden" name="inputMinPeople" value="${detailInfoDTO.inputMinPeople }">
+		<input type="hidden" name="inputMaxPeople" value="${detailInfoDTO.inputMaxPeople }">
+		
+			
+	
 		<!-- 1. 현재 패키지 (추가된 패키지 현황) --> 
 		<div id="currentPackage">
 			<span style="font-size: 14pt; font-weight: bold;">현재패키지 <span style="color: red">*</span></span>
@@ -171,12 +204,12 @@
 		<input type="button" class="form-control" value="패키지 추가"
 			   onclick="input()">
 		
-		<!-- 3. 패키지 수정하기 (사용 X)
+		<!-- 3. 패키지 수정하기 
 				→ 현재 패키지 중 하나를 선택후 수정버튼 클릭, 
 				   선택하지않으면 alert("패키지를 선택하세요."), onsubmit="false"
 				→ modifyPackageInfo.jsp로 이동 -->
-		<!-- <input type="button" class="form-control" value="패키지 수정"
-			   onclick="mod()"> onclick="function()" -->
+		<input type="button" class="form-control" value="패키지 수정"
+			   onclick="mod()"> <!-- onclick="function()" -->
 		
 		<!-- 4. 패키지 삭제하기
 				→ 현재 패키지 중 하나를 선택후 삭제버튼 클릭, onsubmit="false"

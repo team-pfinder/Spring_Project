@@ -14,19 +14,19 @@ import com.lookation.util.FileManager;
 @Controller
 public class FileTest
 {
-	@RequestMapping(value="/actions/imagetest.action", method=RequestMethod.GET)
+	@RequestMapping(value="/actions/imagetest.action", method = RequestMethod.GET)
 	public String imageTest(HttpServletRequest request, Model model)
 	{
 		return "../WEB-INF/views/FormImage.jsp";
 	}
 	
-	@RequestMapping(value="/actions/downloadtest.action", method=RequestMethod.GET)
+	@RequestMapping(value="/actions/downloadtest.action", method = RequestMethod.GET)
 	public String downloadTest(HttpServletRequest request, Model model)
 	{
 		return "../WEB-INF/views/FormDownload.jsp";
 	}
 	
-	@RequestMapping(value="/actions/uploadimagetest.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/uploadimagetest.action", method = RequestMethod.POST)
 	public String uploadImageTest(HttpServletRequest request, Model model)
 	{
 		ArrayList<String> imageList = FileManager.upload(request, "images");
@@ -36,7 +36,7 @@ public class FileTest
 		return "../WEB-INF/views/View.jsp";
 	}
 	
-	@RequestMapping(value="/actions/uploaddownloadtest.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/uploaddownloadtest.action", method = RequestMethod.POST)
 	public String uploadDownloadTest(HttpServletRequest request, Model model)
 	{
 		ArrayList<String> downList = FileManager.upload(request, "downloads");
