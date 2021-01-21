@@ -1,6 +1,7 @@
 package com.lookation.mybatis;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lookation.util.FileManager;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @Controller
 public class FileTest
@@ -29,19 +32,34 @@ public class FileTest
 	@RequestMapping(value="/actions/uploadimagetest.action", method = RequestMethod.POST)
 	public String uploadImageTest(HttpServletRequest request, Model model)
 	{
-		ArrayList<String> imageList = FileManager.upload(request, "images");
+		try
+		{
+			MultipartRequest m = FileManager.upload(request, "images");
+			ArrayList<String> imageList = FileManager.getFileNames(m);
+			model.addAttribute("imageList", imageList);
+			
+		} catch (Exception e)
+		{
+			e.toString();
+		}
 		
-		model.addAttribute("imageList", imageList);
-		
+
 		return "../WEB-INF/views/View.jsp";
 	}
 	
 	@RequestMapping(value="/actions/uploaddownloadtest.action", method = RequestMethod.POST)
 	public String uploadDownloadTest(HttpServletRequest request, Model model)
 	{
-		ArrayList<String> downList = FileManager.upload(request, "downloads");
+		try
+		{
+			MultipartRequest m = FileManager.upload(request, "downloads");
+			ArrayList<String> downList = FileManager.getFileNames(m);
+			model.addAttribute("downList", downList);	
+		} catch (Exception e)
+		{
+			e.toString();
+		}
 		
-		model.addAttribute("downList", downList);
 		
 		return "../WEB-INF/views/ViewDownload.jsp";
 	}

@@ -16,8 +16,6 @@ String cp = request.getContextPath();
 <script src="../js/jquery.min.js"></script>
 <script src="../js/owl.carousel.min.js"></script>
 
-
-
 <title>검수처리</title>
 
 
@@ -54,16 +52,16 @@ $(document).ready(function()
 		{
 			if (confirm("검수 처리 승인하시겠습니까?"))
 			{
-			 //alert($(this).val());
-			$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() );
-			}
+			 // alert($(this).val());
+			$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000001&inspect_proc_reason=검수승인이완료되었습니다.");
+			} 
 		});
 		$(".inspectNO").click(function()	//-- 검수반려
 		{
 			if (confirm("검수 처리 반려하시겠습니까?"))
 			{
 			 //alert($(this).val());
-			$(location).attr("href", "inspecetinsert.action?insepect_reg_code=" + $(this).val() );
+			$(location).attr("href", "insepectinsert.action?insepect_reg_code=" + $(this).val() +"&inspect_type_code=IT000002&inspect_proc_reason=" + $("#inspect_proc_reason").val());
 			}
 		})
 	});
@@ -85,15 +83,15 @@ $(document).ready(function()
 	<!-- 전체 페이지 -->
 	<div id="wrapper">
 
-		<!-- 사이드 메뉴
-		<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import> -->
+		<!-- 사이드 메뉴 -->
+
 
 		<!-- 메인 페이지 -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
 
-				<!-- Header
-<c:import url="${cp}/includes/header.jsp"></c:import> -->
+				<!-- Header -->
+
 
 				<!-- 주요 내용 -->
 				<div class="container-fluid">
@@ -221,7 +219,8 @@ $(document).ready(function()
 								
 								<!-- 반려 사유 쓰는 창  -->
 							<div class="card mt-4 mb-4 py-3 border-left-danger">
-								<input type="text" name="inspect_proc_reason" style="text-align:center; width:600px; height:50px; outline:hidden;">
+								<input type="text" id = "inspect_proc_reason"name="inspect_proc_reason" 
+								style="text-align:center; width:600px; height:50px; outline:hidden;">
 							</div>
 							<!--  -->
 							<input type="hidden" value="${dto1.inspect_reg_code }">
