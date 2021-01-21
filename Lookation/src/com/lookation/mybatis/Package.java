@@ -99,17 +99,17 @@ public class Package
 			// 트랜잭션 수행
 			if(state[i].equals("insert"))
 			{
-				System.out.println("insert");
+				//System.out.println("insert");
 				dao.insertApply(p);
 			}
 			else if(state[i].equals("update"))
 			{
-				System.out.println("update");
+				//System.out.println("update");
 				dao.updateApply(p);
 			}
 			else if(state[i].equals("delete"))
 			{
-				System.out.println("delete");
+				//System.out.println("delete");
 				dao.deleteApply(p);
 			}
 		}

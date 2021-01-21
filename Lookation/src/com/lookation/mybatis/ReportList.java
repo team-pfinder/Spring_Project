@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.lookation.dao.IReportDAO;
 
 @Controller
-public class reportListController
+public class ReportList
 {
 	@Autowired
 	private SqlSession sqlSession;
@@ -74,15 +74,13 @@ public class reportListController
 	}
 	
 	// 블랙리스트 처리
-	// → 에이젝스 처리로 변경 필요
 	@RequestMapping(value = "/actions/userblack.action", method = RequestMethod.GET)
-	public String userBlack(String member_email, String member_blacklist_reason)
+	public void userBlack(String member_email, String member_blacklist_reason)
 	{
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
 		
 		dao.userBlackList(member_email, member_blacklist_reason);
 		
-		return "redirect:bookreportlist.action";
 	}
 	
 	
@@ -142,15 +140,13 @@ public class reportListController
 	}
 	
 	// 블랙리스트 처리
-	// → 에이젝스 처리로 변경 필요
 	@RequestMapping(value = "/actions/hostblack.action", method = RequestMethod.GET)
-	public String hostBlack(String host_email, String host_blacklist_reason)
+	public void hostBlack(String host_email, String host_blacklist_reason)
 	{
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
 		
 		dao.hostBlackList(host_email, host_blacklist_reason);
 		
-		return "redirect:reportlist.action";
 	}
 	
 	

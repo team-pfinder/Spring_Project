@@ -30,7 +30,7 @@
 			</div>
 
 			<div>
-				<form action="memberexchange.action" method="post">
+				<form action="exchange.action" method="post">
 					<table class="table">
 						<tr>
 							<th>

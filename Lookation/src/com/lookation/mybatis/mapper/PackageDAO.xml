@@ -25,6 +25,7 @@ resultType="com.lookation.dto.PackageDTO">
 	     , PRICE, APPLY_DATE
 	FROM APPLY_PACKAGE_VIEW
 	WHERE BOOK_CODE IS NULL
+	  AND APPLY_DATE > SYSDATE
 </select>
 
 

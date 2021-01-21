@@ -50,7 +50,7 @@
 	<!-- 공간 신고 -->
 	<!-- reportList 페이지 기본 정보 쿼리문 -->
 	<select id="locBasicList" resultType="com.lookation.dto.reportDTO">
-		SELECT LOC_CODE, LOC_REPORT_TYPE, HOST_NICKNAME, MEMBER_NICKNAME
+		SELECT LOC_CODE, LOC_REPORT_TYPE, HOST_EMAIL, MEMBER_EMAIL
 		     , LOC_REPORT_DATE, RESULT_COUNT, BLACK_COUNT, LOC_REPORT_CODE
 		     , HOST_NICKNAME, MEMBER_NICKNAME
 		FROM LOC_REPORT_BASIC_VIEW

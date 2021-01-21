@@ -13,12 +13,11 @@
 	
 	<!-- 키워드로 검색하기 -->
 	<select id="searchKeyword" resultType="com.lookation.dto.SearchDTO">
-		SELECT DISTINCT LOC_TYPE, LOC_NAME, LOC_ADDR, NVL(AVG_RATE, 0) AS AVG_RATE
-		, PRICE, MAX_PEOPLE, THUMBNAIL_URL
+		SELECT DISTINCT LOC_TYPE, LOC_NAME, LOC_ADDR, NVL(AVG_RATE, 0) AS AVG_RATE, PRICE, MAX_PEOPLE, THUMBNAIL_URL
 		FROM SEARCHVIEW
-		WHERE LOC_TYPE LIKE #{keyword}
-		OR LOC_NAME LIKE #{keyword}
-		OR LOC_ADDR LIKE #{keyword}
-		ORDER BY PRICE
+		WHERE PRICE IS NOT NULL
+		AND (LOC_TYPE LIKE '%'||#{keyword}||'%'
+		 OR LOC_NAME LIKE '%'||#{keyword}||'%'
+		 OR LOC_ADDR LIKE '%'||#{keyword}||'%')
 	</select>
 </mapper>
