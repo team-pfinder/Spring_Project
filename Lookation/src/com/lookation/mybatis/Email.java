@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 import com.lookation.util.EmailManager;
+
 
 @Controller
 public class Email
@@ -62,6 +64,7 @@ public class Email
 		String title = "■■■■■ " + titleType + " 비밀번호 변경 인증 메일입니다.  ■■■■■";
 		
 		EmailManager.sendHtml(email, "lookation", title, html);
+
 		
 		model.addAttribute("email", email);
 		model.addAttribute("result", "noSigned");

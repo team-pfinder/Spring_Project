@@ -403,8 +403,7 @@ ul.precautions-list > li {
 	
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" 
-		  action="inputContactInfo.jsp" method="POST"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputBasicInfo.action" 로 변경 -->
+		  action="${pageContext.request.contextPath}/inputbasicinfo.action" method="POST"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 공간명 -->
 		
@@ -430,7 +429,7 @@ ul.precautions-list > li {
 		<div>
 			<span style="font-size: 14pt; font-weight: bold;">공간 유형  <span style="color: red">*</span></span>
 			<br><br>
-			<select id="inputLocType" class="form-control" required="required">
+			<select id="inputLocType" name="inputLocType" class="form-control" required="required">
 				<option value="">[==공간 유형을 선택하세요.==]</option>
 				<option value="파티룸">파티룸</option>
 				<option value="클럽">클럽</option>
@@ -455,7 +454,7 @@ ul.precautions-list > li {
 			<br><br>
 			<input type="text" class="form-control" required="required" 
 				   placeholder="공간을 한 문장으로 소개해주세요. [최소 4자 ~ 최대 20자]" 
-				   id="inputShortIntro">
+				   id="inputShortIntro" name="inputShortIntro">
 			<span style="font-weight: bold;"></span>
    		
 		</div>
@@ -472,7 +471,7 @@ ul.precautions-list > li {
 			<br><br>
 			<textarea class="form-control" required="required" 
 					  placeholder="공간을 상세하게 소개해주세요. [최소 20자 ~ 최대 400자]"
-					  id="inputIntro" cols="40" rows="5"></textarea>
+					  id="inputIntro" name="inputIntro" cols="40" rows="5"></textarea>
 		  	<span style="font-weight: bold;"></span>
 		</div>
 		
@@ -546,7 +545,8 @@ ul.precautions-list > li {
 			<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
 			<br><br>
 			<div class="filebox"> 
-				<input class="upload-name" value="이미지 등록" disabled="disabled" style="width: 70%">
+				<input class="upload-name" name="inputThumbnail" 
+					   placeholder="이미지 등록" disabled="disabled" style="width: 70%">
 				<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
 				<input type="file" id="ex_filename" class="upload-hidden">
 			</div>
@@ -654,7 +654,7 @@ ul.precautions-list > li {
 <!-- 3. 이미지 업로드 서버단에 저장 방법 -->
 <!-- 4. 이미지 업로드 시 입력창에 자동입력되는 파일명의 형태를 img 링크로 받아오는 방법 -->
 <!-- 5. jQuery hasClass 사용하여 제대로 입력되지않으면 submit 되지않도록 처리 -->	
-<!--    → 입력한 내용을 받아와서 다시 함수들을 호출하여 검사, 잘못입력했을시 false  -->
+<!--    → 입력한 내용을 받아와서 다시 함수들을 호출하여 검사, 잘못 입력했을시 false  -->
 	
 <br><br><br><br>
 	

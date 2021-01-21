@@ -195,8 +195,18 @@
 	
 	
 	<form style="width: 80%; margin: 120px;" id="inputContactInfo" 
-		  action="inputBusinessInfo.jsp" method="POST"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
+		  action="${pageContext.request.contextPath}/inputcontactinfo.action" method="POST"><!--onsubmit="handOver()" -->
+		
+		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
+		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
+		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
+		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" />
+		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
+		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
+		
 	
 	
 		<!-- 1. 이메일 -->
@@ -204,7 +214,7 @@
 		<div id="email">
 		 	<span style="font-size: 14pt; font-weight: bold;">이메일 <span style="color: red">*</span></span>
 		 	<br><br>
-			<input type="text" class="form-control" id="inputEmail"
+			<input type="text" class="form-control" id="inputEmail" name="inputEmail"
 				   required="required" placeholder="이메일을 입력하세요.(@, . 포함) (ex) text@lookation.com)">
 			<span id="err" style="font-weight: bold;"></span>
 		</div>
@@ -217,7 +227,7 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">휴대폰 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" id="inputContact"
+			<input type="text" class="form-control" id="inputContact" name="inputContact"
 				   required="required" placeholder="휴대폰 번호를 입력하세요.(-포함) (ex) 010-1234-5678)">
 			<span style="font-weight: bold;"></span>
 		</div>
@@ -231,7 +241,7 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">대표전화 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" id="inputMainContact"
+			<input type="text" class="form-control" id="inputMainContact" name="inputMainContact"
 				   required="required" placeholder="대표 전화번호를 입력하세요.(-포함) (ex) 02-123-4567)">
 			<span style="font-weight: bold;"></span>
 		</div>

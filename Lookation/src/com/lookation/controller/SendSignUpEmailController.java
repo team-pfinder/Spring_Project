@@ -13,7 +13,6 @@ import com.lookation.util.EmailManager;
 
 public class SendSignUpEmailController implements Controller
 {
-
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{

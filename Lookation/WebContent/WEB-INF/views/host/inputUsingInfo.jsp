@@ -83,13 +83,36 @@
             <h6 class="m-0 font-weight-bold text-default">이용안내 입력</h6>
          </div>
 
-
-
-	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
-		  action="inputDetailInfo.jsp" method="POST"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 	
+	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
+		  action="${pageContext.request.contextPath}/inputusinginfo.action" method="POST"><!--onsubmit="handOver()" -->
+		
+		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
+		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
+		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
+		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" />
+		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
+		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
+		
+		<input type="hidden" name="inputEmail" value="${contactDTO.inputEmail }" />
+		<input type="hidden" name="inputContact" value="${contactDTO.inputContact }" />
+		<input type="hidden" name="inputMainContact" value="${contactDTO.inputMainContact }" />
+		
+		<input type="hidden" name="inputBizName" value="${businessInfoDTO.inputBizName }" />
+		<input type="hidden" name="inputBizCeo" value="${businessInfoDTO.inputBizCeo }" />
+		<input type="hidden" name="inputBizNum" value="${businessInfoDTO.inputBizNum }" />
+		<input type="hidden" name="inputBizLicense" value="${businessInfoDTO.inputBizLicense }" />
+		<input type="hidden" name="inputBizCeoType" value="${businessInfoDTO.inputBizCeoType }" /><!-- ※ 체크 -->
+		<input type="hidden" name="inputBizMainType" value="${businessInfoDTO.inputBizMainType }" />
+		<input type="hidden" name="inputBizSubType" value="${businessInfoDTO.inputBizSubType }" />
+		<input type="hidden" name="inputAddr" value="${businessInfoDTO.inputAddr }" />
+		<input type="hidden" name="inputDetailAddr" value="${businessInfoDTO.inputDetailAddr }" />
+		
+		
+		
 		
 		<!-- 1. 이용시간 -->
 		
@@ -97,7 +120,7 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">이용시간 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" id="inputUsingHour" required="required"
+			<input type="text" class="form-control" id="inputUsingHour" name="inputUsingHour" required="required"
 				   placeholder="이용시간을 입력하세요(최대 34 시간, ex)오전 11시 ~ 오후 10시)">
 			<!-- 종료시간 : 시작시간보다 이후부터 
 			(최대 : 시작시간 + 34시까지)  -->

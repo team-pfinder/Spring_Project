@@ -70,6 +70,16 @@
 
 <script type="text/javascript">
 
+$(function()
+{
+	// 수정 버튼 클릭 시 액션 처리
+	$("#order").change(function()
+	{
+		$(location).attr("href", "searchorder.action?order=" + $(this).val());
+	});
+	
+});
+	/*
 	function sbmOrd()
 	{
 		alert("s");
@@ -84,6 +94,7 @@
 		document.body.appendChild(form);
 		form.submit();
 	}
+	*/
 
 
 </script>
