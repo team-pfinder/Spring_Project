@@ -51,12 +51,12 @@ public class AdminLoginController implements Controller
 		if(nickname==null) 
 		{ // 로그인 실패 → 로그인 폼을 다시 요청할 수 있도록안내 
 			
-			mav.setViewName("redirect:adminform.action");
+			mav.setViewName("redirect:adminloginform.action");
 			//mav.setViewName("../WEB-INF/views/admin/loginAdmin.jsp"); 
 		 } 
 		else 
 		{ // 로그인 성공
-		 mav.setViewName("redirect:adminloginform.action");
+		 mav.setViewName("redirect:adminmain.action");
 		}
 		return mav;
 	}
