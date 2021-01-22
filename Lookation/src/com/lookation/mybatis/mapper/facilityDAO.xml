@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IFacilityInfoDAO">
+	<!-- 
+	<update id="modifyFacilityInfo" parameterType="com.lookation.dto.facilityDTO">
+		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">		
+			SELECT LOC_BASIC_INFO_CODE
+            FROM FACILITY_INFO
+            WHERE FACILITY_CONTENT = #{facility_content} 기존 시설안내 내용
+		</selectKey>
+		
+		UPDATE FACILITY_INFO
+		SET FACILITY_CONTENT = #{}						 새로 추가할 시설안내
+		WHERE LOC_BASIC_INFO_CODE = #{LOC_BASIC_INFO_CODE}
+		
+	</update>
+	 -->
+	
+</mapper>

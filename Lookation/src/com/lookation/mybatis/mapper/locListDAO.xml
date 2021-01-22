@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.ILocListDAO">
+	
+	<select id="locList" parameterType="java.lang.String" resultType="com.lookation.dto.locListDTO">
+		<!-- String loc_code, loc_name, thumbnail_url, loc_reg_date
+		   , inspect_type; -->
+		
+		SELECT L.LOC_CODE AS LOCCODE, L.LOC_REG_DATE AS LOCDATE
+			 , LBIF.LOC_NAME AS LOCNAME
+			 , TH.THUMBNAIL_URL AS THUMBNAILURL
+			 , IT.INSPECT_TYPE AS INSPECTTYPE
+		FROM LOC L JOIN LOC_BASIC_INFO LBIF
+		ON LBIF.LOC_CODE = L.LOC_CODE
+		JOIN THUMBNAIL TH
+		ON TH.LOC_BASIC_INFO_CODE = LBIF.LOC_BASIC_INFO_CODE
+			JOIN INSPECT_REG_LIST IR
+			ON IR.LOC_CODE = L.LOC_CODE
+			JOIN INSPECT_PROC_LIST IP
+			ON IP.INSPECT_REG_CODE = IR.INSPECT_REG_CODE
+			JOIN INSPECT_TYPE IT
+			ON IT.INSPECT_TYPE_CODE = IP.INSPECT_TYPE_CODE 
+		WHERE L.LOC_CODE = #{loc_code}
+	 ORDER BY L.LOC_REG_DATE
+	</select>
+
+	<!--  
+	<delete id="removeLoc">
+		DELETE 
+		FROM LOC
+		WHERE LOC_CODE = #{loc_code}
+	</delete>
+	 -->
+	<insert id="removeLoc" parameterType="com.lookation.dto.localListDTO">
+		INSERT INTO LOC_REMOVE(LOC_REMOVE_CODE, LOC_CODE, LOC_REMOVE_DATE)
+		VALUES(F_CODE('LRM', LRM_SEQ.NEXTVAL), #{loc_code}, SYSDATE);
+	</insert>
+	
+	
+</mapper>

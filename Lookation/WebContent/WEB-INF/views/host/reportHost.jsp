@@ -74,8 +74,7 @@
 			<span>신고사유</span><br>
 			<textarea rows="3" cols="40" placeholder="자세한 신고사유를 작성하세요."
 			class="form-control reason"></textarea><br>
-			<!-- 파일 여러개 선택가능 -->
-			<input type="file" multiple="multiple" class="form-control"><br>
+			<input type="file" class="form-control" name="file1"><br>
 			<p>※ 신고 내용을 허위로 작성할 경우, 해당 신고는 반려처리됩니다.<br>
 			허위 신고의 경우 횟수가 잦거나, 정도가 심한 경우에는 블랙리스트 처리될 수  있으며,<br>
 			법적 제재를 받으실 수 있습니다.</p>

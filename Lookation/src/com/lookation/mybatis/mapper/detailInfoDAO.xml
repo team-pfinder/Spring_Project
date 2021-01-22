@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IDetailInfoDAO">
+	
+	<update id="modifyDetailInfo" parameterType="com.lookation.dto.detailInfoDTO">
+		
+		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
+			SELECT L_SEQ.CURRVAL FROM LOC	 <!-- 수정 필요 -->
+		</selectKey>
+				
+		UPDATE LOC_DETAIL_INFO
+		SET MIN_PEOPLE = #{min_people}
+		    , MAX_PEOPLE = #{max_people}
+		WHERE LOC_CODE = #{LOC_CODE}	<!-- 공간코드 수정 필요.. -->
+		
+	</update>
+	
+</mapper>
