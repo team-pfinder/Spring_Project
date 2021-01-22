@@ -195,17 +195,7 @@
 	
 	
 	<form style="width: 80%; margin: 120px;" id="inputContactInfo" 
-		  action="${pageContext.request.contextPath}/inputcontactinfo.action" method="POST"><!--onsubmit="handOver()" -->
-		
-		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
-		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
-		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
-		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" />
-		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
-		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
+		  action="inputcontactinfo.action" method="POST"><!--onsubmit="handOver()" -->
 		
 	
 	

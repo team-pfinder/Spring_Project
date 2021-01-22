@@ -10,9 +10,41 @@
 <meta charset="UTF-8">
 <title>LocationDetailedInfo.jsp</title>
 
-<link rel="stylesheet" href="css/bootstrap.css">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
+
+<style type="text/css">
+/* 대표이미지 추가 css */
+.filebox input[type="file"] { 
+
+	position: absolute; width: 70%; 
+	padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0; 
+}
+.filebox label {
+
+	display: inline-block; padding: .5em .75em; color: #999; 
+	font-size: inherit; line-height: normal; vertical-align: middle; 
+	background-color: #fdfdfd; cursor: pointer; border: 1px solid #ebebeb; 
+	border-bottom-color: #e2e2e2; border-radius: .25em; 
+}
+
+/* named upload */ 
+.filebox .upload-name { 
+
+	display: inline-block; padding: .5em .75em; 
+
+	/* label의 패딩값과 일치 */ 
+	font-size: inherit; font-family: inherit; line-height: normal; 
+	vertical-align: middle; background-color: #f5f5f5; 
+	border: 1px solid #ebebeb; border-bottom-color: #e2e2e2; 
+	border-radius: .25em; -webkit-appearance: none; 
+	
+	/* 네이티브 외형 감추기 */ 
+
+	-moz-appearance: none; appearance: none; 
+
+}
+</style>
 
 <script type="text/javascript">
 	
@@ -34,7 +66,33 @@
 				
 			}
 		});
+		
+		// 썸네일 이미지 등록
+		/* $(document).ready(function(){ 
+			
+			<c:forEach var="i" begin="0" end="10">
+			$('.filebox${i} .upload-hidden').on('change', function(){ // 값이 변경되면 
 				
+				var filename = '';
+				// modern browser
+				if(window.FileReader) { 
+					filename = $(this)[0].files[0].name; 
+				} 
+			
+				// old IE
+				
+				else { 
+				
+					filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
+				} 
+				
+			
+				// 추출한 파일명 삽입 
+				$(this).parent('div').children('.upload-name').val(filename); 
+				
+			});
+			</c:forEach>
+		}); */			
 	});
 				
 	
@@ -169,38 +227,8 @@
 
 
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputDetailInfo" 
-		  action="${pageContext.request.contextPath}/inputdetailinfo.action" method="POST"><!--onsubmit="handOver()" -->
-		
-		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
-		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
-		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
-		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" />
-		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
-		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
-		
-		<input type="hidden" name="inputEmail" value="${contactDTO.inputEmail }" />
-		<input type="hidden" name="inputContact" value="${contactDTO.inputContact }" />
-		<input type="hidden" name="inputMainContact" value="${contactDTO.inputMainContact }" />
-		
-		<input type="hidden" name="inputBizName" value="${businessInfoDTO.inputBizName }" />
-		<input type="hidden" name="inputBizCeo" value="${businessInfoDTO.inputBizCeo }" />
-		<input type="hidden" name="inputBizNum" value="${businessInfoDTO.inputBizNum }" />
-		<input type="hidden" name="inputBizLicense" value="${businessInfoDTO.inputBizLicense }" />
-		<input type="hidden" name="inputBizCeoType" value="${businessInfoDTO.inputBizCeoType }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputBizMainType" value="${businessInfoDTO.inputBizMainType }" />
-		<input type="hidden" name="inputBizSubType" value="${businessInfoDTO.inputBizSubType }" />
-		<input type="hidden" name="inputAddr" value="${businessInfoDTO.inputAddr }" />
-		<input type="hidden" name="inputDetailAddr" value="${businessInfoDTO.inputDetailAddr }" />
-		
-		<input type="hidden" name="inputUsingHour" value="${usingInfoDTO.inputUsingHour }">
-		<input type="hidden" name="inputDayOff" value="${usingInfoDTO.inputDayOff }">
-		<input type="hidden" name="inputAppointDayoff" value="${usingInfoDTO.inputAppointDayoff }">
-		
-		
+	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
+		  action="inputdetailinfo.action" method="POST"><!--onsubmit="handOver()" -->	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
@@ -209,12 +237,15 @@
 			<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
 			<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
 			<br><br>
-				<textarea class="form-control" placeholder="상세이미지를 추가하세요.(JPG, JPEG, PNG)"
-							name="inputLocDetailImg"
-							cols="40" rows="10" required="required"></textarea>
-				<br>
-				<input type="button" class="form-control"
-						name="inputLocDetailImgBtn" value="상세이미지 추가 +">
+			
+		<c:forEach var="i" begin="0" end="10">
+				<div class="filebox${i }">
+						<!-- <input class="upload-name" name="inputThumbnail" 
+							   placeholder="이미지 등록" disabled="disabled" style="width: 70%"> -->
+						<!-- <label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> --> 
+						<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
+				</div>
+		</c:forEach>
 				<br><br>
 				<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
 					 <!-- 
@@ -287,7 +318,6 @@
 
 	</form>
 </div>
-
 </div>
 
 <div>
