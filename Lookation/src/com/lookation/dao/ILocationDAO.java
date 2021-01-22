@@ -2,10 +2,10 @@ package com.lookation.dao;
 
 import com.lookation.dto.LocationDTO;
 
-
 public interface ILocationDAO
 {
-		
+	// ----------------- input -----------------------
+	
 	// 기본 정보
 	public void inputBasicInfo(LocationDTO dto);
 	
@@ -35,6 +35,39 @@ public interface ILocationDAO
 	
 	// 이용안내
 	public void inputUsingInfo(LocationDTO dto);
+	
+	
+	// ----------------- update -----------------------
+	
+	// 기본 정보
+	public void modifyBasicInfo(LocationDTO dto);
+	
+	// 기본 정보(썸네일)
+	public void modifyThumbnail(LocationDTO dto);
+	
+	// 기본 정보(시설안내)
+	public void modifyFacility(LocationDTO dto);
+	
+	// 기본 정보(주의사항)
+	public void modifyCaution(LocationDTO dto);
+	
+	// 연락처 정보
+	public void modifyContact(LocationDTO dto);
+	
+	// 사업자 정보
+	public void modifyBizInfo(LocationDTO dto);
+	
+	// 상세정보
+	public void modifyDetailInfo(LocationDTO dto);
+	
+	// 상세정보 이미지
+	public void modifyDetailImg(LocationDTO dto);
+	
+	// 공간웹사이트
+	public void modifyLocWeb(LocationDTO dto);
+	
+	// 이용안내
+	public void modifyUsingInfo(LocationDTO dto);
 	
 	
 }
