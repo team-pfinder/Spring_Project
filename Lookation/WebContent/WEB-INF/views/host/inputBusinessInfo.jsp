@@ -256,25 +256,8 @@
          </div>
 
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputBusinessInfo" 
-	  action="${pageContext.request.contextPath}/inputbusinessinfo.action" method="POST"><!--onsubmit="handOver()" -->
-	
-		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
-		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
-		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
-		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" />
-		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
-		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
-		
-		<input type="hidden" name="inputEmail" value="${contactDTO.inputEmail }" />
-		<input type="hidden" name="inputContact" value="${contactDTO.inputContact }" />
-		<input type="hidden" name="inputMainContact" value="${contactDTO.inputMainContact }" />
-		
-		
-	
+	<form style="width: 80%; margin: 120px;" id="inputBusinessInfo" enctype="multipart/form-data"
+	  action="inputbusinessinfo.action" method="POST"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 상호명 -->
 		
@@ -332,7 +315,7 @@
 				<input class="upload-name" name="inputBizLicense"
 					   value="사업자등록증을 첨부해 주세요(JPG, JPEG, PNG)" disabled="disabled" style="width: 70%">
 				<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
-				<input type="file" id="ex_filename" class="upload-hidden">
+				<input type="file" name="inputBizLicense" id="ex_filename" class="upload-hidden">
 			</div>
 			<br><br>
 		</div>

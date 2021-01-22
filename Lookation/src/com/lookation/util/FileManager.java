@@ -43,7 +43,8 @@ public class FileManager
 		{
 			String file = (String) files.nextElement();
 			fileName = multi.getFilesystemName(file);
-			result.add(fileName);
+			if(fileName != null)
+				result.add(fileName);
 		}
 
 		return result;

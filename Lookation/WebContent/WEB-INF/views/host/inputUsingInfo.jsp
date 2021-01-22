@@ -85,34 +85,7 @@
 
 	
 	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
-		  action="${pageContext.request.contextPath}/inputusinginfo.action" method="POST"><!--onsubmit="handOver()" -->
-		
-		<input type="hidden" name="inputLocName" value="${basicInfoDTO.inputLocName }" />
-		<input type="hidden" name="inputLocType" value="${basicInfoDTO.inputLocType }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputShortIntro" value="${basicInfoDTO.inputShortIntro }" />
-		<input type="hidden" name="inputIntro" value="${basicInfoDTO.inputIntro }" />
-		<input type="hidden" name="inputFacility" value="${basicInfoDTO.inputFacility }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputPrecautions" value="${basicInfoDTO.inputPrecautions }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputThumbnail" value="${basicInfoDTO.inputThumbnail }" />
-		<input type="hidden" name="inputAddr" value="${basicInfoDTO.inputAddr }" />
-		<input type="hidden" name="inputDetailAddr" value="${basicInfoDTO.inputDetailAddr }" />
-		
-		<input type="hidden" name="inputEmail" value="${contactDTO.inputEmail }" />
-		<input type="hidden" name="inputContact" value="${contactDTO.inputContact }" />
-		<input type="hidden" name="inputMainContact" value="${contactDTO.inputMainContact }" />
-		
-		<input type="hidden" name="inputBizName" value="${businessInfoDTO.inputBizName }" />
-		<input type="hidden" name="inputBizCeo" value="${businessInfoDTO.inputBizCeo }" />
-		<input type="hidden" name="inputBizNum" value="${businessInfoDTO.inputBizNum }" />
-		<input type="hidden" name="inputBizLicense" value="${businessInfoDTO.inputBizLicense }" />
-		<input type="hidden" name="inputBizCeoType" value="${businessInfoDTO.inputBizCeoType }" /><!-- ※ 체크 -->
-		<input type="hidden" name="inputBizMainType" value="${businessInfoDTO.inputBizMainType }" />
-		<input type="hidden" name="inputBizSubType" value="${businessInfoDTO.inputBizSubType }" />
-		<input type="hidden" name="inputAddr" value="${businessInfoDTO.inputAddr }" />
-		<input type="hidden" name="inputDetailAddr" value="${businessInfoDTO.inputDetailAddr }" />
-		
-		
-		
+		  action="inputusinginfo.action" method="POST"><!--onsubmit="handOver()" -->
 		
 		<!-- 1. 이용시간 -->
 		

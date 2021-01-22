@@ -11,6 +11,7 @@ public class AdminDTO
 	private String admin_pw;
 	private String admin_nickname;
 	
+	//getter setter
 	public String getAdmin_id() 
 	{
 		return admin_id;

@@ -54,5 +54,20 @@ resultType="com.lookation.dto.PackageDTO">
 	FROM APPLY_PACKAGE
 	WHERE APPLY_PACKAGE_CODE = #{apply_code}
 </delete>
+
+
+<insert id="insertPackage">
+	INSERT INTO PACKAGE(PACKAGE_CODE, PACKAGE_FORM_CODE, PACKAGE_NAME
+                  , PACKAGE_START, PACKAGE_END, PACKAGE_PRICE)
+	VALUES(F_CODE('P', P_SEQ.NEXTVAL), (SELECT PACKAGE_FORM_CODE
+	                                     FROM PACKAGE_FORM
+	                                     WHERE LOC_CODE = #{loc_code})
+  	       , #{name}, #{time_start}, #{time_end}, #{price})
+</insert>
+	
+<insert id="deletePackage">
+	INSERT INTO PACKAGE_REMOVE(PACKAGE_REMOVE_CODE, PACKAGE_CODE, PACKAGE_REMOVE_DATE)
+	VALUES(F_CODE('PRM', PRM_SEQ.NEXTVAL), #{code}, SYSDATE)
+</insert>
 	
 </mapper>
