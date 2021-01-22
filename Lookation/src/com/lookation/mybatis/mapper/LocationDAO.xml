@@ -78,7 +78,7 @@
 	
 	<insert id="inputDetailInfo" parameterType="com.lookation.dto.LocationDTO">
 		
-		<selectKey keyProperty="loc_basic_info_code" resultType="String" order="AFTER">
+		<selectKey keyProperty="loc_detail_info_code" resultType="String" order="AFTER">
 			SELECT F_CODE('LDIF', LDIF_SEQ.CURRVAL) AS LOC_DETAIL_INFO_CODE FROM DUAL
 		</selectKey>
 				
@@ -89,11 +89,72 @@
 
 	<insert id="inputDetailImg" parameterType="com.lookation.dto.LocationDTO">
 				
-		INSERT INTO LOC_DETAIL_IMG (LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE
-								  , LOC_DETAIL_IMG_URL) 
-		VALUES (F_CODE('LDIMG',LDIMG_SEQ.NEXTVAL), #{loc_detail_info_code}
-					  , #{loc_detail_img_url})
+		INSERT INTO LOC_DETAIL_IMG (LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE, LOC_DETAIL_IMG_URL) 
+		VALUES (F_CODE('LDIMG',LDIMG_SEQ.NEXTVAL), #{loc_detail_info_code}, #{loc_detail_img_url})
+
+	</insert>
+	
+	<insert id="inputLocWeb" parameterType="com.lookation.dto.LocationDTO">
+	
+		INSERT INTO LOC_WEB(LOC_WEB_CODE, LOC_DETAIL_INFO_CODE, LOC_WEB_URL)
+		VALUES(F_CODE('LW', LW_SEQ.NEXTVAL), #{loc_detail_info_code}, #{loc_web_url})
 
 	</insert>
 
+	<insert id="inputUsingInfo" parameterType="com.lookation.dto.LocationDTO">
+		
+		INSERT INTO LOC_USE_INFO (LOC_USE_INFO_CODE, LOC_CODE, LOC_USE_HOUR
+                            	, LOC_USE_DAY_OFF, LOC_USE_APPOINT_DAY_OFF) 
+		VALUES (F_CODE('LUI', LUI_SEQ.NEXTVAL), #{loc_code}, #{loc_use_hour}
+					 , #{loc_use_day_off}, #{loc_use_appoint_day_off})
+
+	</insert>
+	
+	<insert id="inputPackageFormInfo" parameterType="com.lookation.dto.LocationDTO">
+				
+		<selectKey keyProperty="package_form_code" resultType="String" order="AFTER">
+			SELECT F_CODE('PF', PF_SEQ.CURRVAL) AS PACKAGE_FORM_CODE FROM DUAL
+		</selectKey>
+		
+		INSERT INTO PACKAGE_FORM(PACKAGE_FORM_CODE, LOC_CODE)
+		VALUES(F_CODE('PF', PF_SEQ.NEXTVAL), #{loc_code})
+
+	</insert>
+	
+	<insert id="inputInspectRegList" parameterType="com.lookation.dto.LocationDTO">
+		
+		<selectKey keyProperty="inspect_reg_code" resultType="String" order="AFTER">
+			SELECT F_CODE('IR', IR_SEQ.CURRVAL) AS INSPECT_REG_CODE FROM DUAL
+		</selectKey>
+	
+		INSERT INTO INSPECT_REG_LIST(INSPECT_REG_CODE, LOC_CODE, INSPECT_REG_DATE)
+		VALUES(F_CODE('IR', IR_SEQ.NEXTVAL), #{loc_code}, SYSDATE)
+		
+	</insert>
+	
+	
+	<update id="modifyBasicInfo" parameterType="com.lookation.dto.LocationDTO">
+		
+		UPDATE LOC_BASIC_INFO
+		SET LOC_TYPE_CODE = (SELECT LOC_TYPE_CODE FROM LOC_TYPE WHERE LOC_TYPE = #{loc_type})
+		    , LOC_NAME = #{loc_name}
+		    , LOC_SHORT_INTRO = #{loc_short_intro}
+		    , LOC_INTRO = #{loc_intro}
+		    , LOC_DETAIL_ADDR = #{loc_detail_addr}
+		WHERE LOC_CODE = #{loc_code}
+		
+	</update>
+<!-- 	
+	<update id="modifyThumbnail" parameterType="com.lookation.dto.LocationDTO">
+		
+		UPDATE THUMBNAIL
+		SET THUMBNAIL_URL = #{}
+		WHERE LOC_BASIC_INFO_CODE = (SELECT LOC_BASIC_INFO_CODE FROM THUMBNAIL WHERE THUMBNAIL_URL = #{thumbnail_url})
+		
+		UPDATE THUMBNAIL
+		SET THUMBNAIL_URL = #{thumbnail_url}
+		WHERE LOC_BASIC_INFO_CODE = #{loc_basic_Info_code}		
+	</update>
+	
+ -->
 </mapper>

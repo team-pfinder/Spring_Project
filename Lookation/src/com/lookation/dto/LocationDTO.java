@@ -44,6 +44,13 @@ public class LocationDTO
 	 			 , loc_use_hour, loc_use_day_off
 	 			 , loc_use_appoint_day_off;
 
+	// package form
+	private String package_form_code;
+	
+	// inspect reg list
+	private String inspect_reg_code, inspect_reg_date;
+	
+	
 	public String getLoc_code()
 	{
 		return loc_code;
@@ -454,6 +461,38 @@ public class LocationDTO
 	{
 		this.loc_type = loc_type;
 	}
+
+	public String getPackage_form_code()
+	{
+		return package_form_code;
+	}
+
+	public void setPackage_form_code(String package_form_code)
+	{
+		this.package_form_code = package_form_code;
+	}
+
+	public String getInspect_reg_code()
+	{
+		return inspect_reg_code;
+	}
+
+	public void setInspect_reg_code(String inspect_reg_code)
+	{
+		this.inspect_reg_code = inspect_reg_code;
+	}
+
+	public String getInspect_reg_date()
+	{
+		return inspect_reg_date;
+	}
+
+	public void setInspect_reg_date(String inspect_reg_date)
+	{
+		this.inspect_reg_date = inspect_reg_date;
+	}
+	
+	
 }
 
 

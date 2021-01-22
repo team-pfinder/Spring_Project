@@ -252,6 +252,9 @@ public class Location
         
         LocationDTO dto = new LocationDTO();
         
+        
+	    // -------------------- 입력 --------------------
+        
         // 공간
         dto.setHost_code("H000001");
         
@@ -325,7 +328,6 @@ public class Location
 	    dao.inputDetailInfo(dto);	// 상세정보코드 set
 	    System.out.println(dto.getLoc_detail_info_code());	
 	    
-	    System.out.println(LocationManager.getArrDetailImage());
 	    
 	    // 상세 이미지
 	    for (String str : LocationManager.getArrDetailImage())
@@ -334,6 +336,66 @@ public class Location
 			dao.inputDetailImg(dto);
 		}
 	    
+	    // 웹 사이트
+	    dto.setLoc_web_url("http://websitetest.com");
+	    dao.inputLocWeb(dto);
+	    
+	    
+	    // 이용 정보  
+	    dto.setLoc_use_hour("11:00 ~ 24:00");
+	    dto.setLoc_use_day_off("매주 수요일");
+	    dto.setLoc_use_appoint_day_off("3/11");
+	    
+	    dao.inputUsingInfo(dto);
+	    
+	    
+	    // 패키지 양식
+	    
+	    dao.inputPackageFormInfo(dto);	// set package_form_code
+	    System.out.println(dto.getPackage_form_code());
+	    
+	    
+	    // 검수 신청
+	    dao.inputInspectRegList(dto);  // set inspect_reg_code
+	    System.out.println(dto.getInspect_reg_code());
+	    
+	    
+	    
+	    // -------------------- 수정 --------------------
+	    
+	    // 기본 정보
+	    dao.modifyBasicInfo(dto);
+		
+		
+		// 기본 정보(썸네일)
+		//public void modifyThumbnail(LocationDTO dto);
+		
+		
+		/*
+		// 기본 정보(시설안내)
+		public void modifyFacility(LocationDTO dto);
+		
+		// 기본 정보(주의사항)
+		public void modifyCaution(LocationDTO dto);
+		
+		// 연락처 정보
+		public void modifyContact(LocationDTO dto);
+		
+		// 사업자 정보
+		public void modifyBizInfo(LocationDTO dto);
+		
+		// 상세정보
+		public void modifyDetailInfo(LocationDTO dto);
+		
+		// 상세정보 이미지
+		public void modifyDetailImg(LocationDTO dto);
+		
+		// 공간웹사이트
+		public void modifyLocWeb(LocationDTO dto);
+		
+		// 이용안내
+		public void modifyUsingInfo(LocationDTO dto);
+	    */
 	    
         return "../WEB-INF/views/host/locationList.jsp";
     }
