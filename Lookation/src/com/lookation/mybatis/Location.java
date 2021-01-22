@@ -180,4 +180,53 @@ public class Location
 		
 		return "../WEB-INF/views/host/locationList.jsp";
 	}
+	
+	@RequestMapping(value="/actions/insertinfotest.action", method = RequestMethod.GET)
+	public String insertinfotest(HttpServletRequest request, Model model)
+	{
+		
+		LocationManager.setName("공간이름테스트");
+	 	LocationManager.setType("파티룸");
+	 	LocationManager.setShortIntro("공간한줄소개테스트");
+	 	LocationManager.setIntro("공간 소개 테스트 입니다. 상세하게 소개합니다.");
+	 	LocationManager.setThumbnail("썸네일.png");
+	 	LocationManager.setAddress("인천 연수구 랜드마크로 19");
+	 	LocationManager.setDetailAddress("상세 주소 테스트 123-123");
+		
+		LocationManager.setEmail("test123@good.com");
+		LocationManager.setTel("010-1234-4321");
+		LocationManager.setMainTel("02-0990-0880");
+		
+		LocationManager.setBizName("사업장이름테스트");
+	 	LocationManager.setBizCeo("사업자대표테스트");
+	 	LocationManager.setBizNum("사업자번호테스트");
+	 	LocationManager.setBizLicense("사업자등록증.jpg");
+	 	LocationManager.setBizCeoType("간이과세자");
+	 	LocationManager.setBizMainType("주업태테스트");
+	 	LocationManager.setBizSubType("주업종테스트");
+		LocationManager.setBizAddresss("경기 안산시 단원구 라성로 4");
+		LocationManager.setBizDetailAddress("사업자 상세 주소 테스트");
+		
+		ArrayList<String> files = new ArrayList<String>();
+		files.add("상세이미지1.png");
+		files.add("상세이미지2.jpg");
+		files.add("상세이미지3.png");
+		
+		LocationManager.setArrDetailImage(files);
+	 	LocationManager.setMinPeople("1");
+	 	LocationManager.setMaxPeople("30");
+		
+		LocationManager.setUsingHour("이용시간안내테스트");
+		LocationManager.setDayOff("휴무안내테스트");
+		LocationManager.setAppointDayOff("정기휴무안내테스트");
+		
+		
+		// 쿼리문으로 db에 저장할 코드가 들어갈 위치
+		
+		
+		//
+		
+		
+		return "../WEB-INF/views/host/locationList.jsp";
+	}
 }

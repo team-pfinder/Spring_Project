@@ -14,4 +14,7 @@ public interface IPackageDAO
 	public void updateApply(PackageDTO pack);
 	public void deleteApply(PackageDTO pack);
 	
+	//
+	public void insertPackage(PackageDTO pack);
+	public void deletePackage(PackageDTO pack);
 }
