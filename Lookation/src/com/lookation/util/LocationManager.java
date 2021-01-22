@@ -22,6 +22,10 @@ public class LocationManager
 	private static String minPeople, maxPeople;
 	private static ArrayList<String> arrDetailImage;
 	
+	// loc web
+	private static String webUrl;
+	
+
 	// using info
 	private static String usingHour, dayOff, appointDayOff;
 	
@@ -298,6 +302,17 @@ public class LocationManager
 		LocationManager.arrFacility = arrFacility;
 	}
 
+
+	public static String getWebUrl()
+	{
+		return webUrl;
+	}
+
+	public static void setWebUrl(String webUrl)
+	{
+		LocationManager.webUrl = webUrl;
+	}
+	
 }
 
 

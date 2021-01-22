@@ -6,6 +6,9 @@ public interface ILocationDAO
 {
 	// ----------------- input -----------------------
 	
+	// 공간 정보
+	public void inputLoc(LocationDTO dto);
+	
 	// 기본 정보
 	public void inputBasicInfo(LocationDTO dto);
 	
@@ -13,7 +16,7 @@ public interface ILocationDAO
 	public void inputThumbnail(LocationDTO dto);
 	
 	// 기본 정보(시설안내)
-	public void inputFacility(LocationDTO dto);
+	public void inputFacilityInfo(LocationDTO dto);
 	
 	// 기본 정보(주의사항)
 	public void inputCaution(LocationDTO dto);

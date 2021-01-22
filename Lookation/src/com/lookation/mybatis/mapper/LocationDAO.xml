@@ -2,274 +2,98 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lookation.dao.ILocationDAO">
+<mapper namespace="com.lookation.dao.ILocationDAO"> 
 	
-	
+	<insert id="inputLoc" parameterType="com.lookation.dto.LocationDTO">
+		
+		<selectKey keyProperty="loc_code" resultType="String" order="AFTER">
+			SELECT F_CODE('L', L_SEQ.CURRVAL) AS LOC_CODE FROM DUAL
+		</selectKey>
+
+		INSERT INTO LOC(LOC_CODE, HOST_CODE, LOC_REG_DATE)
+		VALUES(F_CODE('L', L_SEQ.NEXTVAL), #{host_code}, SYSDATE)
+		
+	</insert>
+
 	<insert id="inputBasicInfo" parameterType="com.lookation.dto.LocationDTO">
 		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	<!--  수정 필요 -->
+		<selectKey keyProperty="loc_basic_info_code" resultType="String" order="AFTER">
+			SELECT F_CODE('LBIF', LBIF_SEQ.CURRVAL) AS LOC_BASIC_INFO_CODE FROM DUAL
 		</selectKey>
-
-		<selectKey keyProperty="LOC_TYPE_CODE", resultType="java.lang.String" order="BEFORE">
-			SELECT LOC_TYPE_CODE FROM LOC_TYPE WHERE LOC_TYPE = #{loc_type}
-		</selectKey>
-				
-		INSERT INTO LOC_BASIC_INFO (LOC_BASIC_INFO_CODE, LOC_CODE, LOC_TYPE_CODE
-							  , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO, LOC_ADDR, LOC_DETAIL_ADDR) 
-		VALUES (F_CODE('LBIF', LBIF_SEQ.NEXTVAL), #{LOC_CODE} , #{LOC_TYPE_CODE} 
-			 , #{loc_name},  #{loc_short_intro},  #{loc_intro}, #{loc_addr}, #{loc_detail_addr});
+		
+		INSERT INTO LOC_BASIC_INFO (LOC_BASIC_INFO_CODE, LOC_CODE
+								  , LOC_TYPE_CODE
+							  	  , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO, LOC_ADDR, LOC_DETAIL_ADDR) 
+		VALUES (F_CODE('LBIF', LBIF_SEQ.NEXTVAL), #{loc_code}
+			  , (SELECT LOC_TYPE_CODE FROM LOC_TYPE WHERE LOC_TYPE = #{loc_type})
+			  , #{loc_name}, #{loc_short_intro}
+			  , #{loc_intro}, #{loc_addr}, #{loc_detail_addr})
 		
 	</insert>
 	
 	
-	<insert id="inputThumbnail" parameterType="java.lang.Integer">
+	<insert id="inputThumbnail" parameterType="com.lookation.dto.LocationDTO">
 		
-		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LBIF_SEQ.CURRVAL FROM LOC_BASIC_INFO_CODE	<!--  수정 필요 -->
-		</selectKey>
-				
 		INSERT INTO THUMBNAIL (THUMBNAIL_CODE, LOC_BASIC_INFO_CODE, THUMBNAIL_URL) 
-		VALUES (F_CODE('TH', TH_SEQ.NEXTVAL),  #{LOC_BASIC_INFO_CODE}, #{thumbnail_url});
+		VALUES (F_CODE('TH', TH_SEQ.NEXTVAL),  #{loc_basic_info_code}, #{thumbnail_url})
 
 	</insert>
 	
-	<!--  JSTL foreach문 사용하는 쿼리로 수정.. items = #{list} -->
-	<insert id="inputFacilityInfo" parameterType="java.lang.Integer">
-		
-		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LBIF_SEQ.CURRVAL FROM LOC_BASIC_INFO_CODE	<!--  수정 필요 -->
-		</selectKey>
+	
+	<insert id="inputFacilityInfo" parameterType="com.lookation.dto.LocationDTO">
 				
-		INSERT INTO FACILITY_INFO(FACILITY_CODE, LOC_BASIC_INFO_CODE
-		                        , FACILITY_CONTENT)
-		VALUES(F_CODE('FIF', FIF_SEQ.NEXTVAL), #{LOC_BASIC_INFO_CODE}, #{facility_content});
+		INSERT INTO FACILITY_INFO(FACILITY_CODE, LOC_BASIC_INFO_CODE, FACILITY_CONTENT)
+		VALUES(F_CODE('FIF', FIF_SEQ.NEXTVAL), #{loc_basic_info_code}, #{facility_content})
 
 	</insert>
 	
-	<!--  JSTL foreach문 사용하는 쿼리로 수정.. items = #{list} -->
-	<insert id="inputCaution" parameterType="java.lang.Integer">
-		
-		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LBIF_SEQ.CURRVAL FROM LOC_BASIC_INFO_CODE	<!--  수정 필요 -->
-		</selectKey>
+	
+	<insert id="inputCaution" parameterType="com.lookation.dto.LocationDTO">
 
-		INSERT INTO CAUTION(CAUTION_CODE, LOC_BASIC_INFO_CODE
-		                  , CAUTION_CONTENT)
-		VALUES(F_CODE('CAU', CAU_SEQ.NEXTVAL), #{LOC_BASIC_INFO_CODE}, #{caution_content});
+		INSERT INTO CAUTION(CAUTION_CODE, LOC_BASIC_INFO_CODE, CAUTION_CONTENT)
+		VALUES(F_CODE('CAU', CAU_SEQ.NEXTVAL), #{loc_basic_info_code}, #{caution_content})
 	</insert>
 	
-	<insert id="inputContact" parameterType="java.lang.Integer">
+	
+	<insert id="inputContact" parameterType="com.lookation.dto.LocationDTO">
 		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	<!--  수정 필요 -->
-		</selectKey>
-
 		INSERT INTO LOC_CONTACT(LOC_CONTACT_CODE, LOC_CODE
                       , LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL)
-		VALUES(F_CODE('LC', LC_SEQ.NEXTVAL), #{LOC_CODE}	
-		         , #{loc_email}, #{loc_tel}, #{loc_main_tel});
+		VALUES(F_CODE('LC', LC_SEQ.NEXTVAL), #{loc_code}	
+		         , #{loc_email}, #{loc_tel}, #{loc_main_tel})
 
 	</insert>
 	
 	
-	<insert id="inputBizinfo" parameterType="java.lang.Integer">
-		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	<!--  수정 필요 -->
-		</selectKey>
-
+	<insert id="inputBizInfo" parameterType="com.lookation.dto.LocationDTO">
 				
 		INSERT INTO BIZ_INFO(BIZ_INFO_CODE, LOC_CODE, BIZ_NAME
 		                            , BIZ_CEO, BIZ_LICENSE_URL, BIZ_CEO_TYPE, BIZ_MAIN_TYPE
 		                            , BIZ_SUB_TYPE, BIZ_ADDR, BIZ_LICENSE_NUMBER)
-		VALUES(F_CODE('BZ', BZ_SEQ.NEXTVAL), #{LOC_CODE}, #{biz_name}
+		VALUES(F_CODE('BZ', BZ_SEQ.NEXTVAL), #{loc_code}, #{biz_name}
 		          , #{biz_ceo}, #{biz_license_url}, #{biz_ceo_type}, #{biz_main_type}
-		          , #{biz_sub_type}, #{biz_addr}, #{biz_license_number});
+		          , #{biz_sub_type}, #{biz_addr}, #{biz_license_number})
 
 	</insert>
 	
-	
-	<insert id="inputDetailInfo" parameterType="java.lang.Integer">
+	<insert id="inputDetailInfo" parameterType="com.lookation.dto.LocationDTO">
 		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	<!--  수정 필요 -->
+		<selectKey keyProperty="loc_basic_info_code" resultType="String" order="AFTER">
+			SELECT F_CODE('LDIF', LDIF_SEQ.CURRVAL) AS LOC_DETAIL_INFO_CODE FROM DUAL
 		</selectKey>
 				
 		INSERT INTO LOC_DETAIL_INFO (LOC_DETAIL_INFO_CODE, LOC_CODE, MIN_PEOPLE, MAX_PEOPLE) 
-		VALUES (F_CODE('LDIF',LDIF_SEQ.NEXTVAL), #{LOC_CODE}, #{min_people}, #{max_people});
+		VALUES (F_CODE('LDIF', LDIF_SEQ.NEXTVAL), #{loc_code}, #{min_people}, #{max_people})
 
 	</insert>
-	
-	
-	<insert id="inputDetailImg" parameterType="java.lang.Integer">
-		
-		<selectKey keyProperty="LOC_CODE_DETAIL_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LDIF_SEQ.CURRVAL FROM LOC_DETAIL_INFO	<!--  수정 필요 -->
-		</selectKey>
+
+	<insert id="inputDetailImg" parameterType="com.lookation.dto.LocationDTO">
 				
 		INSERT INTO LOC_DETAIL_IMG (LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE
 								  , LOC_DETAIL_IMG_URL) 
-		VALUES (F_CODE('LDIMG',LDIMG_SEQ.NEXTVAL), #{LOC_CODE_DETAIL_INFO_CODE}
-					  , #{loc_detail_img_url});
+		VALUES (F_CODE('LDIMG',LDIMG_SEQ.NEXTVAL), #{loc_detail_info_code}
+					  , #{loc_detail_img_url})
 
 	</insert>
-	
-	<insert id="inputLocWeb" parameterType="java.lang.Integer">
-		
-		<selectKey keyProperty="LOC_CODE_DETAIL_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LDIF_SEQ.CURRVAL FROM LOC_DETAIL_INFO	<!--  수정 필요 -->
-		</selectKey>
-				
-		INSERT INTO LOC_WEB(LOC_WEB_CODE, LOC_DETAIL_INFO_CODE, LOC_WEB_URL)
-		VALUES(F_CODE('LW', LW_SEQ.NEXTVAL), #{LOC_CODE_DETAIL_INFO_CODE}, #{loc_web_url});
 
-	</insert>
-	
-	<insert id="inputUsingInfo" parameterType="java.lang.Integer">
-		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	<!--  수정 필요 -->
-		</selectKey>
-				
-		INSERT INTO LOC_USE_INFO (LOC_USE_INFO_CODE, LOC_CODE, LOC_USE_HOUR
-                            	, LOC_USE_DAY_OFF, LOC_USE_APPOINT_DAY_OFF) 
-		VALUES (F_CODE('LUI', LUI_SEQ.NEXTVAL), #{LOC_CODE}, #{loc_use_hour}
-					 , #{loc_use_day_off}, #{loc_use_appoint_day_off});
-
-	</insert>
-	
-	
-	<!------------------------ 수정------------------------>
-	
-	<update id="modifyBasicInfo" parameterType="com.lookation.dto.basicInfoDTO">
-		
-		<selectKey keyProperty="LOC_TYPE_CODE" resultType="java.lang.String" order="BEFORE">		
-			SELECT LOC_TYPE_CODE
-            FROM LOC_TYPE
-            WHERE LOC_TYPE = #{loc_type}
-		</selectKey>
-		
-		UPDATE LOC_BASIC_INFO
-		SET LOC_TYPE_CODE= #{LOC_TYPE_CODE}
-		    , LOC_NAME=#{loc_name}
-		    , LOC_SHORT_INTRO=#{loc_short_intro}
-		    , LOC_INTRO=#{loc_intro}
-		    , LOC_DETAIL_ADDR=#{loc_detail_addr}
-		WHERE LOC_CODE = #{loc_code}	<!-- 공간코드 수정 필요.. -->
-		
-	</update>
-	
-	<update id="modifyThumbnail" parameterType="com.lookation.dto.thumbnailDTO">
-		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LOC_BASIC_INFO_CODE
-                   FROM THUMBNAIL
-                   WHERE THUMBNAIL_URL = #{thumbnail_url};
-		</selectKey>
-		
-		UPDATE THUMBNAIL
-		SET THUMBNAIL_URL = #{}								// 새로 업데이트된 썸네일 링크
-		WHERE LOC_BASIC_INFO_CODE = #{LOC_BASIC_INFO_CODE}	// 기존의 썸네일 링크
-	</update>
-	
-	<update id="modifyFacilityInfo" parameterType="com.lookation.dto.facilityDTO">
-		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">		
-			SELECT LOC_BASIC_INFO_CODE
-            FROM FACILITY_INFO
-            WHERE FACILITY_CONTENT = #{facility_content} 기존 시설안내 내용
-		</selectKey>
-		
-		UPDATE FACILITY_INFO
-		SET FACILITY_CONTENT = #{}						 새로 추가할 시설안내
-		WHERE LOC_BASIC_INFO_CODE = #{LOC_BASIC_INFO_CODE}
-		
-	</update>
-	
-	<update id="modifyCaution" parameterType="com.lookation.dto.cautionDTO">
-		<selectKey keyProperty="LOC_BASIC_INFO_CODE" resultType="java.lang.String" order="BEFORE">		
-			SELECT LOC_BASIC_INFO_CODE
-            FROM CAUTION
-            WHERE CAUTION_CONTENT = #{caution_content}  >> 기존
-		</selectKey>
-		
-		UPDATE CAUTION
-		SET CAUTION_CONTENT = #{}
-		WHERE LOC_BASIC_INFO_CODE = #{LOC_BASIC_INFO_CODE}
-
-	</update>
-	
-	<update id="modifyContact" parameterType="com.lookation.dto.contactDTO">
-	
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	 <!-- 수정 필요 -->
-		</selectKey>
-		
-		UPDATE LOC_CONTACT
-		SET LOC_EMAIL= #{loc_email}
-		    , LOC_TEL = #{loc_tel}
-		    , LOC_MAIN_TEL = #{loc_main_tel}
-		WHERE LOC_CODE=#{LOC_CODE};
-
-	</update>
-	
-	<update id="modifyDetailInfo" parameterType="com.lookation.dto.detailInfoImgDTO">
-		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	 <!-- 수정 필요 -->
-		</selectKey>
-				
-		UPDATE LOC_DETAIL_INFO
-		SET MIN_PEOPLE = #{min_people}
-		    , MAX_PEOPLE = #{max_people}
-		WHERE LOC_CODE = #{LOC_CODE}	<!-- 공간코드 수정 필요.. -->
-		
-	</update>
-	
-	
-	<update id="modifyDetailInfo" parameterType="com.lookation.dto.detailInfoImgDTO">
-		
-		<selectKey keyProperty="LOC_DETAIL_INFO_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT LOC_DETAIL_INFO_CODE
-		    FROM LOC_DETAIL_IMG
-		    WHERE LOC_DETAIL_IMG_URL=#{loc_detail_img_url}
-		</selectKey>
-				
-		
-		UPDATE LOC_DETAIL_IMG
-		SET LOC_DETAIL_IMG_URL = #{} <!-- 새로 추가할 이미지 url.. -->
-		WHERE LOC_DETAIL_INFO_CODE = #{LOC_DETAIL_INFO_CODE}
-		
-	</update>
-	
-	
-	<update id="modifyLocWeb" parameterType="com.lookation.dto.locWebDTO">
-		
-		<selectKey keyProperty="LOC_DETAIL_INFO_CODE" resultType="java.lang.String" order="BEFORE">		
-			SELECT LOC_DETAIL_INFO_CODE
-            FROM LOC_WEB
-            WHERE LOC_WEB_URL=#{loc_web_url}
-		</selectKey>
-		
-		UPDATE LOC_WEB
-		SET LOC_WEB_URL='http://newupdateWEBURL.com'
-		WHERE LOC_DETAIL_INFO_CODE = #{LOC_DETAIL_INFO_CODE}
-
-		
-	</update>
-	
-	<update id="modifyUsingInfo" parameterType="com.lookation.dto.usingInfoDTO">
-		
-		<selectKey keyProperty="LOC_CODE" resultType="java.lang.String" order="BEFORE">
-			SELECT L_SEQ.CURRVAL FROM LOC	 <!-- 수정 필요 -->
-		</selectKey>
-				
-		UPDATE LOC_USE_INFO
-		SET LOC_USE_HOUR = #{loc_use_hour}
-		    , LOC_USE_DAY_OFF = #{loc_use_day_off}
-		    , LOC_USE_APPOINT_DAY_OFF = #{loc_use_appoint_day_off}
-		WHERE LOC_CODE = #{LOC_CODE}
-		
-	</update>
-	
-	
 </mapper>
