@@ -2,26 +2,98 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lookation.dao.ILocationDAO">
+<mapper namespace="com.lookation.dao.ILocationDAO"> 
 	
-	
-	
-	<update id="modifyBasicInfo" parameterType="com.lookation.dto.LocationDTO">
+	<insert id="inputLoc" parameterType="com.lookation.dto.LocationDTO">
 		
-		<selectKey keyProperty="LOC_TYPE_CODE" resultType="java.lang.String" order="BEFORE">		
-			SELECT LOC_TYPE_CODE
-            FROM LOC_TYPE
-            WHERE LOC_TYPE = #{loc_type}
+		<selectKey keyProperty="loc_code" resultType="String" order="AFTER">
+			SELECT F_CODE('L', L_SEQ.CURRVAL) AS LOC_CODE FROM DUAL
+		</selectKey>
+
+		INSERT INTO LOC(LOC_CODE, HOST_CODE, LOC_REG_DATE)
+		VALUES(F_CODE('L', L_SEQ.NEXTVAL), #{host_code}, SYSDATE)
+		
+	</insert>
+
+	<insert id="inputBasicInfo" parameterType="com.lookation.dto.LocationDTO">
+		
+		<selectKey keyProperty="loc_basic_info_code" resultType="String" order="AFTER">
+			SELECT F_CODE('LBIF', LBIF_SEQ.CURRVAL) AS LOC_BASIC_INFO_CODE FROM DUAL
 		</selectKey>
 		
-		UPDATE LOC_BASIC_INFO
-		SET LOC_TYPE_CODE= #{LOC_TYPE_CODE}
-		    , LOC_NAME=#{loc_name}
-		    , LOC_SHORT_INTRO=#{loc_short_intro}
-		    , LOC_INTRO=#{loc_intro}
-		    , LOC_DETAIL_ADDR=#{loc_detail_addr}
-		WHERE LOC_CODE = #{loc_code}	<!-- 공간코드 수정 필요.. -->
+		INSERT INTO LOC_BASIC_INFO (LOC_BASIC_INFO_CODE, LOC_CODE
+								  , LOC_TYPE_CODE
+							  	  , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO, LOC_ADDR, LOC_DETAIL_ADDR) 
+		VALUES (F_CODE('LBIF', LBIF_SEQ.NEXTVAL), #{loc_code}
+			  , (SELECT LOC_TYPE_CODE FROM LOC_TYPE WHERE LOC_TYPE = #{loc_type})
+			  , #{loc_name}, #{loc_short_intro}
+			  , #{loc_intro}, #{loc_addr}, #{loc_detail_addr})
 		
-	</update>
+	</insert>
 	
+	
+	<insert id="inputThumbnail" parameterType="com.lookation.dto.LocationDTO">
+		
+		INSERT INTO THUMBNAIL (THUMBNAIL_CODE, LOC_BASIC_INFO_CODE, THUMBNAIL_URL) 
+		VALUES (F_CODE('TH', TH_SEQ.NEXTVAL),  #{loc_basic_info_code}, #{thumbnail_url})
+
+	</insert>
+	
+	
+	<insert id="inputFacilityInfo" parameterType="com.lookation.dto.LocationDTO">
+				
+		INSERT INTO FACILITY_INFO(FACILITY_CODE, LOC_BASIC_INFO_CODE, FACILITY_CONTENT)
+		VALUES(F_CODE('FIF', FIF_SEQ.NEXTVAL), #{loc_basic_info_code}, #{facility_content})
+
+	</insert>
+	
+	
+	<insert id="inputCaution" parameterType="com.lookation.dto.LocationDTO">
+
+		INSERT INTO CAUTION(CAUTION_CODE, LOC_BASIC_INFO_CODE, CAUTION_CONTENT)
+		VALUES(F_CODE('CAU', CAU_SEQ.NEXTVAL), #{loc_basic_info_code}, #{caution_content})
+	</insert>
+	
+	
+	<insert id="inputContact" parameterType="com.lookation.dto.LocationDTO">
+		
+		INSERT INTO LOC_CONTACT(LOC_CONTACT_CODE, LOC_CODE
+                      , LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL)
+		VALUES(F_CODE('LC', LC_SEQ.NEXTVAL), #{loc_code}	
+		         , #{loc_email}, #{loc_tel}, #{loc_main_tel})
+
+	</insert>
+	
+	
+	<insert id="inputBizInfo" parameterType="com.lookation.dto.LocationDTO">
+				
+		INSERT INTO BIZ_INFO(BIZ_INFO_CODE, LOC_CODE, BIZ_NAME
+		                            , BIZ_CEO, BIZ_LICENSE_URL, BIZ_CEO_TYPE, BIZ_MAIN_TYPE
+		                            , BIZ_SUB_TYPE, BIZ_ADDR, BIZ_LICENSE_NUMBER)
+		VALUES(F_CODE('BZ', BZ_SEQ.NEXTVAL), #{loc_code}, #{biz_name}
+		          , #{biz_ceo}, #{biz_license_url}, #{biz_ceo_type}, #{biz_main_type}
+		          , #{biz_sub_type}, #{biz_addr}, #{biz_license_number})
+
+	</insert>
+	
+	<insert id="inputDetailInfo" parameterType="com.lookation.dto.LocationDTO">
+		
+		<selectKey keyProperty="loc_basic_info_code" resultType="String" order="AFTER">
+			SELECT F_CODE('LDIF', LDIF_SEQ.CURRVAL) AS LOC_DETAIL_INFO_CODE FROM DUAL
+		</selectKey>
+				
+		INSERT INTO LOC_DETAIL_INFO (LOC_DETAIL_INFO_CODE, LOC_CODE, MIN_PEOPLE, MAX_PEOPLE) 
+		VALUES (F_CODE('LDIF', LDIF_SEQ.NEXTVAL), #{loc_code}, #{min_people}, #{max_people})
+
+	</insert>
+
+	<insert id="inputDetailImg" parameterType="com.lookation.dto.LocationDTO">
+				
+		INSERT INTO LOC_DETAIL_IMG (LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE
+								  , LOC_DETAIL_IMG_URL) 
+		VALUES (F_CODE('LDIMG',LDIMG_SEQ.NEXTVAL), #{loc_detail_info_code}
+					  , #{loc_detail_img_url})
+
+	</insert>
+
 </mapper>

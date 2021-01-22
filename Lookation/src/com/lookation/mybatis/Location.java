@@ -4,11 +4,15 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lookation.dao.ILocationDAO;
+import com.lookation.dto.LocationDTO;
 import com.lookation.util.FileManager;
 import com.lookation.util.LocationManager;
 import com.oreilly.servlet.MultipartRequest;
@@ -16,6 +20,10 @@ import com.oreilly.servlet.MultipartRequest;
 @Controller
 public class Location
 {
+	@Autowired
+	private SqlSession sqlSession;
+	
+	
 	@RequestMapping(value="/actions/basicform.action", method = RequestMethod.GET)
 	public String basicForm(HttpServletRequest request, Model model)
 	{
@@ -182,51 +190,151 @@ public class Location
 	}
 	
 	@RequestMapping(value="/actions/insertinfotest.action", method = RequestMethod.GET)
-	public String insertinfotest(HttpServletRequest request, Model model)
-	{
+    public String insertinfotest(HttpServletRequest request, Model model)
+    {
+
+        LocationManager.setName("공간이름테스트");
+	     LocationManager.setType("파티룸");
+	     LocationManager.setShortIntro("공간한줄소개테스트");
+	     LocationManager.setIntro("공간 소개 테스트 입니다. 상세하게 소개합니다.");
+	     LocationManager.setThumbnail("썸네일.png");
+	     LocationManager.setAddress("인천 연수구 랜드마크로 19");
+	     LocationManager.setDetailAddress("상세 주소 테스트 123-123");
+
+        LocationManager.setEmail("test123@good.com");
+        LocationManager.setTel("010-1234-4321");
+        LocationManager.setMainTel("02-0990-0880");
+
+        LocationManager.setBizName("사업장이름테스트");
+         LocationManager.setBizCeo("사업자대표테스트");
+         LocationManager.setBizNum("사업자번호테스트");
+         LocationManager.setBizLicense("사업자등록증.jpg");
+         LocationManager.setBizCeoType("간이과세자");
+         LocationManager.setBizMainType("주업태테스트");
+         LocationManager.setBizSubType("주업종테스트");
+        LocationManager.setBizAddresss("경기 안산시 단원구 라성로 4");
+        LocationManager.setBizDetailAddress("사업자 상세 주소 테스트");
+
+        ArrayList<String> f = new ArrayList<String>();
+        f.add("시설안내1");
+        f.add("시설안내2");
+        f.add("시설안내3");
+        LocationManager.setArrFacility(f);
+        
+        ArrayList<String> c = new ArrayList<String>();
+        c.add("주의사항1");
+        c.add("주의사항2");
+        c.add("주의사항3");
+        LocationManager.setArrPrecaution(c);
+        
+        
+        ArrayList<String> files = new ArrayList<String>();
+        files.add("상세이미지1.png");
+        files.add("상세이미지2.jpg");
+        files.add("상세이미지3.png");
+
+        
+        
+        LocationManager.setArrDetailImage(files);
+        LocationManager.setMinPeople("1");
+        LocationManager.setMaxPeople("30");
+         
+        LocationManager.setWebUrl("test.com");
+         
+        LocationManager.setUsingHour("이용시간안내테스트");
+        LocationManager.setDayOff("휴무안내테스트");
+        LocationManager.setAppointDayOff("정기휴무안내테스트");
+
+
+        // 쿼리문으로 db에 저장할 코드가 들어갈 위치
+
+        ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+        
+        LocationDTO dto = new LocationDTO();
+        
+        // 공간
+        dto.setHost_code("H000001");
+        
+        dao.inputLoc(dto);	// loc_code set
+        System.out.println(dto.getLoc_code());
+
+        
+        // 기본 정보
+        dto.setLoc_type("파티룸");
+        dto.setLoc_name("공간명테스트");
+        dto.setLoc_short_intro("공간한줄소개테스트");
+        dto.setLoc_intro("공간소개테스트");
+        dto.setLoc_addr("주소테스트");
+        dto.setLoc_detail_addr("상세주소테스트");
+        
+        dao.inputBasicInfo(dto);	// loc_basic_info_code set
+        
+        
+        // 썸네일(기본정보)
+        dto.setThumbnail_url("test.lookation.com");
+        
+        dao.inputThumbnail(dto);
+        
+        //System.out.println(LocationManager.getArrFacility());
+        
+        
+        // 시설안내(기본정보)
+        //-- insert 이므로 배열에 담을 필요없음. 
+        //   mybatis에서 for문으로 담는다
 		
-		LocationManager.setName("공간이름테스트");
-	 	LocationManager.setType("파티룸");
-	 	LocationManager.setShortIntro("공간한줄소개테스트");
-	 	LocationManager.setIntro("공간 소개 테스트 입니다. 상세하게 소개합니다.");
-	 	LocationManager.setThumbnail("썸네일.png");
-	 	LocationManager.setAddress("인천 연수구 랜드마크로 19");
-	 	LocationManager.setDetailAddress("상세 주소 테스트 123-123");
+		for (String str : LocationManager.getArrFacility()) 
+		{
+			 dto.setFacility_content(str); 
+			 dao.inputFacilityInfo(dto); 
+		}
 		
-		LocationManager.setEmail("test123@good.com");
-		LocationManager.setTel("010-1234-4321");
-		LocationManager.setMainTel("02-0990-0880");
+		// 주의사항(기본정보)
+		  
+		for (String str : LocationManager.getArrPrecaution())
+		{
+			dto.setCaution_content(str);
+			dao.inputCaution(dto);
+		}
 		
-		LocationManager.setBizName("사업장이름테스트");
-	 	LocationManager.setBizCeo("사업자대표테스트");
-	 	LocationManager.setBizNum("사업자번호테스트");
-	 	LocationManager.setBizLicense("사업자등록증.jpg");
-	 	LocationManager.setBizCeoType("간이과세자");
-	 	LocationManager.setBizMainType("주업태테스트");
-	 	LocationManager.setBizSubType("주업종테스트");
-		LocationManager.setBizAddresss("경기 안산시 단원구 라성로 4");
-		LocationManager.setBizDetailAddress("사업자 상세 주소 테스트");
+		// 연락처 정보
+		dto.setLoc_email("rlaghwls@naver.com");
+		dto.setLoc_tel("010-1234-5678");
+		dto.setLoc_main_tel("02-2222-2233");
 		
-		ArrayList<String> files = new ArrayList<String>();
-		files.add("상세이미지1.png");
-		files.add("상세이미지2.jpg");
-		files.add("상세이미지3.png");
-		
-		LocationManager.setArrDetailImage(files);
-	 	LocationManager.setMinPeople("1");
-	 	LocationManager.setMaxPeople("30");
-		
-		LocationManager.setUsingHour("이용시간안내테스트");
-		LocationManager.setDayOff("휴무안내테스트");
-		LocationManager.setAppointDayOff("정기휴무안내테스트");
+		dao.inputContact(dto);
 		
 		
-		// 쿼리문으로 db에 저장할 코드가 들어갈 위치
-		
-		
-		//
-		
-		
-		return "../WEB-INF/views/host/locationList.jsp";
-	}
+		// 사업자 정보
+	    dto.setBiz_name("사업자이름테스트");
+	    dto.setBiz_ceo("사업자대표테스트");
+	    dto.setBiz_license_url("테스트사업자등록증.jpg");
+	    dto.setBiz_ceo_type("개인사업자");
+	    dto.setBiz_main_type("주업태테스트");
+	    dto.setBiz_sub_type("주업종테스트");
+	    dto.setBiz_addr("서울시 동대문구 이문동 1");
+	    dto.setBiz_license_number("123-45-67890");
+	    
+	    dao.inputBizInfo(dto);
+	    
+	    
+	    // 상세 정보
+	    dto.setLoc_detail_addr("101동 101호");
+	    dto.setMin_people("2");
+	    dto.setMax_people("22");
+	    
+	    dao.inputDetailInfo(dto);	// 상세정보코드 set
+	    System.out.println(dto.getLoc_detail_info_code());	
+	    
+	    System.out.println(LocationManager.getArrDetailImage());
+	    
+	    // 상세 이미지
+	    for (String str : LocationManager.getArrDetailImage())
+		{
+			dto.setLoc_detail_img_url(str);
+			dao.inputDetailImg(dto);
+		}
+	    
+	    
+        return "../WEB-INF/views/host/locationList.jsp";
+    }
 }
