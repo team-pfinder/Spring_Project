@@ -83,5 +83,8 @@ public interface ILocationDAO
 	// 이용안내
 	public void modifyUsingInfo(LocationDTO dto);
 	
+	// ----------------- delete ------------------------
+	
+	public void deleteLocation(LocationDTO dto);
 	
 }

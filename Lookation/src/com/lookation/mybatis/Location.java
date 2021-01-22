@@ -32,8 +32,23 @@ public class Location
 	    loc.setHost_code("H000001");
 	    
 	    model.addAttribute("locList", dao.locList(loc));
-		
+	    
 		return "../WEB-INF/views/host/locationList.jsp";
+	}
+	
+	@RequestMapping(value="/actions/deletelocation.action", method = RequestMethod.GET)
+	public String deleteAction(HttpServletRequest request, Model model)
+	{
+	    ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+	    
+	    String loc_code = request.getParameter("loc_code");
+	    
+	    LocationDTO loc = new LocationDTO();
+	    loc.setLoc_code(loc_code);
+	    dao.deleteLocation(loc);
+	    
+	   
+		return "redirect:locationlist.action";
 	}
 	
 	
