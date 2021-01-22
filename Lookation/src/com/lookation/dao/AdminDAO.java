@@ -30,16 +30,17 @@ public class AdminDAO implements IAdminDAO
 		Connection conn = dataSource.getConnection();
 		
 		String sql = "SELECT ADMIN_NICKNAME"
-				+ " FROM ADMIN " 
-				+ " WHERE ADMIN_ID = ? "
-				+ " AND ADMIN_PW = ? ";
+				+ " FROM ADMIN" 
+				+ " WHERE ADMIN_ID=?"
+				+ " AND ADMIN_PW=?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, admin_id);
 		pstmt.setString(2, admin_pw);
 	
 		ResultSet rs = pstmt.executeQuery();
-		while (rs.next())
+		
+		if(rs.next())
 			result = rs.getString("ADMIN_NICKNAME");
 		
 		

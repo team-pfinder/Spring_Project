@@ -53,7 +53,17 @@ $(document).ready(function()
 			if (confirm("검수 처리 승인하시겠습니까?"))
 			{
 			 // alert($(this).val());
-			$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000001&inspect_proc_reason=검수승인이완료되었습니다.");
+			 //$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000001&inspect_proc_reason=검수승인이완료되었습니다.");
+			 
+				$.ajax({
+					type : "get"
+					, url : "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000001&inspect_proc_reason=검수승인이완료되었습니다."
+					, complete : function()
+					{
+						window.opener.parent.location.reload();
+						window.self.close();
+					}
+				});
 			} 
 		});
 		$(".inspectNO").click(function()	//-- 검수반려
@@ -61,9 +71,21 @@ $(document).ready(function()
 			if (confirm("검수 처리 반려하시겠습니까?"))
 			{
 			 //alert($(this).val());
-			$(location).attr("href", "insepectinsert.action?insepect_reg_code=" + $(this).val() +"&inspect_type_code=IT000002&inspect_proc_reason=" + $("#inspect_proc_reason").val());
+			//$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000002&inspect_proc_reason=" + $("#inspect_proc_reason").val());
+				$.ajax({
+					type : "get"
+					, url : "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000002&inspect_proc_reason=" + $("#inspect_proc_reason").val()
+					, complete : function()
+					{
+						window.opener.parent.location.reload();
+						window.self.close();
+					}
+				});
+			
 			}
-		})
+		});
+		
+		
 	});
 </script>
 

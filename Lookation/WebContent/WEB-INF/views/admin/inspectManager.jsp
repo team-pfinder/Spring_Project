@@ -75,16 +75,47 @@ String cp = request.getContextPath();
 			</thead>
                <tbody>
                	<c:forEach var="InspectLocationDTO" items="${list }">
-				<tr align="center">
-					<td>${InspectLocationDTO.inspect_reg_code }</td>
-	                <td>${InspectLocationDTO.loc_name }</td>
-	                <td>${InspectLocationDTO.loc_type }</td>
-
-					<td>
-						<!-- 검수처리기능 -->
-						<button type="button" class="btn btn-primary detailBtn"
-								value="${InspectLocationDTO.inspect_reg_code }">검수처리</button> 
-					</td>
+               	<!--  
+               		<tr align="center">
+								<td>${InspectLocationDTO.inspect_reg_code }</td>
+				                <td>${InspectLocationDTO.loc_name }</td>
+				                <td>${InspectLocationDTO.loc_type }</td>
+			
+								<td>
+									<!-- 검수처리기능 
+									<button type="button" class="btn btn-primary detailBtn"
+											value="${InspectLocationDTO.inspect_reg_code }">검수처리</button> 
+								</td>
+							</tr>
+						-->	
+               		<c:choose>
+                		<c:when test="${InspectLocationDTO.count == 0 }">
+							<tr align="center">
+								<td>${InspectLocationDTO.inspect_reg_code }</td>
+				                <td>${InspectLocationDTO.loc_name }</td>
+				                <td>${InspectLocationDTO.loc_type }</td>
+			
+								<td>
+									<!-- 검수처리기능 -->
+									<button type="button" class="btn btn-primary detailBtn"
+											value="${InspectLocationDTO.inspect_reg_code }">검수처리</button> 
+								</td>
+							</tr>
+						</c:when>
+						
+						<c:otherwise>
+	                    	<tr style="display: none;">
+	                    		<td>${InspectLocationDTO.inspect_reg_code }</td>
+				                <td>${InspectLocationDTO.loc_name }</td>
+				                <td>${InspectLocationDTO.loc_type }</td>
+			
+								<td>
+									<!-- 검수처리기능 -->
+									<button type="button" class="btn btn-primary detailBtn"
+											value="${InspectLocationDTO.inspect_reg_code }">검수처리</button> 
+								</td>
+	                     		
+					
 				<!-- 
 				<tr align="center">
 					<td><input type="checkbox" /></td>
@@ -102,61 +133,12 @@ String cp = request.getContextPath();
 						검수처리기능
 						<button type="button" class="btn btn-primary">검수처리</button> 
 					</td>
-				</tr>
+				</tr>-->
 				
-				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>3</td>
-
-					<td>TP001236</td>
-
-					<td>두유라잌파티?</td>
-					
-					<td>클럽</td>
-
-					<td>대기</td>
-
-					<td>
-						검수처리기능
-						<button type="button" class="btn btn-primary">검수처리</button> 
-					</td>
+			
 				</tr>
-				
-				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>4</td>
-
-					<td>TP001237</td>
-
-					<td>나랑별보러갈래?</td>
-					
-					<td>루프탑</td>
-
-					<td>대기</td>
-
-					<td>
-						검수처리기능
-						<button type="button" class="btn btn-primary">검수처리</button> 
-					</td>
-				</tr>
-				
-				<tr align="center">
-					<td><input type="checkbox" /></td>
-					<td>5</td>
-
-					<td>TP001238</td>
-
-					<td>쌍용 파티</td>
-					
-					<td>파티룸</td>
-
-					<td>대기</td>
-
-					<td>
-						검수처리기능
-						<button type="button" class="btn btn-primary">검수처리</button> 
-					</td> -->
-				</tr>
+				</c:otherwise>
+				</c:choose>
 				</c:forEach>
 			</tbody>
                   
@@ -192,24 +174,27 @@ String cp = request.getContextPath();
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 관리자 로그아웃 모달  -->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
+					<button class="close" type="button" data-dismiss="modal"
+						aria-label="Close" style="float: right;">
+						<span aria-hidden="true" style="float: right;">×</span>
+					</button>
+				</div>
+				<div class="modal-body">로그아웃 시 메인 페이지로 이동합니다.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button"
+						data-dismiss="modal">Cancel</button>
+					<a class="btn btn-primary" href="adminlogout.action">Logout</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 

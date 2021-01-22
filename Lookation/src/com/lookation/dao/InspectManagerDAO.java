@@ -28,11 +28,11 @@ public class InspectManagerDAO implements IInspectManagerDAO
 		
 		Connection conn = dataSource.getConnection();
 		
-		String sql = "SELECT INSPECT_REG_CODE,LOC_NAME,LOC_TYPE " 
+		String sql = "SELECT INSPECT_REG_CODE,LOC_NAME,LOC_TYPE,COUNT " 
 					+ " FROM ADMIN_INSPECT_LIST_VIEW ";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		ResultSet rs = pstmt.executeQuery();
+		ResultSet rs = pstmt.executeQuery(); 
 		
 		while(rs.next())
 		{
@@ -40,6 +40,7 @@ public class InspectManagerDAO implements IInspectManagerDAO
 			dto.setInspect_reg_code(rs.getString("INSPECT_REG_CODE"));
 			dto.setLoc_name(rs.getString("LOC_NAME"));
 			dto.setLoc_type(rs.getString("LOC_TYPE"));
+			dto.setCount(rs.getString("COUNT"));
 			
 			result.add(dto);
 		}
