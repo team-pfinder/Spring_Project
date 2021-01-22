@@ -22,11 +22,55 @@ public class Package
 	@Autowired
 	public SqlSession sqlSession;
 
+	// 패키지 폼 관리
+	@RequestMapping(value="/actions/packagemanager.action", method=RequestMethod.GET)
+	public String packageManager(HttpServletRequest request, Model model)
+	{
+		IPackageDAO dao = sqlSession.getMapper(IPackageDAO.class);
+		model.addAttribute("formList", dao.packageFormList("L000001"));
+		
+		return "../WEB-INF/views/host/inputPackageInfoForm.jsp"; 
+	}
+	// 패키지 추가 폼
+	@RequestMapping(value="/actions/packageform.action", method=RequestMethod.GET)
+	public String packageForm(HttpServletRequest request, Model model)
+	{	
+		return "../WEB-INF/views/host/inputPackageInfo.jsp"; 
+	}
+	// 패키지 추가
+	@RequestMapping(value="/actions/inputpackageform.action", method=RequestMethod.POST)
+	public String inputPackageForm(HttpServletRequest request, Model model)
+	{	
+		// 
+		PackageDTO p = new PackageDTO();
+		p.setName(request.getParameter("inputPackageName")); 
+		p.setTime_start(request.getParameter("locationPackageStart")); 
+		p.setTime_end(request.getParameter("locationPacakgeEnd")); 
+		p.setPrice(request.getParameter("locationPackagePrice")); 
+		p.setLoc_code("L000001");
+		
+		IPackageDAO dao = sqlSession.getMapper(IPackageDAO.class);
+		dao.insertPackage(p);
+		
+		return "redirect:packagemanager.action"; 
+	}
+	// 패키지 삭제
+		@RequestMapping(value="/actions/deletepackageform.action", method=RequestMethod.POST)
+		public String deletePackageForm(HttpServletRequest request, Model model)
+		{	
+			// 
+			PackageDTO p = new PackageDTO();
+			p.setCode(request.getParameter("selectPackage"));
+			
+			IPackageDAO dao = sqlSession.getMapper(IPackageDAO.class);
+			dao.deletePackage(p);
+			
+			return "redirect:packagemanager.action"; 
+		}
 	
 	// 패키지 적용폼
 	@RequestMapping(value="/actions/packageapplyform.action", method=RequestMethod.GET)
 	public String packageApplyForm(HttpServletRequest request, Model model)
-
 	{
 		/* 나중에
 		// 세션 검사 
