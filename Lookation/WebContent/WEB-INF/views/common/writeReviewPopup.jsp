@@ -98,21 +98,46 @@
 
 	$(function()
 	{	
-		$(".submitBtn").click(function()
+		// 이용자 리뷰 작성
+		$("#submitBtn_m").click(function()
 		{
 			if($("input[name=review_rate]:radio:checked").length == 0)
 			{
 				alert("별점을 선택해주세요"); 
-				return;
+				return false;
 			}
-			$("#reviewForm").submit();
-			window.close();
+			
+			$.ajax({
+				type : "post",
+				url : "reviewinsert.action",
+				complete : function(xh)
+				{			
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
 			
 		});
 		
 		//$("input[@name=review_rate]").filter('input[@value='+sValue+']').attr("checked", "checked"); 
-
 	});
+
+	// 호스트 리뷰 답글 작성
+	function submitBtn_h()
+	{
+		$.ajax({
+			type : "post",
+			url : "reviewreplyinsert.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
+	
+	
+	
 	
 </script>
 </head>
@@ -123,7 +148,7 @@
 			<div class="col-md-12">
 			<!-- 이용자 -->
 			<c:if test="${identify eq 'member'}"> 
-				<form action="reviewinsert.action" id="reviewForm" method="post" target="redirect:locationdetail.action">
+				<form action="reviewinsert.action" id="reviewForm" method="post">
 					<div class="header">
 						<h3 class="title my-2">리뷰 작성하기</h3>
 						<hr>
@@ -166,14 +191,14 @@
 	
 					<div class="text-center">
 						<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-						<button type="button" class="btn btn-primary submitBtn">작성하기</button>
+						<button type="submit" class="btn btn-primary" id="submitBtn_m">작성하기</button>
 					</div>
 				</form>
 			</c:if>
 			
 			<!-- 호스트 -->
 			<c:if test="${identify eq 'host'}"> 
-				<form action="reviewreplyinsert.action" id="reviewForm" method="post" target="redirect:locationdetailhost.action">
+				<form action="reviewreplyinsert.action" id="reviewForm" method="post">
 					<div class="header">
 						<h3 class="title my-2">리뷰 답글 작성하기</h3>
 						<hr>
@@ -198,8 +223,7 @@
 	
 					<div class="text-center">
 						<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-						<button type="submit" class="btn btn-primary" onClick="window.close();">작성하기</button>
-						<!-- 작성하기 버튼 클릭시 insert문 돌아가야 -->
+						<button type="submit" class="btn btn-primary" onClick="submitBtn_h()">작성하기</button>
 					</div>
 				</form>
 			</c:if>

@@ -4,16 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.IBookListDAO">
 	
+	<!-- 해당 이용자의 예약 리스트 -->
 	<select id="bookList" resultType="com.lookation.dto.BookListDTO">
 		SELECT BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, LOC_CODE
 		, APPLY_DATE, PACKAGE_CODE, PACKAGE_NAME
-		, PACKAGE_START, PACKAGE_END
+		, PACKAGE_START, PACKAGE_END, BOOK_DATE, CHECKBOOK
 		, BOOK_HOUR, HOST_CANCEL, MEMBER_CANCEL, REFUND, LOC_NAME
 		FROM VIEW_BOOKLIST
 		WHERE MEMBER_CODE = #{member_code}
-		ORDER BY APPLY_DATE
 	</select>
 	
+	<!-- 예약 상세보기 -->
 	<select id="bookDetails" resultType="com.lookation.dto.BookListDTO">
 		SELECT BOOK_CODE, MEMBER_CODE
 		, APPLY_DATE, PACKAGE_NAME
@@ -23,12 +24,12 @@
 		, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ, PACKAGE_PRICE
 		, BIZ_NAME, BIZ_CEO, BIZ_LICENSE_NUMBER
 		, MEMBER_CANCEL_REASON, HOST_CANCEL_REASON
-		, MEMBER_EMAIL, LOC_ADDR, LOC_DETAIL_ADDR
-		, MEMBER_NICKNAME
+		, MEMBER_EMAIL, LOC_ADDR, LOC_DETAIL_ADDR, CHECKBOOK
 		FROM VIEW_BOOKLIST
 		WHERE BOOK_CODE = #{book_code}
 	</select>
 	
+	<!-- 환불가격 계산 -->
 	<select id="refundPrice" resultType="com.lookation.dto.BookListDTO">
 		SELECT BOOK_CODE, BOOK_HOUR, LOC_NAME
 		, APPLY_DATE, PACKAGE_START, PACKAGE_END
@@ -38,16 +39,23 @@
 		WHERE BOOK_CODE = #{book_code}
 	</select>
 	
+	<!-- 이용자 취소신청 -->
 	<insert id="memberCancel" >
 		INSERT INTO MEMBER_CANCEL_LIST (MEMBER_CANCEL_CODE, BOOK_CODE
 		, MEMBER_CANCEL_REASON, MEMBER_CANCEL_DATE)
 		VALUES(F_CODE('MC', MC_SEQ.NEXTVAL), #{book_code}, #{member_cancel_reason}, SYSDATE)
 	</insert>
 	
+	<!-- 환불절차 -->
 	<insert id="memberRefund">
 		INSERT INTO BOOK_REFUND_LIST (BOOK_REFUND_CODE, BOOK_CODE, BOOK_REFUND_DATE)
 		VALUES(F_CODE('BRF', BRF_SEQ.NEXTVAL), #{book_code}, SYSDATE)
 	</insert>
 	
+	<select id="memberNick" resultType="java.lang.String">
+		SELECT MEMBER_NICKNAME
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_CODE=#{member_code}
+	</select>
 	
 </mapper>

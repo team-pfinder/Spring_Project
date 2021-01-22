@@ -87,13 +87,13 @@ public class LocationReview
 	
 	// 이용자 : 리뷰 수정
 	@RequestMapping(value="/actions/modifyreview.action", method = RequestMethod.POST)
-	public String modifyReview(LocationReviewDTO dto)
+	public void modifyReview(LocationReviewDTO dto)
 	{
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.updateMemReview(dto);
 		
-		return "redirect:locationdetail.action";
+		//return "redirect:locationdetail.action";
 	}
 		
 	
@@ -122,13 +122,13 @@ public class LocationReview
 	
 	// 호스트 : 리뷰 답글 수정
 	@RequestMapping(value="/actions/modifyreviewreply.action", method = RequestMethod.POST)
-	public String modifyReviewReply(LocationReviewDTO dto)
+	public void modifyReviewReply(LocationReviewDTO dto)
 	{
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.updateHostReview(dto);
 		
-		return "redirect:locationdetailhost.action";
+		//return "redirect:locationdetailhost.action";
 	}
 	
 	
