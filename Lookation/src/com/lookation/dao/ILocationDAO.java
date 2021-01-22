@@ -44,6 +44,12 @@ public interface ILocationDAO
 	// 이용안내
 	public void inputUsingInfo(LocationDTO dto);
 	
+	// 패키지 양식
+	public void inputPackageFormInfo(LocationDTO dto);
+	
+	// 검수 신청
+	public void inputInspectRegList(LocationDTO dto);
+	
 	
 	// ----------------- update -----------------------
 	
