@@ -100,18 +100,23 @@ ul.precautions-list > li {
 		    
 		    if (val.length < 10 || val.length > 50 ) {
 				alert("시설 안내는 10자 이상 ~ 50자 이하로 입력해야합니다.")
-				return;
+				return false;
+			}
+		    
+		    if ($('[name="inputFacility"]').length < 1 ) {
+				alert("시설 안내는 최소 1개 이상 추가해야합니다.");
+				return false;
 			}
 		    
 			if ($('[name="inputFacility"]').length > 10) {
 				alert("시설 안내는 최대 10개까지 추가가 가능합니다.");
-				return;
+				return false;
 			}
 			
 			if (val.trim() == '') {
 				alert("시설 안내를 입력해주세요.");
 				$('#inputFacility').focus();
-				return;
+				return false;
 			}
 			
 		    html += '<li>';
@@ -119,6 +124,8 @@ ul.precautions-list > li {
 		    html += '</li>';
 		    $('ul.facility-list').append(html);
 		    $('#inputFacility').val("");
+		    
+		    return true;
 		});
 
 		// 예약 시 주의사항 추가 버튼 클릭 이벤트 function
@@ -130,19 +137,24 @@ ul.precautions-list > li {
 		    if (val.length < 20 || val.length > 100 )
 			{
 				alert("예약 시 주의사항은 20자 이상 ~ 100자 이하로 입력해야합니다.")
-				return;
+				return false;
 			}
 		    
 		    
+		    if ($('[name="inputPrecautions"]').length < 1 ) {
+				alert("시설 안내는 최소 1개 이상 추가해야합니다.");
+				return false;
+			}
+		    
 		    if ($('[name="inputPrecautions"]').length > 10) {
 				alert("예약 시 주의사항은 최대 10개까지 추가가 가능합니다.");
-				return;
+				return false;
 			}
 			
 			if (val.trim() == '') {
 				alert("예약시 주의사항을 입력해주세요.");
 				$('#inputPrecautions').focus();
-				return;
+				return false;
 			}
 			
 		    html += '<li>';
@@ -150,6 +162,8 @@ ul.precautions-list > li {
 		    html += '</li>';
 		    $('ul.precautions-list').append(html);
 		    $('#inputPrecautions').val("");
+		    
+		    return true;
 		});
 		
 		// 썸네일 이미지 등록
@@ -177,6 +191,7 @@ ul.precautions-list > li {
 				// 추출한 파일명 삽입 
 				$(this).siblings('.upload-name').val(filename); 
 				
+				return true;
 			}); 
 		});
 
@@ -197,12 +212,12 @@ ul.precautions-list > li {
 				
 				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
 				err.css("color", "red");
-				return;
+				return false;
 			}
 			else {
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
-				return;
+				return true;
 			}
 		});
 	}
@@ -217,8 +232,11 @@ ul.precautions-list > li {
 		    	
 		        // 같지 않은 경우
 		        $(target).val(val);
+		        return false;
+		        
 		    } else {
 		        $(target).next().hide();
+		        return true;
 		    }
 		});
 	}
@@ -235,8 +253,12 @@ ul.precautions-list > li {
 				err.show();
 				err.text(name + "을(를) 선택해야 합니다.");
 				
+				return false;
+				
 			} else {
 				err.hide();
+				
+				return true;
 			}
 		})
 	}
@@ -307,6 +329,21 @@ ul.precautions-list > li {
 			return;
 		}
 		
+	}
+	
+	// submitFlag와 formCheck function으로 form submit 제어
+	
+	var submitFlag = true;
+	
+	function formCheck() {
+		
+		if (submitFlag)	{
+			
+			submitFlag = false;
+			document.inputBasicInfo.submit();
+		}
+		
+		return 0;
 	}
 	
 	
@@ -402,7 +439,7 @@ ul.precautions-list > li {
 
 	
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" 
+	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" name="inputBasicInfo"
 		  action="${pageContext.request.contextPath}/inputbasicinfo.action" method="POST"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 공간명 -->
@@ -631,12 +668,13 @@ ul.precautions-list > li {
 							   → 이용정보  → 상세정보  → 패키지정보 -->
 	<div class="container" style="text-align: center;">
 		<input type="submit" value="다음" class="btn btn-warning" 
-			   style="width:45%; border-color: gray;"> <!-- type="button" onsubmit="next()" -->
+			   style="width:45%; border-color: gray;"
+			   onclick="return formCheck();"> <!-- type="button" onsubmit="next()" -->
 		<!-- style="display: block; margin: 0px auto" -->
 		
 	<!-- 취소 버튼 -->
 		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
-				id="BasicInfoCancel" value="취소" onclick="cancel()">		
+				id="BasicInfoCancel" value="취소" onclick="cancel();">		
 		
 	</div>	
 	
