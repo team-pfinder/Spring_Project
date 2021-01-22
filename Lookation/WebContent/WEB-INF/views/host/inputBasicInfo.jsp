@@ -15,7 +15,6 @@
 <%-- <%@ include file="../includes/header_host.jsp" %> --%>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="<%=cp%>/js/jquery-ui.js"></script>
 
 <style>
 
@@ -89,7 +88,7 @@ ul.precautions-list > li {
 		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 4, 20);
 		setInputLength($('#inputIntro'), '공간 소개', 20, 400);
 		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
-		setInputLength($('#inputPrecautions'), '예약 시 주의사항', 20, 100);
+		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 20, 100);
 		
 		
 		// 시설 추가 버튼 클릭 이벤트 function
@@ -166,6 +165,7 @@ ul.precautions-list > li {
 		    return true;
 		});
 		
+
 		// 썸네일 이미지 등록
 		$(document).ready(function(){ 
 			
@@ -365,6 +365,160 @@ ul.precautions-list > li {
 	
 </script>
 
+<script type="text/javascript">
+
+var facilityNum = 1;
+
+function addFacilityInfo()
+{
+	if(facilityNum > 10)
+	{
+		alert("더이상 추가할 수 없습니다.");
+		return;
+	}
+	
+	var obj = document.getElementById("locationFacilityInfo");
+	var newDiv = document.createElement("div");
+	
+	var content = $('#inputFacility').val();
+	
+	if (content.length < 10 || content.length > 50 ) {
+		alert("시설 안내는 10자 이상 ~ 50자 이하로 입력해야합니다.")
+		return;
+	}
+	
+	if(content == '')
+	{
+		alert("내용을 먼저 추가하세요.");
+		return;
+	}
+	
+	newDiv.innerHTML = "<p>" + facilityNum + ". " + content + "</p>";
+	newDiv.setAttribute("id" , "facilityInfo_" + facilityNum);
+	obj.appendChild(newDiv);
+	
+	$('#inputFacility').val('');
+	
+	facilityNum++;
+}
+
+function removeFacilityInfo()
+{
+	if(facilityNum <= 1)
+	{
+		alert("더이상 삭제할 수 없습니다.");
+		return;
+	}
+	
+	var obj = document.getElementById("facilityInfo_" + (facilityNum - 1));
+	var parent = obj.parentElement;
+	parent.removeChild(obj);
+
+	facilityNum--;
+}
+
+//
+var precautionNum = 1;
+
+function addPrecautionInfo()
+{
+	if(precautionNum > 10)
+	{
+		alert("더이상 추가할 수 없습니다.");
+		return;
+	}
+	
+	var obj = document.getElementById("locationPrecautionInfo");
+	var newDiv = document.createElement("div");
+	
+	var content = $('#inputPrecaution').val();
+	
+	if (content.length < 20 || content.length > 100 )
+	{
+		alert("예약 시 주의사항은 20자 이상 ~ 100자 이하로 입력해야합니다.")
+		return;
+	}
+	
+	if(content == '')
+	{
+		alert("내용을 먼저 추가하세요.");
+		return;
+	}
+	
+	newDiv.innerHTML = "<p>" + precautionNum + ". " + content + "</p>";
+	newDiv.setAttribute("id" , "precautionInfo_" + precautionNum);
+	obj.appendChild(newDiv);
+	
+	$('#inputPrecaution').val('');
+	
+	precautionNum++;
+}
+
+function removePrecautionInfo()
+{
+	if(precautionNum <= 1)
+	{
+		alert("더이상 삭제할 수 없습니다.");
+		return;
+	}
+	
+	var obj = document.getElementById("precautionInfo_" + (precautionNum - 1));
+	var parent = obj.parentElement;
+	parent.removeChild(obj);
+
+	precautionNum--;
+}
+</script>
+
+<script type="text/javascript">
+	$(function()
+	{
+		var result = '';
+		
+		$('#BasicInfoSubmit').click(function()
+		{
+			// SUBMIT 검사
+
+
+			// 시설안내 정보
+			// 주의사항 정보
+			ajaxInfo();
+			
+			
+			$('#inputBasicInfo').submit();
+		})
+		
+	});
+	
+	function ajaxInfo()
+	{
+		var arrFacility = new Array();
+		var arrPrecaution = new Array();
+		
+		for (var i = 1; i < facilityNum; i++) {
+			arrFacility.push($("#facilityInfo_" + i).children().first().html());
+		}
+		
+		for (var i = 1; i < precautionNum; i++) {
+			arrPrecaution.push($("#precautionInfo_" + i).children().first().html());
+		}
+
+		var formData = {
+				'facility' : arrFacility,
+				'precaution' : arrPrecaution
+		};
+		
+		$.ajax({
+			type : 'post',
+			url : 'basicajax.action',
+			dataType: 'json',
+			data        : formData,
+			success		: function(data) {result = data;}
+		}); 
+	}
+	
+</script>
+
 <style type="text/css">
 	#refund
 	{
@@ -439,8 +593,8 @@ ul.precautions-list > li {
 
 	
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" name="inputBasicInfo"
-		  action="${pageContext.request.contextPath}/inputbasicinfo.action" method="POST"><!--onsubmit="handOver()" -->
+	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" enctype="multipart/form-data"
+		  action="inputbasicinfo.action" method="post"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 공간명 -->
 		
@@ -518,28 +672,28 @@ ul.precautions-list > li {
 			
 		<!-- 5. 시설안내 -->
 		
-		<div>
-		
+		<div id="locationFacilityInfo">
 			<span style="font-size: 14pt; font-weight: bold;">시설 안내 <span style="color: red">*</span></span>
 			<br><br>
-			<ul class="facility-list">
-				<li>
-					<textarea class="form-control" id="inputFacility" required="required"
-						placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."></textarea>
-					<span style="font-weight: bold; display: none; color: red;"></span>
-				</li>
-			</ul>
+			<input class="form-control" required="required"
+				   placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."
+				   type="text" id="inputFacility" name="inputFacility">
+				   <span style="font-weight: bold; display: none; color: red;"></span>
 			<br>
-			<input type="button" class="form-control" id="inputFacilityBtn"
-					name="inputFacilityBtn" value="시설 추가 +">
-			<br><br>
 			
+			<input type="button" class="form-control" onclick="addFacilityInfo()"
+					id="inputFacilityBtn" name="inputFacilityBtn" value="시설 추가 +">
+			<input type="button" class="form-control" onclick="removeFacilityInfo()"
+					id="inputFacilityBtn" name="inputFacilityBtn" value="시설 삭제 -">
+	
 			<!-- 5-1. 추가한 시설안내 내용이 보여지도록 하는 공간
 					, 리스트 형태로 추가할때마다 순번부여,
 					, "x" 버튼클릭시 추가한 내용 삭제가능 
 					, (순번).(내용)(x버튼) 형식		<- 순번은 뺼 수도 있을듯.
 			-->
 		</div>
+		
+		
 	
 	
 	<br><br><br>
@@ -547,32 +701,36 @@ ul.precautions-list > li {
 		
 		<!-- 6. 예약 시 주의사항 -->
 		
-		<div>
+		<div id="locationPrecautionInfo">
 			
 			<span style="font-size: 14pt; font-weight: bold;">예약 시 주의사항 <span style="color: red">*</span></span>
 			<br><br>
 			<ul class="precautions-list">
 				<li>
-					<textarea class="form-control" id="inputPrecautions" required="required"
-						placeholder="예약 시 주의사항은 [최소 20자 ~ 최대 100자] 로 입력하여 10개까지 추가 가능합니다."></textarea>
-					<span style="font-weight: bold;"></span>
+				    <input class="form-control" id="inputPrecaution" required="required"
+						placeholder="예약 시 주의사항은 [최소 20자 ~ 최대 100자] 로 입력하여 10개까지 추가 가능합니다."/>
+					<span style="font-weight: bold; display: none; color: red;"></span>
 				</li>
 			</ul>
 			<br>
-			<input type="button" class="form-control" id="inputPrecautionsBtn"
+			<input type="button" class="form-control" id="inputPrecautionsBtn" onclick="addPrecautionInfo()"
 				   name="inputPrecautionsBtn" value="예약 시 주의사항 추가 +">
-			<br><br>
+				   <input type="button" class="form-control" id="inputPrecautionsBtn" onclick="removePrecautionInfo()"
+				   name="inputPrecautionsBtn" value="예약 시 주의사항 삭제 -">
 			
-			<div id="refund">
+			
+			
+		</div>
+		
+		<br><br>
+		<div id="refund">
 				<span style="font-weight: bold; font-size: 12pt">※ 환불규정</span>
 					<br><br>
 					- 7일 전 : 100% 환불<br>
 					- 6~1일 전 : 50% 환불<br><br>
 					<span style="color: red;">-<ins>당일 환불 및 예약취소 불가</ins></span>
 				<!-- 6-1. 추가한 예약 시 주의사항 내용이 보여지도록, 삭제 x 버튼클릭시 추가한 내용 삭제가능 -->
-			</div>
 		</div>
-	
 		
 	<br><br><br>
 		
@@ -585,7 +743,7 @@ ul.precautions-list > li {
 				<input class="upload-name" name="inputThumbnail" 
 					   placeholder="이미지 등록" disabled="disabled" style="width: 70%">
 				<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
-				<input type="file" id="ex_filename" class="upload-hidden">
+				<input type="file" name="thumbnail" id="ex_filename" class="upload-hidden">
 			</div>
 		</div>
 		
@@ -667,10 +825,12 @@ ul.precautions-list > li {
 							   기본정보 → 연락처정보 → 사업자정보
 							   → 이용정보  → 상세정보  → 패키지정보 -->
 	<div class="container" style="text-align: center;">
-		<input type="submit" value="다음" class="btn btn-warning" 
-			   style="width:45%; border-color: gray;"
-			   onclick="return formCheck();"> <!-- type="button" onsubmit="next()" -->
-		<!-- style="display: block; margin: 0px auto" -->
+
+		<!-- <input type="submit" value="다음" class="btn btn-warning" 
+			   style="width:45%; border-color: gray;"> --> <!-- type="button" onsubmit="next()"
+		style="display: block; margin: 0px auto" -->
+		<button type="submit" class="btn btn-warning" id="BasicInfoSubmit"
+			style="width:45%; border-color: gray;">다음 </button>
 		
 	<!-- 취소 버튼 -->
 		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
