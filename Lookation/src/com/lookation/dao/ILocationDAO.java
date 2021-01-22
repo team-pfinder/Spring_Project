@@ -1,9 +1,14 @@
 package com.lookation.dao;
 
+import java.util.ArrayList;
+
 import com.lookation.dto.LocationDTO;
 
 public interface ILocationDAO
 {
+	// ----------------- list ------------------------
+	public ArrayList<LocationDTO> locList(LocationDTO dto);
+	
 	// ----------------- input -----------------------
 	
 	// 공간 정보

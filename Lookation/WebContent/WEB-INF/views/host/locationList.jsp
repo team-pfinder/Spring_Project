@@ -64,6 +64,40 @@
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row d-flex">
+				
+				<c:forEach var="location" items="${locList }">
+						<div class="col-md-4 ftco-animate">
+							<div class="blog-entry align-self-stretch">
+								<a href="#" class="block-20 rounded"
+									style="background-image: url('<%=cp%>/images/${location.thumbnail_url }');">
+								</a>
+								<!-- 이미지 클릭시 해당 공간상세 게시글페이지로..-->
+								<div class="text mt-3 text-center">
+									<h3 class="heading">
+										<a href="#">${location.loc_name }</a>
+										<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
+									</h3>
+									<hr>
+									<div class="text mt-3 text-left">
+										<span style="size: 10pt;">등록일</span><span> ${location.loc_reg_date }</span> 
+										<%-- <c:if test="${location. eq '검수완료'}"></c:if>
+										<span class="btn btn-success" style="float: right;">검수완료</span>
+										<span class="btn btn-danger" style="float: right;">검수반려</span>
+										<span class="btn btn-secondary" style="float: right;">검수대기</span> --%>
+									</div>
+									<br>
+									<div class="text mt-3">
+										<a href="locationUpdate.jsp" class="btn btn-primary">공간정보수정</a>
+										<a href="locationDelete.jsp" class="btn btn-dark">공간정보삭제</a>
+									</div>
+									<hr>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				
+				
+				
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="#" class="block-20 rounded"	
@@ -86,9 +120,11 @@
 							<hr>
 						</div>
 					</div>
-				</div><!-- location1 end -->
+				</div> 
 				
-				<div class="col-md-4 ftco-animate">
+				<!-- location1 end -->
+				
+				<%-- <div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="#" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/location2.png');">
@@ -182,7 +218,7 @@
 							<hr>
 						</div>
 					</div>
-				</div><!-- location5 end -->
+				</div><!-- location5 end --> --%>
 				
 			</div>
 		</div>

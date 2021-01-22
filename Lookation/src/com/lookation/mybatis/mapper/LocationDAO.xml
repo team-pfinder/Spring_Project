@@ -4,6 +4,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.ILocationDAO"> 
 	
+	<select id="locList" resultType="com.lookation.dto.LocationDTO">
+		SELECT LOC_NAME, LOC_REG_DATE, THUMBNAIL_URL, INSPECT_TYPE
+		FROM LOC_LIST_VIEW
+		WHERE HOST_CODE = #{host_code}
+	</select>
+	
 	<insert id="inputLoc" parameterType="com.lookation.dto.LocationDTO">
 		
 		<selectKey keyProperty="loc_code" resultType="String" order="AFTER">

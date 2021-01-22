@@ -23,6 +23,19 @@ public class Location
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@RequestMapping(value="/actions/locationlist.action", method = RequestMethod.GET)
+	public String locationList(HttpServletRequest request, Model model)
+	{
+	    ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+	    
+	    LocationDTO loc = new LocationDTO();
+	    loc.setHost_code("H000001");
+	    
+	    model.addAttribute("locList", dao.locList(loc));
+		
+		return "../WEB-INF/views/host/locationList.jsp";
+	}
+	
 	
 	@RequestMapping(value="/actions/basicform.action", method = RequestMethod.GET)
 	public String basicForm(HttpServletRequest request, Model model)
