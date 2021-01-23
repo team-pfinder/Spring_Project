@@ -54,6 +54,36 @@
 	}
 	
 </style>
+<script type="text/javascript">
+
+	$(function()
+	{	
+		// 이용자 블랙리스트 등록하기
+		$("#setBlack").click(function()
+		{
+			var reason = $("#regReason").val();
+		 	
+			if(reason.length == 0)
+			{
+				alert("등록사유를 입력해주세요.");
+				$("#regReason").focus();
+				return false;
+			}
+			
+			$.ajax({
+				type : "post",
+				url : "setblackmem.action",
+				complete : function(xh)
+				{			
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
+			
+		});
+	});
+
+</script>
 </head>
 <body class="font-default">
 	<div class="container">
@@ -66,7 +96,7 @@
 			</div>
 		</div><!-- . End row -->
 		
-		<form action="setblackmember.action" method="post" target="redirect:memberblackmanager.action" id="blackForm">
+		<form action="setblackmem.action" method="post">
 			<div class="row">
 				<div class="col-md-12">
 					<hr>
@@ -104,8 +134,7 @@
 							</div>
 
 							<div class="div-col-half">
-								<button type="submit" class="btn btn-primary btn-block"
-									onclick="window.close();">블랙리스트 등록</button>
+								<button type="submit" class="btn btn-primary btn-block" id="setBlack">블랙리스트 등록</button>
 							</div>
 
 						</div>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -70,30 +71,16 @@
 		</div><!-- . End row -->
 		<div class="row">
 			<div class="col-md-12 px-3 pb-3 pt-4 mb-4 my-0 details-box">
-				<!-- 예약현황 출력 -->
-				<fmt:parseDate var="apply_date" value="${book.apply_date }" pattern="yyyy-MM-dd" scope="session"/>
-				<fmt:formatDate value="${now}" pattern="yyyy-MM-dd"/>
-				
-				<c:choose>
-				<c:when test="${apply_date < now} ">
-					<span class="ml-4">이용완료</span>
-				</c:when>
-
-				<c:when test="${details.member_cancel eq 1 || book.host_cancel eq 1}">
-					<span class="text-danger ml-4">예약취소</span>
-				</c:when>
-				
-				<c:otherwise>
-					<span class="text-primary ml-4">예약완료</span>
-				</c:otherwise>
-				</c:choose>
-				
+				<!-- 공간 예약코드 -->
+				<c:if test="${details.checkbook == 1 }">1${details.checkbook }</c:if>
+				<c:if test="${details.checkbook == -1 }">-1${details.checkbook }</c:if>
+				<c:if test="${details.checkbook == 0 }">0${details.checkbook }</c:if>
+				예약상태 다시
 				<div class="float-right">
-					<!-- 공간 예약코드 -->
 					<span class="text-dark">예약번호 : ${details.book_code}</span>
 				</div>
-			<!-- 예약현황 -->
-			<hr>
+				<hr>
+			
 			<div class="col-md-12">
 				<!-- 이전 페이지에서 해당 예약에 대한 데이터 받아와야 함. -->
 				<div class="div-table">
@@ -106,16 +93,18 @@
 						</div>
 						
 						<div class="div-row">
+							<fmt:parseDate var="pdate" value="${details.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
+							<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 							<!-- 시간은 패키지정보에서 시작, 종료시각 -->
 							<div class="div-col font-weight-bold">예약내용</div>
-							<div class="div-col">${details.apply_date} ${details.package_start }시 
+							<div class="div-col">${fdate } ${details.package_start }:00
 							~ 
 							<c:choose>
 							<c:when test="${details.package_end > 24}">
-							익일 ${details.package_end-24 }시
+							익일 ${details.package_end-24 }:00
 							</c:when>
 							<c:otherwise>
-							${details.package_end }시
+							${details.package_end }:00
 							</c:otherwise>
 							</c:choose>
 							, ${details.book_hour }시간</div>

@@ -2,7 +2,6 @@ package com.lookation.mybatis;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +110,8 @@ public class Package
 		// 패키지를 가져온다.
 		// 패키지를 가져오기 위한 공간 코드 필요
 		// (공간코드 : 'L000001'을 가정하고 한다)
+		
+		String loc_code = request.getParameter("loc_code");
 		
 		IPackageDAO dao = sqlSession.getMapper(IPackageDAO.class);
 		model.addAttribute("formList", dao.packageFormList("L000001"));

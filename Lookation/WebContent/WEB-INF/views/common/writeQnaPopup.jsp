@@ -16,7 +16,35 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<script type="text/javascript">
 
+	function submitBtn_m()
+	{
+		$.ajax({
+			type : "post",
+			url : "qnainsert.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
+	
+	function submitBtn_h()
+	{
+		$.ajax({
+			type : "post",
+			url : "qnareplyinsert.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
+
+</script>
 </head>
 <body>
 	<!-- container 시작 -->
@@ -25,7 +53,7 @@
 			<div class="col-md-12">
 				<!-- 이용자 -->
 				<c:if test="${identify eq 'member'}"> 
-					<form action="qnainsert.action" method="post" target="redirect:locationdetail.action">
+					<form action="qnainsert.action" method="post">
 						<div class="header">
 							<h3 class="title my-2">Q&A 작성하기</h3>
 						</div><!-- End .header -->
@@ -43,7 +71,7 @@
 		
 						<div class="text-center">
 							<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="window.close();">작성하기</button>
+							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="submitBtn_m()">작성하기</button>
 							<!-- 작성하기 버튼 클릭시 insert문 돌아가야 -->
 						</div>
 					</form>
@@ -54,7 +82,7 @@
 				
 				<!-- 호스트 -->
 				<c:if test="${identify eq 'host'}">
-					<form action="qnareplyinsert.action" method="post" target="redirect:locationdetailhost.action">
+					<form action="qnareplyinsert.action" method="post">
 						<div class="header">
 							<h3 class="title my-2">Q&A 답글 작성하기</h3>
 						</div><!-- End .header -->
@@ -77,7 +105,7 @@
 		
 						<div class="text-center">
 							<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="window.close();">작성하기</button>
+							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="submitBtn_h()">작성하기</button>
 							<!-- 작성하기 버튼 클릭시 insert문 돌아가야 -->
 						</div>
 					</form>

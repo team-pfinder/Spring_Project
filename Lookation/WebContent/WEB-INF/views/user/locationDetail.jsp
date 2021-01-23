@@ -328,29 +328,44 @@ p {
 		// 날짜가 변경되었을 경우 수행할 코드 처리
 		$("#selectDate").change(function()
 		{
-			var htmlText="";
 			
+			$.ajax({
+				type: "POST",
+				url: "locdetailajax.action",
+				cache: false,
+				dataType: "json",
+				data: JSON.stringify(eventData),
+				contentType: "application/json; charset=utf-8",
+				success: function(data) {
+					
+					alert("데이터 받음");
+				},
+				error : function(request, status, error) {
+				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+				}
+				});
+			
+			/*
 			$.ajax({
 				url : "locdetailajax.action"
 				, type : "get"
 				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
-			    , dataType : "json"
-				, success : function(args) {
+				, success : function(data) {
 					
 					/* $.each(data, function() {
 					     alert(this["packageName"]);
 					     alert(this.packageName);
-					}); */
-
-					for(var idx=0; idx<args.test.length; idx++){
-						$("#pacakgeDiv").append("<input type='radio'>"+ args.test[idx].packageName);
+					});
+					for(var idx=0; idx<data.test.length; idx++){
+						$("#pacakgeDiv").append("<input type='radio'>"+ data.test[idx].packageName);
+						$("#pacakgeDiv").html("<input type='radio'>"+ data.test[idx].[0]);
 					}
 				}
 			    , error:function(e){
 			    	alert(e.responseText);
 			    	
 			    }
-				});
+				});*/
 		});
 		
 		// 이용자 QnA 수정하는 팝업

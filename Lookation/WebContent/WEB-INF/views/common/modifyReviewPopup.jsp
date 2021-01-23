@@ -98,24 +98,69 @@
   color: var(--warning);
 }
 </style>
-
 <script type="text/javascript">
-
+	
+	
 	$(function()
 	{	
-		$(".submitBtn").click(function()
+		// 이용자 리뷰목록에서 수정
+		$("#submitBtn").click(function()
 		{
 			if($("input[name=review_rate]:radio:checked").length == 0)
 			{
-				alert("별점을 선택해주세요"); 
-				return;
+				alert("별점을 선택해주세요."); 
+				return false;
 			}
-			$("#reviewForm").submit();
-			window.close();
+			
+			$.ajax({
+				type : "post",
+				url : "modifyreviewinlist.action",
+				complete : function(xh)
+				{			
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
 			
 		});
+		
+		// 이용자가 공간상세페이지에서 수정
+		$("#submitBtn_m").click(function()
+		{
+			if($("input[name=review_rate]:radio:checked").length == 0)
+			{
+				alert("별점을 선택해주세요."); 
+				return false;
+			}
+			
+			$.ajax({
+				type : "post",
+				url : "modifyreview.action",
+				complete : function(xh)
+				{			
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
+			
+		});
+		
 		//$("input[@name=review_rate]").filter('input[@value='+sValue+']').attr("checked", "checked"); 
 	});
+	
+	// 호스트 리뷰답글 수정하는 팝업
+	function submitBtn_h()
+	{
+		$.ajax({
+			type : "post",
+			url : "modifyrreviewreply.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
 	
 </script>
 
@@ -129,7 +174,7 @@
 				
 					<c:choose>
 						<c:when test="${reqpage eq 'list'}">
-							<form action="modifyreviewinlist.action" method="post" id="reviewForm" target="redirect:userreviewlist.action">
+							<form action="modifyreviewinlist.action" method="post" name="reviewForm">
 								<div class="header">
 									<h3 class="title">리뷰 수정하기</h3>
 									<hr>
@@ -168,13 +213,13 @@
 									
 									<div class="text-center">
 										<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
-										<button type="button" class="btn btn-primary submitBtn">수정하기</button>
+										<button type="submit" class="btn btn-primary" id="submitBtn">수정하기</button>
 									</div>
 								</div><!-- End .body -->
 							</form>
 						</c:when>
 					<c:otherwise>
-						<form action="modifyreview.action" method="post" id="reviewForm" target="redirect:locationdetail.action">
+						<form action="modifyreview.action" method="post" name="reviewForm">
 							<div class="header">
 								<h3 class="title">리뷰 수정하기</h3>
 								<hr>
@@ -213,7 +258,7 @@
 								
 								<div class="text-center">
 									<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
-									<button type="button" class="btn btn-primary submitBtn">수정하기</button>
+									<button type="submit" class="btn btn-primary" id="submitBtn_m">수정하기</button>
 								</div>
 							</div><!-- End .body -->
 						</form>
@@ -225,9 +270,9 @@
 				<!-- 호스트 -->
 				
 				<c:if test="${identify eq 'host'}"> 
-					<form action="modifyreviewreply.action" method="post" target="redirect:locationdetailhost.action">
+					<form action="modifyreviewreply.action" method="post" name="reviewForm">
 						<div class="header">
-							<h3 class="title">리뷰 수정하기</h3>
+							<h3 class="title">리뷰 답글 수정하기</h3>
 						</div>
 						
 					
@@ -241,7 +286,7 @@
 	
 							<div class="text-center">
 								<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
-								<button type="submit" class="btn btn-primary" onClick="self.close();">수정하기</button>
+								<button type="submit" class="btn btn-primary" onClick="submitBtn_h()">수정하기</button>
 							</div>
 						</div><!-- End .body -->
 					</form>

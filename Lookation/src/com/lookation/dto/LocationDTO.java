@@ -50,7 +50,21 @@ public class LocationDTO
 	// inspect reg list
 	private String inspect_reg_code, inspect_reg_date;
 	
+	// inspect type
+	private String inspect_type;
 	
+	
+	
+	public String getInspect_type()
+	{
+		return inspect_type;
+	}
+
+	public void setInspect_type(String inspect_type)
+	{
+		this.inspect_type = inspect_type;
+	}
+
 	public String getLoc_code()
 	{
 		return loc_code;

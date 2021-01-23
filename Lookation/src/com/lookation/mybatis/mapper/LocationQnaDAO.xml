@@ -4,24 +4,27 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.ILocationQnaDAO">
 	
-	<insert id="insertMemQna">
-		INSERT INTO QNA(QNA_CODE, LOC_CODE, MEMBER_CODE
-		, QNA_CONTENT, QNA_DATE)
-		VALUES(F_CODE('Q', Q_SEQ.NEXTVAL)
-		, #{loc_code} ,#{member_code}, #{qna_content}, SYSDATE)
-	</insert>
-	
+	<!-- QnA 수정폼 -->
 	<select id="updateQnaForm" resultType="com.lookation.dto.LocationQnaDTO">
 		SELECT QNA_CODE, LOC_CODE, QNA_CONTENT
 		FROM QNA
 		WHERE QNA_CODE=#{qna_code}
 	</select>
 	
+	<!-- QnA 답글 수정폼  -->
 	<select id="updateQnaReplyForm" resultType="com.lookation.dto.LocationQnaDTO">
 		SELECT QNA_REPLY_CODE, QNA_REPLY_CONTENT
 		FROM QNA_REPLY
 		WHERE QNA_REPLY_CODE =#{qna_reply_code}
 	</select>
+	
+	<!-- 이용자 -->
+	<insert id="insertMemQna">
+		INSERT INTO QNA(QNA_CODE, LOC_CODE, MEMBER_CODE
+		, QNA_CONTENT, QNA_DATE)
+		VALUES(F_CODE('Q', Q_SEQ.NEXTVAL)
+		, #{loc_code} ,#{member_code}, #{qna_content}, SYSDATE)
+	</insert>
 	
 	<update id="updateMemQna">
 		UPDATE QNA SET QNA_CONTENT = #{qna_content}, QNA_DATE=SYSDATE
@@ -33,6 +36,7 @@
 		VALUES(F_CODE('QRM', QRM_SEQ.NEXTVAL), #{qna_code}, SYSDATE)
 	</insert>
 	
+	<!-- 호스트 -->
 	<insert id="insertHostQna">
 		INSERT INTO QNA_REPLY (QNA_REPLY_CODE, QNA_CODE, QNA_REPLY_CONTENT
 		, QNA_REPLY_DATE)

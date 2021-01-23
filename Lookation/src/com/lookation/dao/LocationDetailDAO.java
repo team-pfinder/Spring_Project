@@ -350,6 +350,9 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		{
 			result = rs.getInt("COUNT");
 		}
+		rs.close();
+		pstmt.close();
+		conn.close();
 		
 		return result;
 	}
@@ -373,9 +376,64 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		{
 			result = rs.getString("AVGSTAR");
 		}
+		rs.close();
+		pstmt.close();
+		conn.close();
 		
 		return result;
 	}
+
+	// 리뷰 사진후기만 보기
+	@Override
+	public ArrayList<LocationDetailDTO> viewPhoto() throws Exception
+	{
+		ArrayList<LocationDetailDTO> result = new ArrayList<LocationDetailDTO>();
+		
+		Connection conn = dataSource.getConnection();
+		String sql = "SELECT REVIEW_CODE, MEMBER_NICKNAME"
+				   + ", LOC_CODE, REVIEW_RATE, REVIEW_CONTENT, REVIEW_DATE" 
+				   + ", REVIEW_IMG_URL, RVIMGCOUNT" 
+				   + ", REVIEWREMOVECOUNT" 
+				   + ", REPLYCOUNT, REPLYREMOVECOUNT" 
+				   + ", MEMBER_CODE, REVIEW_REPLY_CONTENT, REVIEW_REPLY_DATE, HOST_CODE" 
+				   + ", REVIEW_REPLY_CODE" 
+				   + " FROM VIEW_REVIEW" 
+				   + " WHERE RVIMGCOUNT>0";
+	
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next())
+		{
+			LocationDetailDTO dto = new LocationDetailDTO();
+			
+			dto.setBoardCode(rs.getString("REVIEW_CODE"));
+			dto.setMemberNickName(rs.getString("MEMBER_NICKNAME"));
+			dto.setLocationCode(rs.getString("LOC_CODE"));
+			dto.setReviewRate(rs.getString("REVIEW_RATE"));
+			dto.setContent(rs.getString("REVIEW_CONTENT"));
+			dto.setDate(rs.getString("REVIEW_DATE"));
+			dto.setUrl(rs.getString("REVIEW_IMG_URL"));
+			dto.setRvimgCount(rs.getString("RVIMGCOUNT"));
+			dto.setCount(rs.getString("REPLYCOUNT"));
+			dto.setRemoveCount(rs.getString("REVIEWREMOVECOUNT"));
+			dto.setReplyRemove(rs.getString("REPLYREMOVECOUNT"));
+			dto.setMemCode(rs.getString("MEMBER_CODE"));
+			dto.setReplyContent(rs.getString("REVIEW_REPLY_CONTENT"));
+			dto.setReplyDate(rs.getString("REVIEW_REPLY_DATE"));
+			dto.setHostCode(rs.getString("HOST_CODE"));
+			dto.setReplyCode(rs.getString("REVIEW_REPLY_CODE"));
+			
+			result.add(dto);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return result;
+	}
+	
 	
 	
 	

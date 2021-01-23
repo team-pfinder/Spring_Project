@@ -11,6 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation 예약취소</title>
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 	.back-default
@@ -61,6 +62,49 @@
 	}
 	
 </style>
+<script type="text/javascript">
+
+	/* function cancelBtn()
+	{
+		$.ajax({
+			type : "post",
+			url : "membercancel.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	} */
+
+	$(function()
+	{	
+		// 이용자 예약취소
+		$("#cancleBtn").click(function()
+		{
+			var reason = $("#reason").val();
+		 	
+			if(reason.length == 0)
+			{
+				alert("취소사유를 입력해주세요.");
+				$("#reason").focus();
+				return false;
+			}
+			
+			$.ajax({
+				type : "post",
+				url : "membercancel.action",
+				complete : function(xh)
+				{			
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
+			
+		});
+	});
+				
+</script>
 
 </head>
 <body class="back-default">
@@ -74,7 +118,7 @@
 				</div>
 			</div>
 		</div><!-- . End row -->
-		<form action="membercancel.action" method="post" target="redirect:booklist.action" id="cancelForm">
+		<form action="membercancel.action" method="post" id="cancelForm">
 		<div class="row">
 			<div class="col-md-12 px-4 pb-3 pt-4 mx-4 cancel-box">
 				<div class="float-right">
@@ -107,8 +151,9 @@
 						<div class="div-row">
 							<div class="div-col font-weight-bold vertical-top"><label for="cancelReason">취소사유</label></div>
 							<div class="div-col">
-								<textarea rows="5" cols="10" class="form-control form-control-sm cancel-reason" placeholder="취소 사유를 입력하세요.(최대 300byte)"
-								maxlength="100" required="required" name="member_cancel_reason"></textarea>
+								<textarea rows="5" cols="10" class="form-control form-control-sm"
+								placeholder="취소 사유를 입력하세요.(최대 300byte)"
+								maxlength="100" id="reason" name="member_cancel_reason"></textarea>
 							</div>
 						</div>
 					</div>
@@ -147,9 +192,9 @@
 				<div class="button-group div-table mt-3 px-4">
 					<div class="div-table-body">
 						<div class="div-row">
-							<div class="div-col-half"><button type="button" class="btn btn-secondary btn-block" onclick="window.close()">닫기</button></div>
+							<div class="div-col-half"><button type="button" class="btn btn-secondary btn-block" onclick="window.close();">닫기</button></div>
 							<!-- 확인 버튼 클릭시 예약취소테이블 insert -->
-							<div class="div-col-half"><button type="submit" class="btn btn-danger btn-block submitBtn" value="${cancel.book_code}" onClick="window.close();">예약 취소하기</button></div>
+							<div class="div-col-half"><button type="submit" class="btn btn-danger btn-block" value="${cancel.book_code}" id="cancleBtn">예약 취소하기</button></div>
 						</div>
 					</div><!-- End .div-table-body-->
 				</div><!-- End .div-table -->

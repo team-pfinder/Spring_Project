@@ -54,6 +54,36 @@
 	}
 	
 </style>
+<script type="text/javascript">
+
+	$(function()
+	{	
+		// 호스트 블랙리스트 등록하기
+		$("#setBlack").click(function()
+		{
+			var reason = $("#regReason").val();
+		 	
+			if(reason.length == 0)
+			{
+				alert("등록사유를 입력해주세요.");
+				$("#regReason").focus();
+				return false;
+			}
+			
+			$.ajax({
+				type : "post",
+				url : "setblackhost.action",
+				complete : function(xh)
+				{			
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
+			
+		});
+	});
+
+</script>
 </head>
 <body class="font-default">
 	<div class="container">
@@ -66,7 +96,7 @@
 			</div>
 		</div><!-- . End row -->
 		
-		<form action="setblackhost.action" method="post" target="redirect:hostblackmanager.action" id="blackForm">
+		<form action="setblackhost.action" method="post">
 		<div class="row">
 			<div class="col-md-12">
 				<hr>
@@ -94,7 +124,7 @@
 				<div class="div-table-body">
 					<div class="div-row">
 						<div class="div-col-half"><button type="button" class="btn btn-secondary btn-block">닫기</button></div>
-						<div class="div-col-half"><button type="submit" class="btn btn-primary btn-block" onclick="window.close();">블랙리스트 등록</button></div>
+						<div class="div-col-half"><button type="submit" class="btn btn-primary btn-block" id="setBlack">블랙리스트 등록</button></div>
 					</div>
 				</div><!-- End .div-table-body-->
 			</div><!-- End .div-table -->

@@ -40,12 +40,12 @@ th, td {
 .off-screen {
   display: none;
 }
-#li1, #li2, #li3, #li2 {
+#li1 {
   width: 100%;
   text-align: center;
 }
 
-#li1 a, #li2 a, #li3 a, #li4 a {
+#li1 a {
 	color: gray;
     text-align: center;
     display: inline-block;
@@ -54,8 +54,9 @@ th, td {
     line-height: 40px;
     border-radius: 50%;
     border: 1px solid #e6e6e6;
+    margin-right : 10px;
 }
-#li1 a.active, #li2 a.active, #li3 a.active, #li4 a.active {
+#li1 a.active {
     background: #fdbe34;
     color: #fff;
     border: 1px solid transparent;
@@ -73,33 +74,12 @@ height: 200px;
 
 $(function(){
 	
-	$("#dataTable").DataTable({
-		
-		// 표시 건수기능 숨기기
-		lengthChange: false,
-		// 검색 기능 숨기기
-		searching: false,
-		// 정렬 기능 숨기기
-		ordering: false,
-		// 정보 표시 숨기기
-		info: false,
-		
-		 "language": {
-		        "emptyTable": "데이터가 없어요.",
-		        
-		        "paginate": {
-		            "next": ">",
-		            "previous": "<"
-		        }
-		    },
-	});
-	
 	// 이용자 QnA 수정하는 팝업
 	$(".modifyQna").click(function()
 	{
 		var url = "modifyformqna.action?identify=member&qna_code=" + $(this).val() + "&reqpage=list";
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
-		window.open(url, "", option);
+		window.open(url, "", option); 
 	}); 
 	
 	// 이용자 Qna 삭제하는 팝업
@@ -177,7 +157,6 @@ $(function(){
 										<tr>
 											<!-- 공간이름 클릭시 이동 -->
 											<td><a href="#">${qna.loc_name }</a></td>
-											<!-- 문의내용은 첫줄만 표시 -->
 											<td title="${qna.qna_content }">${qna.qna_content }</td>
 											<!-- 날짜 YYYY-MM-DD 형태로 자름 -->
 											<td>${fn:substring(qna.qna_date, 0, 10)}</td>
