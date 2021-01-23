@@ -8,7 +8,8 @@ public class LocationDetailDTO
 	, addr, detailAddr, hostNickName, locRegDate, usingHour, dayOff, appointDayOff
 	, boardCode, memCode, content, date, memberNickName, reviewRate
 	, count, url, rvimgCount, qna_content
-	, replyRemove, removeCount, hostCode, replyContent, replyDate, replyCode; 
+	, replyRemove, removeCount, hostCode, replyContent, replyDate, replyCode
+	, apply_package_code; 
 	
 	private String packageName, applyDate;
 	
@@ -16,8 +17,20 @@ public class LocationDetailDTO
 	, bizLicenseNum, facility, caution;
 	
 	private int minPeople, maxPeople, packStart, packEnd, packPrice;
-
 	
+	
+	
+	
+	public String getApply_package_code()
+	{
+		return apply_package_code;
+	}
+
+	public void setApply_package_code(String apply_package_code)
+	{
+		this.apply_package_code = apply_package_code;
+	}
+
 	public String getReplyCode()
 	{
 		return replyCode;

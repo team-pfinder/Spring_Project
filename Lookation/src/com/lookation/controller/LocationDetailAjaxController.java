@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -43,40 +44,37 @@ public class LocationDetailAjaxController implements Controller
 		try
 		{
 			packageInfo = dao.packageInfo(locCode, selectDate);
+			
 			String tmp = "";
 			
 			// AJAX용 JSON 만들기
 			for (int i = 0; i < packageInfo.size(); i++)
 			{
-				  tmp +="{\"packageName\":"+ packageInfo.get(i).getPackageName()
-				  +",\"packStart\":"+ "\"" + packageInfo.get(i).getPackStart() + "\""
-				  +",\"packPrice\":"+ "\"" + packageInfo.get(i).getPackPrice() + "\""
-				  +",\"applyDate\":"+ "\"" + packageInfo.get(i).getApplyDate() + "\""
-				  +",\"packEnd\":" + "\"" + packageInfo.get(i).getPackEnd()+ "\"";
-				  
-				  if(i==packageInfo.size()-1){ tmp += "}"; }else{ tmp += "},"; }
+				tmp +="{\"packageName\":"+ "\"" + packageInfo.get(i).getPackageName() + "\""
+				+",\"packCode\":"+ "\"" + packageInfo.get(i).getApply_package_code() + "\""
+				+",\"packStart\":"+ "\"" + packageInfo.get(i).getPackStart() + "\""
+				+",\"packPrice\":"+ "\"" + packageInfo.get(i).getPackPrice() + "\""
+				+",\"applyDate\":"+ "\"" + packageInfo.get(i).getApplyDate() + "\""
+				+",\"packEnd\":" + "\"" + packageInfo.get(i).getPackEnd()+ "\"";
+				
+				if(i==packageInfo.size()-1){ tmp += "}"; }else{ tmp += "},"; }
 			}
 			
 			response.setContentType("text/html;charset=utf-8");
-
 			PrintWriter out=response.getWriter();
-
-
 			parseJson = "[" + tmp + "]";
-			
 			out.print(parseJson.toString()); 
 
-			mav.addObject("test", parseJson);
-			//mav.addObject("packageInfo", packageInfo);
+			mav.addObject("data", parseJson);
 
-			System.out.println("tmp 출력 =======" + parseJson);
-			mav.setViewName("../WEB-INF/views/common/locationdetail.jsp");
+			/* System.out.println("tmp 출력 =======" + parseJson); */
+			mav.setViewName("../WEB-INF/views/ajax/LocationDetailAjax.jsp");
 
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());
 		}
-
 		return mav;
 	}
+	
 }
