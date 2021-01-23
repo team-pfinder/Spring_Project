@@ -16,7 +16,10 @@ import org.springframework.stereotype.Controller;
 import com.lookation.dao.IBookApplyDAO;
 import com.lookation.dto.BookApplyDTO;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.ui.Model;
@@ -33,23 +36,22 @@ public class BookApply
 	private SqlSession sqlSession;
 	
 	// BookApply 화면으로 이동
-	@RequestMapping(value="/actions/bookapply.action", method = RequestMethod.GET)
-	public String bookapplyBasic(Model model, BookApplyDTO dto, HttpServletRequest request)
+	@RequestMapping(value="/actions/bookapply.action", method = RequestMethod.POST)
+	public String bookapplyBasic(Model model, BookApplyDTO dto)
 	{	
 		IBookApplyDAO dao = sqlSession.getMapper(IBookApplyDAO.class);
 		
 		// ※ 임시 ------------------------------------------------------
-		String member_code = "M000002";
-		String loc_code = "L000002";
+		String member_code = "M000001";
 		// --------------------------------------------------------------
 		
 		// 이전 폼(locationDetail) 에서
-		// apply_package_code 와 book_people 입력한 내용 받아옴
-		String apply_package_code = request.getParameter("apply_package_code"); 
-		String book_people = request.getParameter("book_people");
+		String loc_code = dto.getLoc_code(); 
+		String apply_package_code = dto.getApply_package_code();
+		int book_people = dto.getBook_people();
 		
 		// 공간정보 출력
-		model.addAttribute("loc_code", loc_code);
+		model.addAttribute("loc_code", dto.getLoc_code());
 		model.addAttribute("profile", dao.setProfile(member_code));
 		model.addAttribute("basic", dao.bookapplyBasic(loc_code));
 		model.addAttribute("bizinfo", dao.bookapplyBizInfo(loc_code));
@@ -67,23 +69,22 @@ public class BookApply
 	
 	// 예약 및 결제
 	@RequestMapping(value="/actions/bookpay.action", method = RequestMethod.POST)
-	public String MileageCheck(ModelMap model, BookApplyDTO dto, String member_code)
+	public String MileageCheck(ModelMap model, BookApplyDTO dto, String member_code
+												, HttpServletResponse response) throws IOException
 	{
 		IBookApplyDAO dao = sqlSession.getMapper(IBookApplyDAO.class);
 		
 		// 해당 멤버의 마일리지 잔액 가져오기
 		int mileage = dao.mileageCheck(member_code);
-		//System.out.println("마일리지 : " + mileage);
-		
-		/* 패키지 정보 임시로 전페이지 라디오버튼에 심어놓음 */
-		
+		System.out.println("마일리지 : " + mileage);
+		System.out.println("package_price" + dto.getPackage_price());
 		// 마일리지 가격이 더 크면
 		if(mileage >= dto.getPackage_price())
 		{
 			// 예약내역 테이블 추가
 			dao.insertBookList(dto);
 			
-			// 실예약자, 결제내역 테이블 추가
+			// 실예약자, 메시지, 결제내역 테이블 추가
 			dao.actualBooking(dto);
 			
 			model.addAttribute("notice", dao.bookNotice(member_code));
@@ -92,6 +93,10 @@ public class BookApply
 		}
 		else
 		{
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('마일리지가 부족합니다. 마일리지 충전 페이지로 이동합니다.');</script>");
+			out.flush();
 			return "../WEB-INF/views/user/mypageMember.jsp";
 		}
 		

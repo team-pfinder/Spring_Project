@@ -115,9 +115,7 @@
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">신고:</h6>
 					<a class="collapse-item" href="reportlist.action">신고내역</a>
-					<a class="collapse-item" href="blindmanagement.action">블라인드 관리</a>
-					<a class="collapse-item" href="userqnamanager.action">Q&A관리</a>
-					<a class="collapse-item" href="userreviewmanager.action">리뷰관리</a>
+					<a class="collapse-item" href="blindmanager.action">블라인드 관리</a>
 				</div>
 			</div></li>
 			

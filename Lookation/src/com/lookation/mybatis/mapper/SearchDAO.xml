@@ -4,20 +4,20 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.ISearchDAO">
 	
-	<!-- 검색 페이지 처음 로딩시 보이는 쿼리문 -->
-	<select id="searchLoc" resultType="com.lookation.dto.SearchDTO">
-		SELECT LOC_TYPE, LOC_NAME, LOC_ADDR, THUMBNAIL_URL
-		, REVIEW_COUNT, PRICE, AVG_RATE, MAX_PEOPLE, APPLY_DATE
-		FROM SEARCHVIEW
+	<!-- 검색 -->
+	<select id="search" resultType="com.lookation.dto.SearchDTO">
+		SELECT DISTINCT LOC_CODE, LOC_TYPE, LOC_NAME, LOC_ADDR, NVL(AVG_RATE, 0) AS AVG_RATE, PRICE, MAX_PEOPLE, THUMBNAIL_URL
+		FROM (SELECT DISTINCT LOC_CODE, LOC_TYPE, LOC_NAME, LOC_ADDR, NVL(AVG_RATE, 0) AS AVG_RATE, PRICE, MAX_PEOPLE, THUMBNAIL_URL, APPLY_DATE
+        	  FROM SEARCHVIEW 
+        	  WHERE PRICE IS NOT NULL
+          		AND (LOC_TYPE LIKE '%'||#{keyword}||'%'
+           		 OR LOC_NAME LIKE '%'||#{keyword}||'%'
+           		 OR LOC_ADDR LIKE '%'||#{keyword}||'%'))
+		WHERE LOC_TYPE LIKE '%'||#{loc_type}||'%'
+		  AND PRICE BETWEEN #{start_price} AND #{end_price}
+  		  AND LOC_ADDR LIKE '%'||#{loc_addr_city}||'%'
+  		  AND LOC_ADDR LIKE '%'||#{loc_addr_dong}||'%'
+  		  AND APPLY_DATE BETWEEN TO_DATE(#{start_date}, 'YYYY-MM-DD') AND TO_DATE(#{end_date}, 'YYYY-MM-DD')	
 	</select>
 	
-	<!-- 키워드로 검색하기 -->
-	<select id="searchKeyword" resultType="com.lookation.dto.SearchDTO">
-		SELECT DISTINCT LOC_TYPE, LOC_NAME, LOC_ADDR, NVL(AVG_RATE, 0) AS AVG_RATE, PRICE, MAX_PEOPLE, THUMBNAIL_URL
-		FROM SEARCHVIEW
-		WHERE PRICE IS NOT NULL
-		AND (LOC_TYPE LIKE '%'||#{keyword}||'%'
-		 OR LOC_NAME LIKE '%'||#{keyword}||'%'
-		 OR LOC_ADDR LIKE '%'||#{keyword}||'%')
-	</select>
 </mapper>

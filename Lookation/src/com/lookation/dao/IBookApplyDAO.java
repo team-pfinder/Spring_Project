@@ -24,5 +24,4 @@ public interface IBookApplyDAO
 	
 	public BookApplyDTO bookNotice(String member_code);
 
-	
 }
