@@ -3,6 +3,9 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String loc_code = request.getParameter("loc_code");
+	pageContext.setAttribute("loc_code", loc_code);
 %>
 <!DOCTYPE html>
 <html>
@@ -391,7 +394,15 @@
 				alert("성공적으로 저장되었습니다.");
 				$("#applyForm").submit();
 			}
-		})
+		});
+		
+		$("#LocationPacakgeAplCancel").click(function()
+		{
+			if(confirm("정말 처음으로 돌아시겠습니까?"))
+			{
+				location.href="locationlist.action?loc_code=${loc_code}";
+			}
+		});
 	}); 
 	
 	// JSON을 이용해 적용된 패키지 정보를 컨트롤러로 전송한다.
@@ -425,7 +436,7 @@
 
 		$.ajax({
 			type : 'post',
-			url : 'packageapplyajax.action',
+			url : 'packageapplyajax.action?loc_code=${loc_code}',
 			dataType: 'json',
 			data        : formData,
 			success		: function(data) {result = data;}
@@ -487,7 +498,7 @@ body {
 </head>
 <body>
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+        <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 
 
@@ -536,9 +547,10 @@ body {
 
 
 
-			<form style="padding: 50px; text-align: center;" id="applyForm">
+			<form action="packageapplyform.action?loc_code=${loc_code }" 
+				style="padding: 50px; text-align: center;" id="applyForm">
 
-
+				<input type="hidden" name="loc_code" value="${loc_code }"/>
 				<!-- 0. 달력 -->
 
 				<span style="float:left; font-size: 14pt; font-weight: bold;">날짜 선택 <span
