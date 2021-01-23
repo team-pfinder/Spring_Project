@@ -41,7 +41,11 @@
 	
 	
 	<insert id="inputFacilityInfo" parameterType="com.lookation.dto.LocationDTO">
-				
+		
+		<selectKey keyProperty="facility_code" resultType="String" order="AFTER">
+			SELECT F_CODE('FIF', FIF_SEQ.CURRVAL) AS FACILITY_CODE FROM DUAL
+		</selectKey>
+			
 		INSERT INTO FACILITY_INFO(FACILITY_CODE, LOC_BASIC_INFO_CODE, FACILITY_CONTENT)
 		VALUES(F_CODE('FIF', FIF_SEQ.NEXTVAL), #{loc_basic_info_code}, #{facility_content})
 
@@ -49,6 +53,10 @@
 	
 	
 	<insert id="inputCaution" parameterType="com.lookation.dto.LocationDTO">
+
+		<selectKey keyProperty="caution_code" resultType="String" order="AFTER">
+			SELECT F_CODE('CAU', CAU_SEQ.CURRVAL) AS CAUTION_CODE FROM DUAL
+		</selectKey>
 
 		INSERT INTO CAUTION(CAUTION_CODE, LOC_BASIC_INFO_CODE, CAUTION_CONTENT)
 		VALUES(F_CODE('CAU', CAU_SEQ.NEXTVAL), #{loc_basic_info_code}, #{caution_content})
@@ -88,7 +96,11 @@
 	</insert>
 
 	<insert id="inputDetailImg" parameterType="com.lookation.dto.LocationDTO">
-				
+		
+		<selectKey keyProperty="loc_detail_img_code" resultType="String" order="AFTER">
+			SELECT F_CODE('LDIMG',LDIMG_SEQ.CURRVAL) AS LOC_DETAIL_IMG_CODE FROM DUAL
+		</selectKey>
+			
 		INSERT INTO LOC_DETAIL_IMG (LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE, LOC_DETAIL_IMG_URL) 
 		VALUES (F_CODE('LDIMG',LDIMG_SEQ.NEXTVAL), #{loc_detail_info_code}, #{loc_detail_img_url})
 
@@ -107,17 +119,6 @@
                             	, LOC_USE_DAY_OFF, LOC_USE_APPOINT_DAY_OFF) 
 		VALUES (F_CODE('LUI', LUI_SEQ.NEXTVAL), #{loc_code}, #{loc_use_hour}
 					 , #{loc_use_day_off}, #{loc_use_appoint_day_off})
-
-	</insert>
-	
-	<insert id="inputPackageFormInfo" parameterType="com.lookation.dto.LocationDTO">
-				
-		<selectKey keyProperty="package_form_code" resultType="String" order="AFTER">
-			SELECT F_CODE('PF', PF_SEQ.CURRVAL) AS PACKAGE_FORM_CODE FROM DUAL
-		</selectKey>
-		
-		INSERT INTO PACKAGE_FORM(PACKAGE_FORM_CODE, LOC_CODE)
-		VALUES(F_CODE('PF', PF_SEQ.NEXTVAL), #{loc_code})
 
 	</insert>
 	
@@ -144,17 +145,170 @@
 		WHERE LOC_CODE = #{loc_code}
 		
 	</update>
-<!-- 	
+	
 	<update id="modifyThumbnail" parameterType="com.lookation.dto.LocationDTO">
 		
 		UPDATE THUMBNAIL
-		SET THUMBNAIL_URL = #{}
-		WHERE LOC_BASIC_INFO_CODE = (SELECT LOC_BASIC_INFO_CODE FROM THUMBNAIL WHERE THUMBNAIL_URL = #{thumbnail_url})
-		
-		UPDATE THUMBNAIL
 		SET THUMBNAIL_URL = #{thumbnail_url}
-		WHERE LOC_BASIC_INFO_CODE = #{loc_basic_Info_code}		
+		WHERE LOC_BASIC_INFO_CODE = #{loc_basic_info_code}
+				
 	</update>
 	
- -->
+	<update id="modifyFacilityInfo" parameterType="com.lookation.dto.LocationDTO">
+		
+		UPDATE FACILITY_INFO
+		SET FACILITY_CONTENT = #{facility_content}
+		WHERE LOC_BASIC_INFO_CODE = #{loc_basic_info_code}
+		AND FACILITY_CODE = #{facility_code}
+
+	</update>
+	
+	<update id="modifyCaution" parameterType="com.lookation.dto.LocationDTO">
+		
+		UPDATE CAUTION
+		SET CAUTION_CONTENT = #{caution_content}
+		WHERE LOC_BASIC_INFO_CODE = #{loc_basic_info_code}
+		AND CAUTION_CODE = #{caution_code}
+
+	</update>
+	
+	
+	<update id="modifyContact" parameterType="com.lookation.dto.LocationDTO">
+		
+		UPDATE LOC_CONTACT
+		SET LOC_EMAIL = #{loc_email}
+		    , LOC_TEL = #{loc_tel}
+		    , LOC_MAIN_TEL = #{loc_main_tel}
+		WHERE LOC_CODE = #{loc_code}
+			
+	</update>
+	
+	<update id="modifyDetailInfo" parameterType="com.lookation.dto.LocationDTO">
+	
+		UPDATE LOC_DETAIL_INFO
+		SET MIN_PEOPLE = #{min_people}
+		    , MAX_PEOPLE = #{max_people}
+		WHERE LOC_CODE = #{loc_code}
+		
+	</update>
+	
+	<update id="modifyDetailImg" parameterType="com.lookation.dto.LocationDTO">
+
+		UPDATE LOC_DETAIL_IMG
+		SET LOC_DETAIL_IMG_URL = #{loc_detail_img_url}
+		WHERE LOC_DETAIL_INFO_CODE = #{loc_detail_info_code}
+		AND LOC_DETAIL_IMG_CODE = #{loc_detail_img_code}
+		
+	</update>
+	
+	<update id="modifyLocWeb" parameterType="com.lookation.dto.LocationDTO">
+	
+		UPDATE LOC_WEB
+		SET LOC_WEB_URL = #{loc_web_url}
+		WHERE LOC_DETAIL_INFO_CODE = #{loc_detail_info_code}
+	
+	</update>
+	
+	<update id="modifyUsingInfo" parameterType="com.lookation.dto.LocationDTO">
+	
+		UPDATE LOC_USE_INFO
+		SET LOC_USE_HOUR = #{loc_use_hour}
+		    , LOC_USE_DAY_OFF = #{loc_use_day_off}
+		    , LOC_USE_APPOINT_DAY_OFF = #{loc_use_appoint_day_off}
+		WHERE LOC_CODE = #{loc_code}
+		
+	</update>
+	
+	<select id="selectLoc" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_CODE, HOST_CODE, LOC_REG_DATE
+		FROM LOC
+		
+	</select>
+	
+	<select id="selectBasicInfo" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_BASIC_INFO_CODE, LOC_CODE, LOC_TYPE_CODE
+        , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO
+        , LOC_ADDR, LOC_DETAIL_ADDR
+		FROM LOC_BASIC_INFO
+		
+	</select>
+	
+	
+	<select id="selectThumbnail" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT THUMBNAIL_CODE, LOC_BASIC_INFO_CODE, THUMBNAIL_URL
+		FROM THUMBNAIL
+		
+	</select>
+	
+	
+	<select id="selectFacilityInfo" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT FACILITY_CODE, LOC_BASIC_INFO_CODE, FACILITY_CONTENT
+		FROM FACILITY_INFO
+		
+	</select>
+	
+	<select id="selectCaution" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT CAUTION_CODE, LOC_BASIC_INFO_CODE, CAUTION_CONTENT
+		FROM CAUTION
+				
+	</select>
+	
+	<select id="selectContact" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_CONTACT_CODE, LOC_CODE
+        , LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL
+		FROM LOC_CONTACT
+
+	</select>
+	
+	<select id="selectBizInfo" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT BIZ_INFO_CODE, LOC_CODE, BIZ_NAME
+        , BIZ_CEO, BIZ_LICENSE_URL, BIZ_CEO_TYPE
+        , BIZ_MAIN_TYPE, BIZ_SUB_TYPE
+        , BIZ_ADDR, BIZ_LICENSE_NUMBER
+		FROM BIZ_INFO
+
+	</select>
+	
+	<select id="selectDetailInfo" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_DETAIL_INFO_CODE, LOC_CODE
+        , MIN_PEOPLE, MAX_PEOPLE
+		FROM LOC_DETAIL_INFO
+
+	</select>
+	
+	<select id="selectDetailImg" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE
+	        , LOC_DETAIL_IMG_URL
+		FROM LOC_DETAIL_IMG
+		
+	</select>
+	
+	<select id="selectLocWeb" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_WEB_CODE, LOC_DETAIL_INFO_CODE
+	        , LOC_WEB_URL
+		FROM LOC_WEB
+			
+	</select>
+	
+	<select id="selectUsingInfo" resultType="com.lookation.dto.LocationDTO">
+		
+		SELECT LOC_USE_INFO_CODE, LOC_CODE
+	        , LOC_USE_HOUR, LOC_USE_DAY_OFF
+	        , LOC_USE_APPOINT_DAY_OFF
+		FROM LOC_USE_INFO
+			
+	</select>
+	
+	
+	
 </mapper>
