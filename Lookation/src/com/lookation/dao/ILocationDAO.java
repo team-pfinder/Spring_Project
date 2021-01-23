@@ -88,7 +88,7 @@ public interface ILocationDAO
 	
 	// 공간 정보
 	// parameter -> loc_code
-	public LocationDTO selectLoc(LocationDTO dto);
+	public ArrayList<LocationDTO> selectLoc(LocationDTO dto);
 	
 	// 기본 정보
 	public LocationDTO selectBasicInfo(LocationDTO dto);
@@ -97,10 +97,10 @@ public interface ILocationDAO
 	public LocationDTO selectThumbnail(LocationDTO dto);
 	
 	// 기본 정보(시설안내)
-	public LocationDTO selectFacilityInfo(LocationDTO dto);
+	public ArrayList<LocationDTO> selectFacilityInfo(LocationDTO dto);
 	
 	// 기본 정보(주의사항)
-	public LocationDTO selectCaution(LocationDTO dto);
+	public ArrayList<LocationDTO> selectCaution(LocationDTO dto);
 	
 	// 연락처 정보
 	public LocationDTO selectContact(LocationDTO dto);
@@ -112,7 +112,7 @@ public interface ILocationDAO
 	public LocationDTO selectDetailInfo(LocationDTO dto);
 	
 	// 상세정보 이미지
-	public LocationDTO selectDetailImg(LocationDTO dto);
+	public ArrayList<LocationDTO> selectDetailImg(LocationDTO dto);
 	
 	// 공간 웹사이트
 	public LocationDTO selectLocWeb(LocationDTO dto);
