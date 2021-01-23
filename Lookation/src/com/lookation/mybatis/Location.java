@@ -187,6 +187,7 @@ public class Location
 		 	LocationManager.setArrDetailImage(fileNames);
 		 	LocationManager.setMinPeople(m.getParameter("inputMinPeople"));
 		 	LocationManager.setMaxPeople(m.getParameter("inputMaxPeople"));
+		 	LocationManager.setWebUrl(m.getParameter("inputWebUrl"));
 		 	
 		 	for(String s : LocationManager.getArrDetailImage())
 		 	{
@@ -194,6 +195,7 @@ public class Location
 		 	}
 		 	System.out.println(LocationManager.getMinPeople());
 		 	System.out.println(LocationManager.getMaxPeople());
+		 	System.out.println(LocationManager.getWebUrl());
  			
 		} catch (Exception e)
 		{
@@ -213,6 +215,108 @@ public class Location
 		System.out.println(LocationManager.getUsingHour());
 		System.out.println(LocationManager.getDayOff());
 		System.out.println(LocationManager.getAppointDayOff());
+		
+		
+		// -------------------- 입력 --------------------
+		ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+        
+        LocationDTO dto = new LocationDTO();
+        
+        // 공간
+        dto.setHost_code("H000001");
+        
+        dao.inputLoc(dto);	// loc_code set
+   
+
+        // 기본 정보
+        dto.setLoc_type(LocationManager.getType());
+        dto.setLoc_name(LocationManager.getName());
+        dto.setLoc_short_intro(LocationManager.getShortIntro());
+        dto.setLoc_intro(LocationManager.getIntro());
+        dto.setLoc_addr(LocationManager.getAddress());
+        dto.setLoc_detail_addr(LocationManager.getDetailAddress());
+        
+        dao.inputBasicInfo(dto);	// loc_basic_info_code set
+        
+        
+        // 썸네일(기본정보)
+        dto.setThumbnail_url(LocationManager.getThumbnail());
+        
+        dao.inputThumbnail(dto);
+        
+        //System.out.println(LocationManager.getArrFacility());
+        
+        
+        // 시설안내(기본정보)
+        //-- insert 이므로 배열에 담을 필요없음. 
+        //   mybatis에서 for문으로 담는다
+		
+		for (String str : LocationManager.getArrFacility()) 
+		{
+			 dto.setFacility_content(str); 
+			 dao.inputFacilityInfo(dto); 
+		}
+		
+		
+		// 주의사항(기본정보)
+		  
+		for (String str : LocationManager.getArrPrecaution())
+		{
+			dto.setCaution_content(str);
+			dao.inputCaution(dto);
+		}
+		
+		// 연락처 정보
+		dto.setLoc_email(LocationManager.getEmail());
+		dto.setLoc_tel(LocationManager.getTel());
+		dto.setLoc_main_tel(LocationManager.getMainTel());
+		
+		dao.inputContact(dto);
+		
+		
+		// 사업자 정보
+	    dto.setBiz_name(LocationManager.getBizName());
+	    dto.setBiz_ceo(LocationManager.getBizCeo());
+	    dto.setBiz_license_url(LocationManager.getBizLicense());
+	    dto.setBiz_ceo_type(LocationManager.getBizCeoType());
+	    dto.setBiz_main_type(LocationManager.getBizMainType());
+	    dto.setBiz_sub_type(LocationManager.getBizSubType());
+	    dto.setBiz_addr(LocationManager.getBizAddresss());
+	    dto.setBiz_license_number(LocationManager.getBizNum());
+	    
+	    dao.inputBizInfo(dto);
+	    
+	    
+	    // 상세 정보
+	    dto.setMin_people(LocationManager.getMinPeople());
+	    dto.setMax_people(LocationManager.getMaxPeople());
+	    
+	    dao.inputDetailInfo(dto);	// 상세정보코드 set
+	    
+
+	    // 상세 이미지
+	    for (String str : LocationManager.getArrDetailImage())
+		{
+			dto.setLoc_detail_img_url(str);
+			dao.inputDetailImg(dto);
+		}
+	    
+	    // 웹 사이트
+	    dto.setLoc_web_url(LocationManager.getWebUrl());
+	    dao.inputLocWeb(dto);
+	    
+	    
+	    // 이용 정보  
+	    dto.setLoc_use_hour(LocationManager.getUsingHour());
+	    dto.setLoc_use_day_off(LocationManager.getDayOff());
+	    dto.setLoc_use_appoint_day_off(LocationManager.getAppointDayOff());
+	    
+	    dao.inputUsingInfo(dto);
+	    
+	    
+	    // 검수 신청
+	    dao.inputInspectRegList(dto);  // set inspect_reg_code
+		
 		
 		return "../WEB-INF/views/host/locationList.jsp";
 	}
@@ -280,151 +384,136 @@ public class Location
         
         LocationDTO dto = new LocationDTO();
         
-        
-	    // -------------------- 입력 --------------------
-        
-        // 공간
-        dto.setHost_code("H000001");
-        
-        dao.inputLoc(dto);	// loc_code set
-        System.out.println(dto.getLoc_code());
-
-        
-        // 기본 정보
-        dto.setLoc_type("파티룸");
-        dto.setLoc_name("공간명테스트");
-        dto.setLoc_short_intro("공간한줄소개테스트");
-        dto.setLoc_intro("공간소개테스트");
-        dto.setLoc_addr("주소테스트");
-        dto.setLoc_detail_addr("상세주소테스트");
-        
-        dao.inputBasicInfo(dto);	// loc_basic_info_code set
-        
-        
-        // 썸네일(기본정보)
-        dto.setThumbnail_url("test.lookation.com");
-        
-        dao.inputThumbnail(dto);
-        
-        //System.out.println(LocationManager.getArrFacility());
-        
-        
-        // 시설안내(기본정보)
-        //-- insert 이므로 배열에 담을 필요없음. 
-        //   mybatis에서 for문으로 담는다
-		
-		for (String str : LocationManager.getArrFacility()) 
-		{
-			 dto.setFacility_content(str); 
-			 dao.inputFacilityInfo(dto); 
-		}
-		
-		// 주의사항(기본정보)
-		  
-		for (String str : LocationManager.getArrPrecaution())
-		{
-			dto.setCaution_content(str);
-			dao.inputCaution(dto);
-		}
-		
-		// 연락처 정보
-		dto.setLoc_email("rlaghwls@naver.com");
-		dto.setLoc_tel("010-1234-5678");
-		dto.setLoc_main_tel("02-2222-2233");
-		
-		dao.inputContact(dto);
-		
-		
-		// 사업자 정보
-	    dto.setBiz_name("사업자이름테스트");
-	    dto.setBiz_ceo("사업자대표테스트");
-	    dto.setBiz_license_url("테스트사업자등록증.jpg");
-	    dto.setBiz_ceo_type("개인사업자");
-	    dto.setBiz_main_type("주업태테스트");
-	    dto.setBiz_sub_type("주업종테스트");
-	    dto.setBiz_addr("서울시 동대문구 이문동 1");
-	    dto.setBiz_license_number("123-45-67890");
-	    
-	    dao.inputBizInfo(dto);
-	    
-	    
-	    // 상세 정보
-	    dto.setLoc_detail_addr("101동 101호");
-	    dto.setMin_people("2");
-	    dto.setMax_people("22");
-	    
-	    dao.inputDetailInfo(dto);	// 상세정보코드 set
-	    System.out.println(dto.getLoc_detail_info_code());	
-	    
-	    
-	    // 상세 이미지
-	    for (String str : LocationManager.getArrDetailImage())
-		{
-			dto.setLoc_detail_img_url(str);
-			dao.inputDetailImg(dto);
-		}
-	    
-	    // 웹 사이트
-	    dto.setLoc_web_url("http://websitetest.com");
-	    dao.inputLocWeb(dto);
-	    
-	    
-	    // 이용 정보  
-	    dto.setLoc_use_hour("11:00 ~ 24:00");
-	    dto.setLoc_use_day_off("매주 수요일");
-	    dto.setLoc_use_appoint_day_off("3/11");
-	    
-	    dao.inputUsingInfo(dto);
-	    
-	    
-	    // 패키지 양식
-	    
-	    dao.inputPackageFormInfo(dto);	// set package_form_code
-	    System.out.println(dto.getPackage_form_code());
-	    
-	    
-	    // 검수 신청
-	    dao.inputInspectRegList(dto);  // set inspect_reg_code
-	    System.out.println(dto.getInspect_reg_code());
-	    
-	    
+       
 	    
 	    // -------------------- 수정 --------------------
 	    
 	    // 기본 정보
 	    dao.modifyBasicInfo(dto);
 		
-		
 		// 기본 정보(썸네일)
-		//public void modifyThumbnail(LocationDTO dto);
-		
-		
-		/*
+		dao.modifyThumbnail(dto);
+
 		// 기본 정보(시설안내)
-		public void modifyFacility(LocationDTO dto);
+		dao.modifyFacilityInfo(dto);
 		
 		// 기본 정보(주의사항)
-		public void modifyCaution(LocationDTO dto);
+		dao.modifyCaution(dto);
 		
 		// 연락처 정보
-		public void modifyContact(LocationDTO dto);
-		
-		// 사업자 정보
-		public void modifyBizInfo(LocationDTO dto);
-		
+		dao.modifyContact(dto);
+
 		// 상세정보
-		public void modifyDetailInfo(LocationDTO dto);
+		dao.modifyDetailInfo(dto);
 		
 		// 상세정보 이미지
-		public void modifyDetailImg(LocationDTO dto);
+		dao.modifyDetailImg(dto);
 		
 		// 공간웹사이트
-		public void modifyLocWeb(LocationDTO dto);
+		dao.modifyLocWeb(dto);
 		
 		// 이용안내
-		public void modifyUsingInfo(LocationDTO dto);
-	    */
+		dao.modifyUsingInfo(dto);
+		
 	    
         return "../WEB-INF/views/host/locationList.jsp";
     }
+	
+	@RequestMapping(value="/actions/basicmodifyform.action", method = RequestMethod.GET)
+	public String basicModifyForm(HttpServletRequest request, Model model)
+	{
+		ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+        
+		// -------------------- 조회 --------------------
+		
+		String loc_code = request.getParameter("loc_code");
+		loc_code = "L000001";
+		LocationDTO dto = new LocationDTO();
+		dto.setLoc_code(loc_code);
+		
+    	// 공간 정보 -- 여기서는 loc_code이지만,
+		// 다른 selectDAO는 해당 공간에 대한 모든 값에 접근할 수 있으면서
+		// 이 공간만이 가지는 정보를 담은 데이터를 
+		// dto로 세팅하여 넘겨주어 jsp 파일에 맞게 addAttribute해야한다.(ex)key → basicInfo)
+		model.addAttribute("basicInfo", dao.selectLoc(dto));
+    	
+  
+    	
+
+    	/* 위 공간 정보와 마찬가지로 이런 방식으로 model.addAttribute로 세팅
+    	   return할때 해당 jsp로 setAttribute하여 돌려주어 모든 값을 부여해줄 수 있는 상태가 된다.
+    	   ( 이후 jsp 파일부터 본격적으로 뷰 상에서는 각 jsp에서 
+    	     이 attribute의 dto값을 이용하여 dto.xxx형태로
+    	     EL태그를 활용하여 각 input의 value 값에 담아주기 위함)
+    	   
+    	// 기본 정보
+    	dao.selectBasicInfo();
+    	
+    	// 기본 정보(썸네일)
+    	dao.selectThumbnail();
+    	
+    	// 기본 정보(시설안내)
+    	dao.selectFacilityInfo();
+    	
+    	// 기본 정보(주의사항)
+    	dao.selectCaution();
+
+    	// 연락처 정보
+    	dao.selectContact();
+    	
+    	// 사업자 정보
+    	dao.selectBizInfo();
+
+    	// 상세정보
+    	dao.selectDetailInfo();
+    	
+    	// 상세정보 이미지
+    	dao.selectDetailImg();
+    	
+    	// 공간 웹사이트
+    	dao.selectLocWeb();
+    	
+    	// 이용안내
+    	dao.selectUsingInfo();
+		*/
+		
+		return "../WEB-INF/views/host/modifyBasicInfo.jsp";
+		
+		/*  	// .jsp 단에서
+				
+				<input type="text" value="${basicInfo.loc_intro}"/>
+		 */
+	}
+	
+	@RequestMapping(value="/actions/modifybasicinfo.action", method = RequestMethod.POST)
+	public String modifyBasicInfo(HttpServletRequest request, Model model)
+	{
+		// 본격적인 이전 입력값의 조회 -> 업데이트 액션처리 반복 부분...
+		// (받아온 값들을 dto로 set하고 update)
+		
+		// 입력폼에 입력된 값들을  request.getParameter() 로 받아와 dto에 세팅한다.
+		// dao.modifyBasicInfo(dto) 
+		
+		// 그 다음 뷰 페이지 select로 입력된 값들 db로부터 매핑
+		
+		/* 반복(공간코드는 고정) -- input 과 크게 다르지 않고
+		 * , 값을 받아오고 세팅하며 매핑하여 addattribute로 전달하는 차이밖에 없다.
+		 		
+		String loc_code = request.getParameter("loc_code");
+		loc_code = "L000001";
+		LocationDTO dto = new LocationDTO();
+		dto.setLoc_code(loc_code);
+		
+    	// 공간 정보
+    	model.addAttribute("basicInfo", dao.selectLoc(dto));
+    	
+		 */
+		
+		// model.addAttribute("뷰에서 부르려는 key 값(select에서 조회된 dto형태의 key)"
+				//						, dao.modifyXxx())
+		// 그리고, jsp가 다음버튼으로 넘어갈때마다 
+		// 변경값이 적용되야하므로 model.setAttribute 해야 한다.
+		
+		return "../WEB-INF/views/host/modifyContactInfo.jsp";
+	}
 }

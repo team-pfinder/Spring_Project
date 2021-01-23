@@ -29,7 +29,8 @@ public class InspectManagerDAO implements IInspectManagerDAO
 		Connection conn = dataSource.getConnection();
 		
 		String sql = "SELECT INSPECT_REG_CODE,LOC_NAME,LOC_TYPE,COUNT " 
-					+ " FROM ADMIN_INSPECT_LIST_VIEW ";
+					+ " FROM ADMIN_INSPECT_LIST_VIEW"
+					+ " WHERE COUNT < 1";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = pstmt.executeQuery(); 

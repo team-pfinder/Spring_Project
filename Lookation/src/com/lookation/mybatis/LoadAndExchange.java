@@ -27,7 +27,7 @@ public class LoadAndExchange
     	ILoadAndExchangeDAO dao = sqlSession.getMapper(ILoadAndExchangeDAO.class);
     	LoadAndExchangeDTO dto = new LoadAndExchangeDTO();
     	
-    	String identifyCode = "H000003";//request.getParameter("identifyCode");
+    	String identifyCode = "M000003";//request.getParameter("identifyCode");
     	dto.setIdentifyCode(identifyCode);
     	
     	// 이용자일 경우

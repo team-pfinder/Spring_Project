@@ -12,9 +12,24 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <title>충전신청 관리</title>
-
-<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->	<!-- ※ 페이징처리 안됨.. 제이쿼리 → 자스 -->
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	※ 페이징처리 안됨.. 제이쿼리 → 자스 -->
 <script type="text/javascript">
+
+	function approval(val)
+	{
+		if(confirm("승인 처리 하시겠습니까?"))
+		{
+			location.href = "loadmgrapprove.action?regCode="+val;			
+		}
+	}
+	function denial(val)
+	{
+		if(confirm("반려 처리 하시겠습니까?"))
+		{
+			location.href = "loadmgrdeny.action?regCode="+val;			
+		}
+	}
+	/*
 	$(document).ready(function()
 	{
 		// 승인 버튼 클릭 시
@@ -137,8 +152,8 @@
 												<c:when test="${item.loadType eq null}">
 													<td>충전대기</td>
 													<td>
-														<button class="btn btn-primary mt-0 mb-0 approval" id="approval" name="approval" value="${item.regCode}">승인</button>
-														<button class="btn btn-danger mt-0 mb-0 denial" id="denial" name="denial" value="${item.regCode}">반려</button>
+														<button class="btn btn-primary mt-0 mb-0 approval" id="approval" name="approval" value="${item.regCode}" onclick="approval(this.value)">승인</button>
+														<button class="btn btn-danger mt-0 mb-0 denial" id="denial" name="denial" value="${item.regCode}" onclick="denial(this.value)">반려</button>
 													</td>
 												</c:when>
 												<c:when test="${not empty item.loadType}">
@@ -204,4 +219,6 @@
 		</div>
 	</div>
 </body>
+
+
 </html>
