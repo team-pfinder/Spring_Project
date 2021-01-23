@@ -1,13 +1,81 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String cp = request.getContextPath();
+%>
 
 <!DOCTYPE html>
-
 <html>
 <head>
 
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
-  <title>공지사항 목록</title>
+ <title>공지사항 목록</title>
+<style type="text/css">
+
+
+table{
+width: 100%;
+table-layout: fixed;
+}
+
+table thead tr{
+width: 100%;
+}
+
+
+td {
+	text-overflow : ellipsis; 
+	overflow : hidden; 
+	white-space : nowrap;
+	block: inline-block;
+}
+
+tr > td > a {
+	color: gray;
+}
+
+   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  padding: 3px 10px;
+}
+.off-screen {
+  display: none;
+}
+#li1, #li2, #li3, #li2 {
+  width: 100%;
+  text-align: center;
+}
+
+#li1 a, #li2 a, #li3 a, #li4 a {
+	color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+}
+#li1 a.active, #li2 a.active, #li3 a.active, #li4 a.active {
+    background: #4e73df;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.empty {
+height: 200px;
+
+}
+
+</style>
+
 </head>
 
 <body id="page-top">
@@ -16,10 +84,7 @@
   <div id="wrapper">
   
   	<!-- Sidebar -->
-  	<div>
-	<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
-	</div>
-<%--  	<%@include file="../includes/Admin_Sidebar.jsp" %> --%>
+<c:import url="${cp}/includes/Admin_Sidebar.jsp"></c:import>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -30,9 +95,7 @@
       
       <!-- header -->
       
-     <div>
-	 <c:import url="${cp}/includes/header.jsp"></c:import>
-	 </div>
+<c:import url="${cp}/includes/header.jsp"></c:import>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -52,8 +115,21 @@
             
           <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable">
-                  <thead>
+				<table class="table table-bordered text-center" id="products1">
+					
+					<form action="" id="setRows1">
+					    <input type="hidden" name="rowPerPage1" value="5">
+					</form>
+						<colgroup>
+							<col style="width: 15%">
+							<col style="width: 15%">
+							<col style="width: 30%">
+							<col style="width: 30%">
+							<col style="width: 20%">
+							<col style="width: 20%">
+						</colgroup>
+						
+               <thead>
 				<tr align="center">
 					<th>공지사항코드</th>
 					<th>중요</th>
@@ -149,24 +225,105 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
+ <!-- 관리자 로그아웃 모달  -->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
+					<button class="close" type="button" data-dismiss="modal"
+						aria-label="Close" style="float: right;">
+						<span aria-hidden="true" style="float: right;">×</span>
+					</button>
+				</div>
+				<div class="modal-body">로그아웃 시 메인 페이지로 이동합니다.</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button"
+						data-dismiss="modal">Cancel</button>
+					<a class="btn btn-primary" href="adminlogout.action">Logout</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<script type="text/javascript">
+
+var $setRows = $('#setRows1');
+
+$setRows.submit(function (e) {
+  e.preventDefault();
+  var rowPerPage = $('[name="rowPerPage1"]').val() * 1;// 1 을  곱하여 문자열을 숫자형로 변환
+
+//    console.log(typeof rowPerPage);
+
+  var zeroWarning = 'Sorry, but we cat\'t display "0" rows page. + \nPlease try again.'
+  if (!rowPerPage) {
+    alert(zeroWarning);
+    return;
+  }
+  $('#li1').remove();
+  var $products = $('#products1');
+
+  $products.after("<div class='text-center' id='li1'>");
+
+
+  var $tr = $($products).find('tbody tr');
+  var rowTotals = $tr.length;
+//  console.log(rowTotals);
+
+  var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+  var i = 0;
+
+  for (; i < pageTotal; i++) {
+    $('<a href="#"></a>')
+        .attr('rel', i)
+        .html(i + 1)
+        .appendTo('#li1');
+  }
+
+  $tr.addClass('off-screen')
+      .slice(0, rowPerPage)
+      .removeClass('off-screen');
+
+  var $pagingLink = $('#li1 a');
+  $pagingLink.on('click', function (evt) {
+    evt.preventDefault();
+    var $this = $(this);
+    if ($this.hasClass('active')) {
+      return;
+    }
+    $pagingLink.removeClass('active');
+    $this.addClass('active');
+
+    // 0 => 0(0*4), 4(0*4+4)
+    // 1 => 4(1*4), 8(1*4+4)
+    // 2 => 8(2*4), 12(2*4+4)
+    // 시작 행 = 페이지 번호 * 페이지당 행수
+    // 끝 행 = 시작 행 + 페이지당 행수
+
+    var currPage = $this.attr('rel');
+    var startItem = currPage * rowPerPage;
+    var endItem = startItem + rowPerPage;
+
+    $tr.css('opacity', '0.0')
+        .addClass('off-screen')
+        .slice(startItem, endItem)
+        .removeClass('off-screen')
+        .animate({opacity: 1}, 300);
+
+  });
+
+  $pagingLink.filter(':first').addClass('active');
+
+});
+
+$setRows.submit();	
+
+
+
+</script>
 
 </body>
 

@@ -529,23 +529,105 @@ public class Location
 	public String basicModifyForm(HttpServletRequest request, Model model)
 	{
 		ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
-        
+		LocationDTO dto = new LocationDTO();
+		ArrayList<LocationDTO> arr = new ArrayList<LocationDTO>();
+		
 		// -------------------- 조회 --------------------
 		
-		String loc_code = request.getParameter("loc_code");
-		loc_code = "L000001";
-		LocationDTO dto = new LocationDTO();
-		dto.setLoc_code(loc_code);
+		// 공간 정보 조회 및 model set
 		
-    	// 공간 정보 -- 여기서는 loc_code이지만,
-		// 다른 selectDAO는 해당 공간에 대한 모든 값에 접근할 수 있으면서
-		// 이 공간만이 가지는 정보를 담은 데이터를 
-		// dto로 세팅하여 넘겨주어 jsp 파일에 맞게 addAttribute해야한다.(ex)key → basicInfo)
-		model.addAttribute("basicInfo", dao.selectLoc(dto));
-    	
-  
-    	
+		// 세션으로부터 호스트코드 불러와 담기(test : H000001)
+		String host_code = request.getParameter("host_code"); // 현재 null
+		host_code = "H000001";
+		//System.out.println(host_code);
+		dto.setHost_code(host_code);
+		//System.out.println(dto.getHost_code());
+		/*
+		arr = dao.selectLoc(dto);
+		
+		for (int i = 0; i < arr.size(); i++)
+		{
+			System.out.println("[" + i + "번 ] : " + arr.get(i).getLoc_code());
+			System.out.println("[" + i + "번 ] : " + arr.get(i).getHost_code());
+			System.out.println("[" + i + "번 ] : " + arr.get(i).getLoc_reg_date());
+		}
+		*/
+		
+		// 현재 set 된 dto : host_code 
+		//model.addAllAttribute(dao.selectLoc(dto));	// 공간테이블의 모든값 
+		
+		
+		// ----------------------------------------------------------
+		
+		
+		// 기본 정보 조회 및 model set
+		
+		// loc_code 데이터 불러오기(test : L0000001)
+		String loc_code = request.getParameter("loc_code");	// 현재 null
+		loc_code = "L000001";
+		//System.out.println(loc_code);
+		
+		// 기본정보조회 dao의 where 조건절에 들어갈
+		// loc_code를 dto에 set
+ 	    dto.setLoc_code(loc_code);
 
+ 	    // set한 공간코드를 기반으로 기본정보 조회 dao 호출, 확인(하나만)
+ 	    // System.out.println(dao.selectBasicInfo(dto).getLoc_basic_info_code());
+ 	    //-- LBIF000001
+ 	    //dao.selectBasicInfo(dto);		
+ 	    
+ 	    LocationDTO test = dao.selectBasicInfo(dto);
+ 	    System.out.println(test.getLoc_basic_info_code());
+ 	    
+ 	   
+ 	    // Idao로부터 dao.xml 매퍼로 새팅한 loc_code를 dao를 호출하며 
+ 	    // model.addAtrribute로 담음(key값은 테이블파일과 유사하도록)
+ 	    // (위에서 dto.set 으로 세팅된 host_code도 함께 ... 이후 계속 누적)
+ 	    
+ 	    model.addAttribute("basicInfo", dao.selectBasicInfo(dto));
+ 	    //-- 여기까지 기본정보 테이블의 각 컬럼 값을 dto 에 set 된 상태.. 	    
+ 	    
+ 	    
+ 	    /*
+ 	    // 썸네일(기본정보)
+
+ 	    // 이미 기본정보코드 가 set 된 상태..
+ 	    // 바로 썸네일 조회 dao 호출하여 각 컬럼을 dto에 set
+ 	    
+ 	    //System.out.println(dao.selectThumbnail(dto).getThumbnail_code());
+ 	    //dao.selectThumbnail(dto);
+ 	    
+ 	    dto.setLoc_basic_info_code(request.getParameter("loc_detail_info_code"));
+ 	    model.addAttribute("thumbnail", dao.selectThumbnail(dto));
+  
+ 	    
+ 	    // 시설안내(기본정보)
+ 	    model.addAllAttributes(dao.selectFacilityInfo(dto));
+ 	    
+ 	    
+ 	    // 주의사항(기본정보)
+ 	    model.addAllAttributes(dao.selectCaution(dto));
+	    
+ 	    
+ 	    // 연락처 정보
+ 	    model.addAttribute("contact", dao.selectContact(dto));
+ 	    
+
+ 	    // 사업자 정보
+ 	    model.addAttribute("bizInfo", dao.selectBizInfo(dto));
+ 	    
+ 	    
+ 	    // 상세 정보
+ 	    model.addAttribute("detailInfo", dao.selectDetailInfo(dto));
+ 	    
+ 	    
+ 	    // 상세 이미지
+ 	    dto.setLoc_detail_info_code(request.getParameter("loc_detail_info_code")); 
+ 	    model.addAttribute("detailImg", dao.selectDetailImg(dto));
+ 	    */
+ 	    
+ 	    // 이용 정보
+ 	    
     	/* 위 공간 정보와 마찬가지로 이런 방식으로 model.addAttribute로 세팅
     	   return할때 해당 jsp로 setAttribute하여 돌려주어 모든 값을 부여해줄 수 있는 상태가 된다.
     	   ( 이후 jsp 파일부터 본격적으로 뷰 상에서는 각 jsp에서 

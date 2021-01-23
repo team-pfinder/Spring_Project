@@ -234,97 +234,110 @@
 		WHERE LOC_CODE = #{loc_code}
 		
 	</update>
-	
-	<select id="selectLoc" resultType="com.lookation.dto.LocationDTO">
+
+	<select id="selectLoc" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_CODE, HOST_CODE, LOC_REG_DATE
 		FROM LOC
+		WHERE HOST_CODE = #{host_code}
 		
 	</select>
 	
-	<select id="selectBasicInfo" resultType="com.lookation.dto.LocationDTO">
-		
+	<select id="selectBasicInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
+	
 		SELECT LOC_BASIC_INFO_CODE, LOC_CODE, LOC_TYPE_CODE
         , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO
         , LOC_ADDR, LOC_DETAIL_ADDR
 		FROM LOC_BASIC_INFO
-		
+		WHERE LOC_CODE=#{loc_code}
 	</select>
 	
-	
-	<select id="selectThumbnail" resultType="com.lookation.dto.LocationDTO">
+	<!-- 
+	<select id="selectThumbnail" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT THUMBNAIL_CODE, LOC_BASIC_INFO_CODE, THUMBNAIL_URL
 		FROM THUMBNAIL
+		WHERE LOC_BASIC_INFO_CODE=#{loc_basic_info_code}
 		
 	</select>
 	
 	
-	<select id="selectFacilityInfo" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectFacilityInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT FACILITY_CODE, LOC_BASIC_INFO_CODE, FACILITY_CONTENT
 		FROM FACILITY_INFO
+		WHERE LOC_BASIC_INFO_CODE=#{loc_basic_info_code}
 		
 	</select>
 	
-	<select id="selectCaution" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectCaution" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT CAUTION_CODE, LOC_BASIC_INFO_CODE, CAUTION_CONTENT
 		FROM CAUTION
+		WHERE LOC_BASIC_INFO_CODE=#{loc_basic_info_code}
 				
 	</select>
 	
-	<select id="selectContact" resultType="com.lookation.dto.LocationDTO">
+	
+	
+	<select id="selectContact" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_CONTACT_CODE, LOC_CODE
         , LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL
 		FROM LOC_CONTACT
+		WHERE LOC_CODE=#{loc_code}
 
 	</select>
 	
-	<select id="selectBizInfo" resultType="com.lookation.dto.LocationDTO">
+	
+	<select id="selectBizInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT BIZ_INFO_CODE, LOC_CODE, BIZ_NAME
         , BIZ_CEO, BIZ_LICENSE_URL, BIZ_CEO_TYPE
         , BIZ_MAIN_TYPE, BIZ_SUB_TYPE
         , BIZ_ADDR, BIZ_LICENSE_NUMBER
 		FROM BIZ_INFO
+		WHERE LOC_CODE=#{loc_code}
 
 	</select>
 	
-	<select id="selectDetailInfo" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectDetailInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_DETAIL_INFO_CODE, LOC_CODE
         , MIN_PEOPLE, MAX_PEOPLE
 		FROM LOC_DETAIL_INFO
+		WHERE LOC_CODE=#{loc_code}
 
 	</select>
 	
-	<select id="selectDetailImg" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectDetailImg" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_DETAIL_IMG_CODE, LOC_DETAIL_INFO_CODE
 	        , LOC_DETAIL_IMG_URL
 		FROM LOC_DETAIL_IMG
+		WHERE LOC_DETAIL_INFO_CODE=#{loc_detail_info_code}
 		
 	</select>
 	
-	<select id="selectLocWeb" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectLocWeb" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_WEB_CODE, LOC_DETAIL_INFO_CODE
 	        , LOC_WEB_URL
 		FROM LOC_WEB
-			
+		WHERE LOC_DETAIL_INFO_CODE=#{loc_detail_info_code}
+
 	</select>
 	
-	<select id="selectUsingInfo" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectUsingInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_USE_INFO_CODE, LOC_CODE
 	        , LOC_USE_HOUR, LOC_USE_DAY_OFF
 	        , LOC_USE_APPOINT_DAY_OFF
 		FROM LOC_USE_INFO
-			
+		WHERE LOC_CODE=#{loc_code}
+
 	</select>
-	
+	 -->
  	<insert id="deleteLocation">
  		INSERT INTO LOC_REMOVE(LOC_REMOVE_CODE, LOC_CODE, LOC_REMOVE_DATE)
         VALUES(F_CODE('LRM', LRM_SEQ.NEXTVAL), #{loc_code}, SYSDATE)

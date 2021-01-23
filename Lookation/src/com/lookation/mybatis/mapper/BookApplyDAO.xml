@@ -48,7 +48,7 @@
 		VALUES(F_CODE('BC', BC_SEQ.NEXTVAL), #{member_code}, #{apply_package_code}, #{book_people}, SYSDATE, #{book_req})
 	</insert>
 	
-	<!-- 예약번호 확인, 실예약자, 결제내역 추가 -->
+	<!-- 예약번호 확인, 실예약자, 결제내역 추가 (+ 메시지 테이블에도) -->
 	<insert id="actualBooking" statementType="CALLABLE">
 		{CALL PRC_BOOK_CODE_INSERT(
 									#{member_code, mode=IN}

@@ -37,13 +37,13 @@
             <!-- Nav Item - User Information -->
            
             <li class="nav-item dropdown no-arrow">
-             <form action="" method="get">
+            
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${AdminDTO.admin_id }</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">관리자</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
-              <input type="hidden" value="${AdminDTO.admin_id }" id="admin_id">
-              </form>
+             
+              
              
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

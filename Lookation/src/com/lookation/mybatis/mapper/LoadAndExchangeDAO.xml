@@ -16,7 +16,7 @@
 	
 	<!-- 이용자 잔액조회 -->
 	<select id="memberGetBalance" resultType="java.lang.Integer">
-		SELECT F_USER_BALANCE(#{memberCode}) AS BALANCE
+		SELECT F_USER_BALANCE(#{identifyCode}) AS BALANCE
 		FROM DUAL
 	</select>
 	
