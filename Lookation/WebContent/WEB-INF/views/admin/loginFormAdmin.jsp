@@ -17,7 +17,7 @@ $(document).ready(function()
 			{
 				$("#err").css("display", "none");
 
-				if ($("#id").val() == "" || $("#pw").val() == "")
+				if ($("#admin_id").val() == "" || $("#admin_pw").val() == "")
 				{
 					$("#err").html("This field is required.").css("display", "inline");
 					return; //-- submit 액션 처리 중단
@@ -54,12 +54,11 @@ $(document).ready(function()
 									<form action="adminlogin.action" method="post" id="adminloginForm">
 										<div class="form-group">
 											<input type="email" class="form-control form-control-user"
-												id="id" aria-describedby="emailHelp"
-												placeholder="ID">
+												id="admin_id" name="admin_id" placeholder="ID">
 										</div>
 										<div class="form-group">
 											<input type="password" class="form-control form-control-user"
-												id="pw" placeholder="Password">
+												id="admin_pw" name="admin_pw" placeholder="Password">
 										</div>
 										<div class="form-group">
 											<div class="custom-control custom-checkbox small">

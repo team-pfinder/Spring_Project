@@ -10,9 +10,41 @@
 <meta charset="UTF-8">
 <title>LocationDetailedInfo.jsp</title>
 
-<link rel="stylesheet" href="css/bootstrap.css">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
+
+<style type="text/css">
+/* 대표이미지 추가 css */
+.filebox input[type="file"] { 
+
+	position: absolute; width: 70%; 
+	padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0; 
+}
+.filebox label {
+
+	display: inline-block; padding: .5em .75em; color: #999; 
+	font-size: inherit; line-height: normal; vertical-align: middle; 
+	background-color: #fdfdfd; cursor: pointer; border: 1px solid #ebebeb; 
+	border-bottom-color: #e2e2e2; border-radius: .25em; 
+}
+
+/* named upload */ 
+.filebox .upload-name { 
+
+	display: inline-block; padding: .5em .75em; 
+
+	/* label의 패딩값과 일치 */ 
+	font-size: inherit; font-family: inherit; line-height: normal; 
+	vertical-align: middle; background-color: #f5f5f5; 
+	border: 1px solid #ebebeb; border-bottom-color: #e2e2e2; 
+	border-radius: .25em; -webkit-appearance: none; 
+	
+	/* 네이티브 외형 감추기 */ 
+
+	-moz-appearance: none; appearance: none; 
+
+}
+</style>
 
 <script type="text/javascript">
 	
@@ -34,7 +66,33 @@
 				
 			}
 		});
+		
+		// 썸네일 이미지 등록
+		/* $(document).ready(function(){ 
+			
+			<c:forEach var="i" begin="0" end="10">
+			$('.filebox${i} .upload-hidden').on('change', function(){ // 값이 변경되면 
 				
+				var filename = '';
+				// modern browser
+				if(window.FileReader) { 
+					filename = $(this)[0].files[0].name; 
+				} 
+			
+				// old IE
+				
+				else { 
+				
+					filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
+				} 
+				
+			
+				// 추출한 파일명 삽입 
+				$(this).parent('div').children('.upload-name').val(filename); 
+				
+			});
+			</c:forEach>
+		}); */			
 	});
 				
 	
@@ -169,10 +227,8 @@
 
 
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputDetailInfo" 
-		  action="inputPackageInfoForm.jsp" method="POST"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
-		
+	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
+		  action="inputdetailinfo.action" method="POST"><!--onsubmit="handOver()" -->	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
@@ -181,12 +237,15 @@
 			<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
 			<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
 			<br><br>
-				<textarea class="form-control" placeholder="상세이미지를 추가하세요.(JPG, JPEG, PNG)"
-							name="inputLocDetailImg"
-							cols="40" rows="10" required="required"></textarea>
-				<br>
-				<input type="button" class="form-control"
-						name="inputLocDetailImgBtn" value="상세이미지 추가 +">
+			
+		<c:forEach var="i" begin="0" end="10">
+				<div class="filebox${i }">
+						<!-- <input class="upload-name" name="inputThumbnail" 
+							   placeholder="이미지 등록" disabled="disabled" style="width: 70%"> -->
+						<!-- <label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> --> 
+						<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
+				</div>
+		</c:forEach>
 				<br><br>
 				<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
 					 <!-- 
@@ -230,6 +289,18 @@
 		</div>
 	
 	
+		<!-- 4. 웹 url -->
+		
+		<div id="webUrl">
+			
+			<span style="font-size: 14pt; font-weight: bold;">웹 사이트<span style="color: red">*</span></span>
+			<br><br>
+			<input type="text" required="required" class="form-control"
+					placeholder="웹사이트 url 을 입력하세요."
+					id="inputWebUrl" name="inputWebUrl">
+			
+			<span style="font-weight: bold;"></span>
+		</div>
 	
 	<br><br><br>
 	
@@ -259,7 +330,6 @@
 
 	</form>
 </div>
-
 </div>
 
 <div>

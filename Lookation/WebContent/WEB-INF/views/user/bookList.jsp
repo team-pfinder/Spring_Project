@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -29,25 +29,63 @@
 	.text-gon {
 		color: #00043c;
 	}
+	
+	
+	   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  /*margin-bottom: 10px;*/
+}
+th, td {
+  padding: 3px 10px;
+}
+
+.table th, .table td {
+vertical-align: middle;
+}
+
+.off-screen {
+  display: none;
+}
+#li1 {
+  width: 100%;
+  text-align: center;
+}
+
+#li1 a {
+	color: gray;
+    text-align: center;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e6e6e6;
+    margin-right: 10px;
+}
+#li1 a.active {
+    background: #fdbe34;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.empty {
+height: 300px;
+}
+
+.book_date {
+	font-size: 0.8em;
+	color : #6c757d73;
+}
+
+p {
+margin-bottom: 0;
+}
 </style>
 <script type="text/javascript">
 
-	/* function popCancel()
-	{
-		var url = "1-2_cancelReservation.jsp";
-		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
-		window.open(url, "", option);
-	}
-	
-	// 예약 상세보기 팝업
-	function popDetails(){
-         var url = "1-1_reservationDetails.jsp"; 
-        var url = "1-1_reservationDetails.jsp";
-        var name = "popup test";
-        var option = "width = 850, height = 400, top = 100, left = 200, location = no"
-        window.open(url, name, option);
-    } */
-	
     $(document).ready(function()
 	{
     	// 예약 취소 팝업
@@ -73,7 +111,6 @@
 
 </head>
 <body>
-
 <section class="hero-wrap hero-wrap-2" style="background-image: url('<%=cp%>/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
   	<div class="overlay"></div>
   	<div class="container">
@@ -86,11 +123,6 @@
   	</div>
 </section>
 
-<!-- container 시작 -->
-<!-- 마이페이지에서 예약내역 들어온 모습 -->
-<!-- ※ 수정해야할 부분 : 검색창, 버튼크기때문에 열 높이 달라지는 부분 -->
-
-
 <div class="container my-5">
 	<div class="row">
 		<!-- include mypage_Sidebar.jsp -->
@@ -100,7 +132,7 @@
 		<div class="col-lg-10 col-md-10">
 			<!-- Page Heading -->
 			<h1 class="mb-2 text-gray-800">예약 리스트</h1>
-			<p class="my-1 ml-2"> <strong class="text-primary">진영은</strong>님의 예약 내역입니다. <a target="_blank" href="#">이전으로</a>.</p>
+			<p class="my-1 ml-2"> <strong class="text-primary">${nick}</strong>님의 예약 내역입니다.</p>
 			<p class="mb-4 mt-1 ml-2">예약현황 클릭시 예약 상세내역을 확인할 수 있습니다.</p>
 				
 			<div class="card shadow mb-4">
@@ -108,48 +140,70 @@
 					<h6 class="m-0 font-weight-bold text-default">예약 리스트</h6>
 				</div>
 				<div class="card-body">
-					<!-- 검색이나 정렬 관련 내용 -->
-					<!-- <form action="#" class="subscribe-form">
-						<div class="form-group d-flex my-2 pt-0 float-right">
-							<input type="text" class="form-control" placeholder="검색어를 입력하세요.">
-						    <input type="button" value="검색" class="submit">
-						</div>
-						<br>
-					</form> -->
-					
 					<div class="table-flex">
-						<table class="table table-bordered" id="dataTable">
+						<form action="" id="setRows1">
+						    <input type="hidden" name="rowPerPage1" value="10">
+						</form>
+						<table class="table" id="products1" style="word-break:break-all;">
 							<thead>
 								<tr class="text-center">
-									<th>예약내용</th>
+									<th>예약일자</th>
+									<th>예약내용/결제일자</th>
 									<th>공간명</th>
 									<th>예약현황</th>
-									<th>취소/상세보기</th> 
+									<th>예약관리</th> 
 								</tr>
 							</thead>
 							<tbody class="text-center">
-								<c:forEach var="book" items="${bookList }">
-									<fmt:parseDate var="apply_date" value="${book.apply_date }" pattern="yyyy-MM-dd"/>
-									<fmt:formatDate value="${now}" pattern="yyyy-MM-dd"/>
-										
-									<tr>
-										<td>${fn:substring(book.apply_date, 0, 10)} ${book.package_start}시 ~
-										
-										<c:choose>
-										<c:when test="${book.package_end > 24}">
-										익일 ${book.package_end-24 }시
-										</c:when>
-										<c:otherwise>
-										${book.package_end }시
-										</c:otherwise>
-										</c:choose>
-										, ${book.book_hour }시간</td>
-										<td>${book.loc_name }</td>
-										
-										
-										<c:choose>
-											<c:when test="${apply_date < now} ">
+								<!-- 날짜 변환 -->
+								<jsp:useBean id="now" class="java.util.Date" scope="page"/>
+								<fmt:formatDate var="today" value="${now}" scope="page" pattern="yyyy-MM-dd"/>  
+								
+								<c:if test="${not empty bookList }">
+									<c:forEach var="book" items="${bookList }">
+										<fmt:parseDate var="pdate" value="${book.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
+										<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
+										<%-- <span>today : ${today } <br> fdate : ${fdate }<br></span> --%>
+										<tr>
+											<td>
+											<p>
+											${fdate}</p>
+											</td>
+											
+											<c:choose>
+												<c:when test="${book.package_end >= 24}">
+													<td>
+														${book.package_start }:00 ~ 익일 ${book.package_end - 24}:00
+													 (${book.book_hour}시간)
+													<p class="book_date">${book.book_date }</p></td>
+												</c:when>
+												
+												<c:otherwise>
+													<td>
+														${book.package_start }:00 ~ ${book.package_end }:00
+													 (${book.book_hour}시간)
+													<p class="book_date">${book.book_date }</p></td>
+												</c:otherwise>
+											</c:choose>
+											
+											<td>${book.loc_name }</td>
+											
+											
+											
+											<c:choose>
+											<c:when test="${fdate <= today} ">
 												<td>이용완료</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+													disabled="disabled">
+													취소
+													</button>
+													
+											</c:when>
+											
+											<c:when test="${fdate > today} ">
+												<td>예약완료</td>
 												<td>
 													<button type="button" value="${book.book_code}"
 													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
@@ -173,7 +227,7 @@
 												</td>
 											</c:when>
 											
-											<c:otherwise>
+										 	<c:otherwise>
 												<td class="text-gon">예약완료</td>
 												<td>
 													<button type="button" value="${book.book_code}"
@@ -185,67 +239,150 @@
 													상세보기
 													</button>
 												</td>
-											</c:otherwise>
+											</c:otherwise> 
 											
 										</c:choose>
+											<%-- <c:if test="${book.checkbook == -1}">
+												<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													신고</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														disabled="disabled">
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+											</c:if>
+											
+											<c:if
+												test="${book.checkbook == 0 }">			<!-- 0 : 이용완료 -->
+												<td class="text-dark">이용완료${book.checkbook}</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													신고</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded"
+														>
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+											</c:if>
+											
+											<c:if test="${book.checkbook == 1 }">		<!-- 1 : 예약완료 -->
+												<td class="text-gon">예약완료${book.checkbook}</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													신고</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														>취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+											</c:if> --%>
+											
+											</tr>
+										</c:forEach><!-- .c:forEach 끝 -->
+									</c:if>
+									
+									<c:if test="${empty bookList }">
+										<tr class="py-5 my-5">
+											<td colspan="5" class="py-5 my-5"> 예약이 없습니다. </td>
+										</tr>
 										
-									</tr>
-								</c:forEach>
-								<tr>
-									<!-- <td>BC000002</td> -->
-									<td>2021-01-01 14시 ~ 20시, 6시간</td>
-									<td>최대20자</td>
-									<td class="text-danger">예약취소</td>
-									<td>
-										<!-- 이미 예약취소된 예약/
-										     예약취소기간이 지난 예약/이용완료된 예약
-										     은 버튼 disabled 속성 부여 -->
-										<button type="button" class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-										>
-										취소</button>
-										<button type="button" class="btn py-1 px-1 mb-0 btn-gon border-0 popDetails" 
-										>
-										상세보기
-										</button>
-									</td>
-								</tr>
+									</c:if>
 							</tbody>
 						</table>
 					</div><!-- End .table-flex -->
 				</div><!-- End .card-body -->
 			</div><!-- End .card shadow mb-4 -->
-			
-			
-			<!-- 페이징 처리할 부분 -->
-	        <div class="row mt-5">
-	          <div class="col text-center">
-	            <div class="block-27">
-	              <ul>
-	                <li><a href="#">&lt;</a></li>
-	                <li class="active"><span>1</span></li>
-	                <li><a href="#">2</a></li>
-	                <li><a href="#">3</a></li>
-	                <li><a href="#">4</a></li>
-	                <li><a href="#">5</a></li>
-	                <li><a href="#">&gt;</a></li>
-	              </ul>
-	            </div>
-	          </div>
-	        </div>
+			<div class="empty"></div>
 		</div><!-- End .col-md-10 -->
-	
-	<!-- Scroll to Top Button -->
-	<!-- <a class="scroll-to-top rounded" href="#page-top">
-	  <i class="fas fa-angle-up"></i>
-	</a> -->
-	
 	</div><!-- End .row -->
 	
 	
 
 </div><!-- End .container -->
+
+<script type="text/javascript">
+
+var $setRows = $('#setRows1');
+
+$setRows.submit(function (e) {
+  e.preventDefault();
+  var rowPerPage = $('[name="rowPerPage1"]').val() * 1;// 1 을  곱하여 문자열을 숫자형로 변환
+
+  var zeroWarning = 'Sorry, but we cat\'t display "0" rows page. + \nPlease try again.'
+  if (!rowPerPage) {
+    alert(zeroWarning);
+    return;
+  }
+  $('#li1').remove();
+  var $products = $('#products1');
+
+  $products.after("<div class='text-center' id='li1'>");
+
+
+  var $tr = $($products).find('tbody tr');
+  var rowTotals = $tr.length;
+
+  var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+  var i = 0;
+
+  for (; i < pageTotal; i++) {
+    $('<a href="#"></a>')
+        .attr('rel', i)
+        .html(i + 1)
+        .appendTo('#li1');
+  }
+
+  $tr.addClass('off-screen')
+      .slice(0, rowPerPage)
+      .removeClass('off-screen');
+
+  var $pagingLink = $('#li1 a');
+  $pagingLink.on('click', function (evt) {
+    evt.preventDefault();
+    var $this = $(this);
+    if ($this.hasClass('active')) {
+      return;
+    }
+    $pagingLink.removeClass('active');
+    $this.addClass('active');
+
+    var currPage = $this.attr('rel');
+    var startItem = currPage * rowPerPage;
+    var endItem = startItem + rowPerPage;
+
+    $tr.css('opacity', '0.0')
+        .addClass('off-screen')
+        .slice(startItem, endItem)
+        .removeClass('off-screen')
+        .animate({opacity: 1}, 300);
+
+  });
+
+  $pagingLink.filter(':first').addClass('active');
+
+});
+
+$setRows.submit();	
+
+
+
+</script>
+
+
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
-<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 <div>
 	<c:import url="${cp}/includes/footer_user.jsp"></c:import>
 </div>

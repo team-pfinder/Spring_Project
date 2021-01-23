@@ -178,6 +178,12 @@ body {
   border: 0;
 }
 
+#fileName {
+width: 100px;
+overflow: hidden;
+
+}
+
 </style>
 <script type="text/javascript">
 	
@@ -244,7 +250,7 @@ body {
 													</div>
 												</div>
 												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 											
@@ -252,12 +258,12 @@ body {
 												<div class="message">
 													<div class="send">
 														<p class="text">${m.msg_img_url }
-															<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
+															<img class="message-img" alt="" src="<%=cp%>/images/${m.msg_img_url }" onclick="popImg(this.src)">
 														</p>
 													</div>
 												</div>
 												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 										</c:choose>
@@ -270,18 +276,18 @@ body {
 													<p class="text">${m.msg_content }</p>
 												</div>
 												<div class="message">
-													<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 											
 											<c:when test="${m.imgcount eq 1}">
 												<div class="message">
-													<p class="text">${m.msg_img_url }
-														<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
+													<p class="text">
+														<img class="message-img" alt="" src="<%=cp%>/images/${m.msg_img_url }" onclick="popImg(this.src)">
 													</p>
 												</div>
 												<div class="message">
-													<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 										</c:choose>
@@ -298,34 +304,34 @@ body {
 					
 					
 					
-					
+					<form action="mimgsend.action" method="post" enctype="multipart/form-data" id="msgForm">
 					<!-- .footer-chat -->
-					<form action="mmsgsend.action" method="post" id="msgForm">
 						<div class="footer-chat" id="footer">
 								<!-- 사진첨부버튼 -->
-								<div class="filebox">
-									<label for="ex_file">
-										<i class="icon fa fa-picture-o clickable"
-											style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
-									</label>
-									<input type="file" id="ex_file" multiple="multiple" name="msg_img_url">
-								</div>
 								
-								<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content"></input>
-								<i class="icon send fa fa-paper-plane-o clickable"
-									aria-hidden="true" onclick="msgSend()"></i>
+									<div class="filebox">
+										<label for="ex_file">
+											<i class="icon fa fa-picture-o clickable"
+												style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
+										</label>
+										<input type="file" id="ex_file" name="msg_img_url" onchange="javascript:document.getElementById('file').value = this.value"
+										accept=".jpg,.jpeg,.png,.gif,.bmp">
+									</div>
+									<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content" id="file"></input>
+									<i class="icon send fa fa-paper-plane-o clickable"
+										aria-hidden="true" onclick="msgSend();"></i>
+								
 						</div>
 						<input type="hidden" name="msg_code" value="${msg_code }">
 						<input type="hidden" name="book_code" value="${book_code }">
-					</form>
 					<!-- End .footer-chat -->
-					
+					</form>
 				</div>
 			</div>
 		</div>
 
 	</div>
-<br><br><br><br><br><br><br><br><br><br><br><br>
+
 
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>

@@ -11,9 +11,19 @@ public class BookListDTO
 	, member_cancel_reason, host_cancel_reason, member_email
 	, loc_addr, loc_detail_addr, member_nickname;
 	
+	private String checkbook;
 	private int days, package_price;
 	
-	
+	public String getCheckbook()
+	{
+		return checkbook;
+	}
+
+	public void setCheckbook(String checkbook)
+	{
+		this.checkbook = checkbook;
+	}
+
 	public int getPackage_price()
 	{
 		return package_price;

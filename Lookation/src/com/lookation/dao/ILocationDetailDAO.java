@@ -29,4 +29,6 @@ public interface ILocationDetailDAO
 	public int countReview(String locCode) throws SQLException;
 	
 	public String avgReviewRate(String locCode) throws SQLException;
+	
+	public ArrayList<LocationDetailDTO> viewPhoto() throws Exception;
 }

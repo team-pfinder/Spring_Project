@@ -32,7 +32,9 @@ public class BookList
 		
 		String member_code = request.getParameter("memCode");
 		
+		model.addAttribute("nick", dao.memberNick(member_code));
 		model.addAttribute("bookList", dao.bookList(member_code));
+		model.addAttribute("member_code", member_code);
 		
 		return "../WEB-INF/views/user/bookList.jsp";
 	}
@@ -43,7 +45,7 @@ public class BookList
 	public String bookDetails(String book_code, ModelMap model)
 	{
 		IBookListDAO dao = sqlSession.getMapper(IBookListDAO.class);
-
+		
 		model.addAttribute("details", dao.bookDetails(book_code));
 		
 		return "/WEB-INF/views/user/bookDetails.jsp";
@@ -62,16 +64,12 @@ public class BookList
 	
 	// 예약 취소 액션
 	@RequestMapping(value = "/actions/membercancel.action", method = RequestMethod.POST)
-	public String memberCancel(String book_code, BookListDTO dto, ModelMap model)
+	public void memberCancel(String book_code, BookListDTO dto, ModelMap model)
 	{
 		IBookListDAO dao = sqlSession.getMapper(IBookListDAO.class);
 		
 		dao.memberCancel(dto);
 		dao.memberRefund(dto);
-		System.out.println(dto.getBook_code());
-		System.out.println(dto.getMember_cancel_reason());
-		
-		return "/WEB-INF/views/user/bookList.jsp?";
 	}
 
 	 

@@ -33,13 +33,13 @@ public class MemberReviewList
 
 	// 리뷰 리스트에서 리뷰 수정
 	@RequestMapping(value="/actions/modifyreviewinlist.action", method = RequestMethod.POST)
-	public String modifyReview(MemberReviewListDTO dto)
+	public void modifyReview(MemberReviewListDTO dto)
 	{
 		IMemberReviewListDAO dao = sqlSession.getMapper(IMemberReviewListDAO.class);
 		
 		dao.modifyreviewlist(dto);
 		
-		return "redirect:userreviewlist.action";
+		//return "redirect:userreviewlist.action";
 	}
 	
 	// 리뷰 리스트에서 리뷰 삭제 

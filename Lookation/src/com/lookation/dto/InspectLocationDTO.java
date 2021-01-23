@@ -4,7 +4,8 @@ public class InspectLocationDTO
 {
 	//InspectManager, InspectProcess 주요 속성 구성
 	private String loc_name;
-	private String loc_type;
+	private String loc_type,count;
+	
 	
 	private String loc_short_intro, loc_intro,loc_addr
 					,loc_detail_addr,facility_content
@@ -27,6 +28,17 @@ public class InspectLocationDTO
 
 	// InspectManager, InspectProcess
 	// getter / setter 구성
+	
+	public String getCount()
+	{
+		return count;
+	}
+
+	public void setCount(String count)
+	{
+		this.count = count;
+	}
+
 	
 	public String getInspect_proc_code()
 	{

@@ -9,13 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-
 import com.lookation.util.EmailManager;
 
 
 @Controller
 public class Email
 {
+
 	@RequestMapping(value="/actions/sendconfirmemail.action", method=RequestMethod.POST)
 	public String sendPasswordEmail(HttpServletRequest request, Model model)
 	{
@@ -64,6 +64,7 @@ public class Email
 		
 		String titleType = (identify.equals("host") ? "호스트" : "이용자");
 		String title = "■■■■■ " + titleType + " 비밀번호 변경 인증 메일입니다.  ■■■■■";
+
 
 		EmailManager.sendHtml(email, "lookation", title, html);
 

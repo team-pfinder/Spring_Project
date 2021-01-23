@@ -83,13 +83,9 @@
             <h6 class="m-0 font-weight-bold text-default">이용안내 입력</h6>
          </div>
 
-
-
-	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
-		  action="inputDetailInfo.jsp" method="POST"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 	
+	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
+		  action="inputusinginfo.action" method="POST"><!--onsubmit="handOver()" -->
 		
 		<!-- 1. 이용시간 -->
 		
@@ -97,7 +93,7 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">이용시간 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" id="inputUsingHour" required="required"
+			<input type="text" class="form-control" id="inputUsingHour" name="inputUsingHour" required="required"
 				   placeholder="이용시간을 입력하세요(최대 34 시간, ex)오전 11시 ~ 오후 10시)">
 			<!-- 종료시간 : 시작시간보다 이후부터 
 			(최대 : 시작시간 + 34시까지)  -->

@@ -8,10 +8,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>locationMgmt.jsp</title>
+<title>locationList.jsp</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
+<script type="text/javascript">
+	function del(code)
+	{
+		if(confirm("삭제하면 다시 복구가 불가능합니다. 정말 이 공간을 삭제하시겠습니까? "))
+		{
+			location.href = "deletelocation.action?loc_code=" + code;
+		}
+	}
+	
+	function mod(code)
+	{
+		location.href = "#";
+	}
+</script>
 
 </head>
 <body>
@@ -64,126 +78,53 @@
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row d-flex">
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"	
-							style="background-image: url('<%=cp%>/images/location1.jpg');">
-						</a>	<!-- 이미지 클릭시 해당 공간상세 게시글페이지로..-->
-						<div class="text mt-3 text-center">
-							<h3 class="heading">
-								<a href="#">강남 라마다 호텔 트윈 1811호</a>	<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
-							</h3>
-							<hr>
-							<div class="text mt-3 text-left">
-								<span style="size: 10pt;">등록일</span><span> 2020.11.22</span>
-								<span class="btn btn-success" style="float: right;">검수완료</span>									
-							</div>
-							<br>
-							<div class="text mt-3">
-								<a href="locationUpdate.jsp" class="btn btn-primary">공간정보수정</a>
-								<a href="locationDelete.jsp" class="btn btn-dark">공간정보삭제</a>
-							</div>
-							<hr>
-						</div>
-					</div>
-				</div><!-- location1 end -->
 				
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/location2.png');">
-						</a>
-						<div class="text mt-3 text-center">
-							<h3 class="heading">
-								<a href="#">융프라우 밑 호수 3번구역</a>	<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
-							</h3>
-							<hr>
-							<div class="text mt-3 text-left">
-								<span style="size: 10pt;">등록일</span><span> 2020.12.21</span>
-								<span class="btn btn-danger" style="float: right;">검수반려</span>									
-							</div>
-							<br>
-							<div class="text mt-3">
-								<a href="locationUpdate.jsp" class="btn btn-primary">공간정보수정</a>
-								<a href="locationDelete.jsp" class="btn btn-dark">공간정보삭제</a>
-							</div>
-							<hr>
-						</div>
-					</div>
-				</div><!-- location2 end -->
 				
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/location3.png');">
-						</a>
-						<div class="text mt-3 text-center">
-							<h3 class="heading">
-								<a href="#">Salar de Uyuni, BOLIVIA</a>	<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
-							</h3>
-							<hr>
-							<div class="text mt-3 text-left">
-								<span style="size: 10pt;">등록일</span><span> 2020.01.06</span>
-								<span class="btn btn-secondary" style="float: right;">검수대기</span>									
+				<c:forEach var="location" items="${locList }">
+						<div class="col-md-4 ftco-animate">
+							<div class="blog-entry align-self-stretch">
+								<a href="#" class="block-20 rounded"
+									style="background-image: url('<%=cp%>/images/${location.thumbnail_url }');">
+								</a>
+								<!-- 이미지 클릭시 해당 공간상세 게시글페이지로..-->
+								<div class="text mt-3 text-center">
+									<h3 class="heading">
+										<a href="#">${location.loc_name }</a>
+										<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
+									</h3>
+									<hr>
+									<div class="text mt-3 text-left">
+										<span style="size: 10pt;">등록일</span><span> ${location.loc_reg_date }</span> 
+										<c:if test="${location.inspect_type eq '검수승인'}">
+											<span class="btn btn-success" style="float: right;">검수승인</span>
+										</c:if>
+										<c:if test="${location.inspect_type eq '검수반려'}">
+											<span class="btn btn-danger" style="float: right;">검수반려</span>
+										</c:if>
+										<c:if test="${location.inspect_type eq '검수대기'}">
+											<span class="btn btn-secondary" style="float: right;">검수대기</span>
+										</c:if>
+									</div>
+									<br><br>
+									<div class="text mt-3">
+										<c:if test="${location.inspect_type eq '검수승인'}">
+											<a href="javascript:void(0);" onclick="mod('${location.loc_code}')" 
+											class="btn btn-primary" style="width:30%;">수정</a>
+											<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
+											class="btn btn-danger" style="width:30%;">삭제</a>
+											<a href="packageapplyform.action?loc_code=${location.loc_code }" 
+											class="btn btn-dark" style="width:30%;">패키지적용</a>
+										</c:if>
+										<c:if test="${location.inspect_type eq '검수반려'}">
+											<a href="javascript:void(0);" onclick="del(${location.loc_code})" 
+											class="btn btn-danger" style="width:30%;">삭제</a>
+										</c:if>
+									</div>
+									<hr>
+								</div>
 							</div>
-							<br>
-							<div class="text mt-3">
-								<a href="locationUpdate.jsp" class="btn btn-primary">공간정보수정</a>
-								<a href="locationDelete.jsp" class="btn btn-dark">공간정보삭제</a>
-							</div>
-							<hr>
 						</div>
-					</div>
-				</div><!-- location3 end -->
-
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/location4.jpg');">
-						</a>
-						<div class="text mt-3 text-center">
-							<h3 class="heading">
-								<a href="#">히말라야 정상</a>	<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
-							</h3>
-							<hr>
-							<div class="text mt-3 text-left">
-								<span style="size: 10pt;">등록일</span><span> 2020.12.21</span>
-								<span class="btn btn-danger" style="float: right;">검수반려</span>									
-							</div>
-							<br>
-							<div class="text mt-3">
-								<a href="locationUpdate.jsp" class="btn btn-primary">공간정보수정</a>
-								<a href="locationDelete.jsp" class="btn btn-dark">공간정보삭제</a>
-							</div>
-							<hr>
-						</div>
-					</div>
-				</div><!-- location4 end -->
-				
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/location5.png');">
-						</a>
-						<div class="text mt-3 text-center">
-							<h3 class="heading">
-								<a href="#">오키나와 해변</a>	<!-- 공간명 클릭시 해당 공간상세 게시글페이지로..-->
-							</h3>
-							<hr>
-							<div class="text mt-3 text-left">
-								<span style="size: 10pt;">등록일</span><span> 2020.12.21</span>
-								<span class="btn btn-secondary" style="float: right;">검수대기</span>									
-							</div>
-							<br>
-							<div class="text mt-3">
-								<a href="locationUpdate.jsp" class="btn btn-primary">공간정보수정</a>
-								<a href="locationDelete.jsp" class="btn btn-dark">공간정보삭제</a>
-							</div>
-							<hr>
-						</div>
-					</div>
-				</div><!-- location5 end -->
-				
+					</c:forEach>	
 			</div>
 		</div>
 		<br><br>
@@ -194,7 +135,7 @@
 			   style="width:100%; height: 100px; font-size: 14pt; font-weight: bold;">  -->
 		<!-- onclick="func()" submit → LocationBasicInfo.jsp-->
 		
-		<a href="locationBasicInfo.jsp" class="btn btn-info"
+		<a href="basicform.action" class="btn btn-info"
 				style="width:100%; font-size: 16pt; font-family: 맑은 고딕; font-weight: bold;">
 				새 공간 등록하기</a>
 		

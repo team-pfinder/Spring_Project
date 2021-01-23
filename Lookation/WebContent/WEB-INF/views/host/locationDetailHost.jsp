@@ -237,6 +237,12 @@ margin-top: 1.9em;
 	margin: 0;
 }
 
+p 
+{
+	word-break : break-all;
+	width: 80%;
+}
+
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
@@ -492,7 +498,7 @@ margin-top: 1.9em;
 								<div class="meta mb-2">${rv.date }</div>
 								
 								<c:if test="${rv.removeCount eq 1}">
-									<p>삭제된 리뷰입니다.</p>
+									<p>작성자가 삭제한 리뷰입니다.</p>
 								</c:if>
 								
 								<c:if test="${rv.removeCount eq 0}">
@@ -518,7 +524,7 @@ margin-top: 1.9em;
 										<span class="meta mb-2">${rv.replyDate }</span>
 										
 										<c:if test="${rv.replyRemove eq 1 }">
-											<p class="pr-5">삭제된 리뷰답글입니다.</p>
+											<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
 										</c:if>
 										
 										<c:if test="${rv.replyRemove eq 0 }">
@@ -542,12 +548,12 @@ margin-top: 1.9em;
 				<!-- 호스트 정보 -->
 				<h4 class="mt-4 info-sub">호스트정보</h4>
 				<div class="d-flex p-4 host-box mb-5">
-					<div class="host-info">
+					<div class="host-info" style="width: 20%;">
 						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
 					</div>
 													
 						
-					<div class="desc ml-5">
+					<div class="desc ml-5" style="width: 100%;">
 						<!-- 상호명(개인/법인)
 								, 대표자명, 사업자 등록번호
 								, 사업자 유형, 주업태, 주종목, 사업장 주소)  -->
@@ -638,7 +644,7 @@ margin-top: 1.9em;
 							<h4>${qna.memberNickName }</h4>
 							<span class="meta">${qna.date }</span>
 							<c:if test="${qna.removeCount==1}">
-								<p class="">이용자가 삭제한 게시글입니다.</p>
+								<p class="">작성자가 삭제한 질문입니다.</p>
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
 								<p class="pr-5">${qna.qna_content }</p>
@@ -654,7 +660,7 @@ margin-top: 1.9em;
 								<h4>${basicInfo.hostNickName }</h4>
 								<span class="meta">${qna.replyDate }</span>
 								<c:if test="${qna.replyRemove eq 1}">
-									<p>삭제된 Q&A 답글입니다.</p>
+									<p>작성자가 삭제한 답변입니다.</p>
 								</c:if>
 								<c:if test="${qna.replyRemove eq 0}">
 									<p class="pr-5">${qna.replyContent }</p>

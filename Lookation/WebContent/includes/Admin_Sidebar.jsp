@@ -115,20 +115,18 @@
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">신고:</h6>
 					<a class="collapse-item" href="reportlist.action">신고내역</a>
-					<a class="collapse-item" href="blindmanagement.action">블라인드 관리</a>
-					<a class="collapse-item" href="userqnamanager.action">Q&A관리</a>
-					<a class="collapse-item" href="userreviewmanager.action">리뷰관리</a>
+					<a class="collapse-item" href="blindmanager.action">블라인드 관리</a>
 				</div>
 			</div></li>
 			
 		<!-- 회원관리 -->
 		<!-- Nav Item - Pages Collapse Menu -->
 		<li class="nav-item"><a class="nav-link collapsed" href="#"
-			data-toggle="collapse" data-target="#collapsePages2"
+			data-toggle="collapse" data-target="#collapsePages3"
 			aria-expanded="true" aria-controls="collapsePages"> <i
 				class="fas fa-fw fa-folder"></i> <span>회원관리</span>
 		</a>
-			<div id="collapsePages2" class="collapse"
+			<div id="collapsePages3" class="collapse"
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">게시글관리:</h6>
@@ -158,11 +156,11 @@
 			
 		<!-- 공간 관리 -->
 		<li class="nav-item"><a class="nav-link collapsed" href="#"
-			data-toggle="collapse" data-target="#collapsePages4"
+			data-toggle="collapse" data-target="#collapsePages5"
 			aria-expanded="true" aria-controls="collapsePages"> <i
 				class="fas fa-fw fa-folder"></i> <span>공간 관리</span>
 		</a>
-			<div id="collapsePages4" class="collapse"
+			<div id="collapsePages5" class="collapse"
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">공간관리:</h6>

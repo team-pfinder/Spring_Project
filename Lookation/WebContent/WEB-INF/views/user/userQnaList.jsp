@@ -13,7 +13,7 @@
 <title>Lookation</title>
 <c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+
 <style type="text/css">
 
 
@@ -27,10 +27,25 @@ tr > td > a {
 	color: gray;
 }
 
+   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  padding: 3px 10px;
+}
+.off-screen {
+  display: none;
+}
+#li1 {
+  width: 100%;
+  text-align: center;
+}
 
-.paginate_button {
-	margin-left : 6px;
-	margin-right: 6px;
+#li1 a {
 	color: gray;
     text-align: center;
     display: inline-block;
@@ -39,52 +54,32 @@ tr > td > a {
     line-height: 40px;
     border-radius: 50%;
     border: 1px solid #e6e6e6;
-    cursor: pointer;
-    
-    align-content: center;
+    margin-right : 10px;
 }
-
-.paginate_button:active {
+#li1 a.active {
     background: #fdbe34;
     color: #fff;
     border: 1px solid transparent;
-    }
+}
+
+.empty {
+height: 200px;
+
+}
 
 </style>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript" ></script>
 
 <script type="text/javascript">
 
 
 $(function(){
 	
-	$("#dataTable").DataTable({
-		
-		// 표시 건수기능 숨기기
-		lengthChange: false,
-		// 검색 기능 숨기기
-		searching: false,
-		// 정렬 기능 숨기기
-		ordering: false,
-		// 정보 표시 숨기기
-		info: false,
-		
-		 "language": {
-		        "emptyTable": "데이터가 없어요.",
-		        
-		        "paginate": {
-		            "next": ">",
-		            "previous": "<"
-		        }
-		    },
-	});
-	
 	// 이용자 QnA 수정하는 팝업
 	$(".modifyQna").click(function()
 	{
 		var url = "modifyformqna.action?identify=member&qna_code=" + $(this).val() + "&reqpage=list";
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
-		window.open(url, "", option);
+		window.open(url, "", option); 
 	}); 
 	
 	// 이용자 Qna 삭제하는 팝업
@@ -135,7 +130,10 @@ $(function(){
 				</div>
 				<div class="card-body">
 					<div class="table-responsive align-self-center">
-						<table class="table" id="dataTable" style="table-layout: fixed">
+						<table class="table" id="products1" style="table-layout: fixed">
+						<form action="" id="setRows1">
+						    <input type="hidden" name="rowPerPage1" value="10">
+						</form>
 							<colgroup>
 								<col style="width: 25%">
 								<col style="width: 45%">
@@ -159,7 +157,6 @@ $(function(){
 										<tr>
 											<!-- 공간이름 클릭시 이동 -->
 											<td><a href="#">${qna.loc_name }</a></td>
-											<!-- 문의내용은 첫줄만 표시 -->
 											<td title="${qna.qna_content }">${qna.qna_content }</td>
 											<!-- 날짜 YYYY-MM-DD 형태로 자름 -->
 											<td>${fn:substring(qna.qna_date, 0, 10)}</td>
@@ -179,28 +176,87 @@ $(function(){
 		</div><!-- End .col-md-10 -->
 		
 	</div><!-- End .row -->
-		
-	<!-- 페이징 처리할 부분 -->
-    <div class="row mt-5">
-      <div class="col text-center">
-        <div class="block-27">
-          <ul>
-            <li><a href="#">&lt;</a></li>
-            <li class="active"><span>1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&gt;</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-	<br><br><br><br>
+	<div class="empty"></div>
 	
 	
-</div><!-- .container End -->	
+</div><!-- .container End -->
+<script type="text/javascript">
 
+var $setRows = $('#setRows1');
+
+$setRows.submit(function (e) {
+  e.preventDefault();
+  var rowPerPage = $('[name="rowPerPage1"]').val() * 1;// 1 을  곱하여 문자열을 숫자형로 변환
+
+//    console.log(typeof rowPerPage);
+
+  var zeroWarning = 'Sorry, but we cat\'t display "0" rows page. + \nPlease try again.'
+  if (!rowPerPage) {
+    alert(zeroWarning);
+    return;
+  }
+  $('#li1').remove();
+  var $products = $('#products1');
+
+  $products.after("<div class='text-center' id='li1'>");
+
+
+  var $tr = $($products).find('tbody tr');
+  var rowTotals = $tr.length;
+//  console.log(rowTotals);
+
+  var pageTotal = Math.ceil(rowTotals/ rowPerPage);
+  var i = 0;
+
+  for (; i < pageTotal; i++) {
+    $('<a href="#"></a>')
+        .attr('rel', i)
+        .html(i + 1)
+        .appendTo('#li1');
+  }
+
+  $tr.addClass('off-screen')
+      .slice(0, rowPerPage)
+      .removeClass('off-screen');
+
+  var $pagingLink = $('#li1 a');
+  $pagingLink.on('click', function (evt) {
+    evt.preventDefault();
+    var $this = $(this);
+    if ($this.hasClass('active')) {
+      return;
+    }
+    $pagingLink.removeClass('active');
+    $this.addClass('active');
+
+    // 0 => 0(0*4), 4(0*4+4)
+    // 1 => 4(1*4), 8(1*4+4)
+    // 2 => 8(2*4), 12(2*4+4)
+    // 시작 행 = 페이지 번호 * 페이지당 행수
+    // 끝 행 = 시작 행 + 페이지당 행수
+
+    var currPage = $this.attr('rel');
+    var startItem = currPage * rowPerPage;
+    var endItem = startItem + rowPerPage;
+
+    $tr.css('opacity', '0.0')
+        .addClass('off-screen')
+        .slice(startItem, endItem)
+        .removeClass('off-screen')
+        .animate({opacity: 1}, 300);
+
+  });
+
+  $pagingLink.filter(':first').addClass('active');
+
+});
+
+$setRows.submit();	
+
+
+
+</script>	
+<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
 
 </body>

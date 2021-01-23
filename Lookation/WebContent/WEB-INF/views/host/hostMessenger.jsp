@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 String cp = request.getContextPath();
@@ -205,144 +206,87 @@ body {
 					<!-- .header-chat 시작-->
 					<div class="header-chat">
 						<!-- <i class="icon fa fa-user-o" aria-hidden="true"></i>-->
-						<p class="name">호스트영은</p>
+						<p class="name">${nick}</p>
 					</div>
 					<div class="messages-chat">
-
-						<!-- 시간 위치, 사진 클릭하면 확대 -->
-						<!-- 이미지 첨부하는 기능 -->
-						<!-- 가로 스크롤바 숨기기  -->
-
-						<div class="message">
-							<p class="text">안녕하세요. 몇시쯤 도착 예정이신지요...?</p>
-						</div>
-						<div class="message">
-							<p class="response-timestamp">21-01-11 03:45:27</p>
-						</div>
-
-						<div class="message">
-							<div class="send">
-								<p class="text">9999시요</p>
-							</div>
-						</div>
-						<!-- 오른쪽 시간표시하는 timestamp는 : send-timestamp -->
-						<!-- 부모 class에 float-right 해야 우측정렬됨. -->
-						<div class="message float-right">
-							<p class="send-timestamp">21-01-11 03:45:27</p>
-						</div>
+<!-- 호스트가 보내는 경우 : horm 0 -->
+						<!-- 이용자가 보내는 경우 : horm 1 -->
 						
-						<div class="message">
-							<p class="text">네, 비밀번호는 486입니다.</p>
-						</div>
-						<div class="message">
-							<p class="response-timestamp">21-01-11 03:45:27</p>
-						</div>
+						<!-- 1. sender_code(horm) 보고 이용자인지 호스트인지 나눠줌. -->
+						<!-- 2. imgcount 보고 이미지이면 1 -->
+						<!--    			  텍스트 메시지이면 0 -->
+						
+						<!-- 3. 연속해서 메시지 보내는 경우 말풍선 연결해서 뜨도록 처리(보류) -->
 						
 						
-						<div class="message">
-							<div class="send">
-								<p class="text">네네네</p>
-							</div>
-						</div>
-						<div class="message float-right">
-							<p class="send-timestamp">21-01-11 08:45:27</p>
-						</div>
 						
-						
-						<!-- 보내는 쪽에서 갑자기 사진 보냄 -->
-						<div class="message">
-							<div class="send">
-								<p class="text">
-									<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
-								</p>
-							</div>
-						</div>
-						<div class="message float-right">
-							<p class="send-timestamp">21-01-11 08:45:27</p>
-						</div>
-						
-						
-						<!-- 장문 테스트 -->
-						<div class="message">
-							<p class="text">최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...
-								최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는
-								몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지
-								해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대
-								입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라
-								dm만 언제까지 해야하는지 궁금해요...</p>
-						</div>
-						<div class="message">
-							<p class="response-timestamp">21-01-11 03:45:27</p>
-						</div>
-						
-						
-						<!-- 응답 측에서도 갑자기 사진 보냄 -->
-						<div class="message">
-							<p class="text">
-								<img class="message-img" alt="" src="<%=cp%>/images/1.jpg" onclick="popImg(this.src)">
-							</p>
-						</div>
-						<div class="message">
-							<p class="response-timestamp">21-01-11 08:45:27</p>
-						</div>
-						
-						
-						<!-- 장문 테스트 -->
-						<div class="message">
-							<div class="send">
-								<p class="text">최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...
-									최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는
-									몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지
-									해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대
-									입력가능한 글자수는 몇바이트였더라 dm만 언제까지 해야하는지 궁금해요...최대 입력가능한 글자수는 몇바이트였더라
-									dm만 언제까지 해야하는지 궁금해요...</p>
-							</div>
-						</div>
-						<div class="message float-right">
-							<p class="send-timestamp">21-01-11 09:45:27</p>
-						</div>
-						
-						
-						<!-- 응답 측에서 메시지 연결해서 보내는 상황 -->
-						<div class="message">
-							<p class="text">이용하시는 데 불편함 없으시지요?</p>
-						</div>
-						<div class="message">
-							<p class="text">불편한 경우가 생기신다면 바로 말씀해 주세</p>
-						</div>
-						<div class="message">
-							<p class="text">요.</p>
-						</div>
-						<!-- 시간을 제일 마지막에 한번만 출력할 수 있게 한다 -->
-						<div class="message">
-							<p class="response-timestamp">21-01-11 11:45:27</p>
-						</div>
-						
-						
-						<!-- 전송 측에서 메시지 연결해서 보내는 상황 -->
-						<div class="message">
-							<div class="send">
-								<p class="text">
-									<img class="message-img" alt="" src="<%=cp%>/images/about.jpg" onclick="popImg(this.src)">
-								</p>
-							</div>
-						</div>
-						<div class="message">
-							<div class="send">
-								<p class="text">예 그럼요.</p>
-							</div>
-						</div>
-						<div class="message float-right">
-							<p class="send-timestamp">21-01-11 12:12:31</p>
-						</div>
-
-
-
+						<c:forEach var="h" items="${msg}">
+							<c:choose>
+								<c:when test="${not empty msg}">
+									<c:if test="${h.horm eq 0}">
+										<c:choose>
+											<c:when test="${h.imgcount eq 0}">
+												<div class="message">
+													<div class="send">
+														<p class="text">${h.msg_content}</p>
+													</div>
+												</div>
+												<div class="message float-right">
+													<p class="send-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+												</div>
+											</c:when>
+											
+											<c:when test="${h.imgcount eq 1}">
+												<div class="message">
+													<div class="send">
+														<p class="text">${h.msg_img_url }
+															<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
+														</p>
+													</div>
+												</div>
+												<div class="message float-right">
+													<p class="send-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+												</div>
+											</c:when>
+										</c:choose>
+									</c:if>
+										
+									<c:if test="${h.horm eq 1}">
+										<c:choose>
+											<c:when test="${h.imgcount eq 0}">
+												<div class="message">
+													<p class="text">${h.msg_content }</p>
+												</div>
+												<div class="message">
+													<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+												</div>
+											</c:when>
+											
+											<c:when test="${m.imgcount eq 1}">
+												<div class="message">
+													<p class="text">
+														<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
+													</p>
+												</div>
+												<div class="message">
+													<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+												</div>
+											</c:when>
+										</c:choose>
+									</c:if>
+								</c:when>
+							
+								<c:otherwise>
+									메시지가 없습니다.
+								</c:otherwise>
+							
+							</c:choose>
+						</c:forEach>
 					</div><!-- End .message-chat  -->
 					
 					
 					
-					
+					<form action="">
 					<!-- .footer-chat -->
 					<div class="footer-chat">
 						<!-- 사진첨부버튼 -->
@@ -351,13 +295,17 @@ body {
 								<i class="icon fa fa-picture-o clickable"
 									style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
 							</label>
-							<input type="file" id="ex_file" multiple="multiple">
+							<input type="file" id="ex_file">
 						</div>
 						
 						<input type="text" class="write-message" placeholder="메시지를 입력하세요"></input>
 						<i class="icon send fa fa-paper-plane-o clickable"
 							aria-hidden="true"></i>
+							
+						<input type="hidden" name="msg_code" value="${msg_code }">
+						<input type="hidden" name="book_code" value="${book_code }">
 					</div>
+					</form>
 					<!-- End .footer-chat -->
 
 				</div>

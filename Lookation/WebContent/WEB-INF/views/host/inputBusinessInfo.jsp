@@ -256,10 +256,8 @@
          </div>
 
 	<!-- form start --------------------------------------------->
-	<form style="width: 80%; margin: 120px;" id="inputBusinessInfo" 
-		  action="inputUsingInfo.jsp" method="POST"><!--onsubmit="handOver()" -->
-		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
-	
+	<form style="width: 80%; margin: 120px;" id="inputBusinessInfo" enctype="multipart/form-data"
+	  action="inputbusinessinfo.action" method="POST"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 상호명 -->
 		
@@ -314,9 +312,10 @@
 			<span style="font-size: 14pt; font-weight: bold;">사업자등록증<span style="color: red">*</span></span>
 			<br><br>
 			<div class="filebox"> 
-				<input class="upload-name" value="사업자등록증을 첨부해 주세요(JPG, JPEG, PNG)" disabled="disabled" style="width: 70%">
+				<input class="upload-name" name="inputBizLicense"
+					   value="사업자등록증을 첨부해 주세요(JPG, JPEG, PNG)" disabled="disabled" style="width: 70%">
 				<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
-				<input type="file" id="ex_filename" class="upload-hidden">
+				<input type="file" name="inputBizLicense" id="ex_filename" class="upload-hidden">
 			</div>
 			<br><br>
 		</div>
@@ -370,7 +369,7 @@
 		<div id="bizCeoType">
 			<span style="font-size: 14pt; font-weight: bold;">사업자 유형 <span style="color: red">*</span></span>
 			<br><br>
-			<select id="inputBizCeoType" class="form-control" required="required">
+			<select id="inputBizCeoType" name="inputBizCeoType" class="form-control" required="required">
 				<option value="">[==사업자 유형을 선택하세요.==]</option>
 				<option value="간이과세자">간이과세자</option>
 				<option value="일반과세자">일반과세자</option>
@@ -392,7 +391,7 @@
 			<br><br>
 			<input type="text" required="required" class="form-control"
 				   placeholder="주업태를 입력하세요. [최소 5자 ~ 최대 30자]"
-				   id="inputBizMainType">
+				   id="inputBizMainType" name="inputBizMainType">
 			<span style="font-weight: bold; "></span>
 		</div>
 		
@@ -408,7 +407,7 @@
 			<br><br>
 			<input type="text" required="required" class="form-control"
 				   placeholder="주종목을 입력하세요. [최소 5자 ~ 최대 30자]"
-				   id="inputBizSubType">
+				   id="inputBizSubType" name="inputBizSubType">
 			<span style="font-weight: bold; "></span>
 		</div>
 	
