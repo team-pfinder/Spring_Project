@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.lookation.dao.IReportHostDAO;
 import com.lookation.dto.reportHostDTO;
 import com.lookation.util.FileManager;
+import com.oreilly.servlet.MultipartRequest;
 
 
 @Controller
@@ -30,18 +31,38 @@ public class ReportHost
 		
 		return result;
 	}
-	// 신고 접수
+	// 신고 접수 후 이미지 업로드 폼 호출
 	@RequestMapping(value = "/actions/reporthost.action", method = RequestMethod.POST)
-	public String add(reportHostDTO dto, HttpServletRequest request, Model model)
+	public String add(reportHostDTO dto,String book_code,String host_code, Model model)
 	{
 		IReportHostDAO dao = sqlSession.getMapper(IReportHostDAO.class);
 		
 		dao.add(dto);
 		
-		ArrayList<String> imageList = FileManager.upload(request, "images");
+		model.addAttribute("list", dao.list(book_code, host_code));
 		
-		model.addAttribute("imageList", imageList);
+		return "/WEB-INF/views/host/reportHostImg.jsp";
+	}
+	
+	// 이미지 업로드
+	@RequestMapping(value = "/actions/reporthostimg.action", method = {RequestMethod.GET, RequestMethod.POST})
+	public void addImg(HttpServletRequest request, Model model, String book_report_code, String book_report_img_url)
+	{
+		IReportHostDAO dao = sqlSession.getMapper(IReportHostDAO.class);
 		
-		return "redirect:신고하던페이지";
+		try
+		{
+			MultipartRequest m = FileManager.upload(request, "images");
+			ArrayList<String> imageList = FileManager.getFileNames(m);
+			model.addAttribute("imageList", imageList);
+			
+		} catch (Exception e)
+		{
+			e.toString();
+		}
+		
+		dao.addImg(book_report_code, book_report_img_url);
+		
+		
 	}
 }

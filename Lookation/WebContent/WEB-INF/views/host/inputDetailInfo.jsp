@@ -289,6 +289,18 @@
 		</div>
 	
 	
+		<!-- 4. 웹 url -->
+		
+		<div id="webUrl">
+			
+			<span style="font-size: 14pt; font-weight: bold;">웹 사이트<span style="color: red">*</span></span>
+			<br><br>
+			<input type="text" required="required" class="form-control"
+					placeholder="웹사이트 url 을 입력하세요."
+					id="inputWebUrl" name="inputWebUrl">
+			
+			<span style="font-weight: bold;"></span>
+		</div>
 	
 	<br><br><br>
 	

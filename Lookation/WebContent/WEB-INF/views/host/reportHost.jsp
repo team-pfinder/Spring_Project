@@ -10,10 +10,11 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>reportHost.jsp</title>
-	
+
 <!-- css 등 공통적으로 들어가는 요소 include -->
 <c:import url="${cp }/includes/includes_home.jsp"></c:import>
+<title>reportHost.jsp</title>
+
 <style type="text/css">
 
 	.outer
@@ -57,15 +58,16 @@
 <div class="outer form-group">
 	<div class="inner">
 		<!-- 호스트 → 이용자 : 예약 신고 폼 -->
-		<form action="" method="post" enctype="multipart/form-data">
+		<form action="reporthost.action" method="post">
 			<span>이용자</span>
-			<input type="text" id="userName" class="form-control" value="이전페이지에서 받아온 이용자이름"
+			<input type="text" name="host_code" value="H000003" style="display: none;">
+			<input type="text" class="form-control" value="이전페이지에서 받아온 이용자이름"
 			readonly="readonly"><br>
 			<span>예약번호</span>
-			<input type="text" id="reservationCode" value="이전페이지에서 받아온 예약번호"
+			<input type="text" name="book_code" value="BC000001"
 			class="form-control" readonly="readonly"><br>
-			<select class="form-control">
-				<option>==[신고유형]==</option>
+			<select class="form-control" name="book_report_type_code" id="book_report_type_code">
+				<option value="typeselect">==[신고유형]==</option>
 				<option value="BRPT000001">부적절한 언행 사용</option>
 				<option value="BRPT000002">기물파손</option>
 				<option value="BRPT000003">광고</option>
@@ -73,12 +75,11 @@
 			</select><br>
 			<span>신고사유</span><br>
 			<textarea rows="3" cols="40" placeholder="자세한 신고사유를 작성하세요."
-			class="form-control reason"></textarea><br>
-			<input type="file" class="form-control" name="file1"><br>
+			class="form-control reason" name="book_report_reason"></textarea><br>
 			<p>※ 신고 내용을 허위로 작성할 경우, 해당 신고는 반려처리됩니다.<br>
 			허위 신고의 경우 횟수가 잦거나, 정도가 심한 경우에는 블랙리스트 처리될 수  있으며,<br>
 			법적 제재를 받으실 수 있습니다.</p>
-			<button type="submit" class="btn btn-primary report">신고하기</button>
+			<button type="submit" class="btn btn-primary report">다음</button>
 			<button type="reset" class="btn btn-secondary">다시작성</button>
 		</form>
 	</div>
@@ -88,4 +89,28 @@
 	<c:import url="${cp }/includes/includes_home_end.jsp"></c:import>
 
 </body>
+
+<script type="text/javascript">
+
+	$(document).ready(function()
+	{
+		$(".report").click(function()
+		{
+			if($("#book_report_type_code").val() == 'typeselect')
+			{
+				alert("신고유형을 선택하지 않았습니다.");
+				return false;
+			}
+			if($(".reason").val() == "")
+			{
+				alert("신고사유를 작성하지 않았습니다.");
+				return false;
+			}
+			
+			
+		});
+	});	
+
+</script>
+
 </html>

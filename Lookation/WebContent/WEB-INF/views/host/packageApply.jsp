@@ -143,7 +143,12 @@
     	  var code, start, end, name;
     	  code = tags[0].innerHTML;
     	  start = tags[1].innerHTML;
-    	  end = tags[2].innerHTML;
+    	  
+    	  if(tags[2].className == "nextDay")
+    	  	end = String(parseInt(tags[2].innerHTML) + 24);
+    	  else
+    		end = tags[2].innerHTML; 
+    	  
     	  name = tags[3].innerHTML;
     	  
     	  var result = checkApply(start, end, date);
@@ -184,7 +189,7 @@
    		  <c:forEach var="apply" items="${applyList}">
     		{
     	      id : '${apply.apply_code }',
-   		  	  title: '${apply.time_start }:00 ~ ${apply.time_end }:00 ${apply.name}',
+   		  	  title: '${apply.time_start }:00 ~ <c:if test="${apply.time_end <= 24}">${apply.time_end }</c:if><c:if test="${apply.time_end > 24}">익일 ${apply.time_end - 24}</c:if>:00 ${apply.name}',
     		  start: '${apply.apply_date}'
     		},
    		  </c:forEach>
@@ -392,12 +397,6 @@
 	// JSON을 이용해 적용된 패키지 정보를 컨트롤러로 전송한다.
 	function applyAjaxRequest()
 	{
-		var arrName = new Array();
-		
-		for (var i = 0; i < array.length; i++) {
-			arrName.push(array[i]);
-		}
-			
 	    var arrApply_code = new Array();
 		var arrCode = new Array();
 		var arrDate = new Array();
@@ -556,9 +555,15 @@ body {
 								<div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
 									<div class='fc-event-main'>
 										<span id="code" style="display:none;">${form.code }</span>
-										<span id="time_start">${form.time_start }</span>:00 ~ 
-										<span id="time_end">${form.time_end }</span>:00 
+										<span id="time_start">${form.time_start }</span>:00 ~
+										<c:if test="${form.time_end <= 24}">
+											<span id="time_end" class="today">${form.time_end }</span>:00
+										</c:if>
+										<c:if test="${form.time_end > 24}">
+											익일 <span id="time_end" class="nextDay">${form.time_end - 24}</span>:00 
+										</c:if>
 										<span id="name">${form.name }</span>
+										<span id="price">₩ ${form.price }</span>
 									</div>
 								</div>
 							</c:forEach>	

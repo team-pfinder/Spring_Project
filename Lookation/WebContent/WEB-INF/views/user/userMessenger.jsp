@@ -178,6 +178,12 @@ body {
   border: 0;
 }
 
+#fileName {
+width: 100px;
+overflow: hidden;
+
+}
+
 </style>
 <script type="text/javascript">
 	
@@ -244,7 +250,7 @@ body {
 													</div>
 												</div>
 												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 											
@@ -257,7 +263,7 @@ body {
 													</div>
 												</div>
 												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 										</c:choose>
@@ -270,7 +276,7 @@ body {
 													<p class="text">${m.msg_content }</p>
 												</div>
 												<div class="message">
-													<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 											
@@ -281,7 +287,7 @@ body {
 													</p>
 												</div>
 												<div class="message">
-													<p class="response-timestamp">${fn:substring(m.msg_date,0,16)}</p>
+													<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
 												</div>
 											</c:when>
 										</c:choose>
@@ -298,9 +304,8 @@ body {
 					
 					
 					
-					
-					<!-- .footer-chat -->
 					<form action="mimgsend.action" method="post" enctype="multipart/form-data" id="msgForm">
+					<!-- .footer-chat -->
 						<div class="footer-chat" id="footer">
 								<!-- 사진첨부버튼 -->
 								
@@ -309,24 +314,24 @@ body {
 											<i class="icon fa fa-picture-o clickable"
 												style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
 										</label>
-										<input type="file" id="ex_file" name="msg_img_url">
+										<input type="file" id="ex_file" name="msg_img_url" onchange="javascript:document.getElementById('file').value = this.value"
+										accept=".jpg,.jpeg,.png,.gif,.bmp">
 									</div>
-									<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content"></input>
+									<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content" id="file"></input>
 									<i class="icon send fa fa-paper-plane-o clickable"
-										aria-hidden="true" onclick="msgSend()"></i>
+										aria-hidden="true" onclick="msgSend();"></i>
 								
 						</div>
 						<input type="hidden" name="msg_code" value="${msg_code }">
 						<input type="hidden" name="book_code" value="${book_code }">
-					</form>
 					<!-- End .footer-chat -->
-					
+					</form>
 				</div>
 			</div>
 		</div>
 
 	</div>
-<br><br><br><br><br><br><br><br><br><br><br><br>
+
 
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>

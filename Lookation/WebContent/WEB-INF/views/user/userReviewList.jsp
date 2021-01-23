@@ -50,12 +50,12 @@ th, td {
 .off-screen {
   display: none;
 }
-#li1, #li2, #li3, #li2 {
+#li1 {
   width: 100%;
   text-align: center;
 }
 
-#li1 a, #li2 a, #li3 a, #li4 a {
+#li1 a {
 	color: gray;
     text-align: center;
     display: inline-block;
@@ -64,8 +64,9 @@ th, td {
     line-height: 40px;
     border-radius: 50%;
     border: 1px solid #e6e6e6;
+    margin-right: 10px;
 }
-#li1 a.active, #li2 a.active, #li3 a.active, #li4 a.active {
+#li1 a.active {
     background: #fdbe34;
     color: #fff;
     border: 1px solid transparent;

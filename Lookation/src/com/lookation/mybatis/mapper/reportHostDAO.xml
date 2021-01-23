@@ -5,10 +5,22 @@
 <mapper namespace="com.lookation.dao.IReportHostDAO">
 	
 	<insert id="add">
-	INSERT INTO BOOK_REPORT(BOOK_REPORT_CODE, BOOK_CODE, BOOK_REPORT_TYPE_CODE
-                      , HOST_CODE, BOOK_REPORT_REASON, BOOK_REPORT_DATE)
-	VALUES(F_CODE('BRP', BRP_SEQ.NEXTVAL), #{book_code}, #{book_report_type_code}
-		 , #{host_code}, #{book_report_reason}, SYSDATE)
+		INSERT INTO BOOK_REPORT(BOOK_REPORT_CODE, BOOK_CODE, BOOK_REPORT_TYPE_CODE
+	                      , HOST_CODE, BOOK_REPORT_REASON, BOOK_REPORT_DATE)
+		VALUES(F_CODE('BRP', BRP_SEQ.NEXTVAL), #{book_code}, #{book_report_type_code}
+			 , #{host_code}, #{book_report_reason}, SYSDATE)
 	</insert>
+	
+	<insert id="addImg">
+		INSERT INTO BOOK_REPORT_IMG(BOOK_REPORT_IMG_CODE, BOOK_REPORT_CODE, BOOK_REPORT_IMG_URL)
+		VALUES (F_CODE('BRPIMG', BRPIMG_SEQ.NEXTVAL), #{book_report_code}, #{book_report_img_url})
+	</insert>
+	
+	<select id="list" parameterType="java.lang.String" resultType="com.lookation.dto.reportHostDTO">
+		SELECT BOOK_REPORT_CODE
+		FROM BOOK_REPORT
+		WHERE BOOK_CODE = #{book_code}
+		  AND HOST_CODE = #{host_code}
+	</select>
 	
 </mapper>

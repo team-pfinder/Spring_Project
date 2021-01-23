@@ -2,10 +2,20 @@ package com.lookation.dto;
 
 public class PackageDTO
 {
-	private String code, apply_code, name
+	private String code, loc_code, apply_code, name
 	             , time_start, time_end, price, apply_date;
 
 	
+
+	public String getLoc_code()
+	{
+		return loc_code;
+	}
+
+	public void setLoc_code(String loc_code)
+	{
+		this.loc_code = loc_code;
+	}
 
 	public String getApply_code()
 	{

@@ -80,18 +80,17 @@ public class LocationQna
 		dao.insertMemQna(dto);
 		
 		return "redirect:locationdetail.action";
+		// 이것도 ajax로 팝업창 닫는데 어떻게해야할지... 
 	}
 	
 	
 	// 이용자 : QnA 수정
 	@RequestMapping(value="/actions/modifyqna.action", method = RequestMethod.POST)
-	public String modifyQna(LocationQnaDTO dto)
+	public void modifyQna(LocationQnaDTO dto)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.updateMemQna(dto);
-		
-		return "redirect:locationdetail.action";
 	}
 	
 	
@@ -117,20 +116,18 @@ public class LocationQna
 		dao.insertHostQna(dto);
 
 		return "redirect:locationdetailhost.action";
-
+		// ajax 쓰면 void로 돌려줘야 하는줄 알았는데 이렇게 해도 먹어서
+		// 냅둬야 할지 어쩔지 모르겠다.
 	}
 	
 	
 	// 호스트 : Qna 답글 수정
 	@RequestMapping(value="/actions/modifyrqnareply.action", method=RequestMethod.POST)
-	public String modifyQnaReply(LocationQnaDTO dto)
+	public void modifyQnaReply(LocationQnaDTO dto)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 		
 		dao.updateHostQna(dto);
-		
-		return "redirect:locationdetailhost.action";
-		
 	}
 	
 	// 호스트 : QnA 답글 삭제

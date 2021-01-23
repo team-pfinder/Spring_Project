@@ -478,7 +478,7 @@ function removePrecautionInfo()
 		$('#BasicInfoSubmit').click(function()
 		{
 			// SUBMIT 검사
-
+			//--
 
 			// 시설안내 정보
 			// 주의사항 정보

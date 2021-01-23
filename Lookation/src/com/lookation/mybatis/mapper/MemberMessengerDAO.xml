@@ -40,9 +40,9 @@
 	<!-- 이미지 보내기 -->
 	<insert id="mSendImg" statementType="CALLABLE">
 		{CALL PRC_M_MSG_IMG(
-							#{book_code, mode=IN, }
-							, #{msg_img_url, mode=IN}
-							)
+							#{book_code, mode=IN}
+						  , #{msg_img_url, mode=IN}
+						  )
 		}
 	</insert>
 	

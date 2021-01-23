@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.IHostMessengerDAO">
+	
+	<!-- 상대방 닉네임 조회 -->
+	<select id="hSearch" resultType="java.lang.String">
+		SELECT MEMBER_NICKNAME
+		FROM VIEW_BOOK_NICKNAME
+		WHERE BOOK_CODE=#{book_code}
+	</select>
+	
+	<!-- 메시지 전체 출력 -->
+	<select id="hMsgList" resultType="com.lookation.dto.MessengerDTO">
+		SELECT MSG_CODE, MSG_CONTENT, MSG_DATE
+		, SENDER_CODE, SENDER
+		, IMGCOUNT, MSG_IMG_URL
+		, BOOK_CODE, APPLY_DATE, HORM
+		FROM VIEW_MESSENGER
+		WHERE BOOK_CODE = #{book_code}
+	</select>
+	
+	<!-- 텍스트 메시지코드 찾기 -->
+	<select id="hSearchMsg" resultType="java.lang.String">
+	<![CDATA[
+		SELECT MSG_CODE FROM ( SELECT ROWNUM, MSG_CODE
+		FROM VIEW_MESSENGER
+		WHERE BOOK_CODE=#{book_code})
+		WHERE ROWNUM <= 1
+	]]>
+	</select>
+	
+	<!-- 텍스트 메시지 보내기 -->
+	<insert id="hSendMsg">
+		INSERT INTO HOST_MSG_INFO(HOST_MSG_INFO_CODE, MSG_CODE, HOST_MSG_CONTENT, HOST_MSG_DATE)
+		VALUES(F_CODE('HMIF', HMIF_SEQ.NEXTVAL), #{msg_code}, #{host_msg_content}, SYSDATE)
+	</insert>
+	
+	<!-- 이미지 보내기 -->
+	<insert id="hSendImg" statementType="CALLABLE">
+		{CALL PRC_H_MSG_IMG(
+							#{book_code, mode=IN}
+						  , #{msg_img_url, mode=IN}
+						  )
+		}
+	</insert>
+	
+</mapper>

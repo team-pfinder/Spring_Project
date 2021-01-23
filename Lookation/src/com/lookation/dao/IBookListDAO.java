@@ -16,4 +16,6 @@ public interface IBookListDAO
 	public int memberCancel(BookListDTO dto);
 	
 	public int memberRefund(BookListDTO dto);
+	
+	public String memberNick(String member_code);
 }

@@ -42,8 +42,7 @@ td {
 		$(".release").click(function()
 		{
 			// 블랙리스트 해제하는 알림창
-			var url = "delblackmem.action?member_code="
-					+ $(this).val();
+			var url = "delblackmem.action?member_code="+ $(this).val();
 
 			if (confirm("해당 회원을 블랙리스트 목록에서 해제하시겠습니까?"))
 			{

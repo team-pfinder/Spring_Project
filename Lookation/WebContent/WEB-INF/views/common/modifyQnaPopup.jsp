@@ -20,17 +20,60 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<script type="text/javascript">
+
+	function submitBtn()
+	{
+		$.ajax({
+			type : "post",
+			url : "modifyqnainlist.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
+	
+	function submitBtn_m()
+	{
+		$.ajax({
+			type : "post",
+			url : "modifyrqna.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
+	
+	function submitBtn_h()
+	{
+		$.ajax({
+			type : "post",
+			url : "modifyrqnareply.action",
+			complete : function(xh)
+			{					
+				window.opener.parent.location.reload();				
+				window.close();
+			}
+		});
+	}
+
+</script>
+
 </head>
 <body>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<!-- 이용자 -->
-				<c:if test="${identify eq 'member'}"> 	
+				<c:choose>
+				<c:when test="${identify eq 'member'}"> 	
 				
 					<c:choose>
 						<c:when test="${reqpage eq 'list'}">
-							<form action="modifyqnainlist.action" method="post" class="modifyForm" target="redirect:userqnalist.action">
+							<form action="modifyqnainlist.action" method="post" class="modifyForm">
 								<div class="header">
 									<h3 class="title my-2">Q&A 수정하기</h3>
 								</div><!-- End .header -->
@@ -48,13 +91,13 @@
 				
 								<div class="text-center">
 									<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-									<button type="submit" class="btn btn-primary" "id="submitBtn"  onClick="self.close();">작성하기</button>
+									<button type="submit" class="btn btn-primary" id="submitBtn" onclick="submitBtn()">작성하기</button>
 								</div>
 							</form>
 						</c:when>
 						
 						<c:otherwise>
-							<form action="modifyqna.action" method="post" class="modifyForm" target="redirect:locationdetail.action">
+							<form action="modifyqna.action" method="post" class="modifyForm">
 								<div class="header">
 									<h3 class="title my-2">Q&A 수정하기</h3>
 								</div><!-- End .header -->
@@ -72,18 +115,17 @@
 				
 								<div class="text-center">
 									<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-									<button type="submit" class="btn btn-primary" id="submitBtn" onClick="self.close();">작성하기</button>
+									<button type="submit" class="btn btn-primary" id="submitBtn" onClick="submitBtn_m()">작성하기</button>
 								</div>
 							</form>
 						</c:otherwise>
 					
 					</c:choose>			
 					
-				</c:if>
+				</c:when>
 				
-				<!-- 호스트 -->
-				<c:if test="${identify eq 'host'}"> 
-					<form action="modifyrqnareply.action" method="post" target="redirect:locationdetailhost.action">
+				<c:when test="${identify eq 'host'}"> 
+					<form action="modifyrqnareply.action" method="post">
 						<div class="header">
 							<h3 class="title my-2">Q&A 답글 수정하기</h3>
 						</div><!-- End .header -->
@@ -101,10 +143,11 @@
 		
 						<div class="text-center">
 							<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="window.close();">작성하기</button>
+							<button type="submit" class="btn btn-primary" onClick="submitBtn_h()">작성하기</button>
 						</div>
 					</form>
-				</c:if>
+				</c:when>
+				</c:choose>
 			</div><!-- End .col-md-12 -->
 		</div><!-- End .row -->
 

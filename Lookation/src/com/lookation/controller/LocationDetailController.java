@@ -26,24 +26,24 @@ public class LocationDetailController implements Controller
 	{
 		ModelAndView mav = new ModelAndView();
 		
-		String locCode = request.getParameter("locCode");
-		//String locCode = "L000003";
+		String loc_code = request.getParameter("loc_code");
+		//String loc_code = "L000003";
 	
 		//String selectDate = request.getParameter("selectDate");
 		
 		try
 		{
-			mav.addObject("basicInfo", dao.basicInfo(locCode));
-			mav.addObject("usingInfo", dao.usingInfo(locCode));
+			mav.addObject("basicInfo", dao.basicInfo(loc_code));
+			mav.addObject("usingInfo", dao.usingInfo(loc_code));
 			//mav.addObject("packageInfo", dao.packageInfo(locCode, selectDate));
-			mav.addObject("facilityInfo", dao.facilityInfo(locCode));
-			mav.addObject("cautionInfo", dao.cautionInfo(locCode));
-			mav.addObject("bizInfo", dao.bizInfo(locCode));
-			mav.addObject("countQna", dao.countQna(locCode));
-			mav.addObject("countReview", dao.countReview(locCode));
-			mav.addObject("qna", dao.qna(locCode));
-			mav.addObject("review", dao.review(locCode));
-			mav.addObject("avgReviewRate", dao.avgReviewRate(locCode));
+			mav.addObject("facilityInfo", dao.facilityInfo(loc_code));
+			mav.addObject("cautionInfo", dao.cautionInfo(loc_code));
+			mav.addObject("bizInfo", dao.bizInfo(loc_code));
+			mav.addObject("countQna", dao.countQna(loc_code));
+			mav.addObject("countReview", dao.countReview(loc_code));
+			mav.addObject("qna", dao.qna(loc_code));
+			mav.addObject("review", dao.review(loc_code));
+			mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
 			
 			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
 			

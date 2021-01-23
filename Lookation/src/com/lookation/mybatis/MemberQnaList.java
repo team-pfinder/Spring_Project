@@ -36,13 +36,13 @@ public class MemberQnaList
 	
 	// QnA 리스트에서 QnA 수정
 	@RequestMapping(value="/actions/modifyqnainlist.action", method = RequestMethod.POST)
-	public String modifyQna(MemberQnaListDTO dto)
+	public void modifyQna(MemberQnaListDTO dto)
 	{
 		IMemberQnaListDAO dao = sqlSession.getMapper(IMemberQnaListDAO.class);
 		
 		dao.modifyqnalist(dto);
-		
-		return "redirect:userqnalist.action";
+	
+		//return "/WEB-INF/views/user/userQnaList.jsp";
 	}
 	
 	// QnA 리스트에서 QnA 삭제

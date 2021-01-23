@@ -55,20 +55,20 @@ public class MemberBlackManager
 	
 	
 	// 이용자 블랙리스트 등록 작업
-	@RequestMapping(value= "/actions/setblackmember.action", method=RequestMethod.POST)
-	public String regBlackmember(Model model, MemberBlackManagerDTO dto)
+	@RequestMapping(value= "/actions/setblackmem.action", method=RequestMethod.POST)
+	public void regBlackmember(Model model, MemberBlackManagerDTO dto)
 	{
 		IMemberBlackManagerDAO dao = sqlSession.getMapper(IMemberBlackManagerDAO.class);
 		
 		// 블랙리스트 등록
 		dao.regBlackMem(dto);
 		
-		return "redirect:memberblackmanager.action";
+		//return "redirect:memberblackmanager.action";
 	}
 	
 	
 	// 이용자 블랙리스트 해제 작업
-	@RequestMapping(value= "/actions/delblackmember.action", method=RequestMethod.GET)
+	@RequestMapping(value= "/actions/delblackmem.action", method=RequestMethod.GET)
 	public String delBlackmember(Model model, HttpServletRequest request)
 	{
 		IMemberBlackManagerDAO dao = sqlSession.getMapper(IMemberBlackManagerDAO.class);
