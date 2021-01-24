@@ -19,7 +19,7 @@ public class BlindContent
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@RequestMapping(value = "/actions/blindContent.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/blindcontent.action", method = RequestMethod.GET)
 	public String blind(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
