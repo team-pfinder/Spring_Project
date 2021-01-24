@@ -174,8 +174,15 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// 글자 수 제한, 색 변경
-			if (target.val().length > maxLength || target.val().length < minLength) {
+			else if (target.val().length > maxLength || target.val().length < minLength) {
 				
 				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
 				err.css("color", "red");
@@ -202,8 +209,15 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^\d{3}-\d{2}-\d{5}$/;
 
+			
+			if ($('#inputBizNum').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputBizNum').val().match(regExp) != null)
+			else if ($('#inputBizNum').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 사업자등록번호 입니다.").css("color", "green");
 				err.css("display","inline");

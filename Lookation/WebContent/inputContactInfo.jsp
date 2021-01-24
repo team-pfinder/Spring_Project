@@ -93,8 +93,14 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
+			if ($('#inputEmail').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputEmail').val().match(regExp) != null)
+			else if ($('#inputEmail').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 이메일 입니다.").css("color", "green");
 				err.css("display","inline");
@@ -122,8 +128,15 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
 
+			
+			if ($('#inputContact').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputContact').val().match(regExp) != null)
+			else if ($('#inputContact').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 휴대폰 번호입니다.").css("color", "green");
 				err.css("display","inline");
@@ -153,8 +166,15 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
 
+			
+			if ($('#inputMainContact').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputMainContact').val().match(regExp) != null)
+			else if ($('#inputMainContact').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 대표전화 번호입니다.").css("color", "green");
 				err.css("display","inline");

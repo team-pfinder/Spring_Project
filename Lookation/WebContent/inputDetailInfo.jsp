@@ -105,8 +105,15 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// 글자 수 제한, 색 변경
-			if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+			else if (parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
 				
 				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
 				err.css("color", "red");
@@ -129,8 +136,21 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
-			// 글자 수 제한, 색 변경
-			if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+			// 1. 최소가 입력되지않았을 경우
+			//	1-1. 최대값의 수 제한(최소값을 입력해주세요)
+			//  1-2. 
+			
+			// 2. 최소가 입력되었을 경우
+			//	2-1. 최소값을 받아와 최대값의 수 제한(입력받은 최소값 ~ 최대값)
+			//  2-2. 
+			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
+			else if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
 				
 				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
 				err.css("color", "red");
@@ -146,12 +166,12 @@
 	}
 	  
 	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
-	/* function maxTest() {
+	function maxTest() {
 		
 		var inputMin = parseInt($.trim($('#inputMinPeople').val()));
 
 		return inputMin;
-	} */
+	} 
 	
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
@@ -266,8 +286,9 @@
 			<br><br>
 			<input type="text" required="required" class="form-control"
 					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
-					id="inputMinPeople" name="inputMinPeople">
-					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" --> 
+					id="inputMinPeople" name="inputMinPeople"
+					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')";>
+					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"--> 
 			<span id="err" style="font-weight: bold;"></span>
 			
 		</div>
@@ -283,11 +304,13 @@
 			<br><br>
 			<input type="text" required="required" class="form-control"
 					placeholder="최대 수용인원을 입력하세요.[최소 수용인원 이상, 최대 30명 이하]"
-					id="inputMaxPeople" name="inputMaxPeople">
+					id="inputMaxPeople" name="inputMaxPeople"
+					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); -->
 			<span style="font-weight: bold;"></span>
 		</div>
 	
+	<br><br><br>
 	
 		<!-- 4. 웹 url -->
 		
