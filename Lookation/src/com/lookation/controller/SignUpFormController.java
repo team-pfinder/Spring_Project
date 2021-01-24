@@ -23,10 +23,11 @@ public class SignUpFormController implements Controller
 		
 		// 로그인 확인 필요
 		// 로그인 한 경우에는 들어오면 안됨
+		String identify = request.getParameter("identify");
 		
 		try
 		{
-			mav.setViewName("../WEB-INF/views/common/signUp.jsp");
+			mav.setViewName("../WEB-INF/views/common/signUp.jsp?identify=" + identify);
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());

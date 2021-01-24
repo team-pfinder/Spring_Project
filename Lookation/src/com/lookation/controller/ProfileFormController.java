@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
+// 사용 안함
 public class ProfileFormController implements Controller
 {
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		ModelAndView mav = new ModelAndView();
-		
 		try
 		{
 			// jdbc 처리
