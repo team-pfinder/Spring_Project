@@ -246,7 +246,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputUsingInfo.jsp" method="POST">	
+		  action="inputdetailinfo.action" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		

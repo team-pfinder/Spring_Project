@@ -55,23 +55,6 @@
 		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
 		setMaxPeople($('#inputMaxPeople'), 1, '최대 수용인원');
 		
-		
-		// 상세 이미지 submit 제어를 위한 action
-		/*
-		$('#ex_filename').each(function (idx) {
-			
-			var value = $(this).val();
-			
-			var eqValue = $("#ex_filename:eq(" + idx + ")").val();
-			alert(value + ":" + eqValue);
-			
-		});*/
-		/* 
-		var arrImage = 
-		var image = $('#ex_filename')
-		 */
-		
-		
 		// submit 제어
 		var f = $('#inputDetailInfo');
 		
@@ -116,13 +99,13 @@
 				f.submit();				
 			}
 			
-			
 		});
 		
 	});
 		
 	// 함수 정의 ---------------------------------------------------------	
-
+	
+	
 	// 최소 수용인원 수 제약 function
 	function setMinPeople(target, minNum, maxNum, name){
 		
@@ -190,14 +173,6 @@
 		});
 	} 
 	   
-	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
-	/* function maxTest() {
-		
-		var inputMin = parseInt($.trim($('#inputMinPeople').val()));
-
-		return inputMin;
-	}  */
-	
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
 		
@@ -210,9 +185,7 @@
 		} else {
 			return;
 		}
-		
 	}
-	
 
 </script>
 	
@@ -273,7 +246,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputUsingInfo.jsp" method="POST">	
+		  action="inputdetailinfo.action" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
@@ -284,12 +257,7 @@
 			
 		<c:forEach var="i" begin="1" end="10">
 				<div class="filebox${i }">
-						<!-- <input class="upload-name" name="inputThumbnail" 
-							   placeholder="이미지 등록" disabled="disabled" style="width: 70%"> -->
-						<!-- <label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> -->
-					<div id="box"> 
-						<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
-					</div>
+					<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
 				</div>
 		</c:forEach>
 				<br><br>
