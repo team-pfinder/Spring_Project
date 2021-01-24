@@ -74,8 +74,7 @@ public class Account
 		else
 		{
 			// 세션 저장
-			session.setAttribute("identify", identify);
-			session.setAttribute("accountCode", accountCode);
+			session.setAttribute(identify + "Code", accountCode);
 			
 			// 세션에 저장했던 이전 요청 액션을 가지고 온다.
 			requestUrl = (String)session.getAttribute("requestUrl");
@@ -89,24 +88,25 @@ public class Account
 	@RequestMapping(value="/actions/confirmpasswordform.action", method=RequestMethod.GET)
 	public String confirmPasswordForm(HttpServletRequest request, Model model)
 	{
+		String identify = request.getParameter("identify");
+		
 		// 세션을 가져옴
-		HttpSession session = request.getSession();                  
-		// 호스트, 이용자 측면 정보를 가져온다             
-		String identify = (String)session.getAttribute("identify");    
+		HttpSession session = request.getSession(); 
+		
 		// 회원 코드를 가져온다.           
-		String accountCode = (String)session.getAttribute("accountCode");                                                      
-		                                                                       
-		if(identify == null || accountCode == null)                               
+		String accountCode = (String)session.getAttribute(identify + "Code");       
+		if(accountCode == null)                               
 		{
 			// 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;	
-		}	                                                                      
+		}
 		
 		// 검증 후 요청되는 액션
 		String requestUrl = request.getParameter("requestUrl");
-		if(requestUrl != null && 
-				!requestUrl.contains("confirmpasswordform.action"))
+		if(requestUrl != null && !requestUrl.contains("confirmpasswordform.action"))
+		{
 			session.setAttribute("requestUrl", requestUrl);
+		}
 		
 		// 이전 액션
 		String beforePage = request.getHeader("Referer");
@@ -128,7 +128,6 @@ public class Account
 		// 취소를 눌렀을때 요청되는 액션
 		if(!beforeUrl.contains("confirmpasswordform.action"))
 			session.setAttribute("beforeUrl", beforeUrl);
-
 		
 		return "../WEB-INF/views/common/confirmPassword.jsp?identify=" + identify;
 	}
@@ -136,14 +135,19 @@ public class Account
 	@RequestMapping(value="/actions/confirmpassword.action", method=RequestMethod.POST)
 	public String confirmPassword(HttpServletRequest request, Model model)
 	{
-		// 세션에서 코드를 통한 검증
-		HttpSession session = request.getSession();
-		String identify = (String)session.getAttribute("identify");    
-		String accountCode = (String)session.getAttribute("accountCode");
+		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
+		// identify를 GET 받아야한다.
+		String identify = request.getParameter("identify");
+		
+		// 세션을 통한 검증                                                                    
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute(identify + "Code"); 
+		
 		
 		// 로그인 확인
-		if(identify == null || accountCode == null)                               
-		{    
+		if(accountCode == null)                               
+		{   
+			System.out.println("check!");
 			// 로그인이 안되어 있다면 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;	
 		}
@@ -152,8 +156,6 @@ public class Account
 		AccountDTO account = new AccountDTO();
 		account.setCode(accountCode);
 		account.setPw(request.getParameter("pw"));
-		
-		System.out.println("test");
 		
 		int count = 0;
 		if(identify.equals("member"))
@@ -178,10 +180,11 @@ public class Account
 		{
 			// 세션에 저장했던 이전 요청 액션을 가지고 온다.
 			String requestUrl = (String)session.getAttribute("requestUrl");
-		
+			session.setAttribute("requestUrl", null);
+			System.out.println(requestUrl);
 			// 다음 요청 페이지를 요청해야 함
 			// 뭔지는 상황마다 다르다.
-			return "redirect:" + requestUrl;
+			return "redirect:" + requestUrl + "?identify=" + identify;
 		}
 		
 	}
@@ -190,20 +193,17 @@ public class Account
 	@RequestMapping(value="/actions/profile.action", method=RequestMethod.GET)
 	public String profile(HttpServletRequest request, Model model)
 	{
-		// 로그인 확인
-		// ...
+		String identify = request.getParameter("identify");
 		
-		// 세션 정보를 가지고 온다.
-		HttpSession session = request.getSession();
-		// 호스트, 이용자 측면 정보를 가져온다             
-		String identify = (String)session.getAttribute("identify");    
-		// 회원 코드를 가져온다.           
-		String accountCode = (String)session.getAttribute("accountCode");  
-		String result = "noSigned";
+		// 세션을 통한 로그인 확인                                                                    
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute(identify + "Code"); 
+
+		// 로그인 확인을 기록하기 위함                  
+		String result = "noSigned"; 
 		
-		// 둘다 존재하는 경우 (로그인 된 경우)                                                                         
-		// 세션 정보의 회원 코드를 토대로 프로필 정보를 찾는다.	
-		if(identify != null && accountCode != null)                               
+		// 회원 코드가 세션에 세팅되어 있다면   
+		if(accountCode != null)                               
 		{            
 			// 호스트일 경우                                                             
 			if(identify.equals("host"))                                           
@@ -230,22 +230,25 @@ public class Account
 		}	                                                                  
 		model.addAttribute("result", result);    
 		
+		if(result.equals("noSigned"))
+		{
+		    // 로그인 창으로 이동한다.
+		    return "redirect:loginform.action?identify=" + identify;
+		}
+		
 		return "../WEB-INF/views/common/profile.jsp?identify=" + identify;
 	}
 	
 	@RequestMapping(value="/actions/ajaxmodifytel.action", method=RequestMethod.POST)
 	public String ajaxModifyTel(HttpServletRequest request, Model model)
 	{
-		//String identify = request.getParameter("identify");
+		String identify = request.getParameter("identify");
 		
 		// 세션 정보를 가지고 온다.
-		HttpSession session = request.getSession();
-		// 호스트, 이용자 측면 정보를 가져온다             
-		String identify = (String)session.getAttribute("identify");    
-		// 회원 코드를 가져온다.           
-		String accountCode = (String)session.getAttribute("accountCode");  
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute(identify + "Code"); 
 		
-		if(identify == null || accountCode == null)    
+		if(accountCode == null)    
 			return "../WEB-INF/views/ajax/AccountAjax.jsp";
 		
 		String tel = request.getParameter("tel");
@@ -279,16 +282,15 @@ public class Account
 	@RequestMapping(value="/actions/changepasswordform.action", method=RequestMethod.GET)
 	public String changePasswordForm(HttpServletRequest request, Model model)
 	{
+		String identify = request.getParameter("identify");
+		
 		// 세션 정보를 가지고 온다.
-		HttpSession session = request.getSession();
-		// 호스트, 이용자 측면 정보를 가져온다             
-		String identify = (String)session.getAttribute("identify");    
-		// 회원 코드를 가져온다.           
-		String accountCode = (String)session.getAttribute("accountCode");                                                      
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute(identify + "Code");                                                      
 		String result = "noSigned";
 		
 		// 둘다 존재하는 경우 (로그인 된 경우)                                                                         
-		if(identify != null && accountCode != null)                               
+		if(accountCode != null)                               
 		{            
 			// 호스트일 경우                                                             
 			if(identify.equals("host"))                                           
@@ -307,15 +309,15 @@ public class Account
 		                                           
 			}
 		        
-		        result = "signed";	                                                                   
-		}
-		// 로그인이 안된 경우
-		else
-		{
-			// 로그인 창으로 이동한다.
-			return "redirect:loginform.action?identify=" + identify;	
-		}	                                                                  
+		    result = "signed";	                                                                   
+		}                                                                 
 		model.addAttribute("result", result); 
+		
+		if(result.equals("noSigned"))
+		{
+		    // 로그인 창으로 이동한다.
+		    return "redirect:loginform.action?identify=" + identify;
+		}
 		
 		return "../WEB-INF/views/common/changePassword.jsp?identify=" + identify;
 	}
@@ -323,14 +325,15 @@ public class Account
 	@RequestMapping(value="/actions/changepassword.action", method=RequestMethod.POST)
 	public String changePassword(HttpServletRequest request, Model model)
 	{
-		// 세션 정보를 가지고 온다.
-		HttpSession session = request.getSession();                  
-		// 호스트, 이용자 측면 정보를 가져온다             
-		String identify = (String)session.getAttribute("identify");    
-		// 회원 코드를 가져온다.           
-		String accountCode = (String)session.getAttribute("accountCode");                                                      
-		
-		if(identify == null || accountCode == null)
+		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
+		// identify를 GET 받아야한다.
+		String identify = request.getParameter("identify");
+
+		// 세션을 통한 로그인 확인                                                                    
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute(identify + "Code");                                                        
+                                                  	
+		if(accountCode == null)
 		{
 			// 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;	
@@ -354,7 +357,7 @@ public class Account
 			dao.modifyPassword(account);
 		}
 		
-		return "redirect:profile.action";
+		return "redirect:profile.action?identify=" + identify;
 	}
 	
 	// 비밀번호 찾기 (변경)

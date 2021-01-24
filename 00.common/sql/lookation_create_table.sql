@@ -1856,7 +1856,7 @@ CREATE TABLE LOC_USE_INFO
 (
     LOC_USE_INFO_CODE          VARCHAR2(15)     , 
     LOC_CODE                   VARCHAR2(15)     , 
-    LOC_USE_HOUR               VARCHAR2(20)     , 
+    LOC_USE_HOUR               VARCHAR2(300)    , 
     LOC_USE_DAY_OFF            VARCHAR2(300)    , 
     LOC_USE_APPOINT_DAY_OFF    VARCHAR2(300)    , 
     CONSTRAINT LOC_USE_INFO_PK PRIMARY KEY (LOC_USE_INFO_CODE)

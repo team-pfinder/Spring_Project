@@ -3,6 +3,9 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String loc_code = request.getParameter("loc_code");
+	pageContext.setAttribute("loc_code", loc_code);
 %>
 <!DOCTYPE html>
 <html>
@@ -65,7 +68,7 @@
 		if(confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
 						+ "(기존 작성 내용은 저장되지 않습니다.)"))
 		{
-			location.href = "packagemanager.action";
+			location.href = "packagemanager.action?loc_code=${loc_code}";
 		}	
 	}
 
@@ -74,7 +77,7 @@
 </head>
 <body>
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+        <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 
 	<!-- 타이틀 -->
@@ -127,7 +130,7 @@
 
 			<!-- form start --------------------------------------------->
 			<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm"
-				action="inputpackageform.action" method="POST">
+				action="inputpackageform.action?loc_code=${loc_code }" method="POST">
 				<!--onsubmit="handOver()" -->
 				<!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 
