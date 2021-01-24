@@ -166,8 +166,8 @@ margin-bottom: 0;
 								<!-- 날짜 변환 -->
 								<jsp:useBean id="now" class="java.util.Date" scope="page"/>
 								<fmt:formatDate var="today" value="${now}" scope="page" pattern="yyyy-MM-dd"/>  
-								
-								<c:if test="${not empty bookList }">
+								<c:choose>
+								<c:when test="${not empty bookList }">
 									<c:forEach var="book" items="${bookList }">
 										<input type="text" id="loc" value="${book.loc_code }" style="display: none;">
 										<input type="text" id="member" value="${book.member_code }" style="display: none;">
@@ -199,117 +199,65 @@ margin-bottom: 0;
 											
 											<td>${book.loc_name }</td>
 											
-											
-											
-<%-- 											<c:choose>
-											<c:when test="${fdate <= today} ">
-												<td>이용완료</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-													disabled="disabled">
-													취소
-													</button>
-													
-											</c:when>
-											
-											<c:when test="${fdate > today} ">
-												<td>예약완료</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-													disabled="disabled">
-													취소
-													</button>
-											</c:when>
-											
-											<c:when test="${book.member_cancel eq 1 || book.host_cancel eq 1}">
-												<td class="text-danger">예약취소</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-													disabled="disabled">
-													취소
-													</button>
-													<button type="button" value="${book.book_code}" class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails" >
-													상세보기
-													</button>
-												</td>
-											</c:when>
-											
-										 	<c:otherwise>
-												<td class="text-gon">그외</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-													>
-													취소
-													</button>
-													<button type="button" value="${book.book_code}" class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails" >
-													상세보기
-													</button>
-												</td>
-											</c:otherwise> 
-											
-										</c:choose> --%>
-											<c:if test="${book.checkbook == -1}">
-												<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-													신고</button>
-													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-														disabled="disabled">
-														취소</button>
-													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-														상세보기</button>
-												</td>
-											</c:if>
-											
-											<c:if
-												test="${book.checkbook == 0 }">			<!-- 0 : 이용완료 -->
-												<td class="text-dark">이용완료${book.checkbook}</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-													신고</button>
-													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-														>
-														취소</button>
-													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-														상세보기</button>
-												</td>
-											</c:if>
-											
-											<c:if test="${book.checkbook == 1 }">		<!-- 1 : 예약완료 -->
-												<td class="text-gon">예약완료${book.checkbook}</td>
-												<td>
-													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-													신고</button>
-													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-														>취소</button>
-													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-														상세보기</button>
-												</td>
-											</c:if>
-											
+ 											<c:choose>
+												<c:when test="${book.checkbook eq '취소완료'}">
+													<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+													<td>
+														<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+														신고</button>
+														<button type="button" value="${book.book_code}"
+															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+															disabled="disabled">
+															취소</button>
+														<button type="button" value="${book.book_code}"
+															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+															상세보기</button>
+													</td>
+												</c:when>
+												
+												<c:when test="${book.checkbook eq '이용완료'}">
+													<td class="text-danger">이용완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+													<td>
+														<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+														신고</button>
+														<button type="button" value="${book.book_code}"
+															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+															disabled="disabled">
+															취소</button>
+														<button type="button" value="${book.book_code}"
+															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+															상세보기</button>
+													</td>
+												</c:when>
+												
+												<c:when test="${book.checkbook eq '예약완료'}">
+													<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+													<td>
+														<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+														신고</button>
+														<button type="button" value="${book.book_code}"
+															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+															disabled="disabled">
+															취소</button>
+														<button type="button" value="${book.book_code}"
+															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+															상세보기</button>
+													</td>
+												</c:when>
+											</c:choose>
 											</tr>
 										</c:forEach><!-- .c:forEach 끝 -->
-									</c:if>
+									</c:when>
 									
-									<c:if test="${empty bookList }">
+									<c:otherwise>
 										<tr class="py-5 my-5">
 											<td colspan="5" class="py-5 my-5"> 예약이 없습니다. </td>
 										</tr>
-										
-									</c:if>
+									</c:otherwise>
+								</c:choose>
 							</tbody>
 						</table>
 					</div><!-- End .table-flex -->

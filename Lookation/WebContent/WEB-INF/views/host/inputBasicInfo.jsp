@@ -329,7 +329,7 @@ ul.precautions-list > li {
 			return;
 		}
 		
-		newDiv.innerHTML = "<p>" + facilityNum + ". " + content + "</p>";
+		newDiv.innerHTML = "<p>" + content + "</p>";
 		newDiv.setAttribute("id" , "facilityInfo_" + facilityNum);
 		obj.appendChild(newDiv);
 		
@@ -383,7 +383,7 @@ ul.precautions-list > li {
 			return;
 		}
 		
-		newDiv.innerHTML = "<p>" + precautionNum + ". " + content + "</p>";
+		newDiv.innerHTML = "<p>" + content + "</p>";
 		newDiv.setAttribute("id" , "precautionInfo_" + precautionNum);
 		obj.appendChild(newDiv);
 		

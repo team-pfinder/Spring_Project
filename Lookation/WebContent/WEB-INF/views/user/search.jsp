@@ -260,7 +260,7 @@
 								<div class="blog-entry align-self-stretch">
 									<a href="locationdetail.action?loc_code=${item.loc_code}"
 										class="block-20 rounded" id="img"
-										style="background-image: url('<%=cp%>/images/image_1.jpg');">
+										style="background-image: url('<%=cp%>/images/${item.thumbnail_url}');">
 									</a>
 									<div class="text mt-3 text-center">
 										<div class="meta mb-2">
