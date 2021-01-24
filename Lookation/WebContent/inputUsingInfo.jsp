@@ -38,14 +38,27 @@
 			var tDayOff = $("#inputDayOff").val();
 			var tAppointDayoff = $("#inputAppointDayoff").val(); 
 			
+			var con;
+			
 			if (tUsingHour == "" || tDayOff == "" || tAppointDayoff == "" ) {
 				 
 				alert("필수 입력사항을 모두 입력해 주세요.");
 			}
 			else {
-				f.submit();
-			}
 				
+				con = confirm("현재까지의 모든 입력정보를 저장하고, 검수신청을 하시겠습니까?");
+				
+				if (con == true) {
+					
+					f.submit();
+					alert("공간등록 및 검수신청이 완료되었습니다.");
+					return;
+					
+				} else {
+					return;
+				}
+				
+			}
 			
 		});
 			
@@ -59,7 +72,7 @@
 						+ "(기존 작성 내용은 저장되지 않습니다.)");
 		
 		if (con == true) {
-			location.href = "mainHost.jsp";
+			location.href = "hostmain.action";
 			return;
 		} else {
 			return;
@@ -78,7 +91,7 @@
 	
     <!-- 타이틀 -->
     <section class="hero-wrap hero-wrap-2"
-     		 style="background-image: url('images/bg_3.jpg');"
+     		 style="background-image: url(<%=cp%>/images/bg_3.jpg);"
       		 data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
@@ -125,7 +138,7 @@
 
 	
 	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
-		  action="inputusinginfo.action" method="POST"><!--onsubmit="handOver()" -->
+		  action="locationList.jsp" method="POST"><!--onsubmit="handOver()" -->
 		
 		<!-- 1. 이용시간 -->
 		
