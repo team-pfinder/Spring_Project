@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.IMemberAccountDAO;
@@ -26,7 +25,6 @@ public class Account
 	public String loginForm(HttpServletRequest request)
 	{
 		String identify = request.getParameter("identify");
-		
 		return "../WEB-INF/views/common/login.jsp?identify=" + identify;
 	}
 	
@@ -38,15 +36,6 @@ public class Account
 		// 세션에 로그인창 이전 요청 페이지를 담는다. 
 		// 만약 이전 요청 페이지가 없는 경우 메인 화면으로 이동한다.
 		HttpSession session = request.getSession();
-		String requestUrl = request.getParameter("requestUrl");
-		
-		System.out.println(requestUrl);
-		
-		// 로그인창 액션이 아닌 요청 액션이 필요하므로
-		if(!requestUrl.contains("loginform.action"))
-		{
-			session.setAttribute("requestUrl", requestUrl);
-		}
 		
 		// 로그인 검증	
 		String accountCode = null;
@@ -65,7 +54,6 @@ public class Account
 			accountCode = dao.isLogin(account);
 		}
 		
-	
 		// 로그인 실패시
 		if(accountCode == null)
 		{
@@ -78,8 +66,13 @@ public class Account
 			// 세션 저장
 			session.setAttribute(identify + "Code", accountCode);
 			
-			// 세션에 저장했던 이전 요청 액션을 가지고 온다.
-			requestUrl = (String)session.getAttribute("requestUrl");
+			// 메인 페이지로 간다..
+			String requestUrl = "";
+			
+			if(identify.equals("host"))
+				requestUrl = "hostmain.action";
+			else if(identify.equals("member"))
+				requestUrl = "membermain.action";
 			
 			// 이전 요청 페이지를 다시 요청해야 함
 			return "redirect:" + requestUrl;
@@ -105,34 +98,10 @@ public class Account
 		
 		// 검증 후 요청되는 액션
 		String requestUrl = request.getParameter("requestUrl");
-		
-		System.out.println(requestUrl);
-		
 		if(requestUrl != null && !requestUrl.contains("confirmpasswordform.action"))
 		{
 			session.setAttribute("requestUrl", requestUrl);
 		}
-		
-		// 이전 액션
-		String beforePage = request.getHeader("Referer");
-		String beforeUrl = "";
-		if(beforePage == null)
-		{
-			if(identify.equals("host"))
-				beforeUrl = "hostmain.action";
-			else if(identify.equals("member"))
-				beforeUrl = "membermain.action";
-		}
-		else
-		{
-			// 뒷부분 액션만 잘라오기
-			String[] subArr = beforePage.split("/");
-			beforeUrl = subArr[subArr.length-1];
-		}
-		
-		// 취소를 눌렀을때 요청되는 액션
-		if(!beforeUrl.contains("confirmpasswordform.action"))
-			session.setAttribute("beforeUrl", beforeUrl);
 		
 		return "../WEB-INF/views/common/confirmPassword.jsp?identify=" + identify;
 	}
@@ -239,6 +208,11 @@ public class Account
 		if(result.equals("noSigned"))
 		{
 		    // 로그인 창으로 이동한다.
+			String path = request.getServletPath();
+			String[] subArr = path.split("/");
+			String identifyInfo = request.getParameter("identify");
+			path = subArr[subArr.length-1] + (identifyInfo.isEmpty() ? "" : ("?identify=" + identifyInfo) );
+			session.setAttribute("requestUrl", path);
 		    return "redirect:loginform.action?identify=" + identify;
 		}
 		
