@@ -67,7 +67,7 @@ public class InspectProcessController implements Controller
 			
 			
 			dto1 = dao.prlist(inspect_reg_code);
-			dto2 = dao.pakageInfo(inspect_reg_code);
+			//dto2 = dao.pakageInfo(inspect_reg_code);
 			dto3 = dao.facilityInfo(inspect_reg_code);
 			dto4 = dao.cautionInfo(inspect_reg_code);
 			dto5 = dao.urlInfo(inspect_reg_code);

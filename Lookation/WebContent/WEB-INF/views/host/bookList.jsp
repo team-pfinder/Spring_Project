@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약리스트확인페이지.jsp</title>
-<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 	/* btn */
@@ -91,7 +91,7 @@ margin-bottom: 0;
     	// 예약 취소 팝업
     	$(".popCancel").click(function()
     	{
-    		var url = "bookcancel.action?book_code=" + $(this).val();
+    		var url = "bookcancelhost.action?book_code=" + $(this).val();
     		var option = "width=450, height=500, resizable=no, scrollbars=yes, status=no";
     		window.open(url, "", option);
     	}); 
@@ -100,18 +100,10 @@ margin-bottom: 0;
     	// 예약 상세보기 팝업
     	$(".popDetails").click(function()
     	{
-    		var url = "bookdetails.action?book_code=" + $(this).val();
+    		var url = "bookdetailshost.action?book_code=" + $(this).val();
     		var option = "width=850, height=500, resizable=no, scrollbars=yes, status=no";
     		window.open(url, "", option);
-    	});
-    	
-    	// 신고하기
-    	$(".report").click(function()
-		{
-			var popUrl = "reportuserform.action?loc_code=" + $("#loc").val() + "&member_code=" +  $("#member").val() + "&loc_name=" + $("#loc_name").val();
-			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
-			window.open(popUrl, "", popOption);
-		});
+    	}); 
     	
 	})
 	
@@ -134,7 +126,7 @@ margin-bottom: 0;
 <div class="container my-5">
 	<div class="row">
 		<!-- include mypage_Sidebar.jsp -->
-		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
+		<c:import url="${cp}/includes/mypage_Sidebar(host).jsp"></c:import>
 		<%-- <%@ include file="../../../includes/mypage_Sidebar(user).jsp"%> --%>
 	
 		<div class="col-lg-10 col-md-10">
@@ -166,12 +158,9 @@ margin-bottom: 0;
 								<!-- 날짜 변환 -->
 								<jsp:useBean id="now" class="java.util.Date" scope="page"/>
 								<fmt:formatDate var="today" value="${now}" scope="page" pattern="yyyy-MM-dd"/>  
-								<c:choose>
-								<c:when test="${not empty bookList }">
+								
+								<c:if test="${not empty bookList }">
 									<c:forEach var="book" items="${bookList }">
-										<input type="text" id="loc" value="${book.loc_code }" style="display: none;">
-										<input type="text" id="member" value="${book.member_code }" style="display: none;">
-										<input type="text" id="loc_name" value="${book.loc_name }" style="display: none;">
 										<fmt:parseDate var="pdate" value="${book.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
 										<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 										<%-- <span>today : ${today } <br> fdate : ${fdate }<br></span> --%>
@@ -186,7 +175,8 @@ margin-bottom: 0;
 													<td>
 														${book.package_start }:00 ~ 익일 ${book.package_end - 24}:00
 													 (${book.book_hour}시간)
-													<p class="book_date">${book.book_date }</p></td>
+													<p class="book_date">${book.book_date }</p>
+													</td>
 												</c:when>
 												
 												<c:otherwise>
@@ -199,65 +189,117 @@ margin-bottom: 0;
 											
 											<td>${book.loc_name }</td>
 											
- 											<c:choose>
-												<c:when test="${book.checkbook eq '취소완료'}">
-													<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
-													<td>
-														<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-														신고</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															disabled="disabled">
-															취소</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-															상세보기</button>
-													</td>
-												</c:when>
-												
-												<c:when test="${book.checkbook eq '이용완료'}">
-													<td class="text-danger">이용완료${book.checkbook}</td>	<!-- -1 취소완료 -->
-													<td>
-														<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-														신고</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															disabled="disabled">
-															취소</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-															상세보기</button>
-													</td>
-												</c:when>
-												
-												<c:when test="${book.checkbook eq '예약완료'}">
-													<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
-													<td>
-														<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-														신고</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															disabled="disabled">
-															취소</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-															상세보기</button>
-													</td>
-												</c:when>
-											</c:choose>
+											
+											
+<%-- 											<c:choose>
+											<c:when test="${fdate <= today} ">
+												<td>이용완료</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+													disabled="disabled">
+													취소
+													</button>
+													
+											</c:when>
+											
+											<c:when test="${fdate > today} ">
+												<td>예약완료</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+													disabled="disabled">
+													취소
+													</button>
+											</c:when>
+											
+											<c:when test="${book.member_cancel eq 1 || book.host_cancel eq 1}">
+												<td class="text-danger">예약취소</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+													disabled="disabled">
+													취소
+													</button>
+													<button type="button" value="${book.book_code}" class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails" >
+													상세보기
+													</button>
+												</td>
+											</c:when>
+											
+										 	<c:otherwise>
+												<td class="text-gon">그외</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+													>
+													취소
+													</button>
+													<button type="button" value="${book.book_code}" class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails" >
+													상세보기
+													</button>
+												</td>
+											</c:otherwise> 
+											
+										</c:choose> --%>
+											<c:if test="${book.checkbook == -1}">
+												<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													신고</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														disabled="disabled">
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+											</c:if>
+											
+											<c:if
+												test="${book.checkbook == 0 }">			<!-- 0 : 이용완료 -->
+												<td class="text-dark">이용완료${book.checkbook}</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													신고</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														>
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+											</c:if>
+											
+											<c:if test="${book.checkbook == 1 }">		<!-- 1 : 예약완료 -->
+												<td class="text-gon">예약완료${book.checkbook}</td>
+												<td>
+													<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													신고</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														>취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+											</c:if>
+											
 											</tr>
 										</c:forEach><!-- .c:forEach 끝 -->
-									</c:when>
+									</c:if>
 									
-									<c:otherwise>
+									<c:if test="${empty bookList }">
 										<tr class="py-5 my-5">
 											<td colspan="5" class="py-5 my-5"> 예약이 없습니다. </td>
 										</tr>
-									</c:otherwise>
-								</c:choose>
+										
+									</c:if>
 							</tbody>
 						</table>
 					</div><!-- End .table-flex -->
@@ -342,7 +384,7 @@ $setRows.submit();
 
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <div>
-	<c:import url="${cp}/includes/footer_user.jsp"></c:import>
+	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 </div>
 </body>
 </html>

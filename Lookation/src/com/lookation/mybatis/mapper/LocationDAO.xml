@@ -138,6 +138,13 @@
 
 	</insert>
 	
+	<insert id="inputPackageForm" parameterType="com.lookation.dto.LocationDTO">
+		
+		INSERT INTO PACKAGE_FORM(PACKAGE_FORM_CODE, LOC_CODE)
+		VALUES(F_CODE('PF', PF_SEQ.NEXTVAL), #{loc_code})
+		
+	</insert>
+	
 	<insert id="inputInspectRegList" parameterType="com.lookation.dto.LocationDTO">
 		
 		<selectKey keyProperty="inspect_reg_code" resultType="String" order="AFTER">
@@ -251,6 +258,7 @@
 		FROM LOC_BASIC_INFO
 		WHERE LOC_CODE=#{loc_code}
 	</select>
+
 	
 	<!-- 
 	<select id="selectThumbnail" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">

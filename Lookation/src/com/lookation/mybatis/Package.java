@@ -108,11 +108,10 @@ public class Package
 			model.addAttribute("info", dao.getInfo(accountCode));
 
 			//
-			
 			PackageDTO p = new PackageDTO();
 			p.setName(request.getParameter("inputPackageName")); 
 			p.setTime_start(request.getParameter("locationPackageStart")); 
-			p.setTime_end(request.getParameter("locationPacakgeEnd")); 
+			p.setTime_end(request.getParameter("locationPackageEnd")); 
 			p.setPrice(request.getParameter("locationPackagePrice")); 
 			p.setLoc_code(loc_code);
 			

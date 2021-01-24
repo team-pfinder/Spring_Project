@@ -38,12 +38,31 @@
 			var tDayOff = $("#inputDayOff").val();
 			var tAppointDayoff = $("#inputAppointDayoff").val(); 
 			
-			if (tUsingHour == "" || tDayOff == "" || tAppointDayoff == "" ) {
+			var con;
+			
+			if (tUsingHour == "" || tDayOff == "" || tAppointDayoff == "" ) 
+			{
 				 
 				alert("필수 입력사항을 모두 입력해 주세요.");
 			}
-			else {
-				f.submit();
+			else 
+			{
+				
+				con = confirm("현재까지의 모든 입력정보를 저장하고, 검수신청을 하시겠습니까?");
+				
+				if (con == true) 
+				{
+					
+					f.submit();
+					alert("공간등록 및 검수신청이 완료되었습니다.");
+					return;
+					
+				} 
+				else 
+				{
+					return;
+				}
+				
 			}
 				
 			

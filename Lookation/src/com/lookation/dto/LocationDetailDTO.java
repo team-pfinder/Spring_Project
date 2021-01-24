@@ -9,7 +9,7 @@ public class LocationDetailDTO
 	, boardCode, memCode, content, date, memberNickName, reviewRate
 	, count, url, rvimgCount, qna_content
 	, replyRemove, removeCount, hostCode, replyContent, replyDate, replyCode
-	, apply_package_code; 
+	, apply_package_code;
 	
 	private String packageName, applyDate;
 	
@@ -17,8 +17,6 @@ public class LocationDetailDTO
 	, bizLicenseNum, facility, caution;
 	
 	private int minPeople, maxPeople, packStart, packEnd, packPrice;
-	
-	
 	
 	
 	public String getApply_package_code()

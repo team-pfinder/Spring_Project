@@ -38,7 +38,7 @@ public class InspectInsertController implements Controller
 		// 로그인이 안된경우                                                                   
 		if(admin_id == null)                                                      
 		{                                                                            
-			// 로그인 실패. 다시 로그인창으로                                                     
+			// 로그인 실패. 다시 로그인창으로    
 			mav.setViewName("redirect:adminloginform.action");
 			return mav;
 		}
@@ -51,7 +51,6 @@ public class InspectInsertController implements Controller
 			dto.setInspect_reg_code(inspect_reg_code);
 			dto.setInspect_type_code(inspect_type_code);
 			dto.setInspect_proc_reason(inspect_proc_reason);
-			
 			
 			dao.Inspect(dto); 
 			

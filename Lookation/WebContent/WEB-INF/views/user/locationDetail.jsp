@@ -357,7 +357,7 @@ width: 100%;
 			$.ajax({
 				url : "locdetailajax.action"
 				, type : "post"
-				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
+				, data : {selectDate : $("#selectDate").val(), loc_code : $("#hiddenCode").val()}
 				, success : function(data) {
 					
 					// 받은 데이터 JSON으로 파싱함
@@ -510,6 +510,7 @@ width: 100%;
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
+				<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">${basicInfo.locationCode }
 				<input type="hidden" id="packPrice" name="packPrice" value="${packageInfo.packPrice }">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
@@ -522,7 +523,13 @@ width: 100%;
 				<!--- carousel --->
 				<!-- 상세이미지 슬라이더 -->
 				<div class="home-slider owl-carousel">
-					<div class="slider-item"
+					<c:forEach var="url" items="${detailPhotoUrl }">
+						<div class="slider-item"
+							style="background-image: url(<%=cp%>/images/${url});">
+						</div>
+					</c:forEach>
+				
+					<%-- <div class="slider-item"
 						style="background-image: url(<%=cp%>/images/image_1.jpg);">
 					</div>
 					<div class="slider-item"
@@ -548,7 +555,7 @@ width: 100%;
 					</div>
 					<div class="slider-item"
 						style="background-image: url(<%=cp%>/images/image_2.jpg);">
-					</div>
+					</div> --%>
 				</div>
 				<!-- 이미지 클릭하면 확대  -->
 			</div>
@@ -691,6 +698,10 @@ width: 100%;
 						<p>사업자유형 : ${bizInfo.bizCeoType}</p>
 						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
 						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
+						<c:if test="${not empty basicInfo.url }">
+							<p>웹사이트 주소 : <a href="${basicInfo.url }" style="color: gray;">${basicInfo.url }</a></p>
+						</c:if>
+						
 						<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
 						
 					</div>
