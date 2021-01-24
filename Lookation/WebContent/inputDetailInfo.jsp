@@ -49,24 +49,61 @@
 <script type="text/javascript">
 	
 	$(function() {
-
-		$('#inputMinPeople').on("keyup", function ()
-		{
-			var inputMin = setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
-
-			var err = $(this).next();
-			err.css("display", "none");
-			
-				var inputMax = setMaxPeople($('#inputMaxPeople'), inputMin, 30, '최대 수용인원');
-				
-				if (inputMax != null && inputMin > inputMax) {
-						
-					err.html("최대 수용인원이 최소 수용인원 보다 작습니다.").css("display", "inline");
-					err.css("color", "red");
-				
-			}
-		});
 		
+		
+		//  1-1. 최소 x, 최대 x
+		//		1-1-1. html 모두 hide
+		//  1-2. 최소 x, 최대 o		※
+		//		1-2-1. 최소인원 수를 입력하세요.
+		
+		//  2-1. 최소 o, 최대 x
+		//	  2-1-1. 최소값 잘못, 최대값 없음 : 최소값은 1~10이상 입력해야합니다
+		//    2-1-2. 최소값 잘, 최대값 없음 : 사용가능한 최소인원, 최대 hide
+		
+		//  3-1. 최소 o, 최대 o
+		//    3-1-1. 최소 잘못, 최대 잘못 : 
+			
+		//  4-1. 최소 잘, 최대 잘 but 최소가 최대보다 큼(=최대가 최소보다 작음)
+		//    4-1-1. 최소>최대 : 입력한 최소인원의 수가 최대인원보다 수보다 큽니다.(최소 input)
+		//					   : 입력한 최대인원의 수가 최소인원보다 수보다 작습니다.(최대 input)
+		//    4-1-2. 최소<최대 : 둘다 사용가능한 ...
+	
+		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
+		
+		//var min = parseInt($('#inputMinPeople').val());
+		//var max = $('#inputMaxPeople').val();
+
+		setMaxPeople($('#inputMaxPeople'), 30, '최대 수용인원');
+		
+		// 함수 호출
+		
+		
+		// submit 제어
+		var f = $('inputDetailInfo');
+		
+		$('#submitButton').click(function ()
+		{	
+			
+			/* 
+			if (parseInt($('#inputMinPeople').val()) > parseInt($('#inputMaxPeople').val()))
+			{
+				alert("최소 수용인원이 최대 수용인원보다 큽니다.");
+				//alert(parseInt($.trim($('#inputMinPeople').val()))+1);	// 4
+				//alert(parseInt($('#inputMinPeople').val())+1);		// 4
+				//alert((parseInt($('#inputMinPeople').val()+1))+1);	// 문자열(31)을 정수로 바꾸고 1더해서 32
+				//alert(($('#inputMinPeople').val()+1)+1);			// 문자 322
+				//alert($.trim(min)+1);						// NaN 1
+				//alert(parseInt(max)+1);					// NaN
+				//alert(parseInt($.trim(min))+1);			// NaN 1
+				//alert(parseInt($.trim(max))+1);			// NaN 1
+				//alert(maxTest()+1);						// 4
+			} */
+			/* else
+			{
+				$('inputDetailInfo').submit();	
+			} */
+		});
+		/* 
 		// 썸네일 이미지 등록
 		/* $(document).ready(function(){ 
 			
@@ -105,7 +142,6 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
-			
 			if (target.val()=='') {
 				
 				err.html.hide();
@@ -119,7 +155,19 @@
 				err.css("color", "red");
 				return;
 				
-			} else {
+			} 
+			/*
+			// 최소인원수값이 null이 아니고, 최소인원이 올바로입력되었는데 최대인원보다 큰경우
+			else if (parseInt(target.val()) > parseInt($('#inputMaxPeople').val()) ) {
+				
+				err.html("" + name + "이 " + parseInt($('#inputMaxPeople').val()) 
+						+ " 보다 큽니다.").css("display","inline");
+				err.css("color", "red");
+				return;
+				
+			}
+			*/
+			else {
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
@@ -128,35 +176,35 @@
 		});
 	}
 	
+	 
+	
 	// 최대 수용인원 수 제약 function
-	function setMaxPeople(target, minNum, maxNum, name){
+	 function setMaxPeople(target, maxNum, name) {
 		
-		target.on("keyup", function() {
-			
+		target.on("keyup", function ()
+		{
 			var err = $(this).next();
 			err.css("display", "none");
 			
-			// 1. 최소가 입력되지않았을 경우(min.val() == '')
-			//	1-1. 기존의 최대값의 수 제한(최소값을 입력해주세요 html)
-			//		
-			//  1-2. 
-			
-			// 2. 최소가 입력되었을 경우(min.val() != '')
-			//	2-1. 최소값을 받아와 최대값의 수 제한(입력받은 최소값 ~ 최대값 html)
-			//		2-1-1. 입력값이 최소값보다 작은경우(최소값보다 작습니다.)
-			//		2-1-2. 입력값이 최대값보다 큰 경우(30)
-			//		→ 가능하면 분기 x, 통일(최소값이하 || 최대값초과)
-			//  2-2. 최소값을 받아와 
 			
 			if (target.val()=='') {
 				
 				err.html.hide();
-				return false;
+				return;
 			}
-			
-			else if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+			else if (maxTest() == '' && target.val() != ''){
 				
-				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
+				err.html("최소 수용인원을 입력해주세요.").css("display","inline");
+				err.css("color","red");
+				return;
+			}
+			else if (maxTest() != '' 
+					|| parseInt(target.val()) < maxTest() 
+					|| parseInt(target.val()) > maxNum ) {
+				
+				err.html("" + name + "은 " + maxTest() + " 이상 ~ " 
+						+ maxNum + " 이하로 설정해야합니다.").css("display","inline");
+				
 				err.css("color", "red");
 				return;
 				
@@ -164,11 +212,12 @@
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
-				return target;
+				return;
 			}
+			
 		});
-	}
-	  
+	} 
+	   
 	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
 	function maxTest() {
 		
@@ -284,7 +333,7 @@
 			<input type="text" required="required" class="form-control"
 					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
 					id="inputMinPeople" name="inputMinPeople"
-					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"--> 
 			<span id="err" style="font-weight: bold;"></span>
 			
@@ -302,7 +351,7 @@
 			<input type="text" required="required" class="form-control"
 					placeholder="최대 수용인원을 입력하세요.[최소 수용인원 이상, 최대 30명 이하]"
 					id="inputMaxPeople" name="inputMaxPeople"
-					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); -->
 			<span style="font-weight: bold;"></span>
 		</div>
@@ -324,26 +373,15 @@
 	
 	<br><br><br>
 	
-	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-						   (필수항목을 입력하지 않았을 경우,
-							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-						    alert("필수항목을 입력해야합니다")된다.
-							그리고 입력하는 textbox로 입력커서가 이동한다. 
-							또한 다음페이지로 submit 되지 않는다.
-							
-							※ 다음 버튼 이동 순서
-							※ xxxUpdate.jsp 다음버튼 이동 순서 
-							   기본정보 → 연락처정보 → 사업자정보
-						    → 이용정보  → 상세정보  → 패키지정보 -->
+	<!-- 다음 버튼 -->
+	<div class="container" style="text-align: center;">
+		<button type="button" class="btn btn-warning" id="submitButton"
+		style="width:45%; border-color: gray;">다음 </button>
 	
-		<div class="container" style="text-align: center;">
-			<input type="submit" value="다음" class="btn btn-warning" 
-				   style="width:45%; border-color: gray;">
-			
-		<!-- 취소 버튼 -->
-			<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
-					id="detailInfo" value="취소" onclick="cancel()">		
-		</div>	
+	<!-- 취소 버튼 -->
+		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
+				id="detailInfo" value="취소" onclick="cancel()">		
+	</div>	
 
 	
 	<br><br><br><br>
