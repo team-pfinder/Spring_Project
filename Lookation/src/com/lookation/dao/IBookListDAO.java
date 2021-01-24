@@ -3,6 +3,7 @@ package com.lookation.dao;
 import java.util.ArrayList;
 
 import com.lookation.dto.BookListDTO;
+import com.lookation.dto.reportUserDTO;
 
 
 public interface IBookListDAO
@@ -35,5 +36,6 @@ public interface IBookListDAO
 	// 호스트 닉네임 받아오기
 	public String hostNick(String host_code);
 
-	
+
+	public int add(reportUserDTO dto);
 }

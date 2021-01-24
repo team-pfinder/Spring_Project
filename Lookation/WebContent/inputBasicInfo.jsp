@@ -445,7 +445,7 @@ ul.precautions-list > li {
 		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
 						+ "(기존 작성 내용은 저장되지 않습니다.)");
 		if (con == true) {
-			location.href = "mainHost.jsp";
+			location.href = "hostmain.action";
 			return;
 		} else {
 			return;
@@ -485,7 +485,7 @@ ul.precautions-list > li {
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
+      style="background-image: url(<%=cp%>/images/bg_3.jpg);"
       data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
@@ -534,9 +534,8 @@ ul.precautions-list > li {
 	
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" enctype="multipart/form-data"
-		  action="${pageContext.request.contextPath}/inputContactInfo.jsp" method="post">
-		 <!--  onsubmit="return formCheck();"> -->
-	<!-- action="inputbasicinfo.action" -->
+		  action="inputContactInfo.jsp" method="post">
+			<!-- action="inputbasicinfo.action" -->
 		<!-- 1. 공간명 -->
 
 		<div>

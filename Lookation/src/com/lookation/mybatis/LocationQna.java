@@ -30,9 +30,6 @@ public class LocationQna
 
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ========================================================= */
-		session.setAttribute("memberCode", "M000001");
-		/* ========================================================= */
 		String accountCode = (String) session.getAttribute(identify + "Code");
 
 		// 로그인 확인을 기록하기 위함
@@ -92,9 +89,6 @@ public class LocationQna
 
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ========================================================= */
-		session.setAttribute("memberCode", "M000001");
-		/* ========================================================= */
 		String accountCode = (String) session.getAttribute(identify + "Code");
 
 		// 로그인 확인을 기록하기 위함
@@ -162,13 +156,16 @@ public class LocationQna
 
 	// 이용자 : QnA 삭제
 	@RequestMapping(value = "/actions/deleteqna.action", method = RequestMethod.GET)
-	public String deleteQna(LocationQnaDTO dto)
+	public void deleteQna(LocationQnaDTO dto)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
 
+		//String loc_code = request.getParameter("loc_code");
 		dao.deleteMemQna(dto);
+		
+		//String result = "locationdetail.action?loc_code="+ loc_code;
 
-		return "redirect:locationdetail.action";
+		//return result;
 	}
 
 	/* === 호스트 === */

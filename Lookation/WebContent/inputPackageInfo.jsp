@@ -18,12 +18,58 @@
 <script type="text/javascript">
 
 
-	$(document).ready(function() {
+	$(function() {
 
+		// enter submit 방지
+		document.addEventListener('keydown', function(event) {
+			
+			if (event.keyCode === 13) {
+			    event.preventDefault();
+		  	};
+		  	   
+		}, true);
+		
 		// 함수 호출
-		setInputLength($('#inputPackageName'), '공간명', 2, 20);
+		setInputLength($('#inputPackageName'), '패키지명', 2, 20);
 
-	
+		
+		// submit 제어
+
+		$('#inputPackageInfoSave').click(function() {
+			
+			var f = $('#inputPackageInfo');
+			
+			var tName = $('#inputPackageName').val();
+			var tStart = $('#locationPackageStart').val();
+			var tEnd = $('#locationPackageEnd').val();
+			var tPrice = $('#locationPackagePrice').val();
+			
+			if (tName == '' || tStart == '' || tEnd == '' || tPrice == '') 
+			{
+				alert("필수 입력사항을 모두 입력해 주세요.");
+			}
+			else if (tName.length < 2 || tName.length > 20) {
+				
+				alert("패키지명은 2자~20자로 입력해야합니다.");
+				$("#inputPackageName").focus();
+			}
+			else if (parseInt(tEnd) <= parseInt(tStart))
+			{
+				alert("패키지 이용시간 설정을 확인하세요.");
+			}
+			else if (parseInt(tEnd) > parseInt(tStart)
+					&& parseInt(tEnd) - parseInt(tStart) < 3)
+			{
+				alert("패키지 이용시간은 최소 3시간 이상이어야합니다.")
+			}
+			else{
+				confirm("이대로 패키지를 작성하시겠습니까?");
+				f.submit();
+			}
+			
+			
+		});
+			
 	});
 
 	// 함수 정의 ----------------------------------------------------------
@@ -35,8 +81,14 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// 글자 수 제한, 색 변경
-			if (target.val().length > maxLength || target.val().length < minLength) {
+			else if (target.val().length > maxLength || target.val().length < minLength) {
 				
 				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
 				err.css("color", "red");
@@ -48,18 +100,6 @@
 				return;
 			}
 		});
-	}
- 
-	// 저장 버튼 클릭 시 팝업 창이 닫히고, 
-	// inputPackageForm.jsp 로 이동하여 현재패키지에 입력한 사항을 input
-	function inputInfoSave()
-	{
-		if(confirm("이대로 패키지를 작성하시겠습니까?"))
-		{
-			// submit 검사
-			
-			$('#inputPackageInfoForm').submit();
-		}
 	}
 	
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
@@ -82,7 +122,7 @@
 
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url(<%=cp%>/images/bg_3.jpg);"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 
@@ -129,9 +169,10 @@
 
 
 			<!-- form start --------------------------------------------->
-			<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm"
-				action="inputpackageform.action?loc_code=${loc_code }" method="POST">
-				<!--onsubmit="handOver()" -->
+			<form style="width: 80%; margin: 120px;" id="inputPackageInfo"
+				 action="inputpackageform.action?loc_code=${loc_code }" method="POST">
+				<!-- action="inputpackageform.action?loc_code=${loc_code }" -->
+				
 				<!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 
 				<!-- 1. 패키지명 -->
@@ -140,7 +181,7 @@
 
 					<span style="font-size: 14pt; font-weight: bold;">패키지명 <span
 						style="color: red">*</span></span> <br>
-					<br> <input type="text" name="inputPackageName"
+					<br> <input type="text" name="inputPackageName" id="inputPackageName"
 						class="form-control" placeholder="패키지명을 입력하세요. [최소 2자 ~ 최대 20자]">
 					<span id="err" style="font-weight: bold;"></span>
 				</div>
@@ -157,13 +198,13 @@
 						style="color: red">*</span></span> <br>
 					<br> <select id="locationPackageStart" class="form-control"
 						name="locationPackageStart">
-						<option>[==시간을 선택하세요.==]</option>
+						<option value=''>[==시간을 선택하세요.==]</option>
 						<c:forEach var="i" begin="0" end="24">
 							<option value="${i }">${i }시</option>
 						</c:forEach>
-					</select><br> ~ <select id="locationPacakgeEnd" class="form-control"
-						name="locationPacakgeEnd">
-						<option>[==시간을 선택하세요.==]</option>
+					</select><br> ~ <select id="locationPackageEnd" class="form-control"
+						name="locationPackageEnd">
+						<option value=''>[==시간을 선택하세요.==]</option>
 						<c:forEach var="i" begin="0" end="24">
 							<option value="${i }">${i }시</option>
 						</c:forEach>
@@ -187,13 +228,13 @@
 
 				<!-- 3. 패키지 가격 -->
 
-				<div id="locationPackagePrice">
+				<div id="packagePrice">
 
 					<span style="font-size: 14pt; font-weight: bold;">패키지 가격 <span
 						style="color: red">*</span></span> <br>
 					<br> <input type="text" class="form-control"
 						placeholder="패키지가격을 입력하세요. [최소 1,000원 ~ 최대 1,000,000원(부가세포함)]"
-						name="locationPackagePrice"> <br>
+						id="locationPackagePrice" name="locationPackagePrice" maxlength="50"> <br>
 					<br>
 
 				</div>
@@ -208,8 +249,7 @@
 						id="inputPackageInfoSave" style="width: 45%; border-color: gray;"
 						onclick="inputInfoSave()"> -->
 					<button type="button" class="btn btn-warning"
-						id="inputPackageInfoSave" style="width: 45%; border-color: gray;"
-						onclick="inputInfoSave()">저장</button>
+						id="inputPackageInfoSave" style="width: 45%; border-color: gray;">저장</button>
 					<!-- onclick="function()" → LocationPacakgeForm.jsp 테이블의 리스트형태로 저장 -->
 
 					<!-- 취소 버튼 -->

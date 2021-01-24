@@ -83,7 +83,7 @@
 				<c:forEach var="location" items="${locList }">
 						<div class="col-md-4 ftco-animate">
 							<div class="blog-entry align-self-stretch">
-								<a href="locationdetailhost.action?loc_list=${location.loc_code }" class="block-20 rounded"
+								<a href="#" class="block-20 rounded"
 									style="background-image: url('<%=cp%>/images/${location.thumbnail_url }');">
 								</a>
 								<!-- 이미지 클릭시 해당 공간상세 게시글페이지로..-->
@@ -117,7 +117,7 @@
 										</c:if>
 										<c:if test="${location.inspect_type eq '검수반려'}">
 										    <a href="javascript:void(0);" onclick="del(${location.loc_code})" 
-											class="btn btn-danger" style="width:100%;">삭제</a>
+											class="btn btn-danger" style="width:30%;">삭제</a>
 										</c:if>
 									</div>
 									<hr>

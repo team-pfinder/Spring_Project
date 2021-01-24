@@ -81,6 +81,16 @@ ul.precautions-list > li {
 
 	$(document).ready(function() {
 
+		// enter submit 방지
+		document.addEventListener('keydown', function(event) {
+			
+			if (event.keyCode === 13) {
+			    event.preventDefault();
+		  	};
+		  	   
+		}, true);
+		
+		
 		// 함수 호출
 		setInputFilter($('#inputLocName'));
 		setInputLength($('#inputLocName'), '공간명', 2, 20);
@@ -89,113 +99,98 @@ ul.precautions-list > li {
 		setInputLength($('#inputIntro'), '공간 소개', 20, 400);
 		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
 		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 20, 100);
-		
-		
-		// 시설 추가 버튼 클릭 이벤트 function
-		$('#inputFacilityBtn').on('click', function () {
-			
-			var val = $('#inputFacility').val();
-		    var html = '';
-		    
-		    if (val.length < 10 || val.length > 50 ) {
-				alert("시설 안내는 10자 이상 ~ 50자 이하로 입력해야합니다.")
-				return false;
-			}
-		    
-		    if ($('[name="inputFacility"]').length < 1 ) {
-				alert("시설 안내는 최소 1개 이상 추가해야합니다.");
-				return false;
-			}
-		    
-			if ($('[name="inputFacility"]').length > 10) {
-				alert("시설 안내는 최대 10개까지 추가가 가능합니다.");
-				return false;
-			}
-			
-			if (val.trim() == '') {
-				alert("시설 안내를 입력해주세요.");
-				$('#inputFacility').focus();
-				return false;
-			}
-			
-		    html += '<li>';
-		    html += '	<textarea readonly class="form-control" required="required" placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다." name="inputFacility">' + val + '</textarea>';
-		    html += '</li>';
-		    $('ul.facility-list').append(html);
-		    $('#inputFacility').val("");
-		    
-		    return true;
-		});
 
-		// 예약 시 주의사항 추가 버튼 클릭 이벤트 function
-		$('#inputPrecautionsBtn').on('click', function () {
-
-			var val = $('#inputPrecautions').val();
-		    var html = '';
-		    
-		    if (val.length < 20 || val.length > 100 )
-			{
-				alert("예약 시 주의사항은 20자 이상 ~ 100자 이하로 입력해야합니다.")
-				return false;
-			}
-		    
-		    
-		    if ($('[name="inputPrecautions"]').length < 1 ) {
-				alert("시설 안내는 최소 1개 이상 추가해야합니다.");
-				return false;
-			}
-		    
-		    if ($('[name="inputPrecautions"]').length > 10) {
-				alert("예약 시 주의사항은 최대 10개까지 추가가 가능합니다.");
-				return false;
-			}
-			
-			if (val.trim() == '') {
-				alert("예약시 주의사항을 입력해주세요.");
-				$('#inputPrecautions').focus();
-				return false;
-			}
-			
-		    html += '<li>';
-		    html += '	<textarea readonly class="form-control" required="required" placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다." name="inputPrecautions">' + val + '</textarea>';
-		    html += '</li>';
-		    $('ul.precautions-list').append(html);
-		    $('#inputPrecautions').val("");
-		    
-		    return true;
-		});
 		
-
 		// 썸네일 이미지 등록
-		$(document).ready(function(){ 
+		
+		var fileTarget = $('.filebox .upload-hidden');
 			
-			var fileTarget = $('.filebox .upload-hidden');
+		
+		fileTarget.on('change', function(){ // 값이 변경되면 
+			
+			// modern browser
+			
+			if(window.FileReader){ 
+				var filename = $(this)[0].files[0].name; 
+			} 
+		
+			// old IE
+			
+				else { 
+			
+				var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
+			} 
+			
+		
+			// 추출한 파일명 삽입 
+			$(this).siblings('.upload-name').val(filename); 
+			
+			return true;
+		}); 
+		
+		
+		// submit 제어
+		
+		var result = '';
+		  
+		$('#submitButton').click(function() {
+			
+			var f = $("#inputBasicInfo");
+		
+			var tLocName = $("#inputLocName").val();
+			var tLocType = $("#inputLocType").val();
+			var tFacility = $("#facilityInfo_1").children().first().html();
+			var tPrecaution = $("#precautionInfo_1").children().first().html();
+			var tShortIntro = $("#inputShortIntro").val();
+			var tIntro = $("#inputIntro").val();
+			var tThumbnail = $("#ex_filename").val();
+			var tLocAddr = $("#inputAddr").val();
+			var tLocDetailAddr = $("#inputDetailAddr").val();
 			
 			
-			fileTarget.on('change', function(){ // 값이 변경되면 
+			if (tLocName == "" || tLocType == "" || tShortIntro == "" || tIntro == "" 
+			|| tThumbnail == "" || tLocAddr == "" || tLocDetailAddr == "") {
+			 
+				alert("필수 입력사항을 모두 입력해 주세요.");
 				
-				// modern browser
+			}
+			else if (tLocName.length < 2 || tLocName.length > 20) {
 				
-				if(window.FileReader){ 
-					var filename = $(this)[0].files[0].name; 
-				} 
+				alert("공간명은 2자~20자로 입력해야합니다.");
+				$("#inputLocName").focus();
+				
+			}
+			else if (tShortIntro.length < 4 || tShortIntro.length > 20) {
+				
+				alert("공간 한줄 소개는 4자~20자로 입력해야합니다.");
+				$("#inputShortIntro").focus();
+				
+			}
+			else if (tIntro.length < 20 || tIntro.length > 400) {
+				
+				alert("공간 소개는 20자~400자로 입력해야합니다.");
+				$("#inputIntro").focus();
+				
+			}
+			else if (tFacility == null) {
+				
+				alert("시설안내를 추가해주세요.");
+			}
+			else if (tPrecaution == null)
+			{
+				alert("예약 시 주의사항을 추가해주세요.")
+			}
+			else {
+				
+				f.submit();
+			}
 			
-				// old IE
-				
-					else { 
-				
-					var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
-				} 
-				
+			ajaxInfo();
 			
-				// 추출한 파일명 삽입 
-				$(this).siblings('.upload-name').val(filename); 
-				
-				return true;
-			}); 
-		});
-
+		}); 
+		
 	});
+		
 	   
 	
 	// 함수 정의 ----------------------------------------------------------
@@ -207,13 +202,19 @@ ul.precautions-list > li {
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
 			// 글자 수 제한, 색 변경
-			if (target.val().length > maxLength || target.val().length < minLength) {
+			else if (target.val().length > maxLength || target.val().length < minLength) {
 				
 				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
 				err.css("color", "red");
 				return false;
 			}
+			
 			else {
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
@@ -246,7 +247,7 @@ ul.precautions-list > li {
 		target.on('change', function () {
 			var val = $(this).val();
 			var err = $(this).next();
-			
+
 			if (val.trim() == "") {
 				
 				// 빈 값을 선택한 경우
@@ -290,205 +291,124 @@ ul.precautions-list > li {
 	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
 	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
 	            console.log(data);
-	            var roadAddress = data.roadAddress;
-	            $('#inputAddr').val(roadAddress);
+	            var jibunAddress = data.jibunAddress;
+	            $('#inputAddr').val(jibunAddress);
 	            $('#inputDetailAddr').focus();
 	        }
 	    }).open();
 	}
 	
-	/* 
-	// 다음 버튼 클릭시 입력 사항을 올바르게 입력했는지 검사하고 submit하는 function
-	// (대상 입력란 다음 창에 inline 되는 err 메세지가 없을 경우 submit)
 	
-	function next()	{
-		
-		if(document.myForm.err.css("color", "red") {
-	         return false;
-	    }
+	// 시설안내 추가 및 삭제 function
 	
-	}
+	var facilityNum = 1;
 	
-	function checkIt(){
-		if (!document.myForm.pass.value){	                    // 자바스크립트 : 빈문자열 -> false 반환
-			alert("비밀번호를 입력하지 않았습니다.");
-			document.myForm.focus();
-			return false;
-		}
-	}
-	 */
-	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
-	function cancel() {
-		
-		 var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
-						+ "(기존 작성 내용은 저장되지 않습니다.)");
-		if (con == true) {
-			location.href = "mainHost.jsp";
-			return;
-		} else {
-			return;
-		}
-		
-	}
-	
-	// submitFlag와 formCheck function으로 form submit 제어
-	
-	var submitFlag = true;
-	
-	function formCheck() {
-		
-		if (submitFlag)	{
-			
-			submitFlag = false;
-			document.inputBasicInfo.submit();
-		}
-		
-		return 0;
-	}
-	
-	
-/* 	
-	// submit 시 데이터 넘겨는 function(Controller 사용 전 임시)
-	function handOver() {
-		
-		  var locName = document.getElementById('locName').value;				// 공간명
-		  var locType = $("#locType option.selected").val();					// 공간유형
-		  var shortIntro = document.getElementById('inputShortIntro').value;	// 공간한줄소개
-		  var intro = document.getElementById('inputIntro').value;				// 공간소개
-		  var																	// 시설안내 
-		  
-		  alert( pw1 + ' vs ' + pw2 );
-		}
- */
-	
-	// ---------------------------------------------------------- 함수 정의 
-	
-</script>
-
-<script type="text/javascript">
-
-var facilityNum = 1;
-
-function addFacilityInfo()
-{
-	if(facilityNum > 10)
+	function addFacilityInfo()
 	{
-		alert("더이상 추가할 수 없습니다.");
-		return;
-	}
-	
-	var obj = document.getElementById("locationFacilityInfo");
-	var newDiv = document.createElement("div");
-	
-	var content = $('#inputFacility').val();
-	
-	if (content.length < 10 || content.length > 50 ) {
-		alert("시설 안내는 10자 이상 ~ 50자 이하로 입력해야합니다.")
-		return;
-	}
-	
-	if(content == '')
-	{
-		alert("내용을 먼저 추가하세요.");
-		return;
-	}
-	
-	newDiv.innerHTML = "<p>" + facilityNum + ". " + content + "</p>";
-	newDiv.setAttribute("id" , "facilityInfo_" + facilityNum);
-	obj.appendChild(newDiv);
-	
-	$('#inputFacility').val('');
-	
-	facilityNum++;
-}
-
-function removeFacilityInfo()
-{
-	if(facilityNum <= 1)
-	{
-		alert("더이상 삭제할 수 없습니다.");
-		return;
-	}
-	
-	var obj = document.getElementById("facilityInfo_" + (facilityNum - 1));
-	var parent = obj.parentElement;
-	parent.removeChild(obj);
-
-	facilityNum--;
-}
-
-//
-var precautionNum = 1;
-
-function addPrecautionInfo()
-{
-	if(precautionNum > 10)
-	{
-		alert("더이상 추가할 수 없습니다.");
-		return;
-	}
-	
-	var obj = document.getElementById("locationPrecautionInfo");
-	var newDiv = document.createElement("div");
-	
-	var content = $('#inputPrecaution').val();
-	
-	if (content.length < 20 || content.length > 100 )
-	{
-		alert("예약 시 주의사항은 20자 이상 ~ 100자 이하로 입력해야합니다.")
-		return;
-	}
-	
-	if(content == '')
-	{
-		alert("내용을 먼저 추가하세요.");
-		return;
-	}
-	
-	newDiv.innerHTML = "<p>" + precautionNum + ". " + content + "</p>";
-	newDiv.setAttribute("id" , "precautionInfo_" + precautionNum);
-	obj.appendChild(newDiv);
-	
-	$('#inputPrecaution').val('');
-	
-	precautionNum++;
-}
-
-function removePrecautionInfo()
-{
-	if(precautionNum <= 1)
-	{
-		alert("더이상 삭제할 수 없습니다.");
-		return;
-	}
-	
-	var obj = document.getElementById("precautionInfo_" + (precautionNum - 1));
-	var parent = obj.parentElement;
-	parent.removeChild(obj);
-
-	precautionNum--;
-}
-</script>
-
-<script type="text/javascript">
-	$(function()
-	{
-		var result = '';
-		
-		$('#BasicInfoSubmit').click(function()
+		if(facilityNum > 10)
 		{
-			// SUBMIT 검사
-			//--
-
-			// 시설안내 정보
-			// 주의사항 정보
-			ajaxInfo();
-			
-			
-			$('#inputBasicInfo').submit();
-		})
+			alert("더이상 추가할 수 없습니다.");
+			return;
+		}
 		
-	});
+		var obj = document.getElementById("locationFacilityInfo");
+		var newDiv = document.createElement("div");
+		
+		var content = $('#inputFacility').val();
+		
+		
+		if(content == '')
+		{
+			alert("내용을 먼저 추가하세요.");
+			return;
+		}
+
+		if (content.length < 10 || content.length > 50 ) {
+			
+			alert("시설 안내는 10자 이상 ~ 50자 이하로 입력해야합니다.")
+			return;
+		}
+		
+		newDiv.innerHTML = "<p>" + facilityNum + ". " + content + "</p>";
+		newDiv.setAttribute("id" , "facilityInfo_" + facilityNum);
+		obj.appendChild(newDiv);
+		
+		$('#inputFacility').val('');
+		$('#inputFacility').next().hide();
+		
+		facilityNum++;
+	}
+
+	function removeFacilityInfo()
+	{
+		if(facilityNum <= 1)
+		{
+			alert("더이상 삭제할 수 없습니다.");
+			return;
+		}
+		
+		var obj = document.getElementById("facilityInfo_" + (facilityNum - 1));
+		var parent = obj.parentElement;
+		parent.removeChild(obj);
+
+		facilityNum--;
+	}
+
+	// 주의사항 추가, 삭제 function
+	
+	var precautionNum = 1;
+
+	function addPrecautionInfo()
+	{
+		if(precautionNum > 10)
+		{
+			alert("더이상 추가할 수 없습니다.");
+			return;
+		}
+		
+		var obj = document.getElementById("locationPrecautionInfo");
+		var newDiv = document.createElement("div");
+		
+		var content = $('#inputPrecaution').val();
+		
+		if (content.length < 20 || content.length > 100 )
+		{
+			alert("예약 시 주의사항은 20자 이상 ~ 100자 이하로 입력해야합니다.")
+			return;
+		}
+		
+		if(content == '')
+		{
+			alert("내용을 먼저 추가하세요.");
+			return;
+		}
+		
+		newDiv.innerHTML = "<p>" + precautionNum + ". " + content + "</p>";
+		newDiv.setAttribute("id" , "precautionInfo_" + precautionNum);
+		obj.appendChild(newDiv);
+		
+		$('#inputPrecaution').val('');
+		$('#inputPrecaution').next().hide();
+		
+		precautionNum++;
+	}
+
+	function removePrecautionInfo()
+	{
+		if(precautionNum <= 1)
+		{
+			alert("더이상 삭제할 수 없습니다.");
+			return;
+		}
+		
+		var obj = document.getElementById("precautionInfo_" + (precautionNum - 1));
+		var parent = obj.parentElement;
+		parent.removeChild(obj);
+
+		precautionNum--;
+	}
+	
+	// 시설안내, 주의사항 ajax 처리 function
 	
 	function ajaxInfo()
 	{
@@ -517,7 +437,24 @@ function removePrecautionInfo()
 		}); 
 	}
 	
+	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
+	function cancel() {
+		
+		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
+						+ "(기존 작성 내용은 저장되지 않습니다.)");
+		if (con == true) {
+			location.href = "hostmain.action";
+			return;
+		} else {
+			return;
+		}
+		
+	}
+	
+	// ---------------------------------------------------------- 함수 정의
+	
 </script>
+
 
 <style type="text/css">
 	#refund
@@ -539,13 +476,14 @@ function removePrecautionInfo()
 
 <body class="back-default">
 		
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
+      style="background-image: url('<%=cp%>/images/bg_3.jpg');"
       data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
@@ -594,16 +532,16 @@ function removePrecautionInfo()
 	
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" enctype="multipart/form-data"
-		  action="inputbasicinfo.action" method="post"><!--onsubmit="handOver()" -->
-	
+		  action="inputbasicinfo.action" method="post">
+
 		<!-- 1. 공간명 -->
-		
+
 		<div>
 			<!-- <label for="locName" style="font-weight: bold;">공간명 *</label> -->
 			<span style="font-size: 14pt; font-weight: bold;">공간명  <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control" id="inputLocName" name="inputLocName"
-				   placeholder="공간명을 입력하세요. [최소 2자 ~ 최대 20자]" required="required">
+				   placeholder="공간명을 입력하세요. [최소 2자 ~ 최대 20자]">
 			<span id="err" style="font-weight: bold;"></span>
 
 			<div style="padding-top: 40px;">
@@ -620,14 +558,12 @@ function removePrecautionInfo()
 		<div>
 			<span style="font-size: 14pt; font-weight: bold;">공간 유형  <span style="color: red">*</span></span>
 			<br><br>
-			<select id="inputLocType" name="inputLocType" class="form-control" required="required">
+			<select id="inputLocType" name="inputLocType" class="form-control">
 				<option value="">[==공간 유형을 선택하세요.==]</option>
-				<option value="파티룸">파티룸</option>
-				<option value="클럽">클럽</option>
-				<option value="엠티장소">엠티장소</option>
-				<option value="워크샵장소">워크샵장소</option>
-				<option value="루프탑">루프탑</option>
 				<option value="브라이덜샤워">브라이덜샤워</option>
+				<option value="루프탑">루프탑</option>
+				<option value="엠티공간">엠티공간</option>
+				<option value="파티룸">파티룸</option>
 			</select>
 			<span style="font-weight: bold; display: block; color: red;">공간 유형을(를) 선택해야 합니다.</span>
 			<br>
@@ -643,7 +579,7 @@ function removePrecautionInfo()
 		
 			<span style="font-size: 14pt; font-weight: bold;">공간 한줄 소개  <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required" 
+			<input type="text" class="form-control"
 				   placeholder="공간을 한 문장으로 소개해주세요. [최소 4자 ~ 최대 20자]" 
 				   id="inputShortIntro" name="inputShortIntro">
 			<span style="font-weight: bold;"></span>
@@ -660,12 +596,11 @@ function removePrecautionInfo()
 		
 			<span style="font-size: 14pt; font-weight: bold;">공간 소개  <span style="color: red">*</span></span>
 			<br><br>
-			<textarea class="form-control" required="required" 
+			<textarea class="form-control" 
 					  placeholder="공간을 상세하게 소개해주세요. [최소 20자 ~ 최대 400자]"
 					  id="inputIntro" name="inputIntro" cols="40" rows="5"></textarea>
 		  	<span style="font-weight: bold;"></span>
 		</div>
-		
 		
 	<br><br><br>
 	
@@ -675,7 +610,7 @@ function removePrecautionInfo()
 		<div id="locationFacilityInfo">
 			<span style="font-size: 14pt; font-weight: bold;">시설 안내 <span style="color: red">*</span></span>
 			<br><br>
-			<input class="form-control" required="required"
+			<input class="form-control" 
 				   placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."
 				   type="text" id="inputFacility" name="inputFacility">
 				   <span style="font-weight: bold; display: none; color: red;"></span>
@@ -693,7 +628,6 @@ function removePrecautionInfo()
 			-->
 		</div>
 		
-		
 	
 	
 	<br><br><br>
@@ -707,7 +641,7 @@ function removePrecautionInfo()
 			<br><br>
 			<ul class="precautions-list">
 				<li>
-				    <input class="form-control" id="inputPrecaution" required="required"
+				    <input class="form-control" id="inputPrecaution" 
 						placeholder="예약 시 주의사항은 [최소 20자 ~ 최대 100자] 로 입력하여 10개까지 추가 가능합니다."/>
 					<span style="font-weight: bold; display: none; color: red;"></span>
 				</li>
@@ -717,8 +651,6 @@ function removePrecautionInfo()
 				   name="inputPrecautionsBtn" value="예약 시 주의사항 추가 +">
 				   <input type="button" class="form-control" id="inputPrecautionsBtn" onclick="removePrecautionInfo()"
 				   name="inputPrecautionsBtn" value="예약 시 주의사항 삭제 -">
-			
-			
 			
 		</div>
 		
@@ -753,7 +685,7 @@ function removePrecautionInfo()
 			<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
 			<br><br>
 			이미지추가시 들어갈 공간.. textarea인지 확인 필요
-			<textarea class="form-control" required="required"
+			<textarea class="form-control" 
 				      placeholder="대표이미지 파일을 등록해 주세요(JPG, JPEG, PNG)"
 					  name="inputThumbnail" cols="40" rows="10"></textarea>
 			<br>
@@ -795,7 +727,7 @@ function removePrecautionInfo()
 		<div>
 			<span style="font-size: 14pt; font-weight: bold;">주소 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required" id="inputAddr"
+			<input type="text" class="form-control"  id="inputAddr"
 				   placeholder="주소를 입력해주세요." name="inputAddr" readonly>
 			
 			<input onclick="showDaumAddPop()" type="button" class="form-control"
@@ -803,33 +735,22 @@ function removePrecautionInfo()
 			<br><br>
 			<span style="font-size: 13pt; font-weight: bold;">상세 주소 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required" 
+			<input type="text" class="form-control"  
 					id="inputDetailAddr" name="inputDetailAddr">
 			<!-- 입력 전 default 내용 : 상세 주소  -->
 		
 		</div>
 	
 	
-	
 	<br><br><br>
 	
-	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-						   (필수항목을 입력하지 않았을 경우,
-							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-						    alert("필수항목을 입력해야합니다")된다.
-							그리고 입력하는 textbox로 입력커서가 이동한다. 
-							또한 다음페이지로 submit 되지 않는다.
-							
-							※ 다음 버튼 이동 순서
-							※ xxxUpdate.jsp 다음버튼 이동 순서 
-							   기본정보 → 연락처정보 → 사업자정보
-							   → 이용정보  → 상세정보  → 패키지정보 -->
+	<!-- 다음 버튼 -->
 	<div class="container" style="text-align: center;">
 
 		<!-- <input type="submit" value="다음" class="btn btn-warning" 
 			   style="width:45%; border-color: gray;"> --> <!-- type="button" onsubmit="next()"
 		style="display: block; margin: 0px auto" -->
-		<button type="submit" class="btn btn-warning" id="BasicInfoSubmit"
+		<button type="button" class="btn btn-warning" id="submitButton"
 			style="width:45%; border-color: gray;">다음 </button>
 		
 	<!-- 취소 버튼 -->
@@ -856,9 +777,11 @@ function removePrecautionInfo()
 	
 <br><br><br><br>
 	
-	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
-	</div>
+<!-- footer 출력부분 -->
+<div>
+       <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+       <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+</div>
+
 </body>
 </html>
