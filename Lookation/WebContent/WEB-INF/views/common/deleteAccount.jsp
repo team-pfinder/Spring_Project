@@ -4,11 +4,22 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
-	// 세션 접속시 id확인
-	//String id= (String)session.getAttribute("sessionID"); 
-
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
+	
+	// 세션 접속시 아이디 확인
+	if(identify.equals("host"))
+	{
+		String hostCode = (String)session.getAttribute("hostCode");
+		pageContext.setAttribute("Code", hostCode);
+	}
+	else
+	{
+		String memberCode = (String)session.getAttribute("memberCode");
+		pageContext.setAttribute("Code", memberCode);
+	}
+	
+	
 %>
 
 <!DOCTYPE html>
@@ -38,6 +49,7 @@
 		{	
 			var address = unescape(location.href);
 			var param = "";
+			var Code = "";
 			
 			// url 파라미터값 추출
 			param = address.substring(address.indexOf("identify", 0) + 9);
@@ -47,18 +59,28 @@
 			//alert(param);
 			//alert($(this).val());
 			
-			var code = $("#deleteBtn").val();
+			//var code = $("#deleteBtn").val();
+			var identify = '<%=(String)request.getParameter("identify")%>'
+			
+			if(identify=="host")
+			{
+				Code = '<%=(String)session.getAttribute("hostCode")%>';
+			}
+			else
+			{
+				Code = '<%=(String)session.getAttribute("memberCode")%>';
+			}
 			
 			// ※ 나중에 세션처리로 변경
 			if(param=="member")
 			{
 				// 이용자일 경우 멤버코드 받아서
-				$(location).attr("href", "deletemember.action?memCode=" + code);
+				$(location).attr("href", "deletemember.action?identify=member&memberCode=" + Code);
 			}
 			else if(param=="host")
 			{
 				// 호스트일 경우 호스트코드 받아서 
-				$(location).attr("href", "deletehost.action?hostCode=" + code);
+				$(location).attr("href", "deletehost.action?identify=host&hostCode=" + Code);
 			}
 			else
 			{
@@ -110,11 +132,11 @@
 							<!-- 나중에 여기 value값에 회원번호 저장할것 -->
 							<!-- 이용자 탈퇴버튼 -->
 							<c:if test="${identify eq 'member'}">
-								<button class="btn btn-danger mx-1" value="M000011" type="button" id="deleteBtn">탈퇴하기</button>
+								<button class="btn btn-danger mx-1" type="button" id="deleteBtn">탈퇴하기</button>
 							</c:if>
 							<!-- 호스트 탈퇴버튼 -->
 							<c:if test="${identify eq 'host'}">
-								<button class="btn btn-danger mx-1" value="H000011" type="button" id="deleteBtn">탈퇴하기</button>
+								<button class="btn btn-danger mx-1" type="button" id="deleteBtn">탈퇴하기</button>
 							</c:if>
 						</div>
 

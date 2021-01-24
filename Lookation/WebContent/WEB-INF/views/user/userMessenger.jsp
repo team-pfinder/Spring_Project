@@ -130,6 +130,7 @@ body {
 	background-color: white;
 	border-top: 2px solid #EEE;
 	align-items: center;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)
 }
 
 .footer-chat .icon {
@@ -326,13 +327,14 @@ overflow: hidden;
 						<input type="hidden" name="book_code" value="${book_code }">
 					<!-- End .footer-chat -->
 					</form>
+					
 				</div>
 			</div>
 		</div>
-
+		
 	</div>
 
-
+<div style="height: 150px;"></div>
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>

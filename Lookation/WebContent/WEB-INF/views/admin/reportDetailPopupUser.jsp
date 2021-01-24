@@ -89,6 +89,7 @@
 							<div class="div-col">신고유형</div>
 							<div class="div-col">신고사유</div>
 							<div class="div-col">신고일자</div>
+							<div class="div-col">처리</div>
 						</div>
 						<c:choose>
 							<c:when test="${not empty reportlist }">

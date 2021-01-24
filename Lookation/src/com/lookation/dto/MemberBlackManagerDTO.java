@@ -5,7 +5,19 @@ public class MemberBlackManagerDTO
 	private String book_report_code, book_code, book_report_type
 	, book_report_reason, book_report_date, member_code
 	, member_email, member_blacklist_reason,member_nickname
-	, yesblack;
+	, yesblack, report_proc_type;
+	
+	 
+
+	public String getReport_proc_type()
+	{
+		return report_proc_type;
+	}
+
+	public void setReport_proc_type(String report_proc_type)
+	{
+		this.report_proc_type = report_proc_type;
+	}
 
 	public String getBook_report_code()
 	{

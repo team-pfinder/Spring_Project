@@ -22,7 +22,7 @@
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <script type="text/javascript">
 
-	function submitBtn()
+	/* function submitBtn()
 	{
 		$.ajax({
 			type : "post",
@@ -33,13 +33,13 @@
 				window.close();
 			}
 		});
-	}
+	} */
 	
 	function submitBtn_m()
 	{
 		$.ajax({
 			type : "post",
-			url : "modifyrqna.action",
+			url : "modifyqna.action",
 			complete : function(xh)
 			{					
 				window.opener.parent.location.reload();				
@@ -52,7 +52,7 @@
 	{
 		$.ajax({
 			type : "post",
-			url : "modifyrqnareply.action",
+			url : "modifyqnareply.action",
 			complete : function(xh)
 			{					
 				window.opener.parent.location.reload();				
@@ -70,62 +70,31 @@
 			<div class="col-md-12">
 				<c:choose>
 				<c:when test="${identify eq 'member'}"> 	
-				
-					<c:choose>
-						<c:when test="${reqpage eq 'list'}">
-							<form action="modifyqnainlist.action" method="post" class="modifyForm">
-								<div class="header">
-									<h3 class="title my-2">Q&A 수정하기</h3>
-								</div><!-- End .header -->
-								
-								
-								<div class="body">
-									<div class="form-group">
-										<input type="hidden" value="${modify.qna_code }" name="qna_code">
-										<label for="content">내용</label>
-										<textarea class="form-control" id="content" name="qna_content"
-											rows="8" maxlength="3000">${modify.qna_content }</textarea>
-									</div>
-								</div><!-- End .body -->
-								<hr>
-				
-								<div class="text-center">
-									<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-									<button type="submit" class="btn btn-primary" id="submitBtn" onclick="submitBtn()">작성하기</button>
-								</div>
-							</form>
-						</c:when>
+					<form action="modifyqna.action" method="post" class="modifyForm">
+						<div class="header">
+							<h3 class="title my-2">Q&A 수정하기</h3>
+						</div><!-- End .header -->
 						
-						<c:otherwise>
-							<form action="modifyqna.action" method="post" class="modifyForm">
-								<div class="header">
-									<h3 class="title my-2">Q&A 수정하기</h3>
-								</div><!-- End .header -->
-								
-								
-								<div class="body">
-									<div class="form-group">
-										<input type="hidden" value="${modify.qna_code }" name="qna_code">
-										<label for="content">내용</label>
-										<textarea class="form-control" id="content" name="qna_content"
-											rows="8" maxlength="3000">${modify.qna_content }</textarea>
-									</div>
-								</div><!-- End .body -->
-								<hr>
-				
-								<div class="text-center">
-									<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
-									<button type="submit" class="btn btn-primary" id="submitBtn" onClick="submitBtn_m()">작성하기</button>
-								</div>
-							</form>
-						</c:otherwise>
-					
-					</c:choose>			
-					
+						
+						<div class="body">
+							<div class="form-group">
+								<input type="hidden" value="${modify.qna_code }" name="qna_code">
+								<label for="content">내용</label>
+								<textarea class="form-control" id="content" name="qna_content"
+									rows="8" maxlength="3000">${modify.qna_content }</textarea>
+							</div>
+						</div><!-- End .body -->
+						<hr>
+		
+						<div class="text-center">
+							<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
+							<button type="submit" class="btn btn-primary" id="submitBtn" onClick="submitBtn_m()">작성하기</button>
+						</div>
+					</form>
 				</c:when>
 				
 				<c:when test="${identify eq 'host'}"> 
-					<form action="modifyrqnareply.action" method="post">
+					<form action="modifyqnareply.action" method="post">
 						<div class="header">
 							<h3 class="title my-2">Q&A 답글 수정하기</h3>
 						</div><!-- End .header -->
