@@ -150,7 +150,7 @@
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">마일리지관리:</h6>
-					<a class="collapse-item" href="#">충전관리</a>
+					<a class="collapse-item" href="loadmgr.action">충전관리</a>
 				</div>
 			</div></li>
 			
