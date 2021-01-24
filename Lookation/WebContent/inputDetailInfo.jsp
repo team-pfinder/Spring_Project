@@ -186,28 +186,50 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
-			
+			// 최대 수용인원 x
 			if (target.val()=='') {
-				
+				/* 
+				// 최소 o, 최대 x(다시 쓴 경우 검사해야)
+				if (maxTest()!='' && target.val()=='')
+				{
+					err.html.hide();
+					return;
+				}
+				 */
 				err.html.hide();
 				return;
 			}
-			else if (maxTest() == '' && target.val() != ''){
+			// 최대 수용인원 o
+			else if (target.val()!=''){
 				
-				err.html("최소 수용인원을 입력해주세요.").css("display","inline");
-				err.css("color","red");
-				return;
-			}
-			else if (maxTest() != '' 
-					|| parseInt(target.val()) < maxTest() 
-					|| parseInt(target.val()) > maxNum ) {
+				// 최소 x, 최대 o
+				if (maxTest()=='')
+				{
+					err.html("최소 수용인원을 입력해주세요.").css("display","inline");
+					err.css("color","red");
+					return;
+				}
 				
-				err.html("" + name + "은 " + maxTest() + " 이상 ~ " 
-						+ maxNum + " 이하로 설정해야합니다.").css("display","inline");
+				// 최소 o , 최대 o
+				else if (maxTest()!='' && target.val()!='')
+				{
+					// 최소 수용인원 o, 최소 수용인원 > 최대 수용인원 or 최대 > 30
+					
+					if (maxTest() != '' 
+						&& parseInt(target.val()) < maxTest() 
+						|| parseInt(target.val()) > maxNum ) {
+					
+						err.html("" + name + "은 " + maxTest() + " 이상 ~ " 
+								+ maxNum + " 이하로 설정해야합니다.").css("display","inline");
+						
+						err.css("color", "red");
+						return;
+
+					}
 				
-				err.css("color", "red");
-				return;
-				
+				}			
+			
+			
 			} else {
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
