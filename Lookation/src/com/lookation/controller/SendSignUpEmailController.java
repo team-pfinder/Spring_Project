@@ -97,18 +97,14 @@ public class SendSignUpEmailController implements Controller
 		
 		EmailManager.sendHtml(email, "Lookation", title, html);
 		
-		/*
-		 * 	
+  	
 		// 메인으로 돌아가기
 		// action으로 바꿀 예정
-		if(identify.equals("user"))
-			mav.setViewName("redirect:user/mainUser.jsp");
+		if(identify.equals("member"))
+			mav.setViewName("redirect:membermain.action");
 		else if(identify.equals("host"))
-			mav.setViewName("redirect:host/mainHost.jsp");
-		*/
-		
-		// for test
-		mav.setViewName("../WEB-INF/views/user/mainUser.jsp");
+			mav.setViewName("redirect:hostmain.action");
+	
 		
 		return mav;
 	}
