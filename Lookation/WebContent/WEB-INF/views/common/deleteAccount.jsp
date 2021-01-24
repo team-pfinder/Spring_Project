@@ -44,24 +44,42 @@
 	
 	$(function()
 	{
+		//var address = unescape(location.href);
+		//var param = "";
+		var Code = "";
+		
+		// url 파라미터값 추출
+		//param = address.substring(address.indexOf("identify", 0) + 9);
+
+		var identify = '<%=(String)request.getParameter("identify")%>'
+		
+		if(identify=="host")
+		{
+			Code = '<%=(String)session.getAttribute("hostCode")%>';
+		}
+		else
+		{
+			Code = '<%=(String)session.getAttribute("memberCode")%>';
+		}
+		
+		// 취소 버튼 클릭시 액션처리
+		$("#cancelBtn").click(function()
+		{
+			if(identify=="member")
+			{
+				// 이용자일 경우 멤버코드 받아서
+				$(location).attr("href", "profile.action?identify=member");
+			}
+			else if(identify=="host")
+			{
+				// 호스트일 경우 호스트코드 받아서 
+				$(location).attr("href", "profile.action?identify=host");
+			}
+		});
+		
 		// 삭제 버튼 클릭 시 액션 처리
 		$("#deleteBtn").click(function()
 		{	
-			var address = unescape(location.href);
-			var param = "";
-			var Code = "";
-			
-			// url 파라미터값 추출
-			param = address.substring(address.indexOf("identify", 0) + 9);
-			// ?identify=member 혹은 ?identify=host로 넘어옴
-			
-			// 테스트
-			//alert(param);
-			//alert($(this).val());
-			
-			//var code = $("#deleteBtn").val();
-			var identify = '<%=(String)request.getParameter("identify")%>'
-			
 			if(identify=="host")
 			{
 				Code = '<%=(String)session.getAttribute("hostCode")%>';
@@ -71,20 +89,17 @@
 				Code = '<%=(String)session.getAttribute("memberCode")%>';
 			}
 			
-			// ※ 나중에 세션처리로 변경
-			if(param=="member")
+			if(identify=="member")
 			{
-				// 이용자일 경우 멤버코드 받아서
-				$(location).attr("href", "deletemember.action?identify=member&memberCode=" + Code);
+				$(location).attr("href", "deletemember.action?identify=member");
 			}
-			else if(param=="host")
+			else if(identify=="host")
 			{
-				// 호스트일 경우 호스트코드 받아서 
-				$(location).attr("href", "deletehost.action?identify=host&hostCode=" + Code);
+				$(location).attr("href", "deletehost.action?identify=host");
 			}
 			else
 			{
-				$(location).attr("href", "404.html");
+				alert("유효하지 않은 접근입니다.");
 			}
 			
 	
@@ -125,7 +140,7 @@
 						
 						<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
 						<div class="align-items-center">
-							<button class="btn btn-primary mx-1" type="button">취소하기</button>
+							<button class="btn btn-primary mx-1" type="button" id="cancelBtn">취소하기</button>
 							<!-- 탈퇴 버튼 클릭시 탈퇴완료 alert창 호출,  -->
 							<!-- 자동으로 메인 화면으로 돌아가기 -->
 							
@@ -151,7 +166,5 @@
 	
 
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
-<!-- Footer -->
-<%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
 </body>
 </html>

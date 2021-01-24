@@ -44,7 +44,8 @@ public class DeleteHostController implements Controller
 		try
 		{	
 			// 세션을 통한 로그인 확인                                                                    
-			HttpSession session = request.getSession();                                                                  
+			HttpSession session = request.getSession();       
+			session.setAttribute("hostCode", "H000001");
 			String accountCode = (String)session.getAttribute("hostCode"); 
 
 			// 로그인 확인을 기록하기 위함                  
@@ -66,7 +67,7 @@ public class DeleteHostController implements Controller
 					out.println("<script>alert('회원정보가 유효하지 않거나 이미 탈퇴가 완료되었습니다.');</script>");
 					out.flush();
 					
-					mav.setViewName("redirect:loginform.action?identify=host");
+					mav.setViewName("loginform.action?identify=host");
 					return mav;
 				}
 				else if(dao.checkMileage(accountCode)!=0)	// 마일리지 남아있으면
@@ -75,7 +76,7 @@ public class DeleteHostController implements Controller
 					out.flush();
 					
 					// 마이페이지로 보냄
-					mav.setViewName("../WEB-INF/views/host/mypageHost.jsp");
+					mav.setViewName("loadandexchange.action?identify=host");
 					
 					return mav;
 				}
@@ -84,7 +85,7 @@ public class DeleteHostController implements Controller
 					out.println("<script>alert('예약내역이 남아있어 예약관리 페이지로 이동합니다.');</script>");
 					out.flush();
 					
-					mav.setViewName("../WEB-INF/views/host/mypageHost.jsp");
+					mav.setViewName("mypage.action?identify=host");
 					return mav;
 				}	
 				else						

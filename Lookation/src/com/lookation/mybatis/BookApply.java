@@ -43,9 +43,6 @@ public class BookApply
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		// ※ 임시 ------------------------------------------------------
-		session.setAttribute("memberCode", "M000001");
-		// --------------------------------------------------------------
 		String accountCode = (String)session.getAttribute("memberCode");
 		
 		

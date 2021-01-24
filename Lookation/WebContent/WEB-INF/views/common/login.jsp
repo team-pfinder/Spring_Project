@@ -7,34 +7,7 @@
 	
 	String identify = request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
-	
-	
-	// 로그인 후 다시 요청할 액션
-	String requestUrl = "";
-	
-	// 로그인시 다시 요청하기 위한 이전 액션
-	String beforePage = request.getHeader("Referer");
-	
-	// 이전 액션 없이 링크를 직접 타고 들어왔다면 
-	// 메인 액션으로 이동하도록 한다.
-	if(beforePage == null ||
-	  beforePage.contains("signup.action"))
-	{
-		if(identify.equals("host"))
-			requestUrl = "hostmain.action";
-		else if(identify.equals("member"))
-			requestUrl = "membermain.action";
-	}
-	else
-	{
-		// 뒷부분 액션만 잘라오기
-		String[] subArr = beforePage.split("/");
-	    requestUrl = subArr[subArr.length-1];
-	}
-	pageContext.setAttribute("requestUrl", requestUrl);
-	
-	System.out.println(requestUrl);
-	
+
 	// 로그인 결과 여부
 	// 이전 페이지에서 로그인 실패시 GET을 통해 들어온다.
 	String result = request.getParameter("result");
@@ -225,7 +198,6 @@
 						</p>
 					</li>
 				</ul>
-				<input type="hidden" id="requestUrl" name="requestUrl" value="${requestUrl }"> 
 			</form>
 				<div class="memory_box">
 					<input type="checkbox" id="memory"/>
