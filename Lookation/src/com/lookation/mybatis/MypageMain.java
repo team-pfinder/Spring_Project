@@ -16,7 +16,7 @@ import com.lookation.dao.IMemberAccountDAO;
 // 이용자 마이페이지 메뉴
 
 @Controller
-public class MemberMypage
+public class MypageMain
 {
     @Autowired
     private SqlSession sqlSession;
