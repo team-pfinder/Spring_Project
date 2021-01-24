@@ -198,12 +198,12 @@ String cp = request.getContextPath();
 				                   <input type="hidden" name="rowPerPage1" value="5">
 				               </form>
 				                  <colgroup>
+				                     <col style="width: 5%">
 				                     <col style="width: 15%">
-				                     <col style="width: 15%">
+				                     <col style="width: 10%">
 				                     <col style="width: 30%">
-				                     <col style="width: 30%">
-				                     <col style="width: 20%">
-				                     <col style="width: 20%">
+				                     <col style="width: 10%">
+				                     <col style="width: 40%">
 				                     <col style="width: 20%">
 				                  </colgroup>
 									<thead>
