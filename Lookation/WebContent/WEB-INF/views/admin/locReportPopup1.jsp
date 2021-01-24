@@ -84,8 +84,8 @@
 					<td>${locDetailList1.loc_report_reason }</td>
 				</tr>
 				<tr>
-					<th>이미지</th><!-- 이미지로 볼 수 있게 변경할 것 -->
-					<td>${locDetailList1.loc_report_img_url }</td>
+					<th>이미지</th>
+					<td><img src="<%=cp %>/images/${locDetailList1.loc_report_img_url }" width="350"></img></td>
 				</tr>
 				<tr>
 					<th>신고처리결과</th>
