@@ -199,7 +199,7 @@
 						+ "(기존 작성 내용은 저장되지 않습니다.)");
 		
 		if (con == true) {
-			location.href = "mainHost.jsp";
+			location.href = "hostmain.action";
 			return;
 			
 		} else {
@@ -222,7 +222,7 @@
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
+      style="background-image: url(<%=cp%>/images/bg_3.jpg);"
       data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
