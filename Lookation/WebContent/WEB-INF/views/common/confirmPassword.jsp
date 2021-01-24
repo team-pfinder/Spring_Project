@@ -176,7 +176,7 @@
 	
 	<div class="container" >
 		<div class="confirmBox">
-			<form action="confirmpassword.action" method="post" id="confirmPwForm">	
+			<form action="confirmpassword.action?identify=${identify}" method="post" id="confirmPwForm">	
 				<ul class="pw_info">
 					<li>
 						<p style="font-size: 16px; font-weight: bold;">인증을 위해 비밀번호를 입력하세요.</p>

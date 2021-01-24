@@ -12,6 +12,14 @@
 		
 	</select>
 	
+	<select id="findLocation" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM LOC
+		WHERE HOST_CODE = #{host_code}
+		  AND LOC_CODE = #{loc_code}
+	</select>
+	
+	
 	<insert id="inputLoc" parameterType="com.lookation.dto.LocationDTO">
 		
 		<selectKey keyProperty="loc_code" resultType="String" order="AFTER">

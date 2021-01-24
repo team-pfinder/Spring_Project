@@ -3,6 +3,9 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String loc_code = request.getParameter("loc_code");
+	pageContext.setAttribute("loc_code", loc_code);
 %>
 <!DOCTYPE html>
 <html>
@@ -67,15 +70,11 @@
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
 		
-		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
-						+ "(기존 작성 내용은 저장되지 않습니다.)");
-		
-		if (con == true) {
-			location.href = "mainHost.jsp";
-			return;
-		} else {
-			return;
-		}
+		if(confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
+				+ "(기존 작성 내용은 저장되지 않습니다.)"))
+		{
+			location.href = "locationlist.action";
+		}	
 		
 	}
 	
@@ -83,7 +82,7 @@
 </head>
 <body>
 	<div>
-	<c:import url="${cp}/includes/header_host.jsp"></c:import>
+        <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 
    <!-- 타이틀 -->
@@ -136,7 +135,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm" 
-		  action="deletepackageform.action" method="POST"><!--onsubmit="handOver()" -->
+		  action="deletepackageform.action?loc_code=${loc_code }" method="POST"><!--onsubmit="handOver()" -->
 			
 	
 		<!-- 1. 현재 패키지 (추가된 패키지 현황) --> 
@@ -176,7 +175,7 @@
 		<!-- 2. 패키지 추가하기 -->
 		<!--    → inputPackageInfo.jsp로 이동 -->
 		<input type="button" class="form-control" value="패키지 추가"
-			   onclick="location.href='packageform.action'">
+			   onclick="location.href='packageform.action?loc_code=${loc_code}'">
 		
 		<!-- 3. 패키지 수정하기 
 				→ 현재 패키지 중 하나를 선택후 수정버튼 클릭, 

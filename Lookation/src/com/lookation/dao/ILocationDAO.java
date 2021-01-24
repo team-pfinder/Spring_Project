@@ -6,6 +6,9 @@ import com.lookation.dto.LocationDTO;
 
 public interface ILocationDAO
 {
+	// ---------------- identify --------------------
+	public int findLocation(LocationDTO dto);
+	
 	// ----------------- list ------------------------
 	public ArrayList<LocationDTO> locList(LocationDTO dto);
 	

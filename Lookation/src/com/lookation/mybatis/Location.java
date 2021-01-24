@@ -3,6 +3,7 @@ package com.lookation.mybatis;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILocationDAO;
 import com.lookation.dto.LocationDTO;
 import com.lookation.util.FileManager;
@@ -26,12 +28,39 @@ public class Location
 	@RequestMapping(value="/actions/locationlist.action", method = RequestMethod.GET)
 	public String locationList(HttpServletRequest request, Model model)
 	{
-	    ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+		HttpSession session = request.getSession();       
+		
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		
+		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
+		if(accountCode != null)                                         
+		{       
+			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
+		    // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+
+			// 호스트측면 추가로 해야할 작업은 이 밑에 쓴다.
+			ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+            
+		    LocationDTO loc = new LocationDTO();
+		    loc.setHost_code(accountCode);
+		    model.addAttribute("locList", locDao.locList(loc));
+		    
+		    // 로그인이 되었음을 기록한다.
+		    result = "signed";                                                                                
+		}
+		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
+		model.addAttribute("result", result); 
 	    
-	    LocationDTO loc = new LocationDTO();
-	    loc.setHost_code("H000001");
-	    
-	    model.addAttribute("locList", dao.locList(loc));
+		if(result.equals("noSigned"))
+		{
+		    // 로그인 창으로 이동한다.
+		    return "redirect:loginform.action?identify=host";
+		}
 	    
 		return "../WEB-INF/views/host/locationList.jsp";
 	}
@@ -39,15 +68,41 @@ public class Location
 	@RequestMapping(value="/actions/deletelocation.action", method = RequestMethod.GET)
 	public String deleteAction(HttpServletRequest request, Model model)
 	{
-	    ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
+		HttpSession session = request.getSession();       
+		
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                 
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+
+			ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+
+			String loc_code = request.getParameter("loc_code");
+			
+			LocationDTO loc = new LocationDTO();
+			loc.setHost_code(accountCode);
+			loc.setLoc_code(loc_code);
+			
+			// 삭제하는 작업이므로 철저한 확인이 필요하다.
+			// 실제 이 공간이 해당 호스트의 공간인지 검사
+			// 맞다면 삭제한다.
+			if(locDao.findLocation(loc) > 0)
+				locDao.deleteLocation(loc);
+
+		    result = "signed";                                                                                
+		}                                                                                
+		model.addAttribute("result", result); 
 	    
-	    String loc_code = request.getParameter("loc_code");
-	    
-	    LocationDTO loc = new LocationDTO();
-	    loc.setLoc_code(loc_code);
-	    dao.deleteLocation(loc);
-	    
-	   
+		if(result.equals("noSigned"))
+		{
+		    return "redirect:loginform.action?identify=host";
+		}
+		      
 		return "redirect:locationlist.action";
 	}
 	
@@ -55,87 +110,154 @@ public class Location
 	@RequestMapping(value="/actions/basicform.action", method = RequestMethod.GET)
 	public String basicForm(HttpServletRequest request, Model model)
 	{
+		HttpSession session = request.getSession();
+
+		session.setAttribute("hostCode", "H000001");
+
+		String accountCode = (String) session.getAttribute("hostCode");
+		String result = "noSigned";
+
+		if (accountCode != null)
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+			model.addAttribute("info", dao.getInfo(accountCode));
+
+			result = "signed";
+		}
+		model.addAttribute("result", result);
+
+		if (result.equals("noSigned"))
+		{
+			return "redirect:loginform.action?identify=host";
+		}
+
 		return "../WEB-INF/views/host/inputBasicInfo.jsp";
 	}
 	
 	@RequestMapping(value="/actions/basicajax.action", method = RequestMethod.POST)
 	public String basicAjax(HttpServletRequest request, Model model)
 	{
-		String[] arrFacility = request.getParameterValues("facility[]");
-		String[] arrPrecaution = request.getParameterValues("precaution[]");
+		HttpSession session = request.getSession();       
 		
-		ArrayList<String> tmpFacility = new ArrayList<String>();
-		ArrayList<String> tmpPrecaution = new ArrayList<String>();
+		session.setAttribute("hostCode", "H000001");
 		
-		for(String facility : arrFacility)
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                   
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+		    
+			//
+			String[] arrFacility = request.getParameterValues("facility[]");
+			String[] arrPrecaution = request.getParameterValues("precaution[]");
+			
+			ArrayList<String> tmpFacility = new ArrayList<String>();
+			ArrayList<String> tmpPrecaution = new ArrayList<String>();
+			
+			for(String facility : arrFacility)
+			{
+				tmpFacility.add(facility);
+			}
+			
+			for(String precaution : arrPrecaution)
+			{
+				tmpPrecaution.add(precaution);
+			}
+			
+			LocationManager.setArrFacility(tmpFacility);
+			LocationManager.setArrPrecaution(tmpPrecaution);
+			//
+			
+		    result = "signed";                                                                                
+		}                                                                                   
+		model.addAttribute("result", result); 
+	    
+		if(result.equals("noSigned"))
 		{
-			tmpFacility.add(facility);
+		    return "redirect:loginform.action?identify=host";
 		}
-		
-		for(String precaution : arrPrecaution)
-		{
-			tmpPrecaution.add(precaution);
-		}
-		
-		LocationManager.setArrFacility(tmpFacility);
-		LocationManager.setArrPrecaution(tmpPrecaution);
-		
+
 		return "";
 	}
 	
 	@RequestMapping(value="/actions/inputbasicinfo.action", method = RequestMethod.POST)
 	public String inputBasicInfo(HttpServletRequest request, Model model)
 	{
-		try
-		{
-			MultipartRequest m = FileManager.upload(request, "images");
-			ArrayList<String> fileNames = FileManager.getFileNames(m);
-			
-		 	LocationManager.setName(m.getParameter("inputLocName"));
-		 	LocationManager.setType(m.getParameter("inputLocType"));
-		 	LocationManager.setShortIntro(m.getParameter("inputShortIntro"));
-		 	LocationManager.setIntro(m.getParameter("inputIntro"));
-		 	LocationManager.setThumbnail(fileNames.get(0));
-		 	LocationManager.setAddress(m.getParameter("inputAddr"));
-		 	LocationManager.setDetailAddress(m.getParameter("inputDetailAddr"));
-		 	
-		 	System.out.println(LocationManager.getName());
-		 	System.out.println(LocationManager.getType());
-		 	System.out.println(LocationManager.getShortIntro());
-		 	System.out.println(LocationManager.getIntro());
-		 	System.out.println(LocationManager.getThumbnail());
-		 	System.out.println(LocationManager.getAddress());
-		 	System.out.println(LocationManager.getDetailAddress());
-		 	
-		 	for(String s : LocationManager.getArrFacility())
-		 	{
-		 		System.out.println(s);
-		 	}
-		 	
-	 		for(String s : LocationManager.getArrPrecaution())
-	 		{
-	 			System.out.println(s);
-	 		}
-		 	
- 			
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
-		}
+		HttpSession session = request.getSession();       
 		
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                   
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+		    
+			//
+			try
+			{
+				MultipartRequest m = FileManager.upload(request, "images");
+				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				
+			 	LocationManager.setName(m.getParameter("inputLocName"));
+			 	LocationManager.setType(m.getParameter("inputLocType"));
+			 	LocationManager.setShortIntro(m.getParameter("inputShortIntro"));
+			 	LocationManager.setIntro(m.getParameter("inputIntro"));
+			 	LocationManager.setThumbnail(fileNames.get(0));
+			 	LocationManager.setAddress(m.getParameter("inputAddr"));
+			 	LocationManager.setDetailAddress(m.getParameter("inputDetailAddr"));
+			 	
+			} catch (Exception e)
+			{
+				System.out.println(e.toString());
+			}
+			//
+			
+		    result = "signed";                                                                                
+		}                                                                                   
+		model.addAttribute("result", result); 
+	    
+		if(result.equals("noSigned"))
+		{
+		    return "redirect:loginform.action?identify=host";
+		}
+			
 		return "../WEB-INF/views/host/inputContactInfo.jsp";
 	}
 	
 	@RequestMapping(value="/actions/inputcontactinfo.action", method = RequestMethod.POST)
 	public String inputContactInfo(HttpServletRequest request, Model model)
 	{
-		LocationManager.setEmail(request.getParameter("inputEmail"));
-		LocationManager.setTel(request.getParameter("inputContact"));
-		LocationManager.setMainTel(request.getParameter("inputMainContact"));
+		HttpSession session = request.getSession();       
 		
-		System.out.println(LocationManager.getEmail());
-		System.out.println(LocationManager.getTel());
-		System.out.println(LocationManager.getMainTel());
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                   
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+		    
+			//
+			LocationManager.setEmail(request.getParameter("inputEmail"));
+			LocationManager.setTel(request.getParameter("inputContact"));
+			LocationManager.setMainTel(request.getParameter("inputMainContact"));
+			//
+			
+		    result = "signed";                                                                                
+		}                                                                                   
+		model.addAttribute("result", result); 
+	    
+		if(result.equals("noSigned"))
+		{
+		    return "redirect:loginform.action?identify=host";
+		}
 		
 		return "../WEB-INF/views/host/inputBusinessInfo.jsp";
 	}
@@ -143,92 +265,139 @@ public class Location
 	@RequestMapping(value="/actions/inputbusinessinfo.action", method = RequestMethod.POST)
 	public String inputBusinessInfo(HttpServletRequest request, Model model)
 	{
-		try
-		{
-			MultipartRequest m = FileManager.upload(request, "images");
-			ArrayList<String> fileNames = FileManager.getFileNames(m);
-			
-		 	LocationManager.setBizName(m.getParameter("inputBizName"));
-		 	LocationManager.setBizCeo(m.getParameter("inputBizCeo"));
-		 	LocationManager.setBizNum(m.getParameter("inputBizNum"));
-		 	LocationManager.setBizLicense(fileNames.get(0));
-		 	LocationManager.setBizCeoType(m.getParameter("inputBizCeoType"));
-		 	LocationManager.setBizMainType(m.getParameter("inputBizMainType"));
-		 	LocationManager.setBizSubType(m.getParameter("inputBizSubType"));
- 			LocationManager.setBizAddresss(m.getParameter("inputAddr"));
- 			LocationManager.setBizDetailAddress(m.getParameter("inputDetailAddr"));
-		 	
-		 	System.out.println(LocationManager.getBizName());
-		 	System.out.println(LocationManager.getBizCeo());
-		 	System.out.println(LocationManager.getBizNum());
-		 	System.out.println(LocationManager.getBizLicense());
-		 	System.out.println(LocationManager.getBizCeoType());
-		 	System.out.println(LocationManager.getBizMainType());
-		 	System.out.println(LocationManager.getBizSubType());
-		 	System.out.println(LocationManager.getBizAddresss());
-		 	System.out.println(LocationManager.getBizDetailAddress());
-		 	
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
-		}
+		HttpSession session = request.getSession();       
 		
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                   
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+		    
+			//
+			try
+			{
+				MultipartRequest m = FileManager.upload(request, "images");
+				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				
+			 	LocationManager.setBizName(m.getParameter("inputBizName"));
+			 	LocationManager.setBizCeo(m.getParameter("inputBizCeo"));
+			 	LocationManager.setBizNum(m.getParameter("inputBizNum"));
+			 	LocationManager.setBizLicense(fileNames.get(0));
+			 	LocationManager.setBizCeoType(m.getParameter("inputBizCeoType"));
+			 	LocationManager.setBizMainType(m.getParameter("inputBizMainType"));
+			 	LocationManager.setBizSubType(m.getParameter("inputBizSubType"));
+	 			LocationManager.setBizAddresss(m.getParameter("inputAddr"));
+	 			LocationManager.setBizDetailAddress(m.getParameter("inputDetailAddr"));
+			 	
+			} catch (Exception e)
+			{
+				System.out.println(e.toString());
+			}
+			//
+			
+		    result = "signed";                                                                                
+		}                                                                                   
+		model.addAttribute("result", result); 
+	    
+		if(result.equals("noSigned"))
+		{
+		    return "redirect:loginform.action?identify=host";
+		}
+
 		return "../WEB-INF/views/host/inputDetailInfo.jsp";
 	}
 	
 	@RequestMapping(value="/actions/inputdetailinfo.action", method = RequestMethod.POST)
 	public String inputDetailInfo(HttpServletRequest request, Model model)
 	{
-		try
-		{
-			MultipartRequest m = FileManager.upload(request, "images");
-			ArrayList<String> fileNames = FileManager.getFileNames(m);
-			
-		 	LocationManager.setArrDetailImage(fileNames);
-		 	LocationManager.setMinPeople(m.getParameter("inputMinPeople"));
-		 	LocationManager.setMaxPeople(m.getParameter("inputMaxPeople"));
-		 	LocationManager.setWebUrl(m.getParameter("inputWebUrl"));
-		 	
-		 	for(String s : LocationManager.getArrDetailImage())
-		 	{
-		 		System.out.println(s);
-		 	}
-		 	System.out.println(LocationManager.getMinPeople());
-		 	System.out.println(LocationManager.getMaxPeople());
-		 	System.out.println(LocationManager.getWebUrl());
- 			
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
-		}
+		HttpSession session = request.getSession();       
 		
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                   
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+		    
+			//
+			try
+			{
+				MultipartRequest m = FileManager.upload(request, "images");
+				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				
+			 	LocationManager.setArrDetailImage(fileNames);
+			 	LocationManager.setMinPeople(m.getParameter("inputMinPeople"));
+			 	LocationManager.setMaxPeople(m.getParameter("inputMaxPeople"));
+			 	LocationManager.setWebUrl(m.getParameter("inputWebUrl"));
+	 			
+			} catch (Exception e)
+			{
+				System.out.println(e.toString());
+			}
+			//
+			
+		    result = "signed";                                                                                
+		}                                                                                   
+		model.addAttribute("result", result); 
+	    
+		if(result.equals("noSigned"))
+		{
+		    return "redirect:loginform.action?identify=host";
+		}
+			
 		return "../WEB-INF/views/host/inputUsingInfo.jsp";
 	}
 	
 	@RequestMapping(value="/actions/inputusinginfo.action", method = RequestMethod.POST)
 	public String inputUsingInfo(HttpServletRequest request, Model model)
 	{
-		LocationManager.setUsingHour(request.getParameter("inputUsingHour"));
-		LocationManager.setDayOff(request.getParameter("inputDayOff"));
-		LocationManager.setAppointDayOff(request.getParameter("inputAppointDayoff"));
+		HttpSession session = request.getSession();       
 		
-		System.out.println(LocationManager.getUsingHour());
-		System.out.println(LocationManager.getDayOff());
-		System.out.println(LocationManager.getAppointDayOff());
+		session.setAttribute("hostCode", "H000001");
+		
+		String accountCode = (String)session.getAttribute("hostCode"); 
+		String result = "noSigned";    
+		                                                                                   
+		if(accountCode != null)                                         
+		{       
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+			model.addAttribute("info", dao.getInfo(accountCode));
+		    
+			//
+			LocationManager.setUsingHour(request.getParameter("inputUsingHour"));
+			LocationManager.setDayOff(request.getParameter("inputDayOff"));
+			LocationManager.setAppointDayOff(request.getParameter("inputAppointDayoff"));
+			//
+			
+		    result = "signed";                                                                                
+		}                                                                                   
+		model.addAttribute("result", result); 
+	    
+		if(result.equals("noSigned"))
+		{
+		    return "redirect:loginform.action?identify=host";
+		}
 		
 		
-		// -------------------- 입력 --------------------
+		// -------------------- 최종 입력 트랜잭션 수행 --------------------
 		ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
         
         LocationDTO dto = new LocationDTO();
         
         // 공간
-        dto.setHost_code("H000001");
+        dto.setHost_code(accountCode);
         
         dao.inputLoc(dto);	// loc_code set
    
 
-        // 기본 정보
+        // 1. 기본 정보
         dto.setLoc_type(LocationManager.getType());
         dto.setLoc_name(LocationManager.getName());
         dto.setLoc_short_intro(LocationManager.getShortIntro());
@@ -238,35 +407,27 @@ public class Location
         
         dao.inputBasicInfo(dto);	// loc_basic_info_code set
         
-        
-        // 썸네일(기본정보)
-        dto.setThumbnail_url(LocationManager.getThumbnail());
-        
-        dao.inputThumbnail(dto);
-        
-        //System.out.println(LocationManager.getArrFacility());
-        
-        
-        // 시설안내(기본정보)
-        //-- insert 이므로 배열에 담을 필요없음. 
-        //   mybatis에서 for문으로 담는다
-		
-		for (String str : LocationManager.getArrFacility()) 
+        // 1-1. 시설안내(기본정보)
+		for (String str : LocationManager.getArrFacility())
 		{
-			 dto.setFacility_content(str); 
-			 dao.inputFacilityInfo(dto); 
+			dto.setFacility_content(str);
+			dao.inputFacilityInfo(dto);
 		}
-		
-		
-		// 주의사항(기본정보)
-		  
+
+		// 1-2. 주의사항(기본정보)
 		for (String str : LocationManager.getArrPrecaution())
 		{
 			dto.setCaution_content(str);
 			dao.inputCaution(dto);
 		}
-		
-		// 연락처 정보
+        
+        // 1-3. 썸네일(기본정보)
+        dto.setThumbnail_url(LocationManager.getThumbnail());
+       
+        dao.inputThumbnail(dto);
+
+        
+		// 3. 연락처 정보
 		dto.setLoc_email(LocationManager.getEmail());
 		dto.setLoc_tel(LocationManager.getTel());
 		dto.setLoc_main_tel(LocationManager.getMainTel());
@@ -274,7 +435,7 @@ public class Location
 		dao.inputContact(dto);
 		
 		
-		// 사업자 정보
+		// 4. 사업자 정보
 	    dto.setBiz_name(LocationManager.getBizName());
 	    dto.setBiz_ceo(LocationManager.getBizCeo());
 	    dto.setBiz_license_url(LocationManager.getBizLicense());
@@ -287,26 +448,26 @@ public class Location
 	    dao.inputBizInfo(dto);
 	    
 	    
-	    // 상세 정보
+	    // 5. 상세 정보
 	    dto.setMin_people(LocationManager.getMinPeople());
 	    dto.setMax_people(LocationManager.getMaxPeople());
 	    
 	    dao.inputDetailInfo(dto);	// 상세정보코드 set
 	    
 
-	    // 상세 이미지
+	    // 6. 상세 이미지
 	    for (String str : LocationManager.getArrDetailImage())
 		{
 			dto.setLoc_detail_img_url(str);
 			dao.inputDetailImg(dto);
 		}
 	    
-	    // 웹 사이트
+	    // 6-1. 웹 사이트
 	    dto.setLoc_web_url(LocationManager.getWebUrl());
 	    dao.inputLocWeb(dto);
 	    
 	    
-	    // 이용 정보  
+	    // 7. 이용 정보  
 	    dto.setLoc_use_hour(LocationManager.getUsingHour());
 	    dto.setLoc_use_day_off(LocationManager.getDayOff());
 	    dto.setLoc_use_appoint_day_off(LocationManager.getAppointDayOff());
@@ -314,78 +475,23 @@ public class Location
 	    dao.inputUsingInfo(dto);
 	    
 	    
-	    // 검수 신청
+	    // 8. 검수 신청
 	    dao.inputInspectRegList(dto);  // set inspect_reg_code
 		
 		
-		return "../WEB-INF/views/host/locationList.jsp";
+		return "redirect:locationlist.action";
 	}
 	
+	// 미구현..
 	@RequestMapping(value="/actions/insertinfotest.action", method = RequestMethod.GET)
     public String insertinfotest(HttpServletRequest request, Model model)
     {
-
-        LocationManager.setName("공간이름테스트");
-	     LocationManager.setType("파티룸");
-	     LocationManager.setShortIntro("공간한줄소개테스트");
-	     LocationManager.setIntro("공간 소개 테스트 입니다. 상세하게 소개합니다.");
-	     LocationManager.setThumbnail("썸네일.png");
-	     LocationManager.setAddress("인천 연수구 랜드마크로 19");
-	     LocationManager.setDetailAddress("상세 주소 테스트 123-123");
-
-        LocationManager.setEmail("test123@good.com");
-        LocationManager.setTel("010-1234-4321");
-        LocationManager.setMainTel("02-0990-0880");
-
-        LocationManager.setBizName("사업장이름테스트");
-         LocationManager.setBizCeo("사업자대표테스트");
-         LocationManager.setBizNum("사업자번호테스트");
-         LocationManager.setBizLicense("사업자등록증.jpg");
-         LocationManager.setBizCeoType("간이과세자");
-         LocationManager.setBizMainType("주업태테스트");
-         LocationManager.setBizSubType("주업종테스트");
-        LocationManager.setBizAddresss("경기 안산시 단원구 라성로 4");
-        LocationManager.setBizDetailAddress("사업자 상세 주소 테스트");
-
-        ArrayList<String> f = new ArrayList<String>();
-        f.add("시설안내1");
-        f.add("시설안내2");
-        f.add("시설안내3");
-        LocationManager.setArrFacility(f);
-        
-        ArrayList<String> c = new ArrayList<String>();
-        c.add("주의사항1");
-        c.add("주의사항2");
-        c.add("주의사항3");
-        LocationManager.setArrPrecaution(c);
-        
-        
-        ArrayList<String> files = new ArrayList<String>();
-        files.add("상세이미지1.png");
-        files.add("상세이미지2.jpg");
-        files.add("상세이미지3.png");
-
-        
-        
-        LocationManager.setArrDetailImage(files);
-        LocationManager.setMinPeople("1");
-        LocationManager.setMaxPeople("30");
-         
-        LocationManager.setWebUrl("test.com");
-         
-        LocationManager.setUsingHour("이용시간안내테스트");
-        LocationManager.setDayOff("휴무안내테스트");
-        LocationManager.setAppointDayOff("정기휴무안내테스트");
-
-
         // 쿼리문으로 db에 저장할 코드가 들어갈 위치
 
         ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
         
         LocationDTO dto = new LocationDTO();
-        
-       
-	    
+   
 	    // -------------------- 수정 --------------------
 	    
 	    // 기본 정보
