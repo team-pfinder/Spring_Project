@@ -70,6 +70,8 @@ public class LocationDetailController implements Controller
 			mav.addObject("review", dao.review(loc_code));
 			mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
 			
+			mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
+			
 			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
 			
 		} catch (Exception e)

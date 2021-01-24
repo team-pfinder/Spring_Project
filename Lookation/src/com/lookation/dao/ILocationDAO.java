@@ -53,6 +53,9 @@ public interface ILocationDAO
 	// 검수 신청
 	public void inputInspectRegList(LocationDTO dto);
 	
+	// 패키지폼 추가
+	public void inputPackageForm(LocationDTO dto);
+	
 	
 	// ----------------- update -----------------------
 	
