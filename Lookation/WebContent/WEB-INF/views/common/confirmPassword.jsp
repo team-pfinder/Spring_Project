@@ -9,7 +9,12 @@
 	pageContext.setAttribute("identify", identify);
 	
 	String requestUrl = (String)request.getSession().getAttribute("requestUrl");
-	String beforeUrl = (String)request.getSession().getAttribute("beforeUrl");
+	String beforeUrl = "";
+	
+	if(identify.equals("host"))
+		beforeUrl = "hostmain.action";
+	else if(identify.equals("member"))
+		beforeUrl = "membermain.action";
 	
 	pageContext.setAttribute("requestUrl", requestUrl);
 	pageContext.setAttribute("beforeUrl", beforeUrl);
