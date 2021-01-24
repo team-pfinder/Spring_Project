@@ -60,6 +60,8 @@ public class LocationDetailHostController implements Controller
 				mav.addObject("review", dao.review(loc_code));
 				mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
 
+				mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
+				
 				// 로그인이 되었음을 기록한다.
 				result = "signed";
 			}

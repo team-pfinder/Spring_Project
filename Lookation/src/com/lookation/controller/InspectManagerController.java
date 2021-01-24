@@ -47,8 +47,6 @@ public class InspectManagerController implements Controller
 				list = dao.list();
 				
 				mav.addObject("list", list);
-				
-				
 				mav.setViewName("../WEB-INF/views/admin/inspectManager.jsp");
 				
 			} catch (Exception e)

@@ -474,8 +474,10 @@ public class Location
 	    
 	    dao.inputUsingInfo(dto);
 	    
+	    // 8. 패키지폼 추가
+	    dao.inputPackageForm(dto);
 	    
-	    // 8. 검수 신청
+	    // 9. 검수 신청
 	    dao.inputInspectRegList(dto);  // set inspect_reg_code
 		
 		
