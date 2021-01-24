@@ -937,7 +937,7 @@ THEN -1                 -- 취소완료
 WHEN APPLY_DATE > SYSDATE -- 현재시간이 예약시작시간보다 뒤
 THEN 1                    -- 이용완료 
 WHEN APPLY_DATE < SYSDATE
-THEN 0                    -- 이용완료
+THEN 0                    -- 예약완료
 ELSE 2
 END AS CHECKBOOK
 FROM
