@@ -269,8 +269,7 @@
 	
 	
 	<form style="width: 80%; margin: 120px;" id="inputContactInfo" 
-		  action="inputBusinessInfo.jsp" method="POST">
-		<!-- action="inputcontactinfo.action"  -->
+		  action="inputcontactinfo.action" method="POST">
 
 	
 		<!-- 1. 이메일 -->

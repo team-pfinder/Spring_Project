@@ -534,9 +534,8 @@ ul.precautions-list > li {
 	
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" enctype="multipart/form-data"
-		  action="${pageContext.request.contextPath}/inputContactInfo.jsp" method="post">
-		 <!--  onsubmit="return formCheck();"> -->
-	<!-- action="inputbasicinfo.action" -->
+		  action="inputContactInfo.jsp" method="post">
+			<!-- action="inputbasicinfo.action" -->
 		<!-- 1. 공간명 -->
 
 		<div>

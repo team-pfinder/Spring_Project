@@ -38,13 +38,16 @@
 			var tDayOff = $("#inputDayOff").val();
 			var tAppointDayoff = $("#inputAppointDayoff").val(); 
 			
-			if (tUsingHour == "" || inputUsingHour == "" || tShortIntro == "" ) {
+			if (tUsingHour == "" || tDayOff == "" || tAppointDayoff == "" ) {
 				 
 				alert("필수 입력사항을 모두 입력해 주세요.");
-					
 			}
+			else {
+				f.submit();
+			}
+				
 			
-		}
+		});
 			
 	});
 	

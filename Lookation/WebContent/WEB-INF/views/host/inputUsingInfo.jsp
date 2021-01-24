@@ -15,6 +15,43 @@
 
 <script type="text/javascript">
 
+
+	$(function ()
+	{
+		// enter submit 방지
+		document.addEventListener('keydown', function(event) {
+			
+			if (event.keyCode === 13) {
+			    event.preventDefault();
+		  	};
+		  	   
+		}, true);
+		
+		
+		// submit 제어
+		
+		$('#submitButton').click(function() {
+			
+			var f = $("#inputUsingInfo");
+			
+			var tUsingHour = $("#inputUsingHour").val(); 
+			var tDayOff = $("#inputDayOff").val();
+			var tAppointDayoff = $("#inputAppointDayoff").val(); 
+			
+			if (tUsingHour == "" || tDayOff == "" || tAppointDayoff == "" ) {
+				 
+				alert("필수 입력사항을 모두 입력해 주세요.");
+			}
+			else {
+				f.submit();
+			}
+				
+			
+		});
+			
+	});
+	
+
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
 		
@@ -33,13 +70,16 @@
 
 </head>
 <body>
+	
+	<!-- header 출력부분 -->
 	<div>
-	<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
-   <!-- 타이틀 -->
-   <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
-      data-stellar-background-ratio="0.5">
+	
+    <!-- 타이틀 -->
+    <section class="hero-wrap hero-wrap-2"
+     		 style="background-image: url('images/bg_3.jpg');"
+      		 data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
       <!-- 타이틀 내용 -->
@@ -93,8 +133,9 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">이용시간 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" id="inputUsingHour" name="inputUsingHour" required="required"
-				   placeholder="이용시간을 입력하세요(최대 34 시간, ex)오전 11시 ~ 오후 10시)">
+			<input type="text" class="form-control" id="inputUsingHour" name="inputUsingHour"
+				   placeholder="이용시간을 입력하세요(최대 34 시간, ex)오전 11시 ~ 오후 10시)"
+				   maxlength="50">
 			<!-- 종료시간 : 시작시간보다 이후부터 
 			(최대 : 시작시간 + 34시까지)  -->
 			<br><br>
@@ -110,9 +151,10 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">정기 휴무일 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required"
+			<input type="text" class="form-control"
 				   id="inputDayOff" name="inputDayOff"
-				   placeholder="정기 휴무일을 입력하세요. (ex) 매월 둘째주 일요일, 월요일)">
+				   placeholder="정기 휴무일을 입력하세요. (ex) 매월 둘째주 일요일, 월요일)"
+				   maxlength="50">
 			<br>
 			
 		</div>
@@ -126,8 +168,9 @@
 			<span style="font-size: 14pt; font-weight: bold;">지정 휴무일 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" id="inputAppointDayoff" name="inputAppointDayoff"
-				   class="form-control" required="required"
-				   placeholder="지정 휴무일을 입력하세요. (ex) 4월 5일, 8월 9일, ...)">
+				   class="form-control"
+				   placeholder="지정 휴무일을 입력하세요. (ex) 4월 5일, 8월 9일, ...)"
+				   maxlength="50">
 			<br>
 			<span></span> <!-- 글자 크기 작게 -->
 			
@@ -137,26 +180,16 @@
 	
 	<br><br><br>
 	
-	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-						   (필수항목을 입력하지 않았을 경우,
-							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-						    alert("필수항목을 입력해야합니다")된다.
-							그리고 입력하는 textbox로 입력커서가 이동한다. 
-							또한 다음페이지로 submit 되지 않는다.
-							
-							※ 다음 버튼 이동 순서
-							※ xxxUpdate.jsp 다음버튼 이동 순서 
-							   기본정보 → 연락처정보 → 사업자정보
-						    → 이용정보  → 상세정보  → 패키지정보 -->
+	<!-- 다음 버튼 -->
+	<div class="container" style="text-align: center;">
+
+		<button type="button" class="btn btn-warning" id="submitButton"
+			style="width:45%; border-color: gray;">다음 </button>
 	
-		<div class="container" style="text-align: center;">
-			<input type="submit" value="다음" class="btn btn-warning" 
-				   style="width:45%; border-color: gray;">
-			
-		<!-- 취소 버튼 -->
-			<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
-					id="UsingInfoCancel" value="취소" onclick="cancel()">		
-		</div>	
+	<!-- 취소 버튼 -->
+		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
+				id="UsingInfoCancel" value="취소" onclick="cancel()">		
+	</div>	
 
 
 <br><br><br><br>
@@ -165,9 +198,10 @@
 </div>
 </div>
 
+<!-- footer 출력부분 -->
 <div>
-	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+       <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+       <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </div>
 
 </body>
