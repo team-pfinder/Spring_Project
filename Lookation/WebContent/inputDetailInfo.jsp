@@ -188,22 +188,17 @@
 			
 			// 최대 수용인원 x
 			if (target.val()=='') {
-				/* 
-				// 최소 o, 최대 x(다시 쓴 경우 검사해야)
-				if (maxTest()!='' && target.val()=='')
-				{
-					err.html.hide();
-					return;
-				}
-				 */
+
 				err.html.hide();
 				return;
 			}
 			// 최대 수용인원 o
 			else if (target.val()!=''){
 				
+				
+				/* 
 				// 최소 x, 최대 o
-				if (maxTest()=='')
+				if (maxTest()=='' && target.val()!='')
 				{
 					err.html("최소 수용인원을 입력해주세요.").css("display","inline");
 					err.css("color","red");
@@ -224,18 +219,21 @@
 						
 						err.css("color", "red");
 						return;
-
-					}
+					} */
+					/* else if ()
+					{
+						
+					} */
 				
 				}			
 			
 			
-			} else {
-				
-				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
-				err.css("color","green");
-				return;
-			}
+				} else {
+					
+					err.html("사용 가능한 " + name + "입니다.").css("display","inline");
+					err.css("color","green");
+					return;
+				}
 			
 		});
 	} 
@@ -268,10 +266,10 @@
 	
 </head>
 <body>
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
-	
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
@@ -323,7 +321,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputdetailinfo.action" method="POST">	
+		  action="inputUsingInfo.jsp" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
@@ -412,9 +410,11 @@
 </div>
 </div>
 
+<!-- footer 출력부분 -->
 <div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+       <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+       <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </div>
+
 </body>
 </html>

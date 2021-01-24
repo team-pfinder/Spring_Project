@@ -55,7 +55,17 @@
 
 
 	$(function() {
-
+		
+		// enter submit 방지
+		document.addEventListener('keydown', function(event) {
+			
+			if (event.keyCode === 13) {
+			    event.preventDefault();
+		  	};
+		  	   
+		}, true);
+		
+		
 		// 함수 호출
 		setInputLength($('#inputBizName'), '상호명', 2, 20);
 		setInputLength($('#inputBizCeo'), '대표자명', 2, 10);
@@ -65,32 +75,91 @@
 		setInputLength($('#inputBizSubType'), '주종목', 5, 30);
 		
 		
-		// 썸네일 이미지 등록
-		$(document).ready(function(){ 
+		// 사업자등록증 이미지 등록
+		
+		var fileTarget = $('.filebox .upload-hidden');
+		
+		fileTarget.on('change', function(){ // 값이 변경되면 
 			
-			var fileTarget = $('.filebox .upload-hidden');
+			// modern browser
+			
+			if(window.FileReader){ 
+				var filename = $(this)[0].files[0].name; 
+			} 
+		
+			// old IE
+			
+				else { 
+			
+				var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
+			} 
+			
+		
+			// 추출한 파일명 삽입 
+			$(this).siblings('.upload-name').val(filename); 
+				
+		}); 
+		
+		
+		// submit 제어
+		
+		$('#submitButton').click(function() {
+			
+			var f = $("#inputBusinessInfo");
+			var bizNumRegExp = /^\d{3}-\d{2}-\d{5}$/;
+			
+			var tBizName = $("#inputBizName").val();
+			var tBizCeo = $("#inputBizCeo").val();
+			var tBizNum = $('#inputBizNum').val();
+			var tBizLicense = $("#ex_filename").val();
+			var tBizCeoType = $("#inputBizCeoType").val();
+			var tBizMainType = $("#inputBizMainType").val();
+			var tBizSubType = $("#inputBizSubType").val();
+			var tLocAddr = $("#inputAddr").val();
 			
 			
-			fileTarget.on('change', function(){ // 값이 변경되면 
+			if (tBizName == "" || tBizCeo == "" || tBizNum == "" 
+				|| tBizLicense == "" || tBizCeoType == "" 
+				|| tBizMainType == "" || tBizSubType == "" || tLocAddr == "") {
 				
-				// modern browser
+				alert("필수 입력사항을 모두 입력해 주세요.");
+			}
+			else if (tBizName.length < 2 || tBizName.length > 20) {
 				
-				if(window.FileReader){ 
-					var filename = $(this)[0].files[0].name; 
-				} 
+				alert("상호명은 2자~20자로 입력해야합니다.");
+				$("#inputBizName").focus();
+				
+			}
+			else if (tBizCeo.length < 2 || tBizCeo.length > 10) {
+				
+				alert("대표자명은 2자~10자로 입력해야합니다.");
+				$("#inputBizCeo").focus();
+				
+			}
+			else if (tBizNum.match(bizNumRegExp) == null) {
+				
+				alert("사업자등록번호를 올바르게 입력하세요.");
+				$("#inputBizNum").focus();
+				
+			} 
+			else if (tBizMainType.length < 5 || tBizMainType.length > 30) {
+				
+				alert("주업태는 5자~30자로 입력해야합니다.");
+				$("#inputBizMainType").focus();
+				
+			}
+			else if (tBizSubType.length < 5 || tBizSubType.length > 30) {
+				
+				alert("주종목은 5자~30자로 입력해야합니다.");
+				$("#inputBizSubType").focus();
+				
+			}
+			else {
+				
+				f.submit();
+			}
 			
-				// old IE
-				
-					else { 
-				
-					var filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
-				} 
-				
-			
-				// 추출한 파일명 삽입 
-				$(this).siblings('.upload-name').val(filename); 
-				
-			}); 
+		
 		});
 	});
 	
@@ -105,8 +174,15 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// 글자 수 제한, 색 변경
-			if (target.val().length > maxLength || target.val().length < minLength) {
+			else if (target.val().length > maxLength || target.val().length < minLength) {
 				
 				err.html("" + name + "은(는) " + minLength + "자~" + maxLength + "자로 입력해야합니다.").css("display","inline");
 				err.css("color", "red");
@@ -133,8 +209,15 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^\d{3}-\d{2}-\d{5}$/;
 
+			
+			if ($('#inputBizNum').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputBizNum').val().match(regExp) != null)
+			else if ($('#inputBizNum').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 사업자등록번호 입니다.").css("color", "green");
 				err.css("display","inline");
@@ -179,9 +262,9 @@
 	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
 	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
 	            console.log(data);
-	            var roadAddress = data.roadAddress;
-	            $('#inputAddr').val(roadAddress);
-	            $('#inputDetailAddr').focus();
+	            var jibunAddress = data.jibunAddress;
+	            $('#inputAddr').val(jibunAddress);
+	            
 	        }
 	    }).open();
 	}
@@ -204,8 +287,9 @@
 </head>
 <body>
 
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 
    <!-- 타이틀 -->
@@ -257,7 +341,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBusinessInfo" enctype="multipart/form-data"
-	  action="inputbusinessinfo.action" method="POST"><!--onsubmit="handOver()" -->
+	 	  action="inputbusinessinfo.action" method="POST"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 상호명 -->
 		
@@ -265,7 +349,7 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">상호명 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required"
+			<input type="text" class="form-control" 
 				   placeholder="상호명을 입력하세요. [최소 2자 ~ 최대 20자]"
 		 		   id="inputBizName" name="inputBizName">
 		 	<span id="err" style="font-weight: bold;"></span>
@@ -281,7 +365,7 @@
 	
 			<span style="font-size: 14pt; font-weight: bold;">대표자명 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required"
+			<input type="text" class="form-control" 
 				   placeholder="대표자명을 입력하세요. [최소 2자 ~ 최대 10자]" 
 				   id="inputBizCeo" name="inputBizCeo">
 			<span style="font-weight: bold;"></span>	
@@ -298,7 +382,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">사업자등록번호 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control" 
-				   required="required" id="inputBizNum" name="inputBizNum" 
+				    id="inputBizNum" name="inputBizNum" 
 				   placeholder="사업자등록번호를 입력하세요.(-포함) (ex) 123-45-67890)">
 			<span style="font-weight: bold;"></span>
 	
@@ -369,7 +453,7 @@
 		<div id="bizCeoType">
 			<span style="font-size: 14pt; font-weight: bold;">사업자 유형 <span style="color: red">*</span></span>
 			<br><br>
-			<select id="inputBizCeoType" name="inputBizCeoType" class="form-control" required="required">
+			<select id="inputBizCeoType" name="inputBizCeoType" class="form-control" >
 				<option value="">[==사업자 유형을 선택하세요.==]</option>
 				<option value="간이과세자">간이과세자</option>
 				<option value="일반과세자">일반과세자</option>
@@ -389,7 +473,7 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">주업태 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text"  class="form-control"
 				   placeholder="주업태를 입력하세요. [최소 5자 ~ 최대 30자]"
 				   id="inputBizMainType" name="inputBizMainType">
 			<span style="font-weight: bold; "></span>
@@ -405,7 +489,7 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">주종목 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text"  class="form-control"
 				   placeholder="주종목을 입력하세요. [최소 5자 ~ 최대 30자]"
 				   id="inputBizSubType" name="inputBizSubType">
 			<span style="font-weight: bold; "></span>
@@ -419,39 +503,22 @@
 		<div>
 			<span style="font-size: 14pt; font-weight: bold;">주소 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" class="form-control" required="required" id="inputAddr"
+			<input type="text" class="form-control"  id="inputAddr"
 				   placeholder="주소를 입력해주세요." name="inputAddr" readonly>
 			
 			<input onclick="showDaumAddPop()" type="button" class="form-control"
 				   value="주소 등록">
 			<br><br>
-			<span style="font-size: 13pt; font-weight: bold;">상세 주소</span>
-			<br><br>
-			<input type="text" class="form-control" required="required"
-					id="inputDetailAddr" name="inputDetailAddr">
-			<!-- 입력 전 default 내용 : 상세 주소  -->
 		
 		</div>
 	
-	
 	<br><br><br>
 	
-	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-						   (필수항목을 입력하지 않았을 경우,
-							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-						    alert("필수항목을 입력해야합니다")된다.
-							그리고 입력하는 textbox로 입력커서가 이동한다. 
-							또한 다음페이지로 submit 되지 않는다.
-							
-							※ 다음 버튼 이동 순서
-							※ xxxUpdate.jsp 다음버튼 이동 순서 
-							   기본정보 → 연락처정보 → 사업자정보
-						    → 이용정보  → 상세정보  → 패키지정보 -->
-	
+		<!-- 다음 버튼 -->
 		<div class="container" style="text-align: center;">
-			<input type="submit" value="다음" class="btn btn-warning" 
-				   style="width:45%; border-color: gray;">
-			
+		<button type="button" class="btn btn-warning" id="submitButton"
+			style="width:45%; border-color: gray;">다음 </button>
+		
 		<!-- 취소 버튼 -->
 			<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
 					id="BusinessInfoCancel" value="취소" onclick="cancel()">		
@@ -468,6 +535,7 @@
 </div>
 </div>
 
+<!-- footer 출력부분 -->
 <div>
 	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>

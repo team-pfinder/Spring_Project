@@ -23,14 +23,14 @@
 	{
 		location.href = "inputPackageInfo.jsp";
 	}
-	
+	/* 
 	// 패키지 수정 버튼 클릭시 modifyPacakgeInfo.jsp 팝업
 	// 선택한 라디오버튼의 값을 받아와 해당 패키지의 정보가 입력된 상태로 보여짐
 	function mod()
 	{
 		location.href = "modifyPackageInfo.jsp";
 	}
-	
+	 */
 	// 패키지 삭제 버튼 클릭 시 
 	// 선택한 라디오버튼의 값을 받아와 해당 패키지의 정보를 모두 삭제
 	// (DB 상에서는 폐기된 패키지로 insert)
@@ -51,8 +51,8 @@
 		
 		/* location.href = "modifyPacakgeInfo.jsp"; */
 	}
-	
-	
+	 
+	/* 
 	// 공간 등록 및 검수 신청 버튼 클릭시
 	// 여태까지의 공간 입력 정보를 DB에 insert 하고
 	// 공간 검수 신청 confirm 처리 후 공간 관리페이지로 이동하는 function
@@ -65,7 +65,7 @@
 		}	
 		
 	}
-	
+	*/
 	
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
