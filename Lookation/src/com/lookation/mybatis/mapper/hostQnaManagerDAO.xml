@@ -21,7 +21,7 @@
 
 	<insert id="remove" parameterType="java.lang.String">
 		INSERT INTO QNA_REPLY_REMOVE(QNA_REPLY_REMOVE_CODE, QNA_REPLY_CODE, QNA_REPLY_REMOVE_DATE)
-		VALUES (F_CODE('QRRM', QRRM_SEQ.NEXTVAL), #{qna_reply_code}, SYSDATE)
+		VALUES (F_CODE('QRERM', QRERM_SEQ.NEXTVAL), #{qna_reply_code}, SYSDATE)
 	</insert>
 	
 

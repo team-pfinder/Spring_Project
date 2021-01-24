@@ -1,22 +1,44 @@
 package com.lookation.util;
 
+
+import java.util.Properties;
+
 //import java.io.File;
 
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
+
 public class EmailManager
 {
-	@Autowired
 	private static JavaMailSenderImpl mailSender;
+	
+	private static void getMailSender()
+	{
+		if(mailSender == null)
+		{
+			// <!-- smtp를 사용한 메일 서비스 설정 -->
+			mailSender = new JavaMailSenderImpl();
+			mailSender.setHost("smtp.gmail.com");
+			mailSender.setPort(587);
+			mailSender.setUsername("lookation.notice@gmail.com");
+			mailSender.setPassword("java006$");
+			
+			Properties prop = new Properties();
+			prop.setProperty("mail.smtp.auth", "true");
+			prop.setProperty("mail.smtp.starttls.enable", "true");
+			mailSender.setJavaMailProperties(prop);
+		}
+	}
 
 	public static void sendSimple(String to, String from, String subject, String content)
 	{
+		getMailSender();
+		
 		final MimeMessagePreparator preparator = new MimeMessagePreparator()
 		{
 			@Override
@@ -43,6 +65,8 @@ public class EmailManager
 
 	public static void sendAttach(String to, String from, String subject, String content, String filePath)
 	{
+		getMailSender();
+		
 		final MimeMessagePreparator preparator = new MimeMessagePreparator()
 		{
 			@Override
@@ -73,6 +97,8 @@ public class EmailManager
 
 	public static void sendHtml(String to, String from, String subject, String html)
 	{
+		getMailSender();
+		
 		final MimeMessagePreparator preparator = new MimeMessagePreparator()
 		{
 			@Override
