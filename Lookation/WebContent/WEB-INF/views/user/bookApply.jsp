@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약 신청화면.jsp</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 
@@ -360,6 +360,7 @@
 							<input type="hidden" value="${profile.member_code }" name="member_code">
 							<input type="hidden" value="${apply_package_code }" name="apply_package_code">
 							<input type="hidden" value="${book_people }" name="book_people">
+							<input type="hidden" value="${selectPack.package_price }" name="package_price">
 						</div><!-- End .div-table-body -->
 					</div><!-- End .div-table -->
 				</form>

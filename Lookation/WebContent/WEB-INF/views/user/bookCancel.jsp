@@ -129,7 +129,8 @@
 				<!-- 이전 페이지(reservationList.jsp)에서 해당 예약에 대한 데이터 받아와야 함. -->
 				<hr class="mt-4">
 				<div class="div-table">
-					
+					<fmt:parseDate var="pdate" value="${cancel.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
+					<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 					<div class="div-table-body">
 						<div class="div-row">
 							<div class="div-col font-weight-bold">예약공간명</div>
@@ -138,7 +139,7 @@
 						<!-- 시간은 패키지정보에서 시작시간, 종료시각 -->
 						<div class="div-row">
 							<div class="div-col font-weight-bold">예약내용</div>
-							<div class="div-col">${cancel.apply_date } ${cancel.package_start }시 ~ ${cancel.package_end }시, ${cancel.book_hour }시간</div>
+							<div class="div-col">${fdate } ${cancel.package_start }시 ~ ${cancel.package_end }시, ${cancel.book_hour }시간</div>
 						</div>
 						<div class="div-row">
 							<div class="div-col font-weight-bold">결제금액</div>

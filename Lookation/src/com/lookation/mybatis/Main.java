@@ -28,20 +28,16 @@ public class Main
 	@RequestMapping(value="/actions/membermain.action", method = RequestMethod.GET)
 	public String memberMain(HttpServletRequest request, Model model)
 	{
-		// 세션을 통한 로그인 확인
-		HttpSession session = request.getSession();
-		String identify = (String)session.getAttribute("identify");
-		String accountCode = (String)session.getAttribute("accountCode");
+		// 세션을 통한 로그인 확인                                                                    
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute("memberCode"); 
 		String result = "noSigned";
 		
-		if(identify != null && accountCode != null)
-		{
-			if(identify.equals("member"))
-			{
-				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	
-				model.addAttribute("info", dao.getInfo(accountCode));
-				result = "signed";
-			}
+		if(accountCode != null)
+		{	
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	
+			model.addAttribute("info", dao.getInfo(accountCode));
+			result = "signed";
 		}
 		model.addAttribute("result", result);
 		
@@ -64,7 +60,7 @@ public class Main
 			
 			for(String sub : subAddr)
 			{
-				// 마지막 글자가 동인 경우
+				// 마지막 글자가 동인 경우a
 				if(sub.charAt(sub.length()-1) == '동')
 				{
 					mainLocationDTO.setAddr(sub);
@@ -85,8 +81,7 @@ public class Main
 	public String memberLogout(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
-		session.removeAttribute("identify");
-		session.removeAttribute("accountCode");
+		session.removeAttribute("memberCode");
 		
 		return "redirect:membermain.action";
 	}
@@ -95,19 +90,15 @@ public class Main
 	@RequestMapping(value="/actions/hostmain.action", method = RequestMethod.GET)
 	public String hostMain(HttpServletRequest request, Model model)
 	{
-		HttpSession session = request.getSession();
-		String identify = (String)session.getAttribute("identify");
-		String accountCode = (String)session.getAttribute("accountCode");
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";
 		
-		if(identify != null && accountCode != null)
+		if(accountCode != null)
 		{
-			if(identify.equals("host"))
-			{
-				IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	
-				model.addAttribute("info", dao.getInfo(accountCode));
-				result = "signed";
-			}
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	
+			model.addAttribute("info", dao.getInfo(accountCode));
+			result = "signed";
 		}		
 		model.addAttribute("result", result);
 		
@@ -125,8 +116,7 @@ public class Main
 	public String hostLogout(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();
-		session.removeAttribute("identify");
-		session.removeAttribute("accountCode");
+		session.removeAttribute("hostCode");
 		
 		return "redirect:hostmain.action";
 	}

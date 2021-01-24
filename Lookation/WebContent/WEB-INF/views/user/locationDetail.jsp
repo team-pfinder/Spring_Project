@@ -3,6 +3,22 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+	
+	// 세션 접속시 아이디 확인
+	if(identify.equals("host"))
+	{
+		String hostCode = (String)session.getAttribute("hostCode");
+		pageContext.setAttribute("Code", hostCode);
+	}
+	else
+	{
+		String memberCode = (String)session.getAttribute("memberCode");
+		pageContext.setAttribute("Code", memberCode);
+	}
+
 %>
 
 <!DOCTYPE html>
@@ -10,8 +26,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<c:import url="${cp}/includes/includes_home.jsp"></c:import>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <style type="text/css">
 body, html {
 width: 100%;
@@ -243,6 +258,9 @@ p {
 	word-break:break-all;
 }
 
+label {
+width: 100%;
+}
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
@@ -328,46 +346,93 @@ p {
 		// 날짜가 변경되었을 경우 수행할 코드 처리
 		$("#selectDate").change(function()
 		{
+			var intPackEnd;					//-- 익일 처리할 변수
+			var html = "";
 			
-			$.ajax({
-				type: "POST",
-				url: "locdetailajax.action",
-				cache: false,
-				dataType: "json",
-				data: JSON.stringify(eventData),
-				contentType: "application/json; charset=utf-8",
-				success: function(data) {
-					
-					alert("데이터 받음");
-				},
-				error : function(request, status, error) {
-				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
-				}
-				});
+			$(".packageDiv").html("");
 			
-			/*
 			$.ajax({
 				url : "locdetailajax.action"
-				, type : "get"
+				, type : "post"
 				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
 				, success : function(data) {
 					
-					/* $.each(data, function() {
-					     alert(this["packageName"]);
-					     alert(this.packageName);
-					});
-					for(var idx=0; idx<data.test.length; idx++){
-						$("#pacakgeDiv").append("<input type='radio'>"+ data.test[idx].packageName);
-						$("#pacakgeDiv").html("<input type='radio'>"+ data.test[idx].[0]);
+					// 받은 데이터 JSON으로 파싱함
+					var obj = JSON.parse(data);
+					
+					// 데이터 없으면 패키지 없다고 표시
+					if(obj.length==0﻿)
+					{
+						$(".packageDiv").html("<div class='text-center my-3'>해당 날짜에 등록된 패키지가 없습니다.</div>");
+						$("#selectPrice").text(" (원)");
+						return false;
+					}
+					else
+					{
+						// 배열에서 key랑 value값으로 꺼냄
+						$.each(obj,function(key,value) {
+
+							//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
+							if(parseInt(value.packEnd) >= 24)
+							{
+								intPackEnd = parseInt(value.packEnd) - 24;
+								intPackEnd = "익일 " + intPackEnd;
+							}
+							else
+							{
+								intPackEnd = value.packEnd;
+							}
+							
+							html = "<div class='packageSelect'><label>";
+							html += "<input type='radio' name='apply_package_code' value='" + value.packCode + "'>";
+							html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
+									+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
+							
+							html += "<div class='flex float-right vertical-down'><strong id='price"
+								    + obj.length + "'>" + value.packPrice + " (원)</strong></div>"
+							html += "</label></div>";
+							
+							// 라디오버튼 packageDiv에 추가
+							$(".packageDiv").append(html);
+							
+							// 라디오버튼 선택시 선택한 가격 보여주기
+							$("input:radio[name=apply_package_code]").click(function()
+							{
+								//alert("나 선택됐어");
+								$("#selectPrice").text($("#price"+obj.length).text());
+								
+							});
+						});
 					}
 				}
 			    , error:function(e){
 			    	alert(e.responseText);
-			    	
 			    }
-				});*/
+			});
 		});
 		
+	    // 리뷰 사진만보기
+		/* $("#switch1").change(function()
+		{
+			var html = "";
+			
+			$("#review").html("");
+			
+			$.ajax({
+				url : "reviewajax.action"
+				, type : "post"
+				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
+				, success : function(data) {
+					
+					// 받은 데이터 JSON으로 파싱함
+					var obj = JSON.parse(data);
+				}
+			    , error:function(e){
+			    	alert(e.responseText);
+			    }
+			});
+		}); */
+	    
 		// 이용자 QnA 수정하는 팝업
 		$(".modifyQna").click(function()
 		{
@@ -401,15 +466,19 @@ p {
 			var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 			window.open(url, "", option);
 		}); 
-	
+		
 	});
 
 	// 질문 작성하는 팝업
 	function writeQna()
 	{	
-		var locCode = document.getElementById("hiddenCode").value;
-		var url = "writeqna.action?identify=member&locCode="+ locCode + "&memCode=M000003";
-		// memCode 임시
+		var member_code = '<%=(String)session.getAttribute("memberCode")%>';
+		var identify = '<%=(String)request.getParameter("identify")%>';
+		var loc_code = document.getElementById("hiddenCode").value;
+		
+		var url = "writeqna.action?identify=" + identify
+				 + "&loc_code=" + loc_code + "&member_code=" + member_code;
+
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
 	}
@@ -417,9 +486,12 @@ p {
 	// 후기 작성하는 팝업
 	function writeReview()
 	{	
-		var locCode = document.getElementById("hiddenCode").value;
-		var url = "writereview.action?identify=member&locCode="+ locCode + "&memCode=M000004";
-		// memCode 임시
+		var member_code = '<%=(String)session.getAttribute("memberCode")%>';
+		var identify = '<%=(String)request.getParameter("identify")%>';
+		var loc_code = document.getElementById("hiddenCode").value;
+		
+		var url = "writereview.action?identify=" + identify
+				+ "&loc_code="+ loc_code + "&member_code=" + member_code;
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
 	}
@@ -427,12 +499,11 @@ p {
 </script>
 </head>
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="15">
-
 <div class="ftco-section ftco-degree-bg">
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">
+				<input type="hidden" id="packPrice" name="packPrice" value="${packageInfo.packPrice }">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->
@@ -543,50 +614,51 @@ p {
 					<label class="custom-control-label" for="switch1">사진 후기만
 						보기</label>
 				</div>
-					
-				<c:forEach var="rv" items="${review }">
-					<ul class="comment-list">	
-							<li class="comment">
-								<h4>${rv.memberNickName }</h4>
-								<h6 class="float-right">
-									<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
-										<span class="set-star icon-star mr-1"></span>
-									</c:forEach>
-								</h6>
-								
-								<div class="meta mb-2">${rv.date }</div>
-								
-								<c:if test="${rv.removeCount eq 1}">
-									<p>삭제된 리뷰입니다.</p>
-								</c:if>
-								
-								<c:if test="${rv.removeCount eq 0}">
-									<p>${rv.content }</p>
+				
+				<div id="review">
+					<c:forEach var="rv" items="${review }">
+						<ul class="comment-list">	
+								<li class="comment">
+									<h4>${rv.memberNickName }</h4>
+									<h6 class="float-right">
+										<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
+											<span class="set-star icon-star mr-1"></span>
+										</c:forEach>
+									</h6>
 									
-									<c:if test="${rv.rvimgCount ne 0 }">
-										<p>
-											<img class="review-img" src="<%=cp%>${rv.url}"
-												alt="리뷰사진">
-										</p>
+									<div class="meta mb-2">${rv.date }</div>
+									
+									<c:if test="${rv.removeCount eq 1}">
+										<p>삭제된 리뷰입니다.</p>
 									</c:if>
 									
-									<c:if test="${rv.memCode == 'M000004'}">
-										<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
-										<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+									<c:if test="${rv.removeCount eq 0}">
+										<p>${rv.content }${rv.memCode }</p>
+										
+										<c:if test="${rv.rvimgCount ne 0 }">
+											<p>
+												<img class="review-img" src="<%=cp%>${rv.url}"
+													alt="리뷰사진">
+											</p>
+										</c:if>
+										
+										<c:if test="${rv.memCode == memberCode}">
+											<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
+											<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+										</c:if>
 									</c:if>
-								</c:if>
-								
-								<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
-									<li class="children children-reply">
-										<h4>${basicInfo.hostNickName }</h4>
-										<span class="meta mb-2">${rv.replyDate }</span>
-										<p class="">${rv.replyContent }</p>
-									</li>
-								</c:if>
-							</li>
-					</ul>
-				</c:forEach><!-- .comment-list -->
-			
+									
+									<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
+										<li class="children children-reply">
+											<h4>${basicInfo.hostNickName }</h4>
+											<span class="meta mb-2">${rv.replyDate }</span>
+											<p class="">${rv.replyContent }</p>
+										</li>
+									</c:if>
+								</li>
+						</ul>
+					</c:forEach><!-- .comment-list -->
+				</div>
 			</section><!-- End .section2 -->
 				
 			<!-- Section 3 -->
@@ -597,7 +669,7 @@ p {
 					<div class="host-info">
 						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
 						<p>
-							<a href="2_newDirectMessage.jsp" class="reply">호스트에게 DM</a>
+							<a href="mmessenger.action" class="reply">호스트에게 DM</a>
 						</p>
 					</div>
 													
@@ -695,7 +767,7 @@ p {
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
 								<p class="">${qna.qna_content }</p>
-								<c:if test="${qna.memCode == 'M000003'}">
+								<c:if test="${qna.memCode == memberCode}">
 									<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
 									<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
 								</c:if>
@@ -719,7 +791,7 @@ p {
 		<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
 			<div class="sidebar-box ftco-animate p-3 mt-5">
 				
-				<form action="bookapply.action" id="reserveForm" method="GET">
+				<form action="bookapply.action" id="reserveForm" method="POST">
 					<div class="categories">
 						<h3>공간예약하기</h3>
 						<hr>
@@ -763,47 +835,13 @@ p {
 						
 						
 						<div class="py-2 calendar">
-							<input type="date" class="form-control" id="selectDate" min="2020-12">
+							<input type="date" class="form-control" id="selectDate">
 						</div>
 						
 						
 						<div class="content mt-3">
 							<div class="packageDiv">
-<%-- 								<c:forEach var="i" items="${test }" varStatus="radioNum">
-									
-										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packageCode }">
-										${i.packageName }
-										<span class="ml-3 package-bundle">
-										<c:choose>
-											<c:when test="${i.packStart >= 13 && i.packEnd >= 24}">
-												<c:set var="startpm" value="${i.packStart - 12}" scope="session" />
-												<c:set var="nextam" value="${i.packEnd - 24}" scope="session" />
-												
-												오후 ${startpm }시 ~ 익일 오전 ${nextam }시
-											</c:when>
-										
-											<c:when test="${i.packStart <= 11 && i.packEnd >= 13 }">
-												<c:set var="endpm" value="${i.packEnd - 12}" scope="session" />
-												
-												오전 ${i.packStart }시 ~ 오후 ${endpm }시
-											</c:when>
-											
-											<c:otherwise>
-												오전 ${i.packStart }시 ~ 오후 ${i.packEnd }시
-											</c:otherwise>
-										</c:choose>
-										</span>
-										</label>
-										<div class="flex float-right vertical-down">
-											<strong>${i.packPrice }(원)</strong>
-										</div>
-								</c:forEach> 
-								 --%>
-								<input type="radio" name="apply_package_code" id="1" value="AP000001">
-							    <label><span class="ml-3 package-bundle" > 오후 10시 ~ 익일 오전 10시</span></label>
-							    <div class="flex float-right vertical-down">
-									<strong>60000(원)</strong>
-								</div>
+								<!-- 패키지 선택값 들어올 위치 -->
 							</div>
 						</div>
 							 
@@ -831,9 +869,9 @@ p {
 							
 						<div class="text-right my-4">
 							<!-- 가격 선택시 바뀌어야함 -->
-							<h3><span class="icon-won"></span>  60,000 원</h3>
+							<h3><span class="icon-won mr-2"></span><span id="selectPrice"> (원)</span></h3>
 						</div>
-						
+						<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">
 						<!-- 결제하기 누르면 인원수 검증 -->
 						<button type="submit" class="btn btn-primary btn-lg btn-block">결제하기</button>
 						</div><!-- End .categories -->
@@ -846,9 +884,9 @@ p {
 
 
 
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <div>
 	<c:import url="${cp}/includes/footer_user.jsp"></c:import>
+	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </div>
 </body>
 </html>

@@ -3,8 +3,10 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-	
-	/* identify 들고오는게 필요할거같은데 */
+%>
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
@@ -56,20 +58,14 @@
 		
 	-->
 
-	<c:choose>
-		<c:when test = "${identify eq 'member'}">
-			<!-- include header_user.jsp -->
-			<div>
-				<c:import url="${cp}/includes/header_user.jsp"></c:import>
-			</div>
-		</c:when>
-		<c:when test = "${identify eq 'host'}">
-			<!-- include header_host.jsp -->
-			<div>
-				<c:import url="${cp}/includes/header_host.jsp"></c:import>
-			</div>
-		</c:when>
-	</c:choose>	
+	<div>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+		</c:if>
+</div>
 	
 	
 
@@ -82,14 +78,15 @@
 </div>
 
 
-	<c:choose>
-		<c:when test="${identify eq 'member'}">
-			<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-		</c:when>
-		<c:when test="${identify eq 'host'}">
-			<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		</c:when>
-	</c:choose>
+	<!-- footer 출력부분 -->
+<div>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:if>
+</div>
 	
 	<!-- 자바스크립트 include -->
 	<c:import url="${cp }/includes/includes_home_end.jsp"></c:import>

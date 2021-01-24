@@ -4,11 +4,22 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
-	// 세션 접속시 id확인
-	//String id= (String)session.getAttribute("sessionID"); 
-
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
+	
+	// 세션 접속시 아이디 확인
+	if(identify.equals("host"))
+	{
+		String hostCode = (String)session.getAttribute("hostCode");
+		pageContext.setAttribute("hostCode", hostCode);
+	}
+	
+	if(identify.equals("member"))
+	{
+		String memberCode = (String)session.getAttribute("memberCode");
+		pageContext.setAttribute("memberCode", memberCode);
+	}
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -107,11 +118,14 @@
 				return false;
 			}
 			
+			var formData = $("#reviewForm").serialize();
+			
 			$.ajax({
 				type : "post",
 				url : "reviewinsert.action",
 				complete : function(xh)
-				{			
+				{	
+					$("#reviewForm").submit();
 					window.opener.parent.location.reload();				
 					window.close();
 				}
@@ -173,8 +187,12 @@
 					
 					<div class="body">
 						<div class="form-group">
-							<input type="hidden" value="${locCode}" name="loc_code">
-							<input type="hidden" value="${memCode }" name="member_code">
+							<%
+								String member_code = (String)request.getParameter("member_code");
+								pageContext.setAttribute("member_code", member_code);
+							%>
+							<input type="hidden" value="${loc_code}" name="loc_code">
+							<input type="hidden" value="${memberCode }" name="member_code">
 							<label for="content">내용</label>
 							<textarea class="form-control" id="content" name="review_content"
 								rows="8" maxlength="3000" required="required"
@@ -183,7 +201,7 @@
 						
 						<div class="form-group">
 								<label for="image">사진 첨부</label>
-								<input type="file" id="image" class="form-control" />
+								<input type="file" id="image" class="form-control" accept="image/*"/>
 						</div>
 	
 					</div><!-- End .body -->

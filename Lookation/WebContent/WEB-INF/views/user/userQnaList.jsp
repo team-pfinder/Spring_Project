@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Lookation</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 
 <style type="text/css">
@@ -77,7 +77,7 @@ $(function(){
 	// 이용자 QnA 수정하는 팝업
 	$(".modifyQna").click(function()
 	{
-		var url = "modifyformqna.action?identify=member&qna_code=" + $(this).val() + "&reqpage=list";
+		var url = "modifyformqna.action?identify=member&qna_code=" + $(this).val();
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option); 
 	}); 

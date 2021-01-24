@@ -2,6 +2,7 @@ package com.lookation.mybatis;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILocationReviewDAO;
+import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dto.LocationReviewDTO;
 
 @Controller
@@ -23,23 +26,56 @@ public class LocationReview
 	@RequestMapping(value="/actions/writereview.action", method = RequestMethod.GET)
 	public String reviewForm(Model model, HttpServletRequest request)
 	{	
-		String locCode = request.getParameter("locCode");
+		String loc_code = request.getParameter("loc_code");
+		String identify = request.getParameter("identify");
 		
-		// 호스트인지 멤버인지 담을 변수
-		String check = request.getParameter("identify");
+		// 세션을 통한 로그인 확인                                                                    
+		HttpSession session = request.getSession();
+		/*=========================================================*/
+		session.setAttribute("memberCode", "M000002");
+		/*=========================================================*/
+		String accountCode = (String)session.getAttribute(identify + "Code"); 
+		
+		// 로그인 확인을 기록하기 위함                  
+		String result = "noSigned";                                                         
 
-		if(check.equals("member"))
-		{
-			String memCode = request.getParameter("memCode");
-			model.addAttribute("memCode", memCode);
+		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
+		if(accountCode != null)                                         
+		{       
+			// 이용자일 경우                                                                            
+			if(identify.equals("member"))                                                   
+			{                                                                               
+				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
+				model.addAttribute("info", dao.getInfo(accountCode));
+				String member_code = request.getParameter("member_code");
+				model.addAttribute("member_code", member_code);
+
+			}
+			// 호스트일 경우
+			else if(identify.equals("host"))                                                   
+			{                                                                               
+				IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+				model.addAttribute("info", dao.getInfo(accountCode));
+				String hostCode = request.getParameter("hostCode");
+				model.addAttribute("hostCode", hostCode);
+			}
+			// 로그인이 되었음을 기록한다.
+		    result = "signed";                                                                                
 		}
-		else
-		{
-			String hostCode = request.getParameter("hostCode");
-			model.addAttribute("hostCode", hostCode);
-		}
+
+		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
+		model.addAttribute("result", result);                                               
+		model.addAttribute("accountCode", accountCode);
+		System.out.println("여기서 + " + accountCode);
 		
-		model.addAttribute("locCode", locCode);
+		// 로그인이 안되어 있다면 
+		if(result.equals("noSigned"))
+		{
+		    // 로그인 창으로 이동한다.
+		    return "redirect:loginform.action?identify=" + identify;
+		}
+		                                                                                    
+		model.addAttribute("loc_code", loc_code);
 		
 		return "../WEB-INF/views/common/writeReviewPopup.jsp";
 	}
@@ -47,26 +83,61 @@ public class LocationReview
 	@RequestMapping(value="/actions/modifyformreview.action", method = RequestMethod.GET)
 	public String reviewModifyForm(Model model, HttpServletRequest request)
 	{	
-		// 호스트인지 멤버인지 담을 변수
-		String check = request.getParameter("identify");
-		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
+		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
+		// identify를 GET 받아야한다.
+		String identify = request.getParameter("identify");
 		
+		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
-		// 수정 폼의 경우 각각 다른 메소드를 수행해야 한다.
-		// 이용자 → updateReviewForm
-		// 호스트 → updateReviewReplyForm
-		if(check.equals("member"))
-		{
-			String review_code = request.getParameter("review_code");
-			model.addAttribute("modifyReview", dao.updateReviewForm(review_code));
+		// 세션을 통한 로그인 확인                                                                    
+		HttpSession session = request.getSession();
+		/*=========================================================*/
+		session.setAttribute("memberCode", "M000002");
+		/*=========================================================*/
+		String accountCode = (String)session.getAttribute(identify + "Code"); 
+
+		// 로그인 확인을 기록하기 위함                  
+		String result = "noSigned";                                                         
+
+		if(accountCode != null)                                         
+		{       
+			// 수정 폼의 경우 각각 다른 메소드를 수행해야 한다.
+			// 이용자 → updateReviewForm
+			// 호스트 → updateReviewReplyForm
+			
+			// 이용자일 경우                                                                            
+			if(identify.equals("member"))                                                   
+			{                                                                               
+				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
+				model.addAttribute("info", dao.getInfo(accountCode));
+
+				String review_code = request.getParameter("review_code");
+				model.addAttribute("modifyReview", locDao.updateReviewForm(review_code));
+			}
+			// 호스트일 경우
+			else if(identify.equals("host"))                                                   
+			{                                                                               
+				IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
+				model.addAttribute("info", dao.getInfo(accountCode));
+
+				String review_reply_code = request.getParameter("review_reply_code");
+				model.addAttribute("modifyReviewReply", locDao.updateReviewReplyForm(review_reply_code));
+			}
+			// 로그인이 되었음을 기록한다.
+		    result = "signed";                                                                                
 		}
-		else
+
+		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
+		model.addAttribute("result", result);                                               
+
+		if(result.equals("noSigned"))
 		{
-			String review_reply_code = request.getParameter("review_reply_code");
-			model.addAttribute("modifyReviewReply", dao.updateReviewReplyForm(review_reply_code));
+		    // 로그인 창으로 이동한다.
+		    return "redirect:loginform.action?identify=" + identify;
 		}
-		
-		return "/WEB-INF/views/common/modifyReviewPopup.jsp"; 
+		                                                                                                                                                                                                                                                                                                                            
+		// 뒤에 identify를 GET 해준다.                                                                                              
+		return "../WEB-INF/views/common/modifyReviewPopup.jsp?identify=" + identify;                                        
 	} 
 	
 	
@@ -75,13 +146,11 @@ public class LocationReview
 	
 	// 이용자 : 리뷰 작성
 	@RequestMapping(value="/actions/reviewinsert.action", method = RequestMethod.POST)
-	public String insertReview(LocationReviewDTO dto)
+	public void insertReview(LocationReviewDTO dto)
 	{
-		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
-		
-		dao.insertMemReview(dto);
-		
-		return "redirect:locationdetail.action";
+		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
+		System.out.println("여기서 2 " + dto.getMember_code());
+		locDao.insertMemReview(dto);
 		
 	}
 	

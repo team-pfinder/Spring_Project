@@ -184,7 +184,7 @@
 	
 		<div class="container">
 			<div class="changeBox">
-				<form action="changepassword.action" method="post" id="changePasswordForm">
+				<form action="changepassword.action?identify=${identify }" method="post" id="changePasswordForm">
 					<ul class="pw_info">
 						<li>
 							<p>새 비밀번호</p> <input type="password" class="form-control full"

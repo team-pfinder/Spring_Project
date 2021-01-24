@@ -31,6 +31,7 @@
 	<select id="viewReportMem" resultType="com.lookation.dto.MemberBlackManagerDTO" parameterType="java.lang.String">
 		SELECT BOOK_REPORT_CODE, BOOK_CODE, BOOK_REPORT_TYPE
 		, BOOK_REPORT_REASON, BOOK_REPORT_DATE, MEMBER_CODE
+		, REPORT_PROC_TYPE
 		FROM VIEW_MEMBER_REPORTDETAILS
 		WHERE MEMBER_CODE = #{member_code}
 	</select>
