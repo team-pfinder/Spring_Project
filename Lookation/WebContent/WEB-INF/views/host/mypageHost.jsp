@@ -14,9 +14,9 @@
 <title>mypageMain.jsp</title>
 </head>
 <body>
-	<!-- include header_host.jsp -->
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 
 	<section class="hero-wrap hero-wrap-2"
@@ -42,24 +42,24 @@
 			<div class="row d-flex">
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="hostprofile.action" class="block-20 rounded"
+						<a href="#" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="hostprofile.action">프로필관리</a>
+								<a href="#">프로필관리</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="commonbankinfo.action" class="block-20 rounded"
+						<a href="bankinfomanage.action?identify=host" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="commonbankinfo.action">계좌관리</a>
+								<a href="bankinfomanage.action?identify=host">계좌관리</a>
 							</h3>
 						</div>
 					</div>
@@ -79,25 +79,25 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="loadandexchange.action" class="block-20 rounded"
+						<a href="loadandexchange.action?identify=host" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="loadandexchange.action">환전 신청</a>
+								<a href="loadandexchange.action?identify=host">환전 신청</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="hostmileagehistory.action" class="block-20 rounded"
+						<a href="mileagehistory.action?identify=host" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="hostmilealgehistory.action">마일리지 내역(정산/환전)</a>
+								<a href="mileagehistory.action?identify=host">마일리지 내역(정산/환전)</a>
 							</h3>
 						</div>
 					</div>

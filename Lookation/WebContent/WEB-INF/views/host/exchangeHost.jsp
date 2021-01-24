@@ -4,6 +4,10 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -68,9 +72,9 @@
 </script>
 </head>
 <body>
-	<!-- include header_host.jsp -->
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+        <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 	
 	<!-- 타이틀 -->
@@ -125,7 +129,7 @@
 						</div>
 
 						<div>
-							<form action="exchange.action" method="post">
+							<form action="exchange.action?identify=host" method="post">
 								<table class="table">
 									<tr>
 										<th>
