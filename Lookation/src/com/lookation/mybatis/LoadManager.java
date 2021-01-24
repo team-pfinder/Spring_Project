@@ -27,7 +27,7 @@ public class LoadManager
 		
 		HttpSession session = request.getSession();
 
-		String accountCode = (String)session.getAttribute("adminCode");
+		String accountCode = (String)session.getAttribute("admin_id");
 
 		// 로그인이 안된경우                                                                   
 		if(accountCode == null)                                                      
@@ -49,7 +49,7 @@ public class LoadManager
 		
 		HttpSession session = request.getSession();
 
-		String accountCode = (String)session.getAttribute("adminCode");
+		String accountCode = (String)session.getAttribute("admin_id");
 
 		// 로그인이 안된경우                                                                   
 		if(accountCode == null)                                                      
@@ -71,7 +71,7 @@ public class LoadManager
 		
 		HttpSession session = request.getSession();
 
-		String accountCode = (String)session.getAttribute("adminCode");
+		String accountCode = (String)session.getAttribute("admin_id");
 
 		// 로그인이 안된경우                                                                   
 		if(accountCode == null)                                                      
