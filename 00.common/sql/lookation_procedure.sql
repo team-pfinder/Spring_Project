@@ -1,3 +1,178 @@
+SELECT USER
+FROM DUAL;
+
+-- ############################################################## 승범
+-- member 계정 생성 프로시저 
+CREATE OR REPLACE PROCEDURE CREATE_MEMBER_ACCOUNT
+(
+V_EMAIL     IN  VARCHAR2,
+V_PW        IN  VARCHAR2,
+V_NICK      IN  VARCHAR2,
+V_NAME      IN  VARCHAR2,
+V_TEL       IN  VARCHAR2
+)
+IS
+BEGIN
+    INSERT INTO MEMBER(MEMBER_CODE, MEMBER_SIGN_UP_DATE)
+    VALUES(F_CODE('M', M_SEQ.NEXTVAL), SYSDATE);
+
+    INSERT INTO MEMBER_PROFILE(MEMBER_EMAIL, MEMBER_CODE
+                         , MEMBER_PW, MEMBER_NICKNAME
+                         , MEMBER_NAME, MEMBER_TEL)
+    VALUES(V_EMAIL, F_CODE('M', M_SEQ.CURRVAL)
+         , V_PW, V_NICK
+         , V_NAME, V_TEL);
+         
+    COMMIT;
+END;
+
+--HOST 계정 생성
+CREATE OR REPLACE PROCEDURE CREATE_HOST_ACCOUNT
+(
+V_EMAIL     IN  VARCHAR2,
+V_PW        IN  VARCHAR2,
+V_NICK      IN  VARCHAR2,
+V_NAME      IN  VARCHAR2,
+V_TEL       IN  VARCHAR2
+)
+IS
+BEGIN
+    INSERT INTO HOST(HOST_CODE, HOST_SIGN_UP_DATE)
+    VALUES(F_CODE('H', H_SEQ.NEXTVAL), SYSDATE);
+
+    INSERT INTO HOST_PROFILE(HOST_EMAIL, HOST_CODE
+                       , HOST_PW, HOST_NICKNAME
+                       , HOST_NAME, HOST_TEL)
+    VALUES(V_EMAIL, F_CODE('H', H_SEQ.CURRVAL)
+         , V_PW, V_NICK
+         , V_NAME, V_TEL);
+         
+    COMMIT;
+END;
+
+-- ############################################################## 윤상
+--○ 계좌 삭제 (프로시저)
+CREATE OR REPLACE PROCEDURE PRC_BANKINFO_DELETE
+( V_IDENTIFY    IN VARCHAR2
+, BANK_INFO     IN VARCHAR2
+)
+IS
+    -- 선언부
+    
+BEGIN
+    -- 실행부
+    
+    IF(V_IDENTIFY = 'member')
+        THEN    
+            DELETE 
+            FROM MEMBER_EXCHANGE_BANK_INFO
+            WHERE MEMBER_BANK_NUMBER = BANK_INFO;
+        
+            DELETE 
+            FROM LOAD_REG_BANK_INFO
+            WHERE MEMBER_BANK_NUMBER = BANK_INFO;
+            
+            DELETE 
+            FROM MEMBER_BANK_INFO
+            WHERE MEMBER_BANK_NUMBER = BANK_INFO;
+            
+            -- 커밋
+            COMMIT;
+            
+    ELSIF(V_IDENTIFY = 'host')
+        THEN
+            DELETE
+            FROM HOST_EXCHANGE_BANK_INFO
+            WHERE HOST_BANK_NUMBER = BANK_INFO;
+            
+            DELETE
+            FROM HOST_BANK_INFO
+            WHERE HOST_BANK_NUMBER = BANK_INFO;
+            
+            -- 커밋
+            COMMIT;
+    ELSE    
+        -- 예외 처리
+        ROLLBACK;
+   END IF;        
+END;
+
+-- 환전 신청시 충전신청내역 테이블과 충전신청계좌정보 테이블에 데이터가 추가되어야 한다.
+--○ 호스트 환전 신청 프로시저
+CREATE OR REPLACE PROCEDURE PRC_HOST_EXC_REG
+( V_HOST_CODE         IN  VARCHAR
+, V_HOST_BANK_NUMBER  IN  VARCHAR
+, V_EXCHANGE_AMOUNT         IN  NUMBER
+)
+IS
+
+V_HE_SEQ VARCHAR2(20) := F_CODE('HE', HE_SEQ.NEXTVAL);
+
+BEGIN
+
+INSERT INTO HOST_EXCHANGE_LIST(HOST_EXCHANGE_CODE, HOST_CODE, HOST_EXCHANGE_AMOUNT, HOST_EXCHANGE_DATE)
+VALUES(V_HE_SEQ, V_HOST_CODE, V_EXCHANGE_AMOUNT, SYSDATE);
+
+INSERT INTO HOST_EXCHANGE_BANK_INFO (HOST_EXCHANGE_BANK_INFO_CODE, HOST_EXCHANGE_CODE, HOST_BANK_NUMBER) 
+VALUES (F_CODE('HEBIF', HEBIF_SEQ.NEXTVAL), V_HE_SEQ, V_HOST_BANK_NUMBER);
+
+-- 커밋
+COMMIT;
+END;
+
+
+-- 충전 신청시 충전신청내역 테이블과 충전신청계좌정보 테이블에 데이터가 추가되어야 한다.
+--○ 충전 신청 프로시저
+CREATE OR REPLACE PROCEDURE PRC_LOAD_REG
+( V_MEMBER_CODE         IN  VARCHAR
+, V_MEMBER_BANK_NUMBER  IN  VARCHAR
+, V_LOAD_AMOUNT         IN  NUMBER
+)
+IS
+
+V_LR_SEQ VARCHAR2(20) := F_CODE('LR', LR_SEQ.NEXTVAL);
+
+BEGIN
+
+INSERT INTO LOAD_REG(LOAD_REG_CODE, MEMBER_CODE, LOAD_AMOUNT, LOAD_REG_DATE)
+VALUES(V_LR_SEQ, V_MEMBER_CODE, V_LOAD_AMOUNT, SYSDATE);
+-- 예외처리
+
+INSERT INTO LOAD_REG_BANK_INFO(LOAD_REG_BANK_INFO_CODE, LOAD_REG_CODE, MEMBER_BANK_NUMBER)
+VALUES(F_CODE('LRBI', LRBIF_SEQ.NEXTVAL), V_LR_SEQ, V_MEMBER_BANK_NUMBER); 
+-- 예외처리
+
+-- 커밋
+COMMIT;
+
+END;
+
+
+-- 환전 신청시 충전신청내역 테이블과 충전신청계좌정보 테이블에 데이터가 추가되어야 한다.
+--○ 이용자 환전 신청 프로시저
+CREATE OR REPLACE PROCEDURE PRC_USER_EXC_REG
+( V_MEMBER_CODE         IN  VARCHAR
+, V_MEMBER_BANK_NUMBER  IN  VARCHAR
+, V_EXCHANGE_AMOUNT         IN  NUMBER
+)
+IS
+
+V_ME_SEQ VARCHAR2(20) := F_CODE('ME', ME_SEQ.NEXTVAL);
+
+BEGIN
+
+INSERT INTO MEMBER_EXCHANGE_LIST(MEMBER_EXCHANGE_CODE, MEMBER_CODE, MEMBER_EXCHANGE_AMOUNT, MEMBER_EXCHANGE_DATE)
+VALUES(V_ME_SEQ, V_MEMBER_CODE, V_EXCHANGE_AMOUNT, SYSDATE);
+
+INSERT INTO MEMBER_EXCHANGE_BANK_INFO (MEMBER_EXCHANGE_BANK_INFO_CODE, MEMBER_EXCHANGE_CODE, MEMBER_BANK_NUMBER) 
+VALUES (F_CODE('MEBIF', MEBIF_SEQ.NEXTVAL), V_ME_SEQ, V_MEMBER_BANK_NUMBER);
+
+-- 커밋
+COMMIT;
+END;
+
+
+-- ############################################################## 영은
 --○ 호스트 탈퇴 : 삭제된 공간 테이블에 INSERT 
 CREATE OR REPLACE PROCEDURE PRC_DEL_LOC_INSERT
 (
@@ -28,6 +203,7 @@ BEGIN
     COMMIT;
     
 END PRC_DEL_LOC_INSERT;
+
 
 --○ 호스트 탈퇴 : 마일리지 잔액 확인
 CREATE OR REPLACE PROCEDURE PRC_HOST_MILEAGE
@@ -60,7 +236,6 @@ BEGIN
     
     V_CHANGE := V_MILEAGE;
 END PRC_HOST_MILEAGE;
-
 
 
 --○ 이용자 탈퇴 : 마일리지 잔액 확인
@@ -138,82 +313,6 @@ BEGIN
 END PRC_MEMBER_MILEAGE;
 
 
-
----------------------------------------------------------------
---○ 마일리지 FUNCTION 윤상조 기부
-
-CREATE OR REPLACE FUNCTION F_USER_BALANCE
-( V_MEMBER_CODE   IN    MEMBER.MEMBER_CODE%TYPE)
-
-RETURN NUMBER
-
-IS
-    V_BALANCE NUMBER(20);
-BEGIN
-    SELECT 
-    (
-        SELECT NVL(SUM(LR.LOAD_AMOUNT), 0)
-        FROM LOAD_PROC LP
-        JOIN LOAD_REG LR
-        ON LP.LOAD_REG_CODE = LR.LOAD_REG_CODE
-        WHERE LP.LOAD_TYPE_CODE='LT000001' AND LR.MEMBER_CODE= V_MEMBER_CODE
-    )
-    -
-    (
-        SELECT NVL(SUM(P.PACKAGE_PRICE), 0)
-        FROM BOOK_PAY_LIST BP
-        JOIN BOOK_LIST B
-        ON BP.BOOK_CODE = B.BOOK_CODE
-        JOIN APPLY_PACKAGE AP
-        ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
-        JOIN PACKAGE P 
-        ON AP.PACKAGE_CODE = P.PACKAGE_CODE
-        WHERE B.MEMBER_CODE= V_MEMBER_CODE
-    )
-    +
-    (
-        SELECT NVL(SUM(P.PACKAGE_PRICE), 0)
-        FROM HOST_CANCEL_LIST HC
-        JOIN BOOK_REFUND_LIST BR
-        ON HC.BOOK_CODE = BR.BOOK_CODE
-            JOIN BOOK_LIST B
-            ON BR.BOOK_CODE = B.BOOK_CODE
-                JOIN APPLY_PACKAGE AP
-                ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
-                    JOIN PACKAGE P
-                    ON AP.PACKAGE_CODE = P.PACKAGE_CODE
-                    WHERE B.MEMBER_CODE = V_MEMBER_CODE
-    )
-    +
-    (
-        SELECT NVL(SUM
-        (CASE WHEN (TO_DATE(AP.APPLY_DATE, 'YYYY-MM-DD') - TO_DATE(MC.MEMBER_CANCEL_DATE, 'YYYY-MM-DD')) < 7 
-              THEN TRUNC(P.PACKAGE_PRICE * 0.5, -1) 
-              ELSE TRUNC(P.PACKAGE_PRICE * 1, -1)
-              END), 0)
-        FROM MEMBER_CANCEL_LIST MC
-        JOIN BOOK_REFUND_LIST BR
-        ON MC.BOOK_CODE = BR.BOOK_CODE
-            JOIN BOOK_LIST B
-            ON BR.BOOK_CODE = B.BOOK_CODE
-                JOIN APPLY_PACKAGE AP
-                ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
-                    JOIN PACKAGE P
-                    ON AP.PACKAGE_CODE = P.PACKAGE_CODE
-                    WHERE B.MEMBER_CODE = V_MEMBER_CODE
-    )
-    -
-    (
-        SELECT NVL(SUM(MEMBER_EXCHANGE_AMOUNT), 0)
-        FROM MEMBER_EXCHANGE_LIST
-        WHERE MEMBER_CODE = V_MEMBER_CODE
-    ) 
-    AS BALANCE INTO V_BALANCE
-    FROM DUAL;
-    RETURN V_BALANCE;
-END;
-
---------------------------------------------------------------------------------
 --○ 예약 신청 : 예약코드 받아 예약자 테이블, 결제, 메세지 테이블에 insert
 CREATE OR REPLACE PROCEDURE PRC_BOOK_CODE_INSERT
 (
@@ -251,7 +350,6 @@ BEGIN
 END PRC_BOOK_CODE_INSERT;
 
 
---------------------------------------------------------------------------------
 --○ 메시지에서 이미지 전송(이용자)
 CREATE OR REPLACE PROCEDURE PRC_M_MSG_IMG
 (
@@ -290,7 +388,7 @@ BEGIN
     
 END PRC_M_MSG_IMG;
 
---------------------------------------------------------------------------------
+
 --○ 메시지에서 이미지 전송(호스트)
 CREATE OR REPLACE PROCEDURE PRC_H_MSG_IMG
 (
@@ -328,3 +426,18 @@ BEGIN
     COMMIT;
     
 END PRC_H_MSG_IMG;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
