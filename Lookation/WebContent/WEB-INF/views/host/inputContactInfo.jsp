@@ -17,16 +17,67 @@
 
 	$(function() {
 		
+		// enter submit 방지
+		document.addEventListener('keydown', function(event) {
+			
+			if (event.keyCode === 13) {
+			    event.preventDefault();
+		  	};
+		  	   
+		}, true);
+		
+		
 		// 함수 호출
 		emailReg($('#inputEmail'));
 		contactReg($('#inputContact'));	
 		mainContactReg($('#inputMainContact'));
+
+
+		// submit 제어
+		
+		$('#submitButton').click(function() {
+			
+			var f = $("#inputContactInfo");
+			
+			var emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+			var contactRegExp = /^\d{3}-\d{3,4}-\d{4}$/;
+			var mainRegExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
+			
+			var tEmail = $('#inputEmail').val();
+			var tContact = $('#inputContact').val();	
+			var tMainContact = $('#inputMainContact').val();
+			
+			// 먼저 입력한 이메일의 value를 받아오고,
+			// 해당 value가 정규식과 맞지않았을 때 alert
+			
+			if (tEmail == "" || tContact == "" || tMainContact == "") 
+			{
+				alert("필수 입력사항을 모두 입력해 주세요.");
+			}
+			else if (tEmail.match(emailRegExp) == null)
+			{
+				alert("이메일을 올바르게 입력하세요.");
+				$("#inputEmail").focus();
+			}
+			else if (tContact.match(contactRegExp) == null)
+			{
+				alert("휴대폰 번호를 올바르게 입력하세요.");
+				$("#inputContact").focus();
+			}
+			else if (tMainContact.match(mainRegExp) == null)
+			{
+				alert("대표전화 번호를 올바르게 입력하세요.");
+				$("#inputMainContact").focus();
+			}
+			else {
+				
+				f.submit();
+			}
+			
+		});
 		
 	});
-	
 
-	
-	
 	
 	// 함수 정의 -----------------------------------------------------------------
 	
@@ -42,8 +93,14 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
+			if ($('#inputEmail').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputEmail').val().match(regExp) != null)
+			else if ($('#inputEmail').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 이메일 입니다.").css("color", "green");
 				err.css("display","inline");
@@ -62,8 +119,8 @@
 	
 	// 휴대폰 번호 정규식 함수 정의
 	function contactReg(target) {
-		target.on("keyup", function()
-		{
+		target.on("keyup", function() {
+			
 			// 입력창 다음에 표시할 $(#err) 메세지의 위치를 err 변수에 담음
 			var err = $(this).next();
 			err.css("display", "none");
@@ -71,8 +128,15 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
 
+			
+			if ($('#inputContact').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputContact').val().match(regExp) != null)
+			else if ($('#inputContact').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 휴대폰 번호입니다.").css("color", "green");
 				err.css("display","inline");
@@ -93,8 +157,8 @@
 	
 	// 대표전화 정규식 함수 정의
 	function mainContactReg(target) {
-		target.on("keyup", function()
-		{
+		target.on("keyup", function() {
+			
 			// 입력창 다음에 표시할 $(#err) 메세지의 위치를 err 변수에 담음
 			var err = $(this).next();
 			err.css("display", "none");
@@ -102,8 +166,15 @@
 			// 검증에 사용할 정규식 변수 regExp에 저장
 			var regExp = /^\d{2,3}-\d{3,4}-\d{4}$/;
 
+			
+			if ($('#inputMainContact').val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// target의 value와 정규식과 같은지 match() 함수로 검증
-			if ($('#inputMainContact').val().match(regExp) != null)
+			else if ($('#inputMainContact').val().match(regExp) != null)
 			{
 				err.html("사용 가능한 대표전화 번호입니다.").css("color", "green");
 				err.css("display","inline");
@@ -128,8 +199,9 @@
 						+ "(기존 작성 내용은 저장되지 않습니다.)");
 		
 		if (con == true) {
-			location.href = "mainHost.jsp";
+			location.href = "hostmain.action";
 			return;
+			
 		} else {
 			return;
 		}
@@ -142,13 +214,15 @@
 
 </head>
 <body>
+
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
+      style="background-image: url(<%=cp%>/images/bg_3.jpg);"
       data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
@@ -195,9 +269,8 @@
 	
 	
 	<form style="width: 80%; margin: 120px;" id="inputContactInfo" 
-		  action="inputcontactinfo.action" method="POST"><!--onsubmit="handOver()" -->
-		
-	
+		  action="inputcontactinfo.action" method="POST">
+
 	
 		<!-- 1. 이메일 -->
 		
@@ -205,7 +278,7 @@
 		 	<span style="font-size: 14pt; font-weight: bold;">이메일 <span style="color: red">*</span></span>
 		 	<br><br>
 			<input type="text" class="form-control" id="inputEmail" name="inputEmail"
-				   required="required" placeholder="이메일을 입력하세요.(@, . 포함) (ex) text@lookation.com)">
+				    placeholder="이메일을 입력하세요.(@, . 포함) (ex) text@lookation.com)">
 			<span id="err" style="font-weight: bold;"></span>
 		</div>
 	
@@ -218,7 +291,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">휴대폰 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control" id="inputContact" name="inputContact"
-				   required="required" placeholder="휴대폰 번호를 입력하세요.(-포함) (ex) 010-1234-5678)">
+				    placeholder="휴대폰 번호를 입력하세요.(-포함) (ex) 010-1234-5678)">
 			<span style="font-weight: bold;"></span>
 		</div>
 	
@@ -232,26 +305,17 @@
 			<span style="font-size: 14pt; font-weight: bold;">대표전화 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control" id="inputMainContact" name="inputMainContact"
-				   required="required" placeholder="대표 전화번호를 입력하세요.(-포함) (ex) 02-123-4567)">
+				    placeholder="대표 전화번호를 입력하세요.(-포함) (ex) 02-123-4567)">
 			<span style="font-weight: bold;"></span>
 		</div>
 	
 	<br><br><br>
 	
-	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-						   (필수항목을 입력하지 않았을 경우,
-							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-						    alert("필수항목을 입력해야합니다")된다.
-							그리고 입력하는 textbox로 입력커서가 이동한다. 
-							또한 다음페이지로 submit 되지 않는다.
-							
-							※ 다음 버튼 이동 순서
-							※ xxxUpdate.jsp 다음버튼 이동 순서 
-							   기본정보 → 연락처정보 → 사업자정보
-							   → 이용정보  → 상세정보  → 패키지정보 -->
+	
+	<!-- 다음 버튼 -->
 	<div class="container" style="text-align: center;">
-		<input type="submit" value="다음" class="btn btn-warning" 
-			   style="width:45%; border-color: gray;">
+		<button type="button" class="btn btn-warning" id="submitButton"
+			style="width:45%; border-color: gray;">다음 </button>
 		
 	<!-- 취소 버튼 -->
 		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
@@ -263,9 +327,11 @@
 
 </div>
 	
-	<div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
-	</div>
+<!-- footer 출력부분 -->
+<div>
+	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+</div>
+
 </body>
 </html>

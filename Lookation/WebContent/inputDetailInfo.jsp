@@ -49,92 +49,39 @@
 <script type="text/javascript">
 	
 	$(function() {
-		
-		
-		//  1-1. 최소 x, 최대 x
-		//		1-1-1. html 모두 hide
-		//  1-2. 최소 x, 최대 o		※
-		//		1-2-1. 최소인원 수를 입력하세요.
-		
-		//  2-1. 최소 o, 최대 x
-		//	  2-1-1. 최소값 잘못, 최대값 없음 : 최소값은 1~10이상 입력해야합니다
-		//    2-1-2. 최소값 잘, 최대값 없음 : 사용가능한 최소인원, 최대 hide
-		
-		//  3-1. 최소 o, 최대 o
-		//    3-1-1. 최소 잘못, 최대 잘못 : 
-			
-		//  4-1. 최소 잘, 최대 잘 but 최소가 최대보다 큼(=최대가 최소보다 작음)
-		//    4-1-1. 최소>최대 : 입력한 최소인원의 수가 최대인원보다 수보다 큽니다.(최소 input)
-		//					   : 입력한 최대인원의 수가 최소인원보다 수보다 작습니다.(최대 input)
-		//    4-1-2. 최소<최대 : 둘다 사용가능한 ...
-	
-		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
-		
-		//var min = parseInt($('#inputMinPeople').val());
-		//var max = $('#inputMaxPeople').val();
 
-		setMaxPeople($('#inputMaxPeople'), 30, '최대 수용인원');
-		
 		// 함수 호출
+		
+		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
+		setMaxPeople($('#inputMaxPeople'), 1, '최대 수용인원');
 		
 		
 		// submit 제어
-		var f = $('inputDetailInfo');
+		var f = $('#inputDetailInfo');
 		
-		$('#submitButton').click(function ()
-		{	
+		var tMin = $('#inputMinPeople').val();
+		var tMax = $('#inputMaxPeople').val();
+		var tUrl = $('#inputWebUrl').val();
+		
+		$('#submitButton').click(function (){	
 			
-			/* 
-			if (parseInt($('#inputMinPeople').val()) > parseInt($('#inputMaxPeople').val()))
+			if (tMin == '' || tMax == '' || tUrl == '')
 			{
-				alert("최소 수용인원이 최대 수용인원보다 큽니다.");
-				//alert(parseInt($.trim($('#inputMinPeople').val()))+1);	// 4
-				//alert(parseInt($('#inputMinPeople').val())+1);		// 4
-				//alert((parseInt($('#inputMinPeople').val()+1))+1);	// 문자열(31)을 정수로 바꾸고 1더해서 32
-				//alert(($('#inputMinPeople').val()+1)+1);			// 문자 322
-				//alert($.trim(min)+1);						// NaN 1
-				//alert(parseInt(max)+1);					// NaN
-				//alert(parseInt($.trim(min))+1);			// NaN 1
-				//alert(parseInt($.trim(max))+1);			// NaN 1
-				//alert(maxTest()+1);						// 4
-			} */
-			/* else
-			{
-				$('inputDetailInfo').submit();	
-			} */
+				alert("필수 입력사항을 모두 입력해 주세요.");
+				alert(tMin);
+				alert(tMax);
+				alert(tUrl);
+			}
+			
+			
 		});
-		/* 
-		// 썸네일 이미지 등록
-		/* $(document).ready(function(){ 
-			
-			<c:forEach var="i" begin="0" end="10">
-			$('.filebox${i} .upload-hidden').on('change', function(){ // 값이 변경되면 
-				
-				var filename = '';
-				// modern browser
-				if(window.FileReader) { 
-					filename = $(this)[0].files[0].name; 
-				} 
-			
-				// old IE
-				
-				else { 
-				
-					filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
-				} 
-				
-			
-				// 추출한 파일명 삽입 
-				$(this).parent('div').children('.upload-name').val(filename); 
-				
-			});
-			</c:forEach>
-		}); */			
+		
 	});
-				
+		
+	// 함수 정의 ---------------------------------------------------------	
 	
 	
-	// 최소 수용인원 수 제약 functiond
+	// 최소 수용인원 수 제약 function
 	function setMinPeople(target, minNum, maxNum, name){
 		
 		target.on("keyup", function() {
@@ -149,24 +96,14 @@
 			}
 			
 			// 글자 수 제한, 색 변경
-			else if (parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+			else if (parseInt(target.val()) < minNum 
+					|| parseInt(target.val()) > maxNum ) {
 				
 				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
 				err.css("color", "red");
 				return;
 				
 			} 
-			/*
-			// 최소인원수값이 null이 아니고, 최소인원이 올바로입력되었는데 최대인원보다 큰경우
-			else if (parseInt(target.val()) > parseInt($('#inputMaxPeople').val()) ) {
-				
-				err.html("" + name + "이 " + parseInt($('#inputMaxPeople').val()) 
-						+ " 보다 큽니다.").css("display","inline");
-				err.css("color", "red");
-				return;
-				
-			}
-			*/
 			else {
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
@@ -179,7 +116,7 @@
 	 
 	
 	// 최대 수용인원 수 제약 function
-	 function setMaxPeople(target, maxNum, name) {
+	function setMaxPeople(target, minNum, name) {
 		
 		target.on("keyup", function ()
 		{
@@ -188,49 +125,20 @@
 			
 			// 최대 수용인원 x
 			if (target.val()=='') {
-				/* 
-				// 최소 o, 최대 x(다시 쓴 경우 검사해야)
-				if (maxTest()!='' && target.val()=='')
-				{
-					err.html.hide();
-					return;
-				}
-				 */
+
 				err.html.hide();
 				return;
 			}
-			// 최대 수용인원 o
-			else if (target.val()!=''){
+			// 글자 수 제한, 색 변경
+			else if (parseInt(target.val()) > 30 
+					|| parseInt(target.val()) < minNum) {
 				
-				// 최소 x, 최대 o
-				if (maxTest()=='')
-				{
-					err.html("최소 수용인원을 입력해주세요.").css("display","inline");
-					err.css("color","red");
-					return;
-				}
+				err.html("" + name + "은 " + "30 이하로 설정해야합니다.").css("display","inline");
+				err.css("color", "red");
+				return;
 				
-				// 최소 o , 최대 o
-				else if (maxTest()!='' && target.val()!='')
-				{
-					// 최소 수용인원 o, 최소 수용인원 > 최대 수용인원 or 최대 > 30
-					
-					if (maxTest() != '' 
-						&& parseInt(target.val()) < maxTest() 
-						|| parseInt(target.val()) > maxNum ) {
-					
-						err.html("" + name + "은 " + maxTest() + " 이상 ~ " 
-								+ maxNum + " 이하로 설정해야합니다.").css("display","inline");
-						
-						err.css("color", "red");
-						return;
-
-					}
-				
-				}			
-			
-			
-			} else {
+			} 
+			else {
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
@@ -241,12 +149,12 @@
 	} 
 	   
 	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
-	function maxTest() {
+	/* function maxTest() {
 		
 		var inputMin = parseInt($.trim($('#inputMinPeople').val()));
 
 		return inputMin;
-	} 
+	}  */
 	
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
@@ -268,10 +176,10 @@
 	
 </head>
 <body>
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
-	
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
@@ -323,7 +231,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputdetailinfo.action" method="POST">	
+		  action="inputUsingInfo.jsp" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
@@ -352,7 +260,7 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">최소 수용인원 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text" class="form-control"
 					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
 					id="inputMinPeople" name="inputMinPeople"
 					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
@@ -370,7 +278,7 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">최대 수용인원 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text" class="form-control"
 					placeholder="최대 수용인원을 입력하세요.[최소 수용인원 이상, 최대 30명 이하]"
 					id="inputMaxPeople" name="inputMaxPeople"
 					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
@@ -412,9 +320,11 @@
 </div>
 </div>
 
+<!-- footer 출력부분 -->
 <div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+       <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+       <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </div>
+
 </body>
 </html>

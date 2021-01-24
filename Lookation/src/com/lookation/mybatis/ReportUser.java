@@ -24,49 +24,6 @@ public class ReportUser
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// 신고 접수 폼 호출
-	@RequestMapping(value = "/actions/reportuserform.action", method = RequestMethod.GET)
-	public String addForm(HttpServletRequest request, Model model)
-	{
-		// 세션을 통한 로그인 확인                                                                    
-		HttpSession session = request.getSession();                                                                  
-		String accountCode = (String)session.getAttribute("memberCode"); 
-
-		// 로그인 확인을 기록하기 위함                  
-		String result = "noSigned";                                                         
-
-		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
-		if(accountCode != null)                                         
-		{       
-			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
-		        // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
-
-			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
-			model.addAttribute("info", dao.getInfo(accountCode));
-
-			// 이용자측면 추가로 해야할 작업은 이 밑에 쓴다.
-
-
-
-			
-			// 로그인이 되었음을 기록한다.
-		        result = "signed";                                                                                
-		}
-
-		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
-		model.addAttribute("result", result);                                               
-
-
-		// ********* 만약 로그인기능이 사용되는 뷰페이지의 경우 이 코드를 추가한다. ********* 
-		// 로그인이 안되어 있다면 
-		if(result.equals("noSigned"))
-		{
-		    // 로그인 창으로 이동한다.
-		    return "redirect:loginform.action?identify=member";
-		}
-		
-		return "/WEB-INF/views/user/reportUser.jsp";
-	}
 	
 	// 신고 접수 후 이미지 업로드 폼 호출
 	@RequestMapping(value = "/actions/reportuser.action", method = RequestMethod.POST)
