@@ -103,7 +103,15 @@ margin-bottom: 0;
     		var url = "bookdetails.action?book_code=" + $(this).val();
     		var option = "width=850, height=500, resizable=no, scrollbars=yes, status=no";
     		window.open(url, "", option);
-    	}); 
+    	});
+    	
+    	// 신고하기
+    	$(".report").click(function()
+		{
+			var popUrl = "reportuserform.action?loc_code=" + $("#loc").val() + "&member_code=" +  $("#member").val() + "&loc_name=" + $("#loc_name").val();
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		});
     	
 	})
 	
@@ -161,6 +169,9 @@ margin-bottom: 0;
 								
 								<c:if test="${not empty bookList }">
 									<c:forEach var="book" items="${bookList }">
+										<input type="text" id="loc" value="${book.loc_code }" style="display: none;">
+										<input type="text" id="member" value="${book.member_code }" style="display: none;">
+										<input type="text" id="loc_name" value="${book.loc_name }" style="display: none;">
 										<fmt:parseDate var="pdate" value="${book.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
 										<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 										<%-- <span>today : ${today } <br> fdate : ${fdate }<br></span> --%>
@@ -245,7 +256,7 @@ margin-bottom: 0;
 												<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
 												<td>
 													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 													신고</button>
 													<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
@@ -262,7 +273,7 @@ margin-bottom: 0;
 												<td class="text-dark">이용완료${book.checkbook}</td>
 												<td>
 													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 													신고</button>
 													<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
@@ -278,7 +289,7 @@ margin-bottom: 0;
 												<td class="text-gon">예약완료${book.checkbook}</td>
 												<td>
 													<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 													신고</button>
 													<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"

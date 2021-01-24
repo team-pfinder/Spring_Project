@@ -35,9 +35,6 @@ public class LocationReview
 		
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
-		/*=========================================================*/
-		session.setAttribute("memberCode", "M000002");
-		/*=========================================================*/
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 		
 		// 로그인 확인을 기록하기 위함                  
@@ -95,9 +92,6 @@ public class LocationReview
 		
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
-		/*=========================================================*/
-		session.setAttribute("memberCode", "M000002");
-		/*=========================================================*/
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 
 		// 로그인 확인을 기록하기 위함                  
@@ -148,9 +142,41 @@ public class LocationReview
 	
 	/*=== 이용자 ===*/
 	
-	// 이용자 : 리뷰 작성
-	@RequestMapping(value="/actions/reviewinsert.action", method = {RequestMethod.POST, RequestMethod.GET})
+	// 이용자 : 리뷰 텍스트 작성
+	@RequestMapping(value="/actions/reviewinsert.action", method = RequestMethod.POST)
 	public void insertReview(LocationReviewDTO dto, HttpServletRequest request)
+	{
+		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
+		System.out.println("여기서 2 " + dto.getMember_code());
+		
+		try
+		{
+			MultipartRequest m = null;
+			//ArrayList<String> imageList = FileManager.getFileNames(m);
+			
+			// ('L000001', 'M000002', 4, '안녕하세용', 'too.png');
+			
+			
+			dto.setLoc_code(m.getParameter("loc_code"));
+			dto.setMember_code(m.getParameter("member_code"));
+			dto.setReview_rate(m.getParameter("review_rate"));
+			dto.setReview_content(m.getParameter("review_content"));
+		
+		} catch (Exception e)
+		{
+			e.toString();
+		}
+		
+		System.out.println("확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() 
+		+ ", " + dto.getReview_rate() + ", " + dto.getReview_img_url() +" 끝! ");
+		
+		// 리뷰쓰기
+		locDao.insertMemReview(dto);
+	}
+	
+	// 이용자 : 리뷰 이미지 첨부 작성
+	@RequestMapping(value="/actions/reviewimg.action", method = {RequestMethod.POST, RequestMethod.GET})
+	public void insertReviewImg(LocationReviewDTO dto, HttpServletRequest request)
 	{
 		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
 		System.out.println("여기서 2 " + dto.getMember_code());
@@ -170,7 +196,7 @@ public class LocationReview
 			dto.setReview_img_url(imageList.get(0));
 			
 			
-		
+			
 		} catch (Exception e)
 		{
 			e.toString();
@@ -180,7 +206,7 @@ public class LocationReview
 		+ ", " + dto.getReview_rate() + ", " + dto.getReview_img_url() +" 끝! ");
 		
 		// 리뷰쓰기
-		locDao.insertMemReview(dto);
+		locDao.insertMemImg(dto);
 	}
 	
 	// 이용자 : 리뷰 수정
@@ -198,13 +224,13 @@ public class LocationReview
 	
 	// 이용자 : 리뷰 삭제 
 	@RequestMapping(value="/actions/deletereview.action", method = RequestMethod.GET)
-	public String deleteReview(LocationReviewDTO dto)
+	public void deleteReview(LocationReviewDTO dto)
 	{
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.deleteMemReview(dto);
 		
-		return "redirect:locationdetail.action";
+		//return "redirect:locationdetail.action";
 	}
 	
 	// 호스트 : 리뷰 답글 작성
@@ -232,12 +258,12 @@ public class LocationReview
 	
 	// 호스트 : 리뷰 답글 삭제
 	@RequestMapping(value="/actions/deletereviewreply.action", method = RequestMethod.GET)
-	public String deleteReviewReply(LocationReviewDTO dto)
+	public void deleteReviewReply(LocationReviewDTO dto)
 	{
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 		
 		dao.deleteHostReview(dto);
 		
-		return "redirect:locationdetailhost.action";
+		//return "redirect:locationdetailhost.action";
 	}
 }
