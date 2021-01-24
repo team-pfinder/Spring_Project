@@ -5,11 +5,23 @@ public class LocationReviewDTO
 	// 이용자
 	private String review_code, loc_code, member_code, review_rate
 	, review_date, review_content
-	, review_remove_date;
+	, review_remove_date, review_img_url;
 	
 	// 호스트
 	private String review_reply_code, review_reply_content
 	, review_reply_date, review_reply_remove_code, review_reply_remove_date;
+	
+	
+	
+	public String getReview_img_url()
+	{
+		return review_img_url;
+	}
+
+	public void setReview_img_url(String review_img_url)
+	{
+		this.review_img_url = review_img_url;
+	}
 
 	public String getReview_code()
 	{

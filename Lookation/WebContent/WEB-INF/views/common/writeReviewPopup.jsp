@@ -112,20 +112,29 @@
 		// 이용자 리뷰 작성
 		$("#submitBtn_m").click(function()
 		{
+			e.preventDefault();
+			
+			var form = $("#reviewForm")[0];
+			var data = new FormData(form);
+			
 			if($("input[name=review_rate]:radio:checked").length == 0)
 			{
 				alert("별점을 선택해주세요"); 
 				return false;
 			}
 			
-			var formData = $("#reviewForm").serialize();
+			//var formData = $("#reviewForm").serialize();
 			
 			$.ajax({
 				type : "post",
 				url : "reviewinsert.action",
+				enctype: "multipart/form-data",
+				data : data,
+				processData : false,
+				contentType : fales,
 				complete : function(xh)
 				{	
-					$("#reviewForm").submit();
+					//$("#reviewForm").submit();
 					window.opener.parent.location.reload();				
 					window.close();
 				}
@@ -162,7 +171,7 @@
 			<div class="col-md-12">
 			<!-- 이용자 -->
 			<c:if test="${identify eq 'member'}"> 
-				<form action="reviewinsert.action" id="reviewForm" method="post">
+				<form action="reviewinsert.action" id="reviewForm" enctype="multipart/form-data" method="post">
 					<div class="header">
 						<h3 class="title my-2">리뷰 작성하기</h3>
 						<hr>
@@ -192,8 +201,8 @@
 								pageContext.setAttribute("member_code", member_code);
 							%>
 							<input type="hidden" value="${loc_code}" name="loc_code">
-							<input type="hidden" value="${memberCode }" name="member_code">
-							<label for="content">내용</label>
+							<input type="hidden" value="${member_code }" name="member_code">
+							<label for="content">내용${memberCode }</label>
 							<textarea class="form-control" id="content" name="review_content"
 								rows="8" maxlength="3000" required="required"
 								placeholder="내용을 입력해주세요."></textarea>
