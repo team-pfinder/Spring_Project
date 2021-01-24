@@ -32,17 +32,17 @@ public class LocationDetailAjaxController implements Controller
 
 		// 데이터 수신(locationDetail.jsp 페이지로부터... 로그인한 memberCode 수신)
 		String selectDate = request.getParameter("selectDate");
-		String locCode = request.getParameter("locCode");
+		String loc_code = request.getParameter("loc_code");
 
 		System.out.println(selectDate);
-		System.out.println(locCode);
+		System.out.println(loc_code);
 		String parseJson = "";
 
 		ArrayList<LocationDetailDTO> packageInfo = new ArrayList<LocationDetailDTO>();
 
 		try
 		{
-			packageInfo = dao.packageInfo(locCode, selectDate);
+			packageInfo = dao.packageInfo(loc_code, selectDate);
 			
 			String tmp = "";
 			
@@ -66,7 +66,7 @@ public class LocationDetailAjaxController implements Controller
 
 			mav.addObject("data", parseJson);
 
-			/* System.out.println("tmp 출력 =======" + parseJson); */
+			 System.out.println("tmp 출력 =======" + parseJson); 
 			mav.setViewName("../WEB-INF/views/ajax/LocationDetailAjax.jsp");
 
 		} catch (Exception e)

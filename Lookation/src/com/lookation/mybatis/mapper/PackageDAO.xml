@@ -24,7 +24,8 @@ resultType="com.lookation.dto.PackageDTO">
 	     , TIME_START, TIME_END
 	     , PRICE, APPLY_DATE
 	FROM APPLY_PACKAGE_VIEW
-	WHERE BOOK_CODE IS NULL
+	WHERE LOC_CODE = #{loc_code}
+	  AND BOOK_CODE IS NULL
 	  AND APPLY_DATE > SYSDATE
 </select>
 
