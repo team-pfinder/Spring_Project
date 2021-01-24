@@ -24,7 +24,7 @@ public class BankInfoDAO implements IBankInfoDAO
 	
 	// 이용자 등록된 계좌 리스트 출력
 	@Override
-	public ArrayList<BankInfoDTO> memberBankInfoLists() throws SQLException
+	public ArrayList<BankInfoDTO> memberBankInfoLists(String identifyCode) throws SQLException
 	{
 		Connection conn = dataSource.getConnection();
 
@@ -32,8 +32,10 @@ public class BankInfoDAO implements IBankInfoDAO
 		
 		String sql = "SELECT MEMBER_BANK_NUMBER, MEMBER_BANK, MEMBER_BANK_HOLDER"
 				  + " FROM VIEW_MEMBER_BANK_INFO"
-				  + " WHERE MEMBER_CODE = 'M000002'";
+				  + " WHERE MEMBER_CODE = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, identifyCode);
+		
 		
 		// 1. SELECT
 		ResultSet rs = pstmt.executeQuery();
@@ -56,7 +58,7 @@ public class BankInfoDAO implements IBankInfoDAO
 	}
 	// 호스트 등록된 계좌 리스트 출력
 	@Override
-	public ArrayList<BankInfoDTO> hostBankInfoLists() throws SQLException
+	public ArrayList<BankInfoDTO> hostBankInfoLists(String identifyCode) throws SQLException
 	{
 		Connection conn = dataSource.getConnection();
 
@@ -64,8 +66,9 @@ public class BankInfoDAO implements IBankInfoDAO
 		
 		String sql = "SELECT *"
 				  + " FROM VIEW_HOST_BANK_INFO"
-				  + " WHERE HOST_CODE = 'H000002'";
+				  + " WHERE HOST_CODE = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, identifyCode);
 		
 		// 1. SELECT
 		ResultSet rs = pstmt.executeQuery();
@@ -95,8 +98,10 @@ public class BankInfoDAO implements IBankInfoDAO
 		int result = 0;
 		String sql = "SELECT COUNT(*) AS CNT"
 				  + " FROM MEMBER_BANK_INFO"
-				  + " WHERE MEMBER_CODE = " + "'" + identifyCode + "'";
+				  + " WHERE MEMBER_CODE = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, identifyCode);
+
 		ResultSet rs = pstmt.executeQuery();
 		
 		while(rs.next())
@@ -118,13 +123,13 @@ public class BankInfoDAO implements IBankInfoDAO
 
 		int result = 0;
 		String sql = "INSERT INTO MEMBER_BANK_INFO(MEMBER_BANK_NUMBER, MEMBER_CODE, MEMBER_BANK, MEMBER_BANK_HOLDER)" +
-				    " VALUES(?, 'M000002', ?, ?)";
+				    " VALUES(?, ?, ?, ?)";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, dto.getBankNumber());
-		/* pstmt.setString(2, dto.getIdentifyCode()); */
-		pstmt.setString(2, dto.getBank());
-		pstmt.setString(3, dto.getBankHolder());
+		pstmt.setString(2, dto.getIdentifyCode());
+		pstmt.setString(3, dto.getBank());
+		pstmt.setString(4, dto.getBankHolder());
 		
 		result = pstmt.executeUpdate();
 		

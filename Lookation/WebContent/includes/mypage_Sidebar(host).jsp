@@ -5,24 +5,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>mypage_Sidebar.jsp</title>
+<title>mypage_Sidebar.jsp(host)</title>
 </head>
 <body>
 
 	<div class="col-lg-2 sidebar pl-lg-5 ftco-animate">
 		<div class="sidebar-box ftco-animate">
 			<div class="categories back-default">
-				<h3><a href="hostmypage.action">마이페이지</a></h3><hr>
+				<h3><a href="mypage.action?identify=host">마이페이지</a></h3><hr>
 				<li><a href="#">프로필 관리 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li><a href="commonbankinfo.action">계좌 관리 <span
+				<li><a href="bankinfomanage.action?identify=host">계좌 관리 <span
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="#">예약 리스트 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li><a href="loadandexchange.action">환전
+				<li><a href="loadandexchange.action?identify=host">환전
 						신청 <span class="ion-ios-arrow-forward"></span>
 				</a></li>
-				<li><a href="hostmileagehistory.action">마일리지 내역 <span
+				<li><a href="mileagehistory.action?identify=host">마일리지 내역 <span
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="#">공간 관리 <span
 						class="ion-ios-arrow-forward"></span></a></li>

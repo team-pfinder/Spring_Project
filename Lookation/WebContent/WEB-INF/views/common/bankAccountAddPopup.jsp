@@ -4,7 +4,7 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	String identify = request.getParameter("identify");
-	String identifyCode = request.getParameter("identifyCode");
+	pageContext.setAttribute("identify", identify);
 %>
 
 <!DOCTYPE html>
@@ -54,11 +54,10 @@
 			<div class="col-1"></div>
 			<div class="col-10">
 				
-				<form action="bankinfoadd.action" method="get" id="bankinfoform">
+				<form action="bankinfoadd.action" method="post" id="bankinfoform">
 					<div class="form-group has-success">
 						<!-- ------------------------------------------------------------ -->
 						<input type="hidden" name="identify" value="<%=identify%>">
-						<input type="hidden" name="identifyCode" value="<%=identifyCode%>">
 						<!-- ------------------------------------------------------------ -->
 						<label class="control-label" for="inputSuccess1">은행 선택</label>
 						<select class="form-control" id="bank" name="bank"  required >

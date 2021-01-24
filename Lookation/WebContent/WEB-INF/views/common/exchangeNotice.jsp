@@ -4,6 +4,10 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -11,7 +15,7 @@
 <meta charset="UTF-8">
 <!-- include NAV -->
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
-<title>5-1.withdrawGuide.jsp</title>
+<title>환전신청완료</title>
 <style type="text/css">
 button
     {
@@ -55,21 +59,31 @@ button
 				<b>예정 금액</b> : ${exchangeInfo.amount}원<br>
 				</span>
 				<hr><br>
-				
+				<c:if test="${identify eq 'member' }">
 				<div class="buttonForm">
-					<button style="float: left; background: #ffffff" onclick="location.href='#' ">홈으로</button>
-					<button style="float: right; border-width: 0px" onclick="location.href='1.mypageMain(user).jsp' ">
+					<button style="float: left; background: #ffffff" onclick="location.href='membermain.action' ">홈으로</button>
+					<button style="float: right; border-width: 0px" onclick="location.href='mypage.action?identify=member'">
 						<span style="font-color: black">마이페이지로</span>
 					</button>
 					<br><br><br><br><br><br>
 				</div>
+				</c:if>
+				<c:if test="${identify eq 'host' }">
+				<div class="buttonForm">
+					<button style="float: left; background: #ffffff" onclick="location.href='hostmain.action' ">홈으로</button>
+					<button style="float: right; border-width: 0px" onclick="location.href='mypage.action?identify=host'">
+						<span style="font-color: black">마이페이지로</span>
+					</button>
+					<br><br><br><br><br><br>
+				</div>
+				</c:if>
+				
 			</div>
 		</div>
 	</div>
 			
-	<!-- footer.jsp -->
+	<!-- footer 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/footer_user.jsp"></c:import>
 		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 

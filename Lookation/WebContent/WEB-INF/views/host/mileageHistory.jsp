@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>mypageMileageHistory(host).jsp</title>
+<title>마일리지 내역</title>
 <style type="text/css">
    .nav-tabs .pill-1 .nav-link:not(.active)
    {
@@ -50,9 +50,9 @@
 
 </head>
 <body>
-	<!-- include header_host.jsp -->
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 	
 	<!-- 타이틀 -->
@@ -64,9 +64,9 @@
 			<div class="row no-gutters slider-text align-items-end">
 				<div class="col-md-9 ftco-animate pb-5">
 					<p class="breadcrumbs mb-2">
-						<span class="mr-2"> <a href="index.html">Home <i
+						<span class="mr-2"> <a href="hostmain.action">Home <i
 								class="ion-ios-arrow-forward"></i></a>
-						</span> <span class="mr-2"><a href="1.mypageMain.jsp">Mypage <i
+						</span> <span class="mr-2"><a href="mypage.actionidentify=host">Mypage <i
 								class="ion-ios-arrow-forward"></i></a></span> <span>Mileage History
 							<i class="ion-ios-arrow-forward"></i>
 						</span>
