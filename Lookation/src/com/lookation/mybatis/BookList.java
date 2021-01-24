@@ -31,9 +31,6 @@ public class BookList
 	public String bookList(ModelMap model, BookListDTO dto, HttpServletRequest request)
 	{	
 		HttpSession session = request.getSession();   
-		/*======================================================*/
-		session.setAttribute("memberCode", "M000001");
-		/*======================================================*/
 		String accountCode = (String)session.getAttribute("memberCode"); 
 
 

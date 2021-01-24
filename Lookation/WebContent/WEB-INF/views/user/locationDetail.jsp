@@ -3,7 +3,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-	
+/* 	
 	String identify = request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
 	
@@ -17,7 +17,10 @@
 	{
 		String memberCode = (String)session.getAttribute("memberCode");
 		pageContext.setAttribute("Code", memberCode);
-	}
+	} */
+	
+	String memberCode = (String)session.getAttribute("memberCode");
+	pageContext.setAttribute("Code", memberCode);
 
 %>
 
@@ -447,6 +450,7 @@ width: 100%;
 			if(confirm("삭제하시겠습니까?"))
 			{
 				$(location).attr("href", "deleteqna.action?identify=member&qna_code=" + $(this).val());
+				location.replace(document.referrer);
 			}
 		}); 
 		
@@ -456,6 +460,7 @@ width: 100%;
 			if(confirm("삭제하시겠습니까?"))
 			{
 				$(location).attr("href", "deletereview.action?identify=member&review_code=" + $(this).val());
+				location.replace(document.referrer);
 			}
 		}); 
 		
@@ -476,8 +481,8 @@ width: 100%;
 		var identify = '<%=(String)request.getParameter("identify")%>';
 		var loc_code = document.getElementById("hiddenCode").value;
 		
-		var url = "writeqna.action?identify=" + identify
-				 + "&loc_code=" + loc_code + "&member_code=" + member_code;
+		var url = "writeqna.action?identify=member&loc_code=" + loc_code 
+				+ "&member_code=" + member_code;
 
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
@@ -490,8 +495,10 @@ width: 100%;
 		var identify = '<%=(String)request.getParameter("identify")%>';
 		var loc_code = document.getElementById("hiddenCode").value;
 		
-		var url = "writereview.action?identify=" + identify
-				+ "&loc_code="+ loc_code + "&member_code=" + member_code;
+		alert(member_code);
+		alert(identify);
+		alert(loc_code);
+		var url = "writereview.action?identify=member&loc_code="+ loc_code + "&member_code=" + member_code;
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
 	}

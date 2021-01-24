@@ -124,6 +124,23 @@
 			}
 			
 			//var formData = $("#reviewForm").serialize();
+			if($(".review_img_url").val()!=null)
+			{
+				$.ajax({
+					type : "post",
+					url : "reviewimg.action",
+					enctype: "multipart/form-data",
+					data : data,
+					processData : false,
+					contentType : fales,
+					complete : function(xh)
+					{	
+						//$("#reviewForm").submit();
+						window.opener.parent.location.reload();				
+						window.close();
+					}
+				});
+			}
 			
 			$.ajax({
 				type : "post",
@@ -139,6 +156,7 @@
 					window.close();
 				}
 			});
+			
 			
 		});
 		
@@ -210,7 +228,8 @@
 						
 						<div class="form-group">
 								<label for="image">사진 첨부</label>
-								<input type="file" id="image" class="form-control" accept="image/*"/>
+								<input type="file" id="image" class="form-control" accept="image/*"
+								name="review_img_url"/>
 						</div>
 	
 					</div><!-- End .body -->

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
-import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILocationDetailDAO;
 import com.lookation.dao.IMemberAccountDAO;
 
@@ -34,38 +33,28 @@ public class LocationDetailController implements Controller
 		ModelAndView mav = new ModelAndView();
 
 		String loc_code = request.getParameter("loc_code");
-		String identify = request.getParameter("identify");
 		HttpSession session = request.getSession();
-		
-		/*=======================================================*/
-		session.setAttribute("memberCode", "M000002");
-		/*=======================================================*/
 
 		try
 		{
-			String accountCode = (String)session.getAttribute(identify + "Code"); 
+			String accountCode = (String)session.getAttribute("memberCode"); 
 			
 			// 로그인 확인을 기록하기 위함
 			String result = "noSigned";
 			
-			// 회원 코드가 세션에 세팅되어 있다면
-			if (accountCode != null)
-			{
-				if(identify.equals("member"))                                                   
-				{                                                                               
-					IMemberAccountDAO memDao = sqlSession.getMapper(IMemberAccountDAO.class);	    
-					mav.addObject("info", memDao.getInfo(accountCode));
-				}
-				// 호스트일 경우
-				else if(identify.equals("host"))                                                   
-				{                                                                               
-					IHostAccountDAO hoDao = sqlSession.getMapper(IHostAccountDAO.class);	    
-					mav.addObject("info", hoDao.getInfo(accountCode));
-				}
+			// 회원 코드가 세션에 세팅되어 있다면                                                                                   
+			if(accountCode != null)                                         
+			{       
+				// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
+			        // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
+
+				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
+				mav.addObject("info", dao.getInfo(accountCode));
 
 				// 로그인이 되었음을 기록한다.
-				result = "signed";
+			    result = "signed";                                                                                
 			}
+			
 			
 			// 로그인 여부 데이터를 뷰에 넘겨준다.
 			mav.addObject("result", result);
@@ -81,7 +70,8 @@ public class LocationDetailController implements Controller
 			mav.addObject("review", dao.review(loc_code));
 			mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
 			
-			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp?identify=" + identify);
+			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
+			
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());
