@@ -21,6 +21,7 @@ public class EmailManager
 	{
 		if(mailSender == null)
 		{
+			// <!-- smtp를 사용한 메일 서비스 설정 -->
 			mailSender = new JavaMailSenderImpl();
 			mailSender.setHost("smtp.gmail.com");
 			mailSender.setPort(587);

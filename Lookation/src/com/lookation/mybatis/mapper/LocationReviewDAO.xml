@@ -19,12 +19,23 @@
 	</select>
 	
 	<!-- 이용자 -->
-	<insert id="insertMemReview">
+	<!-- <insert id="insertMemReview">
 		INSERT INTO REVIEW(REVIEW_CODE, LOC_CODE, MEMBER_CODE, REVIEW_RATE, REVIEW_CONTENT
 		, REVIEW_DATE)
 		VALUES(F_CODE('RV', RV_SEQ.NEXTVAL), #{loc_code}
 		, #{member_code}, #{review_rate}, #{review_content}, SYSDATE)
+	</insert> -->
+	<insert id="insertMemReview" statementType="CALLABLE">
+		{CALL PRC_REVIEW_IMG(
+							#{loc_code, mode=IN}
+						  , #{member_code, mode=IN}
+						  , #{review_rate, mode=IN}
+						  , #{review_content, mode=IN}
+						  , #{review_img_url, mode=IN}
+						  )
+		}
 	</insert>
+	
 	
 	<update id="updateMemReview">
 		UPDATE REVIEW

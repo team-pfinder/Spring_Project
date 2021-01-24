@@ -1,6 +1,8 @@
 package com.lookation.mybatis;
 
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +17,8 @@ import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILocationReviewDAO;
 import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dto.LocationReviewDTO;
+import com.lookation.util.FileManager;
+import com.oreilly.servlet.MultipartRequest;
 
 @Controller
 public class LocationReview
@@ -145,13 +149,38 @@ public class LocationReview
 	/*=== 이용자 ===*/
 	
 	// 이용자 : 리뷰 작성
-	@RequestMapping(value="/actions/reviewinsert.action", method = RequestMethod.POST)
-	public void insertReview(LocationReviewDTO dto)
+	@RequestMapping(value="/actions/reviewinsert.action", method = {RequestMethod.POST, RequestMethod.GET})
+	public void insertReview(LocationReviewDTO dto, HttpServletRequest request)
 	{
 		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
 		System.out.println("여기서 2 " + dto.getMember_code());
-		locDao.insertMemReview(dto);
 		
+		try
+		{
+			MultipartRequest m = FileManager.upload(request, "images");
+			ArrayList<String> imageList = FileManager.getFileNames(m);
+			
+			// ('L000001', 'M000002', 4, '안녕하세용', 'too.png');
+			
+			
+			dto.setLoc_code(m.getParameter("loc_code"));
+			dto.setMember_code(m.getParameter("member_code"));
+			dto.setReview_rate(m.getParameter("review_rate"));
+			dto.setReview_content(m.getParameter("review_content"));
+			dto.setReview_img_url(imageList.get(0));
+			
+			
+		
+		} catch (Exception e)
+		{
+			e.toString();
+		}
+		
+		System.out.println("확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() 
+		+ ", " + dto.getReview_rate() + ", " + dto.getReview_img_url() +" 끝! ");
+		
+		// 리뷰쓰기
+		locDao.insertMemReview(dto);
 	}
 	
 	// 이용자 : 리뷰 수정

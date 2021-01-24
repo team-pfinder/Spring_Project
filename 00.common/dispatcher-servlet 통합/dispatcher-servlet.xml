@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<context:component-scan
+		base-package="org.springframework.samples.petclinic.web" />
+	<!-- mybatis 적용 bean -->
+	<!-- ※ Annotation 표기법으로 Controller 객체를 등록 -->
+	<context:component-scan
+		base-package="com.lookation.mybatis" />
+
+	<!-- ※ 『dispatcher-servlet.xml』의 기본 샘플 코드 -->
+	<!-- 이 코드는 기본 설정 내용을 복사하기 위해서 스프링 doc 를 참고하여 작성한다. -->
+	<!-- → 『E:\spring-3.0.2-with-docs\docs\spring-framework-reference\pdf』 경로로 
+		이동 -->
+	<!-- → 『spring-framework-reference.pdf』 파일 열기(실행) -->
+	<!-- → 문서 본문 내용의 425 페이지(직접 이동 450 / 805)로 이동 -->
+	<!-- → 페이지 하단의 XML 파일 샘플코드 복사 & 붙여넣기 -->
+
+
+	<!-- DataSource 등록 → SimpleDriverDataSource -->
+	<!-- local -->
+	<bean id="localDataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass"
+			value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="lookation_local"></property>
+		<property name="password" value="java006$"></property>
+	</bean>
+
+	<!-- remote -->
+	<bean id="remoteDataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass"
+			value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url"
+			value="jdbc:oracle:thin:@34.64.215.203:1521:xe"></property>
+		<property name="username" value="lookation"></property>
+		<property name="password" value="java006$"></property>
+	</bean>
+
+
+	<!-- mybatis를 사용하기 위한 환경 설정 추가 -->
+	<!-- → sqlSessionFactoryBean 등록 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 원격 -->
+		<!-- <property name="dataSource" ref="remoteDataSource"></property> -->
+		<!-- 로컬 -->
+		<property name="dataSource" ref="localDataSource"></property>
+
+		<!-- 매퍼 추가 -->
+		<property name="mapperLocations" value="classpath:com/lookation/mybatis/mapper/*.xml"></property>
+	</bean>
+
+	<!-- sqlSession 을 사용하기 위한 환경 설정 등록 -->
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 기본세팅 END -->
+	<!-- 사용자 액션 세팅 -->
+
+	<!-- ############################승범############################### -->
+	<!-- SignUp Controller -->
+	<bean name="/actions/signupform.action"
+		class="com.lookation.controller.SignUpFormController"></bean>
+
+	<!-- SendEmail Controller -->
+	<bean name="/actions/sendsignupemail.action"
+		class="com.lookation.controller.SendSignUpEmailController">
+	</bean>
+
+	<!-- AccountDAO 등록 -->
+	<bean id="memberAccountDAO"
+		class="com.lookation.dao.MemberAccountDAO">
+		<property name="dataSource" ref="localDataSource"></property>
+	</bean>
+	<bean id="hostAccountDAO" class="com.lookation.dao.HostAccountDAO">
+		<property name="dataSource" ref="localDataSource"></property>
+	</bean>
+
+	<!-- CreateAccount Controller -->
+	<bean name="/actions/signup.action"
+		class="com.lookation.controller.SignUpController">
+		<property name="memberDao" ref="memberAccountDAO"></property>
+		<property name="hostDao" ref="hostAccountDAO"></property>
+	</bean>
+
+	<!-- AccountAjax Controller -->
+	<bean name="/actions/accountajax.action"
+		class="com.lookation.controller.AccountAjaxController">
+		<property name="memberDao" ref="memberAccountDAO"></property>
+		<property name="hostDao" ref="hostAccountDAO"></property>
+	</bean>
+
+
+	<!-- ############################혜지################################ -->
+	<!-- admin DAO 등록 -->
+	<bean id="adminDAO" class="com.lookation.dao.AdminDAO">
+		<property name="dataSource" ref="remoteDataSource"></property>
+	</bean>
+
+	<!-- Login 폼 페이지 요청 Controller 등록 -->
+	<bean name="/actions/adminloginform.action"
+		class="com.lookation.controller.AdminLoginFormController"></bean>
+
+	<!-- Login 액션 Controller 등록 -->
+	<bean name="/actions/adminlogin.action"
+		class="com.lookation.controller.AdminLoginController">
+		<property name="dao" ref="adminDAO"></property>
+
+	</bean>
+
+	<!-- InspectManager DAO 등록 -->
+	<bean id="InspectManagerDAO"
+		class="com.lookation.dao.InspectManagerDAO">
+		<property name="dataSource" ref="remoteDataSource"></property>
+	</bean>
+
+	<bean name="/actions/inspectmanager.action"
+		class="com.lookation.controller.InspectManagerController">
+		<property name="dao" ref="InspectManagerDAO"></property>
+	</bean>
+
+	<bean name="/actions/inspectprocess.action"
+		class="com.lookation.controller.InspectProcessController">
+		<property name="dao" ref="InspectManagerDAO"></property>
+	</bean>
+
+	<bean name="/actions/insepectinsert.action"
+		class="com.lookation.controller.InspectInsertController">
+		<property name="dao" ref="InspectManagerDAO"></property>
+	</bean>
+
+
+	<!-- ############################윤상################################ -->
+	<!-- BankAccountDAO 등록 -->
+	<bean id="bankInfoDAO" class="com.lookation.dao.BankInfoDAO">
+		<property name="dataSource" ref="localDataSource"></property>
+	</bean>
+
+	<!-- BankInfoManageController 등록 (계좌 관리페이지 폼) -->
+	<bean name="/actions/bankinfomanage.action"
+		class="com.lookation.controller.BankInfoManageController">
+		<property name="dao" ref="bankInfoDAO"></property>
+		<property name="memberDao" ref="memberAccountDAO"></property>
+	</bean>
+
+	<!-- BankAccountAddPopupController 등록 (계좌등록 폼) -->
+	<bean name="/actions/bankinfoaddpopup.action"
+		class="com.lookation.controller.BankInfoAddPopupController">
+		<property name="dao" ref="bankInfoDAO"></property>
+	</bean>
+
+	<!-- BankInfoAddController 등록 (계좌등록 액션) -->
+	<bean name="/actions/bankinfoadd.action"
+		class="com.lookation.controller.BankInfoAddController">
+		<property name="dao" ref="bankInfoDAO"></property>
+	</bean>
+
+	<!-- BankInfoRemoveController 등록 (계좌등록 액션) -->
+	<bean name="/actions/bankinforemove.action"
+		class="com.lookation.controller.BankInfoRemoveController">
+		<property name="dao" ref="bankInfoDAO"></property>
+	</bean>
+
+
+	<!-- ############################영은################################ -->
+	<!-- deleteMemberDAO -->
+	<bean id="deleteMemberDAO"
+		class="com.lookation.dao.DeleteMemberDAO">
+		<property name="dataSource" ref="localDataSource"></property>
+	</bean>
+
+	<!-- deleteHostDAO -->
+	<bean id="deleteHostDAO" class="com.lookation.dao.DeleteHostDAO">
+		<property name="dataSource" ref="localDataSource"></property>
+	</bean>
+
+	<!-- 회원 프로필 폼 이동 컨트롤러 -->
+	<bean name="/actions/profile.action"
+		class="com.lookation.controller.ProfileFormController">
+	</bean>
+
+	<!-- 회원 삭제 폼 이동 컨트롤러 -->
+	<bean name="/actions/deleteform.action"
+		class="com.lookation.controller.DeleteFormController">
+	</bean>
+
+	<!-- 이용자회원 삭제 컨트롤러 -->
+	<bean name="/actions/deletemember.action"
+		class="com.lookation.controller.DeleteMemberController">
+		<property name="dao" ref="deleteMemberDAO"></property>
+	</bean>
+
+	<!-- 호스트회원 삭제 컨트롤러 -->
+	<bean name="/actions/deletehost.action"
+		class="com.lookation.controller.DeleteHostController">
+		<property name="dao" ref="deleteHostDAO"></property>
+	</bean>
+
+	<!-- LocationDetailDAO -->
+	<bean id="locationDetailDAO"
+		class="com.lookation.dao.LocationDetailDAO">
+		<property name="dataSource" ref="localDataSource"></property>
+	</bean>
+
+	<!-- LocationDetail Member 컨트롤러 -->
+	<bean name="/actions/locationdetail.action"
+		class="com.lookation.controller.LocationDetailController">
+		<property name="dao" ref="locationDetailDAO"></property>
+	</bean>
+
+	<!-- LocationDetailAJAX 관련 Controller 등록 -->
+	<bean name="/actions/locdetailajax.action"
+		class="com.lookation.controller.LocationDetailAjaxController">
+		<property name="dao" ref="locationDetailDAO"></property>
+	</bean>
+
+	<!-- LocationDetail Host 컨트롤러 -->
+	<bean name="/actions/locationdetailhost.action"
+		class="com.lookation.controller.LocationDetailHostController">
+		<property name="dao" ref="locationDetailDAO"></property>
+	</bean>
+
+</beans>
