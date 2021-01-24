@@ -58,14 +58,16 @@
 <div class="outer">
 	<div class="inner">
 		<!-- 이용자 → 호스트 : 공간게시물 신고 폼 -->
-		<form>
+		<form action="reportuser.action" method="post">
 			<span>호스트</span>
-			<input type="text" id="hostName" class="form-control" readonly="readonly"
+			<input type="text" name="member_code" value="M000001" style="display: none;">
+			<input type="text" class="form-control" readonly="readonly"
 			value="이전페이지에서 받아온 호스트이름"><br>
-			<span>신고하려는 공간</span> <input id="placeCode" readonly="readonly"
-			value="이전페이지에서 받아온 공간제목" class="form-control"><br>
-			<select class="form-control">
-				<option>==[신고유형]==</option>
+			<span>신고하려는 공간</span>
+			<input type="text" name="loc_code" value="L000004" style="display: none;">
+			<input readonly="readonly" value="어승승오산" class="form-control"><br>
+			<select class="form-control" name="loc_report_type_code" id="loc_report_type_code">
+				<option value="typeselect">==[신고유형]==</option>
 				<option value="LRPP000001">서비스미충족</option>
 				<option value="LRPP000002">추가결제 유도</option>
 				<option value="LRPP000003">공유규정위반</option>
@@ -74,12 +76,9 @@
 			</select><br>
 			<span>신고사유</span><br>
 			<textarea rows="3" cols="40" placeholder="자세한 신고사유를 작성하세요."
-			class="form-control"></textarea><br>
-			<!-- 파일 여러개 업로드 가능, 근데 파일만 초기화는 아직... -->
-			<input type="file" multiple="multiple" class="form-control"><br>
+			class="form-control reason" name="loc_report_reason"></textarea><br>
 			<p>※ 신고 내용을 허위로 작성할 경우, 해당 신고는 반려처리됩니다.<br>
-			허위 신고의 경우 횟수가 잦거나, <br>
-			정도가 심한 경우에는 블랙리스트 처리될 수 있으며,<br>
+			허위 신고의 경우 횟수가 잦거나, 정도가 심한 경우에는 블랙리스트 처리될 수  있으며,<br>
 			법적 제재를 받으실 수 있습니다.</p>
 			<button type="submit" class="btn btn-primary report">신고하기</button>
 			<button type="reset" class="btn btn-secondary">다시작성</button>
@@ -91,4 +90,28 @@
 	<c:import url="${cp }/includes/includes_home_end.jsp"></c:import>
 
 </body>
+
+<script type="text/javascript">
+
+	$(document).ready(function()
+	{
+		$(".report").click(function()
+		{
+			if($("#loc_report_type_code").val() == 'typeselect')
+			{
+				alert("신고유형을 선택하지 않았습니다.");
+				return false;
+			}
+			if($(".reason").val() == "")
+			{
+				alert("신고사유를 작성하지 않았습니다.");
+				return false;
+			}
+			
+			
+		});
+	});	
+
+</script>
+
 </html>
