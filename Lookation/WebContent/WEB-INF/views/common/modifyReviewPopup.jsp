@@ -153,7 +153,7 @@
 	{
 		$.ajax({
 			type : "post",
-			url : "modifyrreviewreply.action",
+			url : "modifyreviewreply.action",
 			complete : function(xh)
 			{					
 				window.opener.parent.location.reload();				
@@ -213,7 +213,7 @@
 									
 									<div class="text-center">
 										<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
-										<button type="submit" class="btn btn-primary" id="submitBtn">수정하기</button>
+										<button type="submit" class="btn btn-primary" id="submitBtn_m">수정하기</button>
 									</div>
 								</div><!-- End .body -->
 							</form>

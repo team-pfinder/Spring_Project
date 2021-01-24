@@ -60,8 +60,8 @@
 					
 						<div class="body">
 							<div class="form-group">
-								<input type="hidden" value="${locCode}" name="loc_code">
-								<input type="hidden" value="${memCode }" name="member_code">
+								<input type="hidden" value="${loc_code}" name="loc_code">
+								<input type="hidden" value="${member_code }" name="member_code">
 								<label for="content">내용</label>
 								<textarea class="form-control" id="content" name="qna_content"
 									rows="8" maxlength="3000"></textarea>

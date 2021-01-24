@@ -20,7 +20,7 @@
 		<!-- Sidebar - Brand -->
 		<a
 			class="sidebar-brand d-flex align-items-center justify-content-center"
-			href="index.html">
+			href="adminmain.action">
 			<div class="sidebar-brand-icon rotate-n-15">
 				<i class="fas fa-laugh-wink"></i>
 			</div>
@@ -52,8 +52,8 @@
 				data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">Custom Components:</h6>
-					<a class="collapse-item" href="buttons.html">Buttons</a> <a
-						class="collapse-item" href="cards.html">Cards</a>
+					<a class="collapse-item" href="helpmanager.action">실험1</a> <a
+						class="collapse-item" href="helpinsertform.action">실험2</a>
 				</div>
 			</div></li>
 
@@ -94,12 +94,12 @@
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">도움말:</h6>
-					<a class="collapse-item" href="#">도움말 목록</a>
-					<a class="collapse-item" href="#">도움말 등록</a>
+					<a class="collapse-item" href="helpmanager.action">도움말 목록</a>
+					<a class="collapse-item" href="helpinsertform.action">도움말 등록</a>
 					<div class="collapse-divider"></div>
 					<h6 class="collapse-header">공지사항:</h6>
-					<a class="collapse-item" href="#">공지사항 목록</a>
-					<a class="collapse-item" href="#">공지사항 등록</a>
+					<a class="collapse-item" href="noticemanager.action">공지사항 목록</a>
+					<a class="collapse-item" href="noticeinsertform.action">공지사항 등록</a>
 				</div>
 			</div></li>
 
@@ -132,8 +132,8 @@
 					<h6 class="collapse-header">게시글관리:</h6>
 					<a class="collapse-item" href="userqnamanager.action">Q&A관리</a>
 					<a class="collapse-item" href="userreviewmanager.action">리뷰관리</a>
-					<a class="collapse-item" href="#">Q&A답글관리</a>
-					<a class="collapse-item" href="#">리뷰답글관리</a>
+					<a class="collapse-item" href="hostqnamanager.action">Q&A답글관리</a>
+					<a class="collapse-item" href="hostreviewmanager.action">리뷰답글관리</a>
 					<h6 class="collapse-header">회원관리:</h6>
 					<a class="collapse-item" href="#">이용자관리</a>
 					<a class="collapse-item" href="#">호스트관리</a>
@@ -164,14 +164,10 @@
 				aria-labelledby="headingPages" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">공간관리:</h6>
-					<a class="collapse-item" href="#">공간검수</a>
+					<a class="collapse-item" href="inspectmanager.action">공간검수</a>
 				</div>
 			</div></li>
 
-		<!-- Nav Item - Tables -->
-		<li class="nav-item active"><a class="nav-link"
-			href="tables.html"> <i class="fas fa-fw fa-table"></i> <span>Tables</span></a>
-		</li>
 
 		<!-- Divider -->
 		<hr class="sidebar-divider d-none d-md-block">

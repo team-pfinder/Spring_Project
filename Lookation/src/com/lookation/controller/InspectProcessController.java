@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
@@ -27,6 +28,20 @@ public class InspectProcessController implements Controller
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws SQLException
 	{
 		ModelAndView mav = new ModelAndView();
+		
+		// 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
+
+		String admin_id = (String)session.getAttribute("admin_id");
+
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			mav.setViewName("redirect:adminloginform.action");
+			return mav;
+		}
+					
 		
 		try
 		{

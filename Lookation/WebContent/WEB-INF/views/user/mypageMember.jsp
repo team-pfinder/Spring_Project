@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-	String cp = request.getContextPath();
+String cp = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -11,12 +11,12 @@
 <meta charset="UTF-8">
 
 <!-- include head -->
-<title>mypageMain(user).jsp</title>
+<title>마이페이지</title>
 </head>
 <body>
-	<!-- include header_user.jsp -->
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+		<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 
 	<section class="hero-wrap hero-wrap-2"
@@ -54,12 +54,13 @@
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="commonbankinfo.action" class="block-20 rounded"
+						<a href="bankinfomanage.action?identify=member"
+							class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="commonbankinfo.action">계좌관리</a>
+								<a href="bankinfomanage.action?identify=member">계좌관리</a>
 							</h3>
 						</div>
 					</div>
@@ -79,25 +80,27 @@
 
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="loadandexchange.action" class="block-20 rounded"
+						<a href="loadandexchange.action?identify=member"
+							class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="loadandexchange.action">충전/환전 신청</a>
+								<a href="loadandexchange.action?identify=member">충전/환전 신청</a>
 							</h3>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="membermileagehistory.action" class="block-20 rounded"
+						<a href="mileagehistory.action?identify=member"
+							class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="membermileagehistory.action">마일리지 내역</a>
+								<a href="mileagehistory.action?identify=member">마일리지 내역</a>
 							</h3>
 						</div>
 					</div>

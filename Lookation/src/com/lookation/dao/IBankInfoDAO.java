@@ -11,7 +11,7 @@ public interface IBankInfoDAO
 	/* 이용자 */
 	
 	// 이용자 계좌 정보 조회
-	public ArrayList<BankInfoDTO> memberBankInfoLists() throws SQLException;
+	public ArrayList<BankInfoDTO> memberBankInfoLists(String identifyCode) throws SQLException;
 	
 	// 이용자 계좌 등록
 	public int memberBankInfoAdd(BankInfoDTO dto) throws SQLException;
@@ -24,7 +24,7 @@ public interface IBankInfoDAO
 	/* 호스트 */
 	
 	// 호스트 계좌 정보 조회
-	public ArrayList<BankInfoDTO> hostBankInfoLists() throws SQLException;
+	public ArrayList<BankInfoDTO> hostBankInfoLists(String identifyCode) throws SQLException;
 	
 	// 호스트 계좌등록
 	public int hostBankInfoAdd(BankInfoDTO dto) throws SQLException;

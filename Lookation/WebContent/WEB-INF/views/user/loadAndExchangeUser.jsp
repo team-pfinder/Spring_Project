@@ -4,7 +4,10 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
-
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,9 +89,9 @@
 </style>
 </head>
 <body>
-	<!-- include header_user.jsp -->
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_user.jsp"></c:import>
+		<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 	
 	<!-- 타이틀 -->
@@ -100,9 +103,9 @@
 			<div class="row no-gutters slider-text align-items-end">
 				<div class="col-md-9 ftco-animate pb-5">
 					<p class="breadcrumbs mb-2">
-						<span class="mr-2"> <a href="index.html">Home <i
+						<span class="mr-2"> <a href="membermain.action">Home <i
 								class="ion-ios-arrow-forward"></i></a>
-						</span> <span class="mr-2"><a href="1.mypageMain.jsp">Mypage <i
+						</span> <span class="mr-2"><a href="mypage.action?identify=member">Mypage <i
 								class="ion-ios-arrow-forward"></i></a></span> <span>Mileage Load &
 							Withdraw <i class="ion-ios-arrow-forward"></i>
 						</span>

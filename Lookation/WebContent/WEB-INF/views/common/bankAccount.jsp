@@ -5,7 +5,10 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
-
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +22,7 @@
 	{
 		$("#regBtn").click(function()
 		{
-	        url = "bankinfoaddpopup.action?identify=${identify}&identifyCode=${identifyCode}";	//
+	        url = "bankinfoaddpopup.action?identify=${identify}";	
 	        option = "width=600, height=670, toolbar=no, location=no, status=no, memubar=no, scrollbars=no, resizable=no, left=150, top=150";/* 크롬은 resizable 옵션 안먹음 */
 			window.open(url, "계좌 등록 팝업", option);
 		});
@@ -55,20 +58,15 @@
 </script>
 </head>
 <body>
-<c:choose>
-	<c:when test = "${identify eq 'member'}">
-	<!-- include header_user.jsp -->
-	<div>
-		<c:import url="${cp}/includes/header_user.jsp"></c:import>
-	</div>
-	</c:when>
-	<c:when test = "${identify eq 'host'}">
-	<!-- include header_host.jsp -->
-	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
-	</div>
-	</c:when>
-</c:choose>	
+<!-- header 출력부분 -->
+<div>
+	<c:if test="${identify eq 'host' }">
+		 <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
+	</c:if>
+	<c:if test="${identify eq 'member' }">
+		 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+	</c:if>
+</div>
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"

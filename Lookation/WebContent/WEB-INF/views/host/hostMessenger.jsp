@@ -130,6 +130,7 @@ body {
 	background-color: white;
 	border-top: 2px solid #EEE;
 	align-items: center;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)
 }
 
 .footer-chat .icon {
@@ -295,10 +296,11 @@ body {
 								<i class="icon fa fa-picture-o clickable"
 									style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
 							</label>
-							<input type="file" id="ex_file">
+							<input type="file" id="ex_file" name="msg_img_url" onchange="javascript:document.getElementById('file').value = this.value"
+										accept=".jpg,.jpeg,.png,.gif,.bmp">
 						</div>
 						
-						<input type="text" class="write-message" placeholder="메시지를 입력하세요"></input>
+						<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content" id="file"></input>
 						<i class="icon send fa fa-paper-plane-o clickable"
 							aria-hidden="true"></i>
 							
@@ -314,7 +316,7 @@ body {
 
 	</div>
 
-
+<div style="height: 150px;"></div>
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>

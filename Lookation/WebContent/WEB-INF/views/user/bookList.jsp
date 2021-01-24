@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약리스트확인페이지.jsp</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 	/* btn */
@@ -190,7 +190,7 @@ margin-bottom: 0;
 											
 											
 											
-											<c:choose>
+<%-- 											<c:choose>
 											<c:when test="${fdate <= today} ">
 												<td>이용완료</td>
 												<td>
@@ -210,7 +210,6 @@ margin-bottom: 0;
 													disabled="disabled">
 													취소
 													</button>
-													
 											</c:when>
 											
 											<c:when test="${book.member_cancel eq 1 || book.host_cancel eq 1}">
@@ -228,7 +227,7 @@ margin-bottom: 0;
 											</c:when>
 											
 										 	<c:otherwise>
-												<td class="text-gon">예약완료</td>
+												<td class="text-gon">그외</td>
 												<td>
 													<button type="button" value="${book.book_code}"
 													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
@@ -241,8 +240,8 @@ margin-bottom: 0;
 												</td>
 											</c:otherwise> 
 											
-										</c:choose>
-											<%-- <c:if test="${book.checkbook == -1}">
+										</c:choose> --%>
+											<c:if test="${book.checkbook == -1}">
 												<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
 												<td>
 													<button type="button" value="${book.book_code}"
@@ -266,7 +265,7 @@ margin-bottom: 0;
 													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded">
 													신고</button>
 													<button type="button" value="${book.book_code}"
-														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
 														>
 														취소</button>
 													<button type="button" value="${book.book_code}"
@@ -288,7 +287,7 @@ margin-bottom: 0;
 														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
 														상세보기</button>
 												</td>
-											</c:if> --%>
+											</c:if>
 											
 											</tr>
 										</c:forEach><!-- .c:forEach 끝 -->

@@ -2,11 +2,16 @@ package com.lookation.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
+import com.lookation.dao.IAccountDAO;
 import com.lookation.dao.IBankInfoDAO;
+import com.lookation.dao.IMemberAccountDAO;
 
 //※ Spring 이 제공하는 『Controller』 인터페이스를 구현함으로써
 //사용자 정의 컨트롤러 클래스를 구성한다.
@@ -19,29 +24,62 @@ public class BankInfoAddPopupController implements Controller
 	{
 		this.dao = dao;
 	}
-
+	
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		ModelAndView mav = new ModelAndView();
-		
+
+		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
+		// identify를 GET 받아야한다.
 		String identify = request.getParameter("identify");
-		String identifyCode = request.getParameter("identifyCode");
-		//String identify = "host";
-		//String identifyCode = "H000002";
+
+		// 세션을 통한 로그인 확인                                                                    
+		HttpSession session = request.getSession();                                                                  
+		String accountCode = (String)session.getAttribute(identify + "Code"); 
+
+		// 로그인 확인을 기록하기 위함                  
+		String result = "noSigned";           
 		
-		try
-		{
-			// 세션 설정
-			mav.addObject("identify", identify);
-			mav.addObject("identifyCode", identifyCode);
-			System.out.println("popup");
-			mav.setViewName("../WEB-INF/views/common/bankAccountAddPopup.jsp");
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
+		// BankInfoAddPopupController 들어온값 테스트-------------------------
+		System.out.println("BankInfoAddPopupController 들어온값");
+		System.out.println("identify : " + identify);
+		System.out.println("accountCode :" + accountCode);
+		System.out.println("---------------------------------------");
+		//--------------------------------------------------------------------
+		
+		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
+		if(accountCode != null)                                         
+		{       
+			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
+		        // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
+
+			// 이용자일 경우                                                                            
+			if(identify.equals("member"))                                                   
+			{   
+				mav.setViewName("../WEB-INF/views/common/bankAccountAddPopup.jsp?identify=" + identify);
+			}
+			// 호스트일 경우
+			else if(identify.equals("host"))                                                   
+			{                         
+				mav.setViewName("../WEB-INF/views/common/bankAccountAddPopup.jsp?identify=" + identify);
+			}
+			// 로그인이 되었음을 기록한다.
+		    result = "signed";                                                                                
 		}
-		
+
+		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
+		mav.addObject("result", result);                                               
+
+
+		// ********* 만약 로그인기능이 사용되는 뷰페이지의 경우 이 코드를 추가한다. ********* 
+		// 로그인이 안되어 있다면 
+		if(result.equals("noSigned"))
+		{
+		    // 로그인 창으로 이동한다.
+			mav.setViewName("redirect:loginform.action?identify=" + identify);
+		}
+
 		return mav;
 	}
 }

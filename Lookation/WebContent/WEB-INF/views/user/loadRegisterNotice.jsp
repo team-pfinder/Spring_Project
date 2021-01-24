@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>LoadRegisterNotice.jsp</title>
+<title>충전신청완료</title>
 <c:import url="${cp }/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 button
@@ -58,8 +58,8 @@ button
 				<hr><br>
 				
 				<div class="buttonForm">
-					<button style="float: left; background: #ffffff" onclick="location.href='#' ">홈으로</button>
-					<button style="float: right; border-width: 0px" onclick="location.href='mypageMain(user).jsp' ">
+					<button style="float: left; background: #ffffff" onclick="location.href='membermain.action' ">홈으로</button>
+					<button style="float: right; border-width: 0px" onclick="location.href='mypage.action?identify=member'">
 						<span style="font-color: black">마이페이지로</span>
 					</button>
 					<br><br><br><br><br><br>

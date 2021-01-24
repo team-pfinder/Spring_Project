@@ -1,7 +1,10 @@
 package com.lookation.mybatis;
 
 
- import org.apache.ibatis.session.SqlSession;
+ import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,34 +24,74 @@ public class hostReviewManager
 	
 	// hostreviewList 테이블 정보 조회
 	@RequestMapping(value="/actions/hostreviewmanager.action", method = RequestMethod.GET)
-	public String r_firstList(ModelMap model)
+	public String r_firstList(ModelMap model,HttpServletRequest request)
 	{
 		IhostReviewManagerDAO dao = sqlSession.getMapper(IhostReviewManagerDAO.class);
 		
 		model.addAttribute("r_firstList", dao.r_firstList());
 		
+		// 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
+
+		String admin_id = (String)session.getAttribute("admin_id");
+
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		                                                                                  
+		// 다음 페이지로 이동                           
 		return "/WEB-INF/views/admin/hostReviewManager.jsp";
 	}
 	
 	// 상세정보 조회
 	@RequestMapping(value = "/actions/hostreviewpopup.action", method = RequestMethod.GET)
-	public String r_secondList(String review_reply_code, ModelMap model)
+	public String r_secondList(String review_reply_code, ModelMap model,HttpServletRequest request)
 	{
+		
 		IhostReviewManagerDAO dao = sqlSession.getMapper(IhostReviewManagerDAO.class);
 
 		model.addAttribute("r_secondList", dao.r_secondList(review_reply_code));
 		
+		// 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
+
+		String admin_id = (String)session.getAttribute("admin_id");
+
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		                                                                                  
+		// 다음 페이지로 이동                           
 		return "/WEB-INF/views/admin/hostReviewPopup.jsp";
 	}
 
 	// reviewreply 삭제
 	@RequestMapping(value = "/actions/hostreviewdelete.action", method = RequestMethod.GET)
-	public String r_remove(String review_reply_code)
+	public String r_remove(String review_reply_code,HttpServletRequest request)
 	{
 		IhostReviewManagerDAO dao = sqlSession.getMapper(IhostReviewManagerDAO.class);
 		
 		dao.r_remove(review_reply_code);
 		
+		// 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
+
+		String admin_id = (String)session.getAttribute("admin_id");
+
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		                                                                                  
+		// 다음 페이지로 이동 
 		return "redirect:hostreviewmanager.action";
 	}
 
