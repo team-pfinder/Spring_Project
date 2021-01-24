@@ -72,6 +72,6 @@ public class Email
 		model.addAttribute("email", email);
 		model.addAttribute("result", "noSigned");
 		
-		return "../WEB-INF/views/common/sendConfirmAccount.jsp?identify" + identify;
+		return "../WEB-INF/views/common/sendFindPassword.jsp?identify" + identify;
 	}
 }
