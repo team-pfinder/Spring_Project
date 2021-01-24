@@ -29,7 +29,8 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		String sql = "SELECT LOC_NAME, LOC_TYPE, LOC_SHORT_INTRO, LOC_INTRO"
 				   + ", LOC_ADDR, LOC_DETAIL_ADDR, MIN_PEOPLE, MAX_PEOPLE"
 				   + ", LOC_REG_DATE, HOST_NICKNAME, LOC_CODE, HOST_CODE"
-			   	   + " FROM VIEW_BASIC_INFO" 
+			   	   + ", LOC_WEB_URL"
+				   + " FROM VIEW_BASIC_INFO" 
 				   + " WHERE LOC_CODE = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -51,6 +52,7 @@ public class LocationDetailDAO implements ILocationDetailDAO
 			result.setHostNickName(rs.getString("HOST_NICKNAME"));
 			result.setLocationCode(rs.getString("LOC_CODE"));
 			result.setHostCode(rs.getString("HOST_CODE"));
+			result.setUrl(rs.getString("LOC_WEB_URL"));
 		}
 		rs.close();
 		pstmt.close();
