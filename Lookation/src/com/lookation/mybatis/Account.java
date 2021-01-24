@@ -198,13 +198,16 @@ public class Account
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();                                                                  
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
-
+		System.out.println(identify);
+		
 		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned"; 
 		
 		// 회원 코드가 세션에 세팅되어 있다면   
 		if(accountCode != null)                               
-		{            
+		{   
+			System.out.println(identify);
+			
 			// 호스트일 경우                                                             
 			if(identify.equals("host"))                                           
 			{                                                                     
@@ -214,7 +217,8 @@ public class Account
 			}  
 		        // 멤버일 경우
 			if(identify.equals("member"))                                           
-			{                                                                     
+			{             
+				System.out.println("test");
 				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	
 				model.addAttribute("info", dao.getInfo(accountCode)); 
 				model.addAttribute("blackListDate", dao.getBlackListDate(accountCode));
