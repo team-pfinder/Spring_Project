@@ -4,13 +4,18 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
+%>
+
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>도움말</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<%-- <c:import url="${cp}/includes/header_user.jsp"></c:import> --%>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 
 <style type="text/css">
@@ -55,6 +60,7 @@ height: 200px;
 
 
 </style>
+<!-- 
 <script type="text/javascript">
 $(document).ready(function()
 {	
@@ -63,9 +69,21 @@ $(document).ready(function()
 		$(location).attr("href", "helpdetail.action?help_code=" + $(this).val());
 	});
 });
-</script>
+</script> -->
 </head>
 <body>
+
+<!-- header 출력부분 -->
+<div>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+		</c:if>
+</div>
+
+
 <section class="hero-wrap hero-wrap-2" style="background-image: url('<%=cp%>/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
   	<div class="overlay"></div>
   	<div class="container">
@@ -201,6 +219,15 @@ $(document).ready(function()
 
 <script type="text/javascript">
 
+$(document).ready(function()
+		{	
+			$(".showBtn").click(function()
+			{
+				$(location).attr("href", "helpdetail.action?help_code=" + $(this).val());
+			});
+		});
+
+
 var $setRows = $('#setRows1');
 
 $setRows.submit(function (e) {
@@ -276,8 +303,19 @@ $setRows.submit();
 
 </script>
 
+<!-- footer 출력부분 -->
+<div>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:if>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+</div>
+
 <%-- <%@ include file="../01.ksb/foot.jsp" %> --%>
-<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+<%-- <c:import url="${cp}/includes/footer_user.jsp"></c:import> --%>
+ <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </body>
 </html>
