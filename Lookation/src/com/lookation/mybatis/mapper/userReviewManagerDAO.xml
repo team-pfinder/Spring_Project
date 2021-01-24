@@ -9,6 +9,7 @@
 		SELECT REVIEW_CODE, MEMBER_NICKNAME, MEMBER_EMAIL
 		     , LOC_CODE, REVIEW_CONTENT, COUNT
 		FROM ADMIN_REVIEW_BASIC_VIEW
+		WHERE COUNT &lt; 1
 	</select>
 	
 	<!-- 상세보기 클릭 시 보여지는 정보 쿼리문 -->
