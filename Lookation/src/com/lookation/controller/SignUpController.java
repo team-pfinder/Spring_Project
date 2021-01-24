@@ -64,10 +64,14 @@ public class SignUpController implements Controller
 				else if(identify.equals("host"))
 					hostDao.add(account);
 				
+				System.out.println("success");
+				
 				mav.setViewName("../WEB-INF/views/common/createAccountNotice.jsp");
 			}
 			else
 			{
+				System.out.println("fail");
+				
 				mav.setViewName("../WEB-INF/views/common/createAccountFailNotice.jsp");
 			}
 				

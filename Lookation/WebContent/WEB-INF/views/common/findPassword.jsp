@@ -197,14 +197,14 @@
 			
 				<div style="margin-top:15px;">
 					<button type="button" class="btn btn-primary full" id="submit"
-					style="margin-bottom: 0px;">
+					style="margin-bottom: 50px;">
 						<span style="color:black; font-weight: bold;">비밀번호 재설정 링크 보내기</span>
 					</button>
 				</div>
 		</div>
 	</div>
 	
-	<div class="fixed-bottom">
+	<div>
 		<c:if test="${identify eq 'host' }">
 			<c:import url="${cp}/includes/footer_host.jsp"></c:import>
 		</c:if>

@@ -17,12 +17,13 @@
 	
 	// 이전 액션 없이 링크를 직접 타고 들어왔다면 
 	// 메인 액션으로 이동하도록 한다.
-	if(beforePage == null)
+	if(beforePage == null ||
+	  beforePage.contains("signup.action"))
 	{
 		if(identify.equals("host"))
-			requestUrl = "hostMain.action";
+			requestUrl = "hostmain.action";
 		else if(identify.equals("member"))
-			requestUrl = "memberMain.action";
+			requestUrl = "membermain.action";
 	}
 	else
 	{
@@ -32,6 +33,7 @@
 	}
 	pageContext.setAttribute("requestUrl", requestUrl);
 	
+	System.out.println(requestUrl);
 	
 	// 로그인 결과 여부
 	// 이전 페이지에서 로그인 실패시 GET을 통해 들어온다.

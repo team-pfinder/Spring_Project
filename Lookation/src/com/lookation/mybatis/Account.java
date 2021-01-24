@@ -40,6 +40,8 @@ public class Account
 		HttpSession session = request.getSession();
 		String requestUrl = request.getParameter("requestUrl");
 		
+		System.out.println(requestUrl);
+		
 		// 로그인창 액션이 아닌 요청 액션이 필요하므로
 		if(!requestUrl.contains("loginform.action"))
 		{
@@ -103,6 +105,9 @@ public class Account
 		
 		// 검증 후 요청되는 액션
 		String requestUrl = request.getParameter("requestUrl");
+		
+		System.out.println(requestUrl);
+		
 		if(requestUrl != null && !requestUrl.contains("confirmpasswordform.action"))
 		{
 			session.setAttribute("requestUrl", requestUrl);
@@ -114,9 +119,9 @@ public class Account
 		if(beforePage == null)
 		{
 			if(identify.equals("host"))
-				beforeUrl = "hostMain.action";
+				beforeUrl = "hostmain.action";
 			else if(identify.equals("member"))
-				beforeUrl = "memberMain.action";
+				beforeUrl = "membermain.action";
 		}
 		else
 		{
@@ -198,16 +203,13 @@ public class Account
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();                                                                  
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
-		System.out.println(identify);
 		
 		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned"; 
 		
 		// 회원 코드가 세션에 세팅되어 있다면   
 		if(accountCode != null)                               
-		{   
-			System.out.println(identify);
-			
+		{  	
 			// 호스트일 경우                                                             
 			if(identify.equals("host"))                                           
 			{                                                                     
@@ -425,6 +427,7 @@ public class Account
 		String identify = request.getParameter("identify");
 		String email = request.getParameter("email");
 		String newPw = request.getParameter("pw_new");
+		String requestUrl = "";
 		
 		AccountDTO account = new AccountDTO();
 		account.setEmail(email);
@@ -434,13 +437,15 @@ public class Account
 		{
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
 			dao.modifyPasswordNoLogin(account);
+			requestUrl = "hostmain.action";
 		}
 		else if(identify.equals("member"))
 		{
 			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
 			dao.modifyPasswordNoLogin(account);
+			requestUrl = "membermain.action";
 		}
 		
-		return "redirect:main.action";
+		return "redirect:" + requestUrl;
 	}
 }
