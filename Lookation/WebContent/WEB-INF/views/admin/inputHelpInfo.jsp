@@ -14,7 +14,7 @@ $(document).ready(function()
 			$(".resethelp").click(function()
 			{
 				
-				if(confirm("공지사항 입력을 취소하시겠습니까?"))
+				if(confirm("도움말 입력을 취소하시겠습니까?"))
 				{
 					$(location).attr("href","helpmanager.action");
 				}
@@ -104,16 +104,16 @@ $(document).ready(function()
 				</div><!-- /.container-fluid -->
 							
 							<div class="box-footer">
-								<div>
-									<hr>
-								</div>
+                           <div>
+                              <hr>
+                           </div>
 
-								<ul class="mailbox-attachments clearfix uploadedList">
-								</ul>
+                           <ul class="mailbox-attachments clearfix uploadedList">
+                           </ul>
 
-								<button id="btn_submit" type="button" class="btn btn-primary">등록하기</button>
-								<button id="btn_list" type="button" class="btn btn-primary" onclick="location.href='noticemanager.action'">취소하기</button>
-							</div>
+                           <button id="btn_submit" type="button" class="btn btn-primary">작성하기</button>
+                           <button id="btn_list" type="button" class="btn btn-primary" onclick="location.href='helpmanager.action'">목록으로</button>
+                        </div>
 							
                  </div>
                  </div>
