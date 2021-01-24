@@ -42,12 +42,12 @@
 			<div class="row d-flex">
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
+						<a href="profile.action?identify=host" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="#">프로필관리</a>
+								<a href="profile.action?identify=host">프로필관리</a>
 							</h3>
 						</div>
 					</div>
@@ -66,12 +66,12 @@
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
+						<a href="booklisthost.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Exchange.png');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
-								<a href="#">예약리스트</a>
+								<a href="booklisthost.action">예약리스트</a>
 							</h3>
 						</div>
 					</div>
@@ -80,7 +80,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="loadandexchange.action?identify=host" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_4.jpg');">
+							style="background-image:url('<%=cp%>/images/image_4.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -104,25 +104,13 @@
 				</div>
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
+						<a href="locationlist.action" class="block-20 rounded"
 							style="background-image: url('<%=cp%>/images/image_5.jpg');">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
-								<a href="#">공간관리</a>
-							</h3>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 ftco-animate">
-					<div class="blog-entry align-self-stretch">
-						<a href="#" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_6.jpg');">
-						</a>
-						<div class="text mt-3 text-center">
-							<h3 class="heading">
-								<a href="#">내가 작성한 글</a>
+								<a href="locationlist.action">공간관리</a>
 							</h3>
 						</div>
 					</div>
