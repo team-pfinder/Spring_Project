@@ -136,13 +136,17 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
-			// 1. 최소가 입력되지않았을 경우
-			//	1-1. 최대값의 수 제한(최소값을 입력해주세요)
+			// 1. 최소가 입력되지않았을 경우(min.val() == '')
+			//	1-1. 기존의 최대값의 수 제한(최소값을 입력해주세요 html)
+			//		
 			//  1-2. 
 			
-			// 2. 최소가 입력되었을 경우
-			//	2-1. 최소값을 받아와 최대값의 수 제한(입력받은 최소값 ~ 최대값)
-			//  2-2. 
+			// 2. 최소가 입력되었을 경우(min.val() != '')
+			//	2-1. 최소값을 받아와 최대값의 수 제한(입력받은 최소값 ~ 최대값 html)
+			//		2-1-1. 입력값이 최소값보다 작은경우(최소값보다 작습니다.)
+			//		2-1-2. 입력값이 최대값보다 큰 경우(30)
+			//		→ 가능하면 분기 x, 통일(최소값이하 || 최대값초과)
+			//  2-2. 최소값을 받아와 
 			
 			if (target.val()=='') {
 				
@@ -248,14 +252,13 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputdetailinfo.action" method="POST"><!--onsubmit="handOver()" -->	
+		  action="inputdetailinfo.action" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
 		<div id="locDetailImg">
 		
 			<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
-			<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
 			<br><br>
 			
 		<c:forEach var="i" begin="0" end="10">
@@ -268,12 +271,6 @@
 		</c:forEach>
 				<br><br>
 				<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
-					 <!-- 
-					 이미지가 추가될 때 마다 
-					 추가한 이미지를 썸네일 형태로 조회할 수 있음.
-					 그 썸네일 형태로 조회된 이미지를 클릭시 
-					 체크박스형태로 복수선택하여 x버튼으로 삭제가능
-					  -->
 		</div>
 	
 	<br><br><br>
@@ -287,7 +284,7 @@
 			<input type="text" required="required" class="form-control"
 					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
 					id="inputMinPeople" name="inputMinPeople"
-					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')";>
+					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"--> 
 			<span id="err" style="font-weight: bold;"></span>
 			
