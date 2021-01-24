@@ -54,6 +54,17 @@
 			location.href = "memberlogout.action";
 		}
 	}
+	
+	function search()
+	{
+		if($("#searchName").val() == "")
+		{
+			alert("검색어를 먼저 입력해주세요.");
+			return;
+		}
+		
+		$("#searchForm").submit();
+	}
 </script>
 
 <style type="text/css">
@@ -123,10 +134,10 @@ a#sub
 
 				<!-- 검색 -->
 				<div class="sidebar-box">
-					<form action="#" class="search-form">
+					<form action="searchkeyword.action" method="post" class="search-form" id="searchForm">
 						<div class="form-group">
-							<span class="icon icon-search"></span> 
-							<input type="text" class="form-control" placeholder="지역 또는 공간을 검색해보세요!" style="font-size: 20px;">
+							<a href="javascript:search()"><span class="icon icon-search" style="font-size: 30px;"></span></a>
+							<input type="text" id="searchName" name="searchName" class="form-control" placeholder="지역 또는 공간을 검색해보세요!" style="font-size: 20px;">
 						</div>
 					</form>
 				</div>
@@ -151,22 +162,21 @@ a#sub
 				<ul class="navbar-nav mr-auto" id="menu">
 					<li class="nav-item"><a href="#" class="nav-link">바로가기</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">오늘의 추천공간</a></li>
-							<li><a href="#" class="nav-link" id="sub">이용자 리뷰</a></li>
-							<li><a href="#" class="nav-link" id="sub">선택검색</a></li>
+							<li><a href="search.action" class="nav-link" id="sub">선택검색</a></li>
 						</ul></li>
 
-					<li class="nav-item"><a href="#" class="nav-link">마이페이지</a>
+					<li class="nav-item"><a href="#" class="nav-link">편의기능</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">마일리지 관리</a></li>
-							<li><a href="#" class="nav-link" id="sub">예약 리스트</a></li>
+							<li><a href="mypage.action?identify=member" class="nav-link" id="sub">마이페이지</a></li>
+							<li><a href="mileagehistory.action?identify=member" class="nav-link" id="sub">마일리지 관리</a></li>
+							<li><a href="booklist.action?identify=member" class="nav-link" id="sub">예약 리스트</a></li>
 							<li><a href="#" class="nav-link" id="sub">리뷰·Q&amp;A관리</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">고객지원</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">도움말</a></li>
-							<li><a href="#" class="nav-link" id="sub">FAQ</a></li>
+							<li><a href="notice.action?identify=member" class="nav-link" id="sub">공지사항</a></li>
+							<li><a href="help.action?identify=member" class="nav-link" id="sub">도움말</a></li>
 						</ul></li>
 				
 				</ul>

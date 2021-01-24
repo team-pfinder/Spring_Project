@@ -47,10 +47,10 @@
 									<div class="col-md-4 mb-md-0 mb-4">
 										<h2 class="footer-heading">Services</h2>
 										<ul class="list-unstyled">
-											<li><a href="#" class="py-1 d-block">서비스 소개</a></li>
-											<li><a href="#" class="py-1 d-block">이용약관</a></li>
-											<li><a href="#" class="py-1 d-block">개인정보 처리<br>방침</a></li>
-											<li><a href="#" class="py-1 d-block">운영정책</a></li>
+											<li><a href="termsofservice.action?identify=host" class="py-1 d-block">이용약관</a></li>
+											<li><a href="privacy.action?identify=host" class="py-1 d-block">개인정보 보호<br>정책</a></li>
+											<li><a href="locmanagement.action?identify=host" class="py-1 d-block">공간관리 정책</a></li>
+											<li><a href="refund.action?identify=host" class="py-1 d-block">정산 및 환불 정책</a></li>
 										</ul>
 									</div>
 									<div class="col-md-4 mb-md-0 mb-4">
