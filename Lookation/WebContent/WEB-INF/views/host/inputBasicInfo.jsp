@@ -443,7 +443,7 @@ ul.precautions-list > li {
 		var con = confirm("작성을 취소하고 메인 페이지로 돌아가시겠습니까?                        "
 						+ "(기존 작성 내용은 저장되지 않습니다.)");
 		if (con == true) {
-			location.href = "mainHost.jsp";
+			location.href = "hostmain.action";
 			return;
 		} else {
 			return;
@@ -483,7 +483,7 @@ ul.precautions-list > li {
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
-      style="background-image: url('images/bg_3.jpg');"
+      style="background-image: url(<%=cp%>/images/bg_3.jpg);"
       data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       
@@ -560,12 +560,10 @@ ul.precautions-list > li {
 			<br><br>
 			<select id="inputLocType" name="inputLocType" class="form-control">
 				<option value="">[==공간 유형을 선택하세요.==]</option>
-				<option value="파티룸">파티룸</option>
-				<option value="클럽">클럽</option>
-				<option value="엠티장소">엠티장소</option>
-				<option value="워크샵장소">워크샵장소</option>
-				<option value="루프탑">루프탑</option>
 				<option value="브라이덜샤워">브라이덜샤워</option>
+				<option value="루프탑">루프탑</option>
+				<option value="엠티공간">엠티공간</option>
+				<option value="파티룸">파티룸</option>
 			</select>
 			<span style="font-weight: bold; display: block; color: red;">공간 유형을(를) 선택해야 합니다.</span>
 			<br>

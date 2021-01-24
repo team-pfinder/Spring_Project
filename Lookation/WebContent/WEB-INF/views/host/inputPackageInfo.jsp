@@ -47,7 +47,6 @@
 			if (tName == '' || tStart == '' || tEnd == '' || tPrice == '') 
 			{
 				alert("필수 입력사항을 모두 입력해 주세요.");
-				alert(parseInt(tStart)+1);
 			}
 			else if (tName.length < 2 || tName.length > 20) {
 				
@@ -123,7 +122,7 @@
 
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url(<%=cp%>/images/bg_3.jpg);"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 

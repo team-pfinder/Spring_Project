@@ -11,8 +11,11 @@ public interface ILocationReviewDAO
 	// 이용자 리뷰 수정폼
 	public LocationReviewDTO updateReviewForm(String review_code);
 	
-	// 이용자 리뷰 작성
+	// 이용자 텍스트 리뷰 작성
 	public int insertMemReview(LocationReviewDTO dto);
+	
+	// 이용자 이미지 첨부 리뷰 작성
+	public int insertMemImg(LocationReviewDTO dto);
 	
 	// 이용자 리뷰 수정
 	public void updateMemReview(LocationReviewDTO dto);
