@@ -8,7 +8,20 @@
 		INSERT INTO LOC_REPORT(LOC_REPORT_CODE, LOC_CODE, LOC_REPORT_TYPE_CODE
 		                     , MEMBER_CODE, LOC_REPORT_REASON, LOC_REPORT_DATE)
 		VALUES(F_CODE('LRP', LRP_SEQ.NEXTVAL), #{loc_code}, #{loc_report_type_code}
-		     , #{member_code}, #{loc_report_reason}, SYSDATE);
+		     , #{member_code}, #{loc_report_reason}, SYSDATE)
 	</insert>
+	
+	<insert id="addImg">
+		INSERT INTO LOC_REPORT_IMG(LOC_REPORT_IMG_CODE, LOC_REPORT_CODE, LOC_REPORT_IMG_URL)
+		VALUES(F_CODE('LRPIMG', LRPIMG.NEXTVAL), #{loc_report_code}, #{loc_report_img_url})
+	</insert>
+	
+	<select id="list" parameterType="java.lang.String" resultType="com.lookation.dto.reportUserDTO">
+		SELECT LOC_REPORT_CODE
+		FROM LOC_REPORT
+		WHERE LOC_CODE = #{loc_code}
+		  AND MEMBER_CODE = #{member_code}
+	</select>
+	
 	
 </mapper>

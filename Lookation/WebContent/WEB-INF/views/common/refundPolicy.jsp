@@ -2,7 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
+%>
+<%
+	String identify = request.getParameter("identify");
+	pageContext.setAttribute("identify", identify);
 %>
 <!DOCTYPE html>
 <html>
@@ -34,20 +38,15 @@ String cp = request.getContextPath();
 </head>
 <body>
 
-	<c:choose>
-		<c:when test = "${identify eq 'member'}">
-			<!-- include header_user.jsp -->
-			<div>
-				<c:import url="${cp}/includes/header_user.jsp"></c:import>
-			</div>
-		</c:when>
-		<c:when test = "${identify eq 'host'}">
-			<!-- include header_host.jsp -->
-			<div>
-				<c:import url="${cp}/includes/header_host.jsp"></c:import>
-			</div>
-		</c:when>
-	</c:choose>	
+	<!-- header 출력부분 -->
+<div>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+		</c:if>
+</div>
 
 	<section class="hero-wrap hero-wrap-2"
 		style="background-image: url('images/bg_3.jpg');"
@@ -108,14 +107,15 @@ String cp = request.getContextPath();
 		
 	</div>
 
-	<c:choose>
-		<c:when test="${identify eq 'member'}">
-			<c:import url="${cp}/includes/footer_user.jsp"></c:import>
-		</c:when>
-		<c:when test="${identify eq 'host'}">
-			<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		</c:when>
-	</c:choose>
+	<!-- footer 출력부분 -->
+<div>
+		<c:if test="${identify eq 'host' }">
+			 <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			 <c:import url="${cp}/includes/footer_user.jsp"></c:import>
+		</c:if>
+</div>
 	
 	
 	<!-- 자바스크립트 include -->

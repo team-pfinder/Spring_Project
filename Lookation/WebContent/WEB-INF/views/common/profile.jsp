@@ -163,7 +163,7 @@
 	 // 수정 후 수정된 연락처를 다시 가져옴
 	 function telAjaxRequest()
 	 {
-	 	 $.post("ajaxmodifytel.action"
+	 	 $.post("ajaxmodifytel.action?identify=${identify}" 
 		         , {tel : $("input#tel").val()}
 		         , function(data) 
 		           {
@@ -239,7 +239,7 @@
 					<th>비밀번호</th>
 					<td>
 						<div>
-							<a class="clickAble" href="confirmpasswordform.action?identify=${identify }&requestUrl=changepasswordform.action" >
+							<a class="clickAble" href="confirmpasswordform.action?identify=${identify }&requestUrl=changepasswordform.action">
 								변경하기
 							</a>
 						</div>

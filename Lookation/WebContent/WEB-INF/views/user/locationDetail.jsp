@@ -243,6 +243,9 @@ p {
 	word-break:break-all;
 }
 
+label {
+width: 100%;
+}
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
@@ -328,44 +331,69 @@ p {
 		// 날짜가 변경되었을 경우 수행할 코드 처리
 		$("#selectDate").change(function()
 		{
+			var intPackEnd;					//-- 익일 처리할 변수
+			var html = "";
 			
-			$.ajax({
-				type: "POST",
-				url: "locdetailajax.action",
-				cache: false,
-				dataType: "json",
-				data: JSON.stringify(eventData),
-				contentType: "application/json; charset=utf-8",
-				success: function(data) {
-					
-					alert("데이터 받음");
-				},
-				error : function(request, status, error) {
-				alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
-				}
-				});
+			$(".packageDiv").html("");
 			
-			/*
 			$.ajax({
 				url : "locdetailajax.action"
-				, type : "get"
+				, type : "post"
 				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
 				, success : function(data) {
 					
-					/* $.each(data, function() {
-					     alert(this["packageName"]);
-					     alert(this.packageName);
-					});
-					for(var idx=0; idx<data.test.length; idx++){
-						$("#pacakgeDiv").append("<input type='radio'>"+ data.test[idx].packageName);
-						$("#pacakgeDiv").html("<input type='radio'>"+ data.test[idx].[0]);
+					// 받은 데이터 JSON으로 파싱함
+					var obj = JSON.parse(data);
+					
+					// 데이터 없으면 패키지 없다고 표시
+					if(obj.length==0﻿)
+					{
+						$(".packageDiv").html("<div class='text-center my-3'>해당 날짜에 등록된 패키지가 없습니다.</div>");
+						return false;
 					}
+					else
+					{
+						// 배열에서 key랑 value값으로 꺼냄
+						$.each(obj,function(key,value) {
+
+							//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
+							if(parseInt(value.packEnd) >= 24)
+							{
+								intPackEnd = parseInt(value.packEnd) - 24;
+								intPackEnd = "익일 " + intPackEnd;
+							}
+							else
+							{
+								intPackEnd = value.packEnd;
+							}
+							
+							html = "<div class='packageSelect'><label>";
+							html += "<input type='radio' name='apply_package_code' value='" + value.packCode + "'>";
+							html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
+									+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
+							
+							html += "<div class='flex float-right vertical-down'><strong>"+value.packPrice+"(원)</strong></div>"
+							html += "</label></div>";
+							
+							$(".packageDiv").append(html);
+
+						});
+					}
+					
+					
+
 				}
 			    , error:function(e){
 			    	alert(e.responseText);
-			    	
 			    }
-				});*/
+			    
+				});
+		});
+	    
+		//$(".apply_package_code").prop("checked", true)
+	    $("input:radio[name=apply_package_code]").change(function()
+		{
+			alert("나 선택됐어");
 		});
 		
 		// 이용자 QnA 수정하는 팝업
@@ -432,7 +460,12 @@ p {
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">
+<%-- 				<input type="hidden" id="packageName" name="packageName" value="${packageInfo.packageName }">
+				<input type="hidden" id="packStart" name="packStart" value="${packageInfo.packStart }">
+				<input type="hidden" id="packEnd" name="packEnd" value="${packageInfo.packEnd }">
+				<input type="hidden" id="applyDate" name="applyDate" value="${packageInfo.applyDate }">
+				<input type="hidden" id="packPrice" name="packPrice" value="${packageInfo.packPrice }"> --%>
+				<input type="hidden" id="packPrice" name="packPrice" value="${packageInfo.packPrice }">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->
@@ -597,7 +630,7 @@ p {
 					<div class="host-info">
 						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
 						<p>
-							<a href="2_newDirectMessage.jsp" class="reply">호스트에게 DM</a>
+							<a href="mmessenger.action" class="reply">호스트에게 DM</a>
 						</p>
 					</div>
 													
@@ -719,7 +752,7 @@ p {
 		<div class="col-lg-4 col-xs-12 sidebar pl-lg-5 ftco-animate">
 			<div class="sidebar-box ftco-animate p-3 mt-5">
 				
-				<form action="bookapply.action" id="reserveForm" method="GET">
+				<form action="bookapply.action" id="reserveForm" method="POST">
 					<div class="categories">
 						<h3>공간예약하기</h3>
 						<hr>
@@ -763,47 +796,13 @@ p {
 						
 						
 						<div class="py-2 calendar">
-							<input type="date" class="form-control" id="selectDate" min="2020-12">
+							<input type="date" class="form-control" id="selectDate">
 						</div>
 						
 						
 						<div class="content mt-3">
 							<div class="packageDiv">
-<%-- 								<c:forEach var="i" items="${test }" varStatus="radioNum">
-									
-										<label><input type="radio" name="packageRadio" id="${radioNum.count}"value="${i.packageCode }">
-										${i.packageName }
-										<span class="ml-3 package-bundle">
-										<c:choose>
-											<c:when test="${i.packStart >= 13 && i.packEnd >= 24}">
-												<c:set var="startpm" value="${i.packStart - 12}" scope="session" />
-												<c:set var="nextam" value="${i.packEnd - 24}" scope="session" />
-												
-												오후 ${startpm }시 ~ 익일 오전 ${nextam }시
-											</c:when>
-										
-											<c:when test="${i.packStart <= 11 && i.packEnd >= 13 }">
-												<c:set var="endpm" value="${i.packEnd - 12}" scope="session" />
-												
-												오전 ${i.packStart }시 ~ 오후 ${endpm }시
-											</c:when>
-											
-											<c:otherwise>
-												오전 ${i.packStart }시 ~ 오후 ${i.packEnd }시
-											</c:otherwise>
-										</c:choose>
-										</span>
-										</label>
-										<div class="flex float-right vertical-down">
-											<strong>${i.packPrice }(원)</strong>
-										</div>
-								</c:forEach> 
-								 --%>
-								<input type="radio" name="apply_package_code" id="1" value="AP000001">
-							    <label><span class="ml-3 package-bundle" > 오후 10시 ~ 익일 오전 10시</span></label>
-							    <div class="flex float-right vertical-down">
-									<strong>60000(원)</strong>
-								</div>
+								<!-- 패키지 선택값 들어올 위치 -->
 							</div>
 						</div>
 							 
@@ -831,9 +830,9 @@ p {
 							
 						<div class="text-right my-4">
 							<!-- 가격 선택시 바뀌어야함 -->
-							<h3><span class="icon-won"></span>  60,000 원</h3>
+							<h3 id="selectPrice"><span class="icon-won"></span>  60,000 원</h3>
 						</div>
-						
+						<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">
 						<!-- 결제하기 누르면 인원수 검증 -->
 						<button type="submit" class="btn btn-primary btn-lg btn-block">결제하기</button>
 						</div><!-- End .categories -->

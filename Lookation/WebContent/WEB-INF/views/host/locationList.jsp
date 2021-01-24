@@ -34,7 +34,7 @@
 </head>
 <body>
 	<div>
-	<c:import url="${cp}/includes/header_host.jsp"></c:import>
+        <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
 	
    <!-- 타이틀 -->
@@ -108,15 +108,15 @@
 									<br><br>
 									<div class="text mt-3">
 										<c:if test="${location.inspect_type eq '검수승인'}">
-											<a href="javascript:void(0);" onclick="mod('${location.loc_code}')" 
-											class="btn btn-primary" style="width:30%;">수정</a>
-											<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
-											class="btn btn-danger" style="width:30%;">삭제</a>
+											<a href="packagemanager.action?loc_code=${location.loc_code}" 
+											class="btn btn-primary" style="width:35%;">패키지 등록</a>
 											<a href="packageapplyform.action?loc_code=${location.loc_code }" 
-											class="btn btn-dark" style="width:30%;">패키지적용</a>
+											class="btn btn-dark" style="width:35%;">예약 등록</a>
+											<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
+											class="btn btn-danger" style="width:20%;">삭제</a>
 										</c:if>
 										<c:if test="${location.inspect_type eq '검수반려'}">
-											<a href="javascript:void(0);" onclick="del(${location.loc_code})" 
+										    <a href="javascript:void(0);" onclick="del(${location.loc_code})" 
 											class="btn btn-danger" style="width:30%;">삭제</a>
 										</c:if>
 									</div>
@@ -149,8 +149,8 @@
 </div> <!-- container end -->
 
 	<div>
-	<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-	<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
+		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 	</div>
 </body>
 </html>

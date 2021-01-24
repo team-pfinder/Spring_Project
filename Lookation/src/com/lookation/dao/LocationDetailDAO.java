@@ -98,8 +98,9 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		Connection conn = dataSource.getConnection();
 		String sql = "SELECT PACKAGE_NAME, PACKAGE_START"
 				   + ", PACKAGE_END, PACKAGE_PRICE, APPLY_DATE"
+				   + ", APPLY_PACKAGE_CODE"
 				   + " FROM VIEW_APPLY_PACKAGE_INFO"
-				   + " WHERE LOC_CODE = ? AND APPLY_DATE=?";
+				   + " WHERE LOC_CODE = ? AND APPLY_DATE=? AND COUNT=0";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, locCode);
@@ -110,11 +111,13 @@ public class LocationDetailDAO implements ILocationDetailDAO
 		while(rs.next())
 		{
 			LocationDetailDTO dto = new LocationDetailDTO();
+			
 			dto.setPackageName(rs.getString("PACKAGE_NAME"));
 			dto.setPackStart(rs.getInt("PACKAGE_START"));
 			dto.setPackEnd(rs.getInt("PACKAGE_END"));
 			dto.setPackPrice(rs.getInt("PACKAGE_PRICE"));
 			dto.setApplyDate(rs.getString("APPLY_DATE"));
+			dto.setApply_package_code(rs.getString("APPLY_PACKAGE_CODE"));
 			
 			result.add(dto);
 		}

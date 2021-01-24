@@ -84,8 +84,8 @@
 					<td>${bookDetailList0.book_report_reason }</td>
 				</tr>
 				<tr>
-					<th>이미지</th><!-- 이미지로 볼 수 있게 변경할 것 -->
-					<td>${bookDetailList0.book_report_img_url }</td>
+					<th>이미지</th>
+					<td><img src="<%=cp %>/images/${bookDetailList0.book_report_img_url }" width="350"></img></td>
 				</tr>
 			</table>
 		</form>
