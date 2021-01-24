@@ -62,6 +62,37 @@ public class LocationDetailDAO implements ILocationDetailDAO
 	}
 	
 	@Override
+	public ArrayList<String> detailPhoto(String locCode) throws Exception
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		
+		Connection conn = dataSource.getConnection();
+		
+		String sql = "SELECT LDIMG.LOC_DETAIL_IMG_URL AS IMG_URL"
+				+ " FROM LOC L JOIN LOC_DETAIL_INFO LDIF"
+				+ " ON L.LOC_CODE = LDIF.LOC_CODE"
+				+ " JOIN LOC_DETAIL_IMG LDIMG"
+				+ " ON LDIF.LOC_DETAIL_INFO_CODE = LDIMG.LOC_DETAIL_INFO_CODE"
+				+ " WHERE L.LOC_CODE = ?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, locCode);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next())
+		{
+			result.add(rs.getString("IMG_URL"));
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return result;
+	}
+
+
+	@Override
 	public LocationDetailDTO usingInfo(String locCode) throws SQLException
 	{
 		LocationDetailDTO result = new LocationDetailDTO();

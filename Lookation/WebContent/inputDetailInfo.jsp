@@ -55,24 +55,49 @@
 		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
 		setMaxPeople($('#inputMaxPeople'), 1, '최대 수용인원');
 		
-		
 		// submit 제어
 		var f = $('#inputDetailInfo');
 		
-		var tMin = $('#inputMinPeople').val();
-		var tMax = $('#inputMaxPeople').val();
-		var tUrl = $('#inputWebUrl').val();
-		
-		$('#submitButton').click(function (){	
+		$('#submitButton').click(function () 
+		{	
 			
-			if (tMin == '' || tMax == '' || tUrl == '')
-			{
+			if ($('#inputMinPeople').val() == '' 
+				|| $('#inputMaxPeople').val() == '' 
+				|| $('#inputWebUrl').val() == ''
+				|| ($('input[name=detailImage1]').val() == '' 
+						&& $('input[name=detailImage2]').val() == '' 
+							&& $('input[name=detailImage3]').val() == '' 
+								&& $('input[name=detailImage4]').val() == '' 
+									&& $('input[name=detailImage5]').val() == '' 
+										&& $('input[name=detailImage6]').val() == '' 
+											&& $('input[name=detailImage7]').val() == '' 
+												&& $('input[name=detailImage8]').val() == '' 
+													&& $('input[name=detailImage9]').val() == '' 
+														&& $('input[name=detailImage10]').val() == '') ) {
+				
 				alert("필수 입력사항을 모두 입력해 주세요.");
-				alert(tMin);
-				alert(tMax);
-				alert(tUrl);
+				
 			}
-			
+			else if (parseInt($('#inputMinPeople').val()) < 1
+					|| parseInt($('#inputMinPeople').val()) > 10)
+			{
+				alert("최소 수용인원은 최소 1명 ~ 최대 10명으로 입력해야합니다.");
+				$('#inputMinPeople').focus();
+			}
+			else if (parseInt($('#inputMaxPeople').val()) > 30)
+			{
+				alert("최대 수용인원은 최대 30명까지 입력가능합니다.");
+				$('#inputMaxPeople').focus();
+			}
+			else if (parseInt($('#inputMinPeople').val()) > $('#inputMaxPeople').val())
+			{
+				alert("최소 수용인원이 최대 수용인원 보다 큽니다.")
+				$('#inputMinPeople').focus();
+			}
+			else
+			{
+				f.submit();				
+			}
 			
 		});
 		
@@ -148,14 +173,6 @@
 		});
 	} 
 	   
-	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
-	/* function maxTest() {
-		
-		var inputMin = parseInt($.trim($('#inputMinPeople').val()));
-
-		return inputMin;
-	}  */
-	
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
 		
@@ -168,9 +185,7 @@
 		} else {
 			return;
 		}
-		
 	}
-	
 
 </script>
 	
@@ -231,7 +246,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputUsingInfo.jsp" method="POST">	
+		  action="inputdetailinfo.action" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
@@ -240,12 +255,9 @@
 			<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
 			<br><br>
 			
-		<c:forEach var="i" begin="0" end="10">
+		<c:forEach var="i" begin="1" end="10">
 				<div class="filebox${i }">
-						<!-- <input class="upload-name" name="inputThumbnail" 
-							   placeholder="이미지 등록" disabled="disabled" style="width: 70%"> -->
-						<!-- <label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> --> 
-						<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
+					<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
 				</div>
 		</c:forEach>
 				<br><br>
@@ -264,6 +276,7 @@
 					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
 					id="inputMinPeople" name="inputMinPeople"
 					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+					<!-- onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" -->
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"--> 
 			<span id="err" style="font-weight: bold;"></span>
 			
@@ -282,6 +295,7 @@
 					placeholder="최대 수용인원을 입력하세요.[최소 수용인원 이상, 최대 30명 이하]"
 					id="inputMaxPeople" name="inputMaxPeople"
 					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+					<!-- onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" -->
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); -->
 			<span style="font-weight: bold;"></span>
 		</div>
@@ -294,7 +308,7 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">웹 사이트<span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text" class="form-control"
 					placeholder="웹사이트 url 을 입력하세요."
 					id="inputWebUrl" name="inputWebUrl">
 			

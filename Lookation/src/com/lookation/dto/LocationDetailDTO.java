@@ -19,8 +19,6 @@ public class LocationDetailDTO
 	private int minPeople, maxPeople, packStart, packEnd, packPrice;
 	
 	
-	
-	
 	public String getApply_package_code()
 	{
 		return apply_package_code;
