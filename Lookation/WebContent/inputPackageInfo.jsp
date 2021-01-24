@@ -47,7 +47,6 @@
 			if (tName == '' || tStart == '' || tEnd == '' || tPrice == '') 
 			{
 				alert("필수 입력사항을 모두 입력해 주세요.");
-				alert(parseInt(tStart)+1);
 			}
 			else if (tName.length < 2 || tName.length > 20) {
 				
