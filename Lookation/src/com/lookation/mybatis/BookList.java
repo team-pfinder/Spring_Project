@@ -371,8 +371,6 @@ public class BookList
 			// 호스트측면 추가로 해야할 작업은 이 밑에 쓴다.
 
 
-
-			
 			// 로그인이 되었음을 기록한다.
 		        result = "signed";                                                                                
 		}
