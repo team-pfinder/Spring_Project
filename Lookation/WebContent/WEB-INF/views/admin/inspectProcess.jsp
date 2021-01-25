@@ -146,11 +146,11 @@ $(document).ready(function()
 									<p>최소 인원 : ${dto1.min_people}</p>
 									<p>공간 웹사이트 : ${dto5.loc_web_url}</p>
 
-									<h2 class="mb-3 mt-5"># 패키지</h2>
+									<%-- <h2 class="mb-3 mt-5"># 패키지</h2>
 									<hr>
 									<p>패키지명 : ${dto2.package_name} </p>
 									<p>패키지 시작시간 : ${dto2.package_start} </p>
-									<p>패키지 종료시간 : ${dto2.package_end} </p>
+									<p>패키지 종료시간 : ${dto2.package_end} </p> --%>
 
 									<h2 class="mb-3 mt-5"># 연락처</h2>
 									<hr>

@@ -170,7 +170,8 @@ a#sub
 							<li><a href="mypage.action?identify=member" class="nav-link" id="sub">마이페이지</a></li>
 							<li><a href="mileagehistory.action?identify=member" class="nav-link" id="sub">마일리지 관리</a></li>
 							<li><a href="booklist.action?identify=member" class="nav-link" id="sub">예약 리스트</a></li>
-							<li><a href="#" class="nav-link" id="sub">리뷰·Q&amp;A관리</a></li>
+							<li><a href="userreviewlist.action" class="nav-link" id="sub">리뷰 관리</a></li>
+							<li><a href="userqnalist.action" class="nav-link" id="sub">Q&amp;A관리</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">고객지원</a>
