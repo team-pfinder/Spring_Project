@@ -202,6 +202,7 @@ public class ReportList
 			return "redirect:adminloginform.action";
 		}
 		
+		System.out.println(loc_report_code);
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
 		
 		model.addAttribute("locDetailList0", dao.locDetailList0(loc_report_code));

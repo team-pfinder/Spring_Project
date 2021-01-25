@@ -27,13 +27,6 @@ public class BankInfoAddController implements Controller
 		this.dao = dao;
 	}
 	
-	private IAccountDAO memberDao;
-	
-	public void setMemberDao(IAccountDAO memberDao)
-	{
-		this.memberDao = memberDao;
-	}	
-	
 	@Autowired
 	private SqlSession sqlSession;
 	@Override
@@ -69,9 +62,6 @@ public class BankInfoAddController implements Controller
 			// 이용자일 경우                                                                            
 			if(identify.equals("member"))                                                   
 			{                                                                               
-				//IMemberAccountDAO memberDao = sqlSession.getMapper(IMemberAccountDAO.class);	    
-				//mav.addObject("info", memberDao.getInfo(accountCode));
-
 				try
 				{
 					if(dao.memberBankInfoCount(accountCode) >= 3)
@@ -95,9 +85,6 @@ public class BankInfoAddController implements Controller
 			// 호스트일 경우
 			else if(identify.equals("host"))                                                   
 			{                                                                               
-				//IHostAccountDAO hostDao = sqlSession.getMapper(IHostAccountDAO.class);	    
-				//mav.addObject("info", hostDao.getInfo(accountCode));
-
 				try
 				{
 					System.out.println("계좌 갯수 체크전");
@@ -114,7 +101,6 @@ public class BankInfoAddController implements Controller
 				{
 					System.out.println(e.toString());
 				}
-
 		                                                  
 			}
 			// 로그인이 되었음을 기록한다.

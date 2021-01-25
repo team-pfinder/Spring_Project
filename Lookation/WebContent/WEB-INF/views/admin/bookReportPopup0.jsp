@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>locReportPopup1.jsp</title>
+<title>bookReportPopup0.jsp</title>
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <style>
 	table

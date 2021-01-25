@@ -21,7 +21,7 @@ public class Service
 	private SqlSession sqlSession;
 	
 	// 이용약관
-	@RequestMapping(value = "/actions/termsOfService.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/termsofservice.action", method = RequestMethod.GET)
 	public String termsOfService(Model model, HttpServletRequest request)
 	{
 		// 이용자 / 호스트 identify 분기
@@ -78,7 +78,7 @@ public class Service
 	}
 	
 	// 공간 정책
-	@RequestMapping(value = "/actions/locManagement.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/locmanagement.action", method = RequestMethod.GET)
 	public String locManagement(Model model, HttpServletRequest request)
 	{
 		// 이용자 / 호스트 identify 분기

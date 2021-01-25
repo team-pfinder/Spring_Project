@@ -4,6 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.IBookListDAO">
 	
+	
+	<!-- 이용자 -->
 	<!-- 해당 이용자의 예약 리스트 -->
 	<select id="bookList" resultType="com.lookation.dto.BookListDTO">
 		SELECT BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, LOC_CODE
@@ -46,8 +48,8 @@
 		VALUES(F_CODE('MC', MC_SEQ.NEXTVAL), #{book_code}, #{member_cancel_reason}, SYSDATE)
 	</insert>
 	
-	<!-- 환불절차 -->
-	<insert id="memberRefund">
+	<!-- 환불절차(이용자, 호스트) -->
+	<insert id="refund">
 		INSERT INTO BOOK_REFUND_LIST (BOOK_REFUND_CODE, BOOK_CODE, BOOK_REFUND_DATE)
 		VALUES(F_CODE('BRF', BRF_SEQ.NEXTVAL), #{book_code}, SYSDATE)
 	</insert>
@@ -56,6 +58,37 @@
 		SELECT MEMBER_NICKNAME
 		FROM MEMBER_PROFILE
 		WHERE MEMBER_CODE=#{member_code}
+	</select>
+	
+	 
+	<!-- 호스트 -->
+	<!-- 해당 호스트의 예약 리스트 -->
+	<select id="bookListHost" resultType="com.lookation.dto.BookListDTO">
+		SELECT BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, BL.LOC_CODE AS LOC_CODE
+		      , APPLY_DATE, PACKAGE_CODE, PACKAGE_NAME
+			  , PACKAGE_START, PACKAGE_END, BOOK_DATE, CHECKBOOK
+			  , BOOK_HOUR, HOST_CANCEL, MEMBER_CANCEL, REFUND, BL.LOC_NAME AS LOC_NAME
+			  , HOST_CODE
+		FROM VIEW_BOOKLIST BL JOIN LOC L
+		ON BL.LOC_CODE = L.LOC_CODE
+		WHERE HOST_CODE = #{host_code}
+	</select>
+	
+	
+	<!-- 호스트 취소신청 -->
+	<insert id="hostCancel" >
+		INSERT INTO HOST_CANCEL_LIST (HOST_CANCEL_CODE, BOOK_CODE
+		, HOST_CANCEL_REASON, HOST_CANCEL_DATE)
+		VALUES(F_CODE('HC', HC_SEQ.NEXTVAL), #{book_code}, #{member_cancel_reason}, SYSDATE)
+	</insert>
+	
+	<!-- 환불절차 -->
+	<!-- // -->
+
+	<select id="hostNick" resultType="java.lang.String">
+		SELECT HOST_NICKNAME
+		FROM HOST_PROFILE
+		WHERE HOST_CODE=#{host_code}
 	</select>
 	
 </mapper>

@@ -4,6 +4,9 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
+	String loc_code = request.getParameter("loc_code");
+	String member_code = request.getParameter("member_code");
+	String loc_name = request.getParameter("loc_name");
 %>
 <!DOCTYPE html>
 <html>
@@ -59,13 +62,12 @@
 	<div class="inner">
 		<!-- 이용자 → 호스트 : 공간게시물 신고 폼 -->
 		<form action="reportuser.action" method="post">
-			<span>호스트</span>
-			<input type="text" name="member_code" value="M000001" style="display: none;">
-			<input type="text" class="form-control" readonly="readonly"
-			value="이전페이지에서 받아온 호스트이름"><br>
+			<span>신고자정보</span>
+			<input type="text" name="member_code" class="form-control" readonly="readonly"
+			value="<%=member_code %>"><br>
 			<span>신고하려는 공간</span>
-			<input type="text" name="loc_code" value="L000004" style="display: none;">
-			<input readonly="readonly" value="어승승오산" class="form-control"><br>
+			<input type="text" name="loc_code" value="<%=loc_code %>" style="display: none;">
+			<input readonly="readonly" value="<%=loc_name %>" class="form-control"><br>
 			<select class="form-control" name="loc_report_type_code" id="loc_report_type_code">
 				<option value="typeselect">==[신고유형]==</option>
 				<option value="LRPP000001">서비스미충족</option>

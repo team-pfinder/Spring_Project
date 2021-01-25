@@ -26,12 +26,27 @@
       font-weight: bold !important;
    }
    
+   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  padding: 3px 10px;
+}
+   
+.off-screen {
+  display: none;
+}
+   
 #li1, #li2 {
   width: 100%;
   text-align: center;
 }
 
-#li1 a, #li2 a {
+#li1 a, #li2 a{
 	color: gray;
     text-align: center;
     display: inline-block;
@@ -57,7 +72,7 @@
 	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url('<%=cp%>/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
@@ -295,9 +310,8 @@ $setRows.submit(function (e) {
 
 $setRows.submit();	
 
-
-
 </script>
+
 <script type="text/javascript">
 
 var $setRows = $('#setRows2');

@@ -191,9 +191,17 @@
 			<h1 style="font-weight:1000;">이용자 프로필관리</h1> <!-- 큰폰트 -->
 		</c:if>
 	</div>
+
 	
+
 	<!-- 프로필관리 양식 -->
 	<div class="container">
+		<c:if test="${identify eq 'host' }">
+		<c:import url="${cp}/includes/mypage_Sidebar(host).jsp"></c:import>
+		</c:if>
+		<c:if test="${identify eq 'member' }">
+			<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
+		</c:if>
 		<div class="profileBox">
 			<hr>
 			<table>

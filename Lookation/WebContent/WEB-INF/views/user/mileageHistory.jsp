@@ -39,7 +39,7 @@ th, td {
 .off-screen {
   display: none;
 }
-#li1, #li2, #li3, #li2 {
+#li1, #li2, #li3, #li4 {
   width: 100%;
   text-align: center;
 }
@@ -74,7 +74,7 @@ th, td {
 	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url('${pageContext.request.contextPath}/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
@@ -151,15 +151,14 @@ th, td {
 												<th colspan="5">사용 내역이 존재하지 않습니다.</th>
 											</tr>
 											</c:if>
-									
-											<tr>
 											<c:forEach var="item" items="${payHistory}" varStatus="status">
+											<tr>
 												<th>${status.count}</th>
 												<td>${item.name}</td>
 												<td>${item.price}</td>
 												<td>${item.payDate}</td>
-											</c:forEach>
 											</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>

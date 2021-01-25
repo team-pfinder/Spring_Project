@@ -37,3 +37,4 @@ public interface IInspectManagerDAO
 	public int Inspect(InspectLocationDTO dto) throws SQLException;
 	
 }
+

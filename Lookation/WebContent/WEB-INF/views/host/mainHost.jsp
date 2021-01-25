@@ -53,7 +53,8 @@
 		<h1>지금 바로 공간을 공유해보세요!</h1>	
 		<h1>파티룸, 브라이덜샤워, 엠티장소 등 다양한 모임공간을 룩케이션을 통해 공유해보세요!</h1> 
 		<br>
-		<button class="btn btn-primary" style="width: 30%;height: 80px;">
+		<button class="btn btn-primary"  onclick="location.href='basicform.action'"
+				style="width: 30%;height: 80px;">
 			<span style="font-size: 150%; font-family: inherit; 
 			font-weight: bold; color: black;">공간 등록하기</span>
 		</button> 

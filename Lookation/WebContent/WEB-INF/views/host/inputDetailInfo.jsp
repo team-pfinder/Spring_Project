@@ -50,54 +50,63 @@
 	
 	$(function() {
 
-		$('#inputMinPeople').on("keyup", function ()
-		{
-			var inputMin = setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
-
-			var err = $(this).next();
-			err.css("display", "none");
+		// 함수 호출
+		
+		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
+		setMaxPeople($('#inputMaxPeople'), 1, '최대 수용인원');
+		
+		// submit 제어
+		var f = $('#inputDetailInfo');
+		
+		$('#submitButton').click(function () 
+		{	
 			
-				var inputMax = setMaxPeople($('#inputMaxPeople'), inputMin, 30, '최대 수용인원');
+			if ($('#inputMinPeople').val() == '' 
+				|| $('#inputMaxPeople').val() == '' 
+				|| $('#inputWebUrl').val() == ''
+				|| ($('input[name=detailImage1]').val() == '' 
+						&& $('input[name=detailImage2]').val() == '' 
+							&& $('input[name=detailImage3]').val() == '' 
+								&& $('input[name=detailImage4]').val() == '' 
+									&& $('input[name=detailImage5]').val() == '' 
+										&& $('input[name=detailImage6]').val() == '' 
+											&& $('input[name=detailImage7]').val() == '' 
+												&& $('input[name=detailImage8]').val() == '' 
+													&& $('input[name=detailImage9]').val() == '' 
+														&& $('input[name=detailImage10]').val() == '') ) {
 				
-				if (inputMax != null && inputMin > inputMax) {
-						
-					err.html("최대 수용인원이 최소 수용인원 보다 작습니다.").css("display", "inline");
-					err.css("color", "red");
+				alert("필수 입력사항을 모두 입력해 주세요.");
 				
 			}
+			else if (parseInt($('#inputMinPeople').val()) < 1
+					|| parseInt($('#inputMinPeople').val()) > 10)
+			{
+				alert("최소 수용인원은 최소 1명 ~ 최대 10명으로 입력해야합니다.");
+				$('#inputMinPeople').focus();
+			}
+			else if (parseInt($('#inputMaxPeople').val()) > 30)
+			{
+				alert("최대 수용인원은 최대 30명까지 입력가능합니다.");
+				$('#inputMaxPeople').focus();
+			}
+			else if (parseInt($('#inputMinPeople').val()) > $('#inputMaxPeople').val())
+			{
+				alert("최소 수용인원이 최대 수용인원 보다 큽니다.")
+				$('#inputMinPeople').focus();
+			}
+			else
+			{
+				f.submit();				
+			}
+			
 		});
 		
-		// 썸네일 이미지 등록
-		/* $(document).ready(function(){ 
-			
-			<c:forEach var="i" begin="0" end="10">
-			$('.filebox${i} .upload-hidden').on('change', function(){ // 값이 변경되면 
-				
-				var filename = '';
-				// modern browser
-				if(window.FileReader) { 
-					filename = $(this)[0].files[0].name; 
-				} 
-			
-				// old IE
-				
-				else { 
-				
-					filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
-				} 
-				
-			
-				// 추출한 파일명 삽입 
-				$(this).parent('div').children('.upload-name').val(filename); 
-				
-			});
-			</c:forEach>
-		}); */			
 	});
-				
+		
+	// 함수 정의 ---------------------------------------------------------	
 	
 	
-	// 최소 수용인원 수 제약 functiond
+	// 최소 수용인원 수 제약 function
 	function setMinPeople(target, minNum, maxNum, name){
 		
 		target.on("keyup", function() {
@@ -105,14 +114,22 @@
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			if (target.val()=='') {
+				
+				err.html.hide();
+				return false;
+			}
+			
 			// 글자 수 제한, 색 변경
-			if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+			else if (parseInt(target.val()) < minNum 
+					|| parseInt(target.val()) > maxNum ) {
 				
 				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
 				err.css("color", "red");
 				return;
 				
-			} else {
+			} 
+			else {
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
@@ -121,38 +138,41 @@
 		});
 	}
 	
+	 
+	
 	// 최대 수용인원 수 제약 function
-	function setMaxPeople(target, minNum, maxNum, name){
+	function setMaxPeople(target, minNum, name) {
 		
-		target.on("keyup", function() {
-			
+		target.on("keyup", function ()
+		{
 			var err = $(this).next();
 			err.css("display", "none");
 			
+			// 최대 수용인원 x
+			if (target.val()=='') {
+
+				err.html.hide();
+				return;
+			}
 			// 글자 수 제한, 색 변경
-			if (target.val()=="" || parseInt(target.val()) < minNum || parseInt(target.val()) > maxNum ) {
+			else if (parseInt(target.val()) > 30 
+					|| parseInt(target.val()) < minNum) {
 				
-				err.html("" + name + "은 " + minNum + " 이상 ~ " + maxNum + " 이하로 설정해야합니다.").css("display","inline");
+				err.html("" + name + "은 " + "30 이하로 설정해야합니다.").css("display","inline");
 				err.css("color", "red");
 				return;
 				
-			} else {
+			} 
+			else {
 				
 				err.html("사용 가능한 " + name + "입니다.").css("display","inline");
 				err.css("color","green");
-				return target;
+				return;
 			}
+			
 		});
-	}
-	  
-	// 입력한 최대 수용인원보다 최소 수용인원이 더 큰 경우 처리 function
-	/* function maxTest() {
-		
-		var inputMin = parseInt($.trim($('#inputMinPeople').val()));
-
-		return inputMin;
-	} */
-	
+	} 
+	   
 	// 취소 버튼 클릭시 기존 작성내용을 저장하지 않고 메인 홈페이지로 이동하는 function
 	function cancel() {
 		
@@ -165,18 +185,16 @@
 		} else {
 			return;
 		}
-		
 	}
-	
 
 </script>
 	
 </head>
 <body>
+	<!-- header 출력부분 -->
 	<div>
-		<c:import url="${cp}/includes/header_host.jsp"></c:import>
+		<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
-	
 	
    <!-- 타이틀 -->
    <section class="hero-wrap hero-wrap-2"
@@ -228,32 +246,22 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="inputdetailinfo.action" method="POST"><!--onsubmit="handOver()" -->	
+		  action="inputdetailinfo.action" method="POST">	
 		
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		
 		<div id="locDetailImg">
 		
 			<span style="font-size: 14pt; font-weight: bold;">이미지 <span style="color: red">*</span></span>
-			<!-- 이미지추가시 들어갈 공간.. textarea인지 확인 필요-->
 			<br><br>
 			
-		<c:forEach var="i" begin="0" end="10">
+		<c:forEach var="i" begin="1" end="10">
 				<div class="filebox${i }">
-						<!-- <input class="upload-name" name="inputThumbnail" 
-							   placeholder="이미지 등록" disabled="disabled" style="width: 70%"> -->
-						<!-- <label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> --> 
-						<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
+					<input type="file" name="detailImage${i }" id="ex_filename" class="upload-hidden">
 				</div>
 		</c:forEach>
 				<br><br>
 				<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
-					 <!-- 
-					 이미지가 추가될 때 마다 
-					 추가한 이미지를 썸네일 형태로 조회할 수 있음.
-					 그 썸네일 형태로 조회된 이미지를 클릭시 
-					 체크박스형태로 복수선택하여 x버튼으로 삭제가능
-					  -->
 		</div>
 	
 	<br><br><br>
@@ -264,10 +272,12 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">최소 수용인원 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text" class="form-control"
 					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
-					id="inputMinPeople" name="inputMinPeople">
-					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" --> 
+					id="inputMinPeople" name="inputMinPeople"
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+					<!-- onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" -->
+					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"--> 
 			<span id="err" style="font-weight: bold;"></span>
 			
 		</div>
@@ -281,13 +291,16 @@
 		
 			<span style="font-size: 14pt; font-weight: bold;">최대 수용인원 <span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text" class="form-control"
 					placeholder="최대 수용인원을 입력하세요.[최소 수용인원 이상, 최대 30명 이하]"
-					id="inputMaxPeople" name="inputMaxPeople">
+					id="inputMaxPeople" name="inputMaxPeople"
+					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+					<!-- onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" -->
 					<!-- oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); -->
 			<span style="font-weight: bold;"></span>
 		</div>
 	
+	<br><br><br>
 	
 		<!-- 4. 웹 url -->
 		
@@ -295,7 +308,7 @@
 			
 			<span style="font-size: 14pt; font-weight: bold;">웹 사이트<span style="color: red">*</span></span>
 			<br><br>
-			<input type="text" required="required" class="form-control"
+			<input type="text" class="form-control"
 					placeholder="웹사이트 url 을 입력하세요."
 					id="inputWebUrl" name="inputWebUrl">
 			
@@ -304,26 +317,15 @@
 	
 	<br><br><br>
 	
-	<!-- 다음 버튼(공통) : 다음 입력페이지로 넘어가고, DB에 저장된다.
-						   (필수항목을 입력하지 않았을 경우,
-							입력하지않은 항목 중 가장 첫번째 항목을 focus()하고
-						    alert("필수항목을 입력해야합니다")된다.
-							그리고 입력하는 textbox로 입력커서가 이동한다. 
-							또한 다음페이지로 submit 되지 않는다.
-							
-							※ 다음 버튼 이동 순서
-							※ xxxUpdate.jsp 다음버튼 이동 순서 
-							   기본정보 → 연락처정보 → 사업자정보
-						    → 이용정보  → 상세정보  → 패키지정보 -->
+	<!-- 다음 버튼 -->
+	<div class="container" style="text-align: center;">
+		<button type="button" class="btn btn-warning" id="submitButton"
+		style="width:45%; border-color: gray;">다음 </button>
 	
-		<div class="container" style="text-align: center;">
-			<input type="submit" value="다음" class="btn btn-warning" 
-				   style="width:45%; border-color: gray;">
-			
-		<!-- 취소 버튼 -->
-			<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
-					id="detailInfo" value="취소" onclick="cancel()">		
-		</div>	
+	<!-- 취소 버튼 -->
+		<input type="button" class="btn btn-default" style="align-content:center; width:45%; border-color: gray;" 
+				id="detailInfo" value="취소" onclick="cancel()">		
+	</div>	
 
 	
 	<br><br><br><br>
@@ -332,9 +334,11 @@
 </div>
 </div>
 
+<!-- footer 출력부분 -->
 <div>
-		<c:import url="${cp}/includes/footer_host.jsp"></c:import>
-		<c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
+       <c:import url="${cp}/includes/footer_host.jsp"></c:import>
+       <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 </div>
+
 </body>
 </html>

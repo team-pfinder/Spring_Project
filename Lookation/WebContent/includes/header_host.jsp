@@ -152,20 +152,21 @@ a#sub
 				<ul class="navbar-nav mr-auto" id="menu">
 					<li class="nav-item"><a href="#" class="nav-link">바로가기</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">공간 등록하기</a></li>
+							<li><a href="basicform.action" class="nav-link" id="sub">공간 등록하기</a></li>
 						</ul></li>
 
-					<li class="nav-item"><a href="#" class="nav-link">마이페이지</a>
+					<li class="nav-item"><a href="#" class="nav-link">편의기능</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">공간 관리</a></li>
-							<li><a href="#" class="nav-link" id="sub">예약 리스트 관리</a></li>
-							<li><a href="#" class="nav-link" id="sub">답글 관리</a></li>
+							<li><a href="mypage.action?identify=host" class="nav-link" id="sub">마이페이지</a></li>
+							<li><a href="mileagehistory.action?identify=host" class="nav-link" id="sub">마일리지 관리</a></li>
+							<li><a href="locationlist.action" class="nav-link" id="sub">공간 관리</a></li>
+							<li><a href="booklisthost.action?identify=host" class="nav-link" id="sub">예약 리스트 관리</a></li>
 						</ul></li>
 
 					<li class="nav-item"><a href="#" class="nav-link">고객지원</a>
 						<ul class="sub navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light">
-							<li><a href="#" class="nav-link" id="sub">도움말</a></li>
-							<li><a href="#" class="nav-link" id="sub">FAQ</a></li>
+							<li><a href="notice.action?identify=host" class="nav-link" id="sub">공지사항</a></li>
+							<li><a href="help.action?identify=host" class="nav-link" id="sub">도움말</a></li>
 						</ul></li>
 				</ul>
 			</div>

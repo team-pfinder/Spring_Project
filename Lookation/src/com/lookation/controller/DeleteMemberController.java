@@ -45,7 +45,8 @@ public class DeleteMemberController implements Controller
 		try
 		{	
 			// 세션을 통한 로그인 확인                                                                    
-			HttpSession session = request.getSession();                                                                  
+			HttpSession session = request.getSession();                    
+			session.setAttribute("memCode", "M000006");
 			String accountCode = (String)session.getAttribute("memberCode"); 
 
 			// 로그인 확인을 기록하기 위함                  
@@ -68,7 +69,7 @@ public class DeleteMemberController implements Controller
 					out.println("<script>alert('가입정보가 유효하지 않거나 이미 탈퇴가 완료된 회원입니다.');</script>");
 					out.flush();
 					
-					mav.setViewName("redirect:loginform.action?identify=member");
+					mav.setViewName("loginform.action?identify=member");
 					return mav;
 				}
 				else if(dao.checkMileage(accountCode)!=0)	// 마일리지 남아있으면
@@ -77,7 +78,7 @@ public class DeleteMemberController implements Controller
 					out.flush();
 					
 					// 마이페이지로 보냄
-					mav.setViewName("../WEB-INF/views/user/mypageUser.jsp");
+					mav.setViewName("loadandexchange.action?identify=member");
 					
 					return mav;
 				}
@@ -87,18 +88,16 @@ public class DeleteMemberController implements Controller
 					out.flush();
 					
 					// 마이페이지로 보냄
-					mav.setViewName("../WEB-INF/views/user/mypageUser.jsp");
+					mav.setViewName("mypage.action?identify=member");
 					
 					return mav;
 				}
 				else						
 				{	
-					// 가입하지 않은 회원(M000009) 있으면 인서트 안되게 확인해야겠음.
 					dao.delExchangeInfo(accountCode);
 					dao.delLoadReg(accountCode);
 					dao.delBankInfo(accountCode);
 					dao.delProfile(accountCode);
-					/*ORA-02291: integrity constraint (LOOKATION.FK_MEMBER_WITHDRAW_MEMBER_CODE) violated - parent key not found*/
 					dao.insertDelTbl(accountCode);
 				}
 				

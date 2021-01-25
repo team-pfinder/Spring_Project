@@ -11,7 +11,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.lookation.dao.IAccountDAO;
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILoadAndExchangeDAO;
 import com.lookation.dao.IMemberAccountDAO;
@@ -317,72 +316,16 @@ public class LoadAndExchange
     	    // 로그인 창으로 이동한다.
     	    return "redirect:loginform.action?identify=" + identify;
     	}
-    	// *********************************************************************************
-    	//----------------------------------------------------------------
     	
     	return "../WEB-INF/views/common/exchangeNotice.jsp";
-
-
-    	
-    	/*
-    	//----------------------------------------------------------------
-    	String identifyCode = "H000003"; //request.getParameter("identifyCode");
-    	//----------------------------------------------------------------
-    	dto.setIdentifyCode(identifyCode);
-    	dto.setBankNumber(request.getParameter("bankAccount"));
-    	dto.setAmount(Integer.parseInt(request.getParameter("exchange")));
-    	
-    	// 테스트
-    	System.out.println(dto.getIdentifyCode());
-    	System.out.println(dto.getBankNumber());
-    	System.out.println(dto.getAmount());   
-    	try
-		{
-    		// 환전 쿼리
-    		if(identifyCode.startsWith("M"))
-    		{
-    			dao.memberExchangeRegister(dto);
-    		}
-    		else if(identifyCode.startsWith("H"))
-    		{
-    			dao.hostExchangeRegister(dto);
-    		}
-    		
-    		System.out.println("환전성공");
-
-    		System.out.println("신청정보 가져오는중");
-    		try
-			{
-        		// 등록된 충전신청 정보 가져오기
-        		if(identifyCode.startsWith("M"))
-        		{
-        			dto = dao.memberExchangeNotice(identifyCode);
-        		}
-        		else if(identifyCode.startsWith("H"))
-        		{
-        			dto = dao.hostExchangeNotice(identifyCode);
-        		}
-    			//-----------------------------------------------
-    			System.out.println(dto.getAmount());
-    			System.out.println(dto.getBank());
-    			System.out.println(dto.getBankNumber());
-    			System.out.println(dto.getBankHolder());
-    			System.out.println(dto.getRegdate());
-    			//-----------------------------------------------
-    			model.addAttribute("exchangeInfo", dto);
-			} catch (Exception e2)
-			{
-				System.out.println(e2.toString());
-			}
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
-		}
-    	
-    	return "../WEB-INF/views/common/exchangeNotice.jsp";
-    	*/
     }
-
+    
+    @RequestMapping(value="/actions/terms.action", method = RequestMethod.GET)
+    public String loadAndExchangeTerms(ModelMap model, HttpServletRequest request)
+    {
+    	
+	    return "../WEB-INF/views/common/bankAccountTerms.jsp";
+    }
 }
 
 

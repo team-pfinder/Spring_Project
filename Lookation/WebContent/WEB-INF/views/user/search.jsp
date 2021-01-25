@@ -42,9 +42,8 @@
 <c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 
-</script>
 <style>
-.b {
+.mapbar {
 	height: 500px;
 	background-color: #FFF;
 	display: none;
@@ -80,6 +79,21 @@
 	color: #fff;
 	border: 1px solid transparent;
 }
+
+#img
+{
+	transition: background-size ease-out 200ms;
+	background-size: auto 100%;
+	cursor: default;
+}
+
+#img:hover
+{
+	transition: background-size ease-out 200ms;
+	background-size: auto 120%;
+	cursor: pointer;
+}
+
 </style>
 
 
@@ -245,8 +259,8 @@
 							<div class="col-md-4 ftco-animate">
 								<div class="blog-entry align-self-stretch">
 									<a href="locationdetail.action?loc_code=${item.loc_code}"
-										class="block-20 rounded"
-										style="background-image: url('<%=cp%>/images/image_1.jpg');">
+										class="block-20 rounded" id="img"
+										style="background-image: url('<%=cp%>/images/${item.thumbnail_url}');">
 									</a>
 									<div class="text mt-3 text-center">
 										<div class="meta mb-2">

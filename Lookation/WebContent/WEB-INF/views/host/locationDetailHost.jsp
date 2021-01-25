@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
-<c:import url="${cp}/includes/header_host.jsp"></c:import>
+<c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 <style type="text/css">
 body, html {
 width: 100%;
@@ -359,7 +359,14 @@ p
 				<!--- carousel --->
 				<!-- 상세이미지 슬라이더 -->
 				<div class="home-slider owl-carousel">
-					<div class="slider-item"
+				
+					<c:forEach var="url" items="${detailPhotoUrl }">
+						<div class="slider-item"
+							style="background-image: url(<%=cp%>/images/${url});">
+						</div>
+					</c:forEach>
+				
+					<%-- <div class="slider-item"
 						style="background-image: url(<%=cp%>/images/image_1.jpg);">
 					</div>
 					<div class="slider-item"
@@ -385,7 +392,7 @@ p
 					</div>
 					<div class="slider-item"
 						style="background-image: url(<%=cp%>/images/image_2.jpg);">
-					</div>
+					</div> --%>
 				</div>
 				<!-- 이미지 클릭하면 확대  -->
 			</div>
