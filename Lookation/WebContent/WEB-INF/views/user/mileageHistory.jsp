@@ -39,7 +39,7 @@ th, td {
 .off-screen {
   display: none;
 }
-#li1, #li2, #li3, #li2 {
+#li1, #li2, #li3, #li4 {
   width: 100%;
   text-align: center;
 }

@@ -11,7 +11,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.lookation.dao.IAccountDAO;
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILoadAndExchangeDAO;
 import com.lookation.dao.IMemberAccountDAO;
@@ -325,7 +324,7 @@ public class LoadAndExchange
     public String loadAndExchangeTerms(ModelMap model, HttpServletRequest request)
     {
     	
-	    return "../WEB-INF/view/common/bankAccountTerms.jsp";
+	    return "../WEB-INF/views/common/bankAccountTerms.jsp";
     }
 }
 
