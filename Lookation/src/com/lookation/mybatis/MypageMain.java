@@ -85,13 +85,4 @@ public class MypageMain
 	
 	}
 	
-
-	// 마일리지 내역
-	@RequestMapping(value ="/actions/membermileagehistory.action", method = RequestMethod.GET)
-	public String mypageHistoryHost(Model model)
-	{
-		return "redirect:/actions/membermileagehistorylist.action";
-	}
-
-	
 }
