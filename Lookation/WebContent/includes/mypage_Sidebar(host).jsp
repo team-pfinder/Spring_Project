@@ -17,7 +17,7 @@
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="bankinfomanage.action?identify=host">계좌 관리 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li><a href="booklist.action">예약 리스트 <span
+				<li><a href="booklisthost.action">예약 리스트 <span
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="loadandexchange.action?identify=host">환전
 						신청 <span class="ion-ios-arrow-forward"></span>

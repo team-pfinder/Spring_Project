@@ -4,6 +4,8 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
+	String book_code = request.getParameter("book_code");
+	String host_code = request.getParameter("host_code");
 %>
 <!DOCTYPE html>
 <html>
@@ -59,12 +61,11 @@
 	<div class="inner">
 		<!-- 호스트 → 이용자 : 예약 신고 폼 -->
 		<form action="reporthost.action" method="post">
-			<span>이용자</span>
-			<input type="text" name="host_code" value="H000003" style="display: none;">
-			<input type="text" class="form-control" value="이전페이지에서 받아온 이용자이름"
+			<span>신고자정보</span>
+			<input type="text" name="host_code" class="form-control" value="<%=host_code %>"
 			readonly="readonly"><br>
 			<span>예약번호</span>
-			<input type="text" name="book_code" value="BC000001"
+			<input type="text" name="book_code" value="<%=book_code %>"
 			class="form-control" readonly="readonly"><br>
 			<select class="form-control" name="book_report_type_code" id="book_report_type_code">
 				<option value="typeselect">==[신고유형]==</option>

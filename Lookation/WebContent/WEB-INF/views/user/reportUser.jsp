@@ -62,7 +62,7 @@
 	<div class="inner">
 		<!-- 이용자 → 호스트 : 공간게시물 신고 폼 -->
 		<form action="reportuser.action" method="post">
-			<span>호스트</span>
+			<span>신고자정보</span>
 			<input type="text" name="member_code" class="form-control" readonly="readonly"
 			value="<%=member_code %>"><br>
 			<span>신고하려는 공간</span>
