@@ -117,7 +117,6 @@ public class ReportHost
 		
 		IReportHostDAO dao = sqlSession.getMapper(IReportHostDAO.class);
 		
-		System.out.println("test");
 		
 		try
 		{
@@ -130,9 +129,7 @@ public class ReportHost
 			e.toString();
 		}
 		
-		System.out.println(book_report_code + " : " + book_report_img_url);
 		dao.addImg(book_report_code, book_report_img_url);
-		System.out.println("test_end");
 		
 		return "";
 		

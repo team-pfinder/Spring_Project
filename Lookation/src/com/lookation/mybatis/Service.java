@@ -30,9 +30,6 @@ public class Service
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
 		
-		// 임시 로그인 세션
-		// session.setAttribute("hostCode", "H000001");
-		// session.setAttribute("memberCode", "M000001");
 		
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 
@@ -87,9 +84,6 @@ public class Service
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
 		
-		// 임시 로그인 세션
-		// session.setAttribute("hostCode", "H000001");
-		// session.setAttribute("memberCode", "M000001");
 		
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 
@@ -143,9 +137,6 @@ public class Service
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
 		
-		// 임시 로그인 세션
-		// session.setAttribute("hostCode", "H000001");
-		// session.setAttribute("memberCode", "M000001");
 		
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 
@@ -199,9 +190,6 @@ public class Service
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
 		
-		// 임시 로그인 세션
-		// session.setAttribute("hostCode", "H000001");
-		// session.setAttribute("memberCode", "M000001");
 		
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 
