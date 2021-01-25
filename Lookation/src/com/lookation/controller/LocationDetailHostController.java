@@ -39,7 +39,6 @@ public class LocationDetailHostController implements Controller
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";  
 		
-		
 		try
 		{
 			// 회원 코드가 세션에 세팅되어 있다면
@@ -49,6 +48,8 @@ public class LocationDetailHostController implements Controller
 				mav.addObject("info", hoDao.getInfo(accountCode));
 				
 				mav.addObject("result", result);
+				mav.addObject("loc_code", loc_code);
+				
 				mav.addObject("basicInfo", dao.basicInfo(loc_code));
 				mav.addObject("usingInfo", dao.usingInfo(loc_code));
 				mav.addObject("facilityInfo", dao.facilityInfo(loc_code));

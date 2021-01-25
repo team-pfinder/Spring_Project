@@ -478,8 +478,7 @@ width: 100%;
 	function writeQna()
 	{	
 		var member_code = '<%=(String)session.getAttribute("memberCode")%>';
-		var identify = '<%=(String)request.getParameter("identify")%>';
-		var loc_code = document.getElementById("hiddenCode").value;
+		var loc_code = '<%=(String)request.getParameter("loc_code")%>';
 		
 		var url = "writeqna.action?identify=member&loc_code=" + loc_code 
 				+ "&member_code=" + member_code;
@@ -492,11 +491,9 @@ width: 100%;
 	function writeReview()
 	{	
 		var member_code = '<%=(String)session.getAttribute("memberCode")%>';
-		var identify = '<%=(String)request.getParameter("identify")%>';
-		var loc_code = document.getElementById("hiddenCode").value;
+		var loc_code = '<%=(String)request.getParameter("loc_code")%>';
 		
 		alert(member_code);
-		alert(identify);
 		alert(loc_code);
 		var url = "writereview.action?identify=member&loc_code="+ loc_code + "&member_code=" + member_code;
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
@@ -510,7 +507,7 @@ width: 100%;
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" name="loc_code" value="${basicInfo.locationCode }">${basicInfo.locationCode }
+				<input type="hidden" id="hiddenCode" name="loc_code" value="${loc_code }">${loc_code }
 				<input type="hidden" id="packPrice" name="packPrice" value="${packageInfo.packPrice }">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>

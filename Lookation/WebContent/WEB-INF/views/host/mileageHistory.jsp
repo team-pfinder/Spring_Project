@@ -26,12 +26,27 @@
       font-weight: bold !important;
    }
    
+   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  padding: 3px 10px;
+}
+   
+.off-screen {
+  display: none;
+}
+   
 #li1, #li2 {
   width: 100%;
   text-align: center;
 }
 
-#li1 a, #li2 a {
+#li1 a, #li2 a{
 	color: gray;
     text-align: center;
     display: inline-block;
@@ -103,7 +118,7 @@
 					<div class="tab-content" style="margin-top: 10px;">
 						<!-- 첫번째 탭 -->
 						<div class="tab-pane in active" id="first">
-							<p>조윤상님의 마일리지 정산 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 충전 내역입니다.</p>
 							<!-- 첫번째 카드 -->
 							<div class="card shadow mb-4">						
 								<div class="card-header py-3">
@@ -161,7 +176,7 @@
 
 						<!-- 두번째 탭 -->
 						<div class="tab-pane" id="second">
-							<p>조윤상님의 마일리지 환전 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 충전 내역입니다.</p>
 							<!-- 세번째 카드 -->
 							<div class="card shadow mb-4">						
 								<div class="card-header py-3">
@@ -295,9 +310,8 @@ $setRows.submit(function (e) {
 
 $setRows.submit();	
 
-
-
 </script>
+
 <script type="text/javascript">
 
 var $setRows = $('#setRows2');

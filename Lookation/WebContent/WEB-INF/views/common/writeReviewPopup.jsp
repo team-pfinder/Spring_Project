@@ -112,10 +112,17 @@
 		// 이용자 리뷰 작성
 		$("#submitBtn_m").click(function()
 		{
-			e.preventDefault();
+			event.preventDefault();
+			
+			alert("버튼 클릭");
 			
 			var form = $("#reviewForm")[0];
 			var data = new FormData(form);
+			var fileCK = $(".review_img_url").val();
+			/* if(!fileCK){
+				alert("!파일");
+			} */
+			
 			
 			if($("input[name=review_rate]:radio:checked").length == 0)
 			{
@@ -124,15 +131,16 @@
 			}
 			
 			//var formData = $("#reviewForm").serialize();
-			if($(".review_img_url").val()!=null)
+			if(!fileCK)
 			{
+				alert("리뷰이미지 없음");
+
 				$.ajax({
 					type : "post",
-					url : "reviewimg.action",
-					enctype: "multipart/form-data",
+					url : "reviewinsert.action",
+					contentType: false,
+					processData: false,
 					data : data,
-					processData : false,
-					contentType : fales,
 					complete : function(xh)
 					{	
 						//$("#reviewForm").submit();
@@ -140,22 +148,29 @@
 						window.close();
 					}
 				});
+				
+			}
+			else 
+			{
+				alert("리뷰이미지 있");
+				$.ajax({
+					type : "post",
+					url : "reviewimg.action",
+					enctype: "multipart/form-data",
+					data : data,
+					processData : false,
+					contentType : false,
+					complete : function(xh)
+					{	
+						//$("#reviewForm").submit();
+						window.opener.parent.location.reload();				
+						window.close();
+					}
+				});
+				
 			}
 			
-			$.ajax({
-				type : "post",
-				url : "reviewinsert.action",
-				enctype: "multipart/form-data",
-				data : data,
-				processData : false,
-				contentType : fales,
-				complete : function(xh)
-				{	
-					//$("#reviewForm").submit();
-					window.opener.parent.location.reload();				
-					window.close();
-				}
-			});
+			
 			
 			
 		});
@@ -189,7 +204,7 @@
 			<div class="col-md-12">
 			<!-- 이용자 -->
 			<c:if test="${identify eq 'member'}"> 
-				<form action="reviewinsert.action" id="reviewForm" enctype="multipart/form-data" method="post">
+				<form class="reviewForm" method="get">
 					<div class="header">
 						<h3 class="title my-2">리뷰 작성하기</h3>
 						<hr>
@@ -225,7 +240,10 @@
 								rows="8" maxlength="3000" required="required"
 								placeholder="내용을 입력해주세요."></textarea>
 						</div>
-						
+					</div>
+					</form>
+					<form>
+					<div class="body">	
 						<div class="form-group">
 								<label for="image">사진 첨부</label>
 								<input type="file" id="image" class="form-control" accept="image/*"
@@ -239,7 +257,7 @@
 						<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
 						<button type="submit" class="btn btn-primary" id="submitBtn_m">작성하기</button>
 					</div>
-				</form>
+					</form>
 			</c:if>
 			
 			<!-- 호스트 -->

@@ -306,6 +306,7 @@ p
 			if(confirm("삭제하시겠습니까?"))
 			{
 				$(location).attr("href", "deletereviewreply.action?review_reply_code=" + $(this).val());
+				//location.replace(document.referrer);
 			}
 		}); 
 		
@@ -570,8 +571,9 @@ p
 						<p>사업자유형 : ${bizInfo.bizCeoType}</p>
 						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
 						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
-						<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
-						
+						<c:if test="${not empty basicInfo.url }">
+							<p>웹사이트 주소 : <a href="${basicInfo.url }" style="color: gray;">${basicInfo.url }</a></p>
+						</c:if>
 					</div>
 				</div>
 				
