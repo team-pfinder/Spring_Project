@@ -236,6 +236,10 @@
 		// 이미 적용된 패키지, 추가된 패키지에서 겹치는 시간대가 있는지 확인한다.
 		for (var i = 0; i < arrPackageApply.length; i++) 
 		{
+			// 이미 삭제 처리된 적용 패키지는 검사하지 않는다.
+			if(arrPackageApply[i].state == 'delete')
+				continue;
+			
 			var otherStart = parseInt(arrPackageApply[i].start);
 			var otherEnd = parseInt(arrPackageApply[i].end);
 			
@@ -496,7 +500,7 @@ body {
 </style>
 
 </head>
-<body>
+<body>F
 	<div>
         <c:import url="${cp}/includes/header_host.jsp?result=${result }&nick=${info.nick }"></c:import>
 	</div>
@@ -504,7 +508,7 @@ body {
 
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url('<%=cp%>/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 

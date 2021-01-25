@@ -59,9 +59,11 @@ public class BookList
 
 			for (int i = 0; i < dto1.size(); i++)
 			{
-				System.out.println(dto1.get(i).getCheckbook());
+				System.out.println("--------------------------");
+				System.out.println("Checkbook : " + dto1.get(i).getCheckbook());
 				System.out.println(dto1.get(i).getPackage_start());
 				System.out.println(dto1.get(i).getApply_date());
+				System.out.println("--------------------------");
 			}
 
 			model.addAttribute("member_code", accountCode);

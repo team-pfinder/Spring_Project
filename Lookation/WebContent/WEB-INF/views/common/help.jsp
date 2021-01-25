@@ -20,11 +20,6 @@
 
 <style type="text/css">
 
-.showBtn {
-opacity: 0%;
-padding : 10px;
-}
-
 .table th, .table td {
 vertical-align: middle;
 padding : 10px;
@@ -104,15 +99,6 @@ $(document).ready(function()
 					<div class="wrapper">
 						<div class="row no-gutters mb-5">
 							<div class="card-body">
-								<div align="center">
-										 <form action="#" class="searchform order-lg-last col-mb-5">
-        								<div class="form-group d-flex col-mb-5">
-           								<input type="text" class="form-control pl-3 col-md-5" placeholder="Search">
-           									<button type="submit" class="form-control search"><span class="fa fa-search"></span></button>
-         								</div>
-       								</form>
-								</div>
-								
 								<div class="table-responsive">
 									<table class="table table-bordered text-center" id="products1">
 										
@@ -140,8 +126,7 @@ $(document).ready(function()
 											<c:forEach var="HelpDTO" items="${U_helpList }">
 												<tr align="center">
 													<td>${HelpDTO.board_type}</td>
-													<td>${HelpDTO.help_title }
-													<input type="button" value="${HelpDTO.help_code }" class="showBtn"></td>
+													<td><a href="helpdetail.action?identify=${identify}&help_code=${HelpDTO.help_code}">${HelpDTO.help_title}</a></td>
 													<td><span class="icon-person"></span>Admin</td>
 													<td><span class="icon-calendar mr-1"></span>${HelpDTO.help_date }</td>
 												</tr>

@@ -153,6 +153,7 @@ $(document).ready(function()
 									<p>최소 인원 : ${dto1.min_people}</p>
 									<p>공간 웹사이트 : ${dto5.loc_web_url}</p>
 
+
 									<h2 class="mb-3 mt-5"># 연락처</h2>
 									<hr>
 									<p>휴대폰 : ${dto1.loc_tel}</p>

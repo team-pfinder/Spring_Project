@@ -3,9 +3,12 @@
 
 
 ## lookation
-1. lookation_function.sql
+1. lookation_function.sql (F_CODE)
 2. lookation_create_table.sql
-[3. lookation_dummy_data.sql]
-4. lookation_view.sql
-5. lookation_procedure.sql
-6. lookation_function.sql
+3. lookation_sequence.sql
+4. lookation_static_data.sql
+5. lookation_view.sql
+6. lookation_procedure.sql
+7. lookation_function.sql (나머지)
+
+8. [lookation_dummy_data.sql]
