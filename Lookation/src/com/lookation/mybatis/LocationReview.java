@@ -1,6 +1,7 @@
 package com.lookation.mybatis;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,7 @@ public class LocationReview
 				model.addAttribute("info", dao.getInfo(accountCode));
 				String member_code = request.getParameter("member_code");
 				model.addAttribute("member_code", member_code);
+				System.out.println("리뷰폼 호출" + member_code);
 
 			}
 			// 호스트일 경우
@@ -67,7 +69,7 @@ public class LocationReview
 		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
 		model.addAttribute("result", result);                                               
 		model.addAttribute("accountCode", accountCode);
-		System.out.println("여기서 + " + accountCode);
+		System.out.println("뷰에 넘겨줄때 : " + accountCode);
 		
 		// 로그인이 안되어 있다면 
 		if(result.equals("noSigned"))
@@ -77,6 +79,7 @@ public class LocationReview
 		}
 		                                                                                    
 		model.addAttribute("loc_code", loc_code);
+		System.out.println("뷰에 넘겨줄때 : " + loc_code);
 		
 		return "../WEB-INF/views/common/writeReviewPopup.jsp";
 	}
@@ -143,35 +146,29 @@ public class LocationReview
 	/*=== 이용자 ===*/
 	
 	// 이용자 : 리뷰 텍스트 작성
-	@RequestMapping(value="/actions/reviewinsert.action", method = RequestMethod.POST)
-	public void insertReview(LocationReviewDTO dto, HttpServletRequest request)
+	@RequestMapping(value="/actions/reviewinsert.action", method = {RequestMethod.POST, RequestMethod.GET})
+	public void insertReview(LocationReviewDTO dto, HttpServletRequest request) throws IOException
 	{
 		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
+		MultipartRequest m = new MultipartRequest(request, "images");
+		String loc_name = m.getParameter("loc_name");
+		System.out.println("loc_name 파라미터로 : " + loc_name);
+		
+		dto.setLoc_code(m.getParameter("loc_code"));
+		
+		System.out.println("loc_name : " + m.getParameter("loc_code"));
+		dto.setMember_code(m.getParameter("member_code"));
+		dto.setReview_rate(m.getParameter("review_rate"));
+		dto.setReview_content(m.getParameter("review_content"));
+		
+		
 		System.out.println("여기서 2 " + dto.getMember_code());
 		
-		try
-		{
-			MultipartRequest m = null;
-			//ArrayList<String> imageList = FileManager.getFileNames(m);
-			
-			// ('L000001', 'M000002', 4, '안녕하세용', 'too.png');
-			
-			
-			dto.setLoc_code(m.getParameter("loc_code"));
-			dto.setMember_code(m.getParameter("member_code"));
-			dto.setReview_rate(m.getParameter("review_rate"));
-			dto.setReview_content(m.getParameter("review_content"));
-		
-		} catch (Exception e)
-		{
-			e.toString();
-		}
+		locDao.insertMemReview(dto);
 		
 		System.out.println("확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() 
-		+ ", " + dto.getReview_rate() + ", " + dto.getReview_img_url() +" 끝! ");
+		+ ", " + dto.getReview_rate() + ", " + dto.getReview_content() +" 끝! ");
 		
-		// 리뷰쓰기
-		locDao.insertMemReview(dto);
 	}
 	
 	// 이용자 : 리뷰 이미지 첨부 작성
@@ -202,7 +199,7 @@ public class LocationReview
 			e.toString();
 		}
 		
-		System.out.println("확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() 
+		System.out.println("파일첨부 확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() 
 		+ ", " + dto.getReview_rate() + ", " + dto.getReview_img_url() +" 끝! ");
 		
 		// 리뷰쓰기

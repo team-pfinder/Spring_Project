@@ -119,7 +119,6 @@ public class ReportUser
 		
 		IReportUserDAO dao = sqlSession.getMapper(IReportUserDAO.class);
 		
-		System.out.println("test");
 		
 		try
 		{
@@ -132,9 +131,7 @@ public class ReportUser
 			e.toString();
 		}
 		
-		System.out.println(loc_report_code + " : " + loc_report_img_url);
 		dao.addImg(loc_report_code, loc_report_img_url);
-		System.out.println("test_end");
 		
 		return "";
 	}

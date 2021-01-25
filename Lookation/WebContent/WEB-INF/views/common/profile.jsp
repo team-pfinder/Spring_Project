@@ -192,7 +192,6 @@
 		</c:if>
 	</div>
 
-	
 
 	<!-- 프로필관리 양식 -->
 	<div class="container">
