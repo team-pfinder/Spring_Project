@@ -201,7 +201,7 @@ margin-bottom: 0;
 											
  											<c:choose>
 												<c:when test="${book.checkbook eq '취소완료'}">
-													<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+													<td class="text-danger">취소완료${book.checkbook}</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
@@ -217,14 +217,14 @@ margin-bottom: 0;
 												</c:when>
 												
 												<c:when test="${book.checkbook eq '이용완료'}">
-													<td class="text-danger">이용완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+													<td class="text-danger">이용완료${book.checkbook}</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														신고</button>
 														<button type="button" value="${book.book_code}"
 															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															disabled="disabled">
+															>
 															취소</button>
 														<button type="button" value="${book.book_code}"
 															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
@@ -233,14 +233,14 @@ margin-bottom: 0;
 												</c:when>
 												
 												<c:when test="${book.checkbook eq '예약완료'}">
-													<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+													<td class="text-danger">취소완료${book.checkbook}</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														신고</button>
 														<button type="button" value="${book.book_code}"
 															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															disabled="disabled">
+															>
 															취소</button>
 														<button type="button" value="${book.book_code}"
 															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">

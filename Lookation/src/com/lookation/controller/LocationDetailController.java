@@ -58,6 +58,7 @@ public class LocationDetailController implements Controller
 			
 			// 로그인 여부 데이터를 뷰에 넘겨준다.
 			mav.addObject("result", result);
+			mav.addObject("loc_code", loc_code);
 			
 			mav.addObject("basicInfo", dao.basicInfo(loc_code));
 			mav.addObject("usingInfo", dao.usingInfo(loc_code));
@@ -71,6 +72,8 @@ public class LocationDetailController implements Controller
 			mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
 			
 			mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
+			
+			
 			
 			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
 			
