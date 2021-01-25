@@ -86,9 +86,7 @@ String cp = request.getContextPath();
                 <li><a href="#">Construction <span class="ion-ios-arrow-forward"></span></a></li>
                 <li><a href="#">House Renovation <span class="ion-ios-arrow-forward"></span></a></li>
                 <li><a href="#">Painting <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Architecture Design <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Interior Design <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Preconstruction Planning <span class="ion-ios-arrow-forward"></span></a></li>
+                
               </div>
             </div>
 

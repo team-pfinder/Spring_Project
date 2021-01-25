@@ -28,6 +28,7 @@ GRANT CREATE TRIGGER TO LOOKATION;
 GRANT CREATE TABLESPACE TO LOOKATION;
 --==>> Grant을(를) 성공했습니다.
 
+/*
 -- 암호화 패키지 설치
 @E:\oracleexe\app\oracle\product\11.2.0\server\rdbms\admin\dbmsobtk.sql
 @E:\oracleexe\app\oracle\product\11.2.0\server\rdbms\admin\prvtobtk.plb
@@ -35,3 +36,4 @@ GRANT CREATE TABLESPACE TO LOOKATION;
 -- 암호화 패키지 사용 권한 부여
 GRANT EXECUTE ON DBMS_OBFUSCATION_TOOLKIT TO LOOKATION;
 --==>> Grant을(를) 성공했습니다.
+*/
