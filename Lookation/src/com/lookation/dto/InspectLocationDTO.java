@@ -18,8 +18,8 @@ public class InspectLocationDTO
 	
 	private String package_name, package_start, package_end;
 	
-	private String loc_web_url;
-	
+	private String loc_web_url,loc_detail_img_url,biz_license_url;
+
 	private String inspect_reg_code;
 	
 	private String inspect_proc_code,inspect_type_code,inspect_proc_reason,inspect_proc_type,
@@ -28,6 +28,27 @@ public class InspectLocationDTO
 
 	// InspectManager, InspectProcess
 	// getter / setter 구성
+	
+	public String getBiz_license_url()
+	{
+		return biz_license_url;
+	}
+
+	public void setBiz_license_url(String biz_license_url)
+	{
+		this.biz_license_url = biz_license_url;
+	}
+
+	
+	public String getLoc_detail_img_url()
+	{
+		return loc_detail_img_url;
+	}
+
+	public void setLoc_detail_img_url(String loc_detail_img_url)
+	{
+		this.loc_detail_img_url = loc_detail_img_url;
+	}
 	
 	public String getCount()
 	{

@@ -15,7 +15,6 @@ import com.lookation.dao.IAccountDAO;
 import com.lookation.dao.IBankInfoDAO;
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.IMemberAccountDAO;
-import com.lookation.dao.MemberAccountDAO;
 import com.lookation.dto.BankInfoDTO;
 
 public class BankInfoManageController implements Controller
@@ -26,15 +25,12 @@ public class BankInfoManageController implements Controller
 	{
 		this.dao = dao;
 	}
-	
 	private IAccountDAO memberDao;
 	
 	public void setMemberDao(IAccountDAO memberDao)
 	{
 		this.memberDao = memberDao;
 	}	
-	
-	
 	@Autowired
 	private SqlSession sqlSession;
 	@Override
@@ -50,8 +46,6 @@ public class BankInfoManageController implements Controller
 		
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();                                                                  
-		session.setAttribute("memberCode", "M000001");
-		session.setAttribute("hostCode", "H000003");
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 		
 		// 로그인 확인을 기록하기 위함                  
@@ -94,12 +88,6 @@ public class BankInfoManageController implements Controller
 				
 				try
 				{
-					// 분기 테스트용
-					// 세션 설정----------------------------------------
-					//mav.addObject("identify", identify);
-					//mav.addObject("identifyCode", identifyCode);
-					//--------------------------------------------------
-					
 					// 계좌 리스트 받아오기
 					bankInfoList = dao.hostBankInfoLists(accountCode);
 					
@@ -114,7 +102,6 @@ public class BankInfoManageController implements Controller
 					System.out.println(e.toString());	
 				}
 
-		                                                  
 			}
 			// 로그인이 되었음을 기록한다.
 	        result = "signed";      

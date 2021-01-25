@@ -9,8 +9,9 @@ public class BookListDTO
 	, actual_booker, actual_booker_tel, book_people, book_date
 	, book_req, biz_name, biz_ceo, biz_license_number
 	, member_cancel_reason, host_cancel_reason, member_email
-	, loc_addr, loc_detail_addr, member_nickname;
-	
+	, loc_addr, loc_detail_addr, member_nickname
+	, host_code;
+
 	private String checkbook;
 	private int days, package_price;
 	
@@ -326,5 +327,14 @@ public class BookListDTO
 		this.host_cancel_reason = host_cancel_reason;
 	}
 	
+	public String getHost_code()
+	{
+		return host_code;
+	}
+
+	public void setHost_code(String host_code)
+	{
+		this.host_code = host_code;
+	}
 	
 }

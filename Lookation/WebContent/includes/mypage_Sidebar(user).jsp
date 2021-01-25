@@ -12,7 +12,7 @@
 	<div class="col-lg-2 sidebar pl-lg-5 ftco-animate">
 		<div class="sidebar-box ftco-animate">
 			<div class="categories back-default">
-				<h3><a href="mypage.actionidentify=member">마이페이지</a></h3><hr>
+				<h3><a href="mypage.action?identify=member">마이페이지</a></h3><hr>
 				<li><a href="profile.action?identify=member">프로필 관리 <span
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="bankinfomanage.action?identify=member">계좌 관리 <span

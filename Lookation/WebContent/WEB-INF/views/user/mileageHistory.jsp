@@ -39,7 +39,7 @@ th, td {
 .off-screen {
   display: none;
 }
-#li1, #li2, #li3, #li2 {
+#li1, #li2, #li3, #li4 {
   width: 100%;
   text-align: center;
 }
@@ -74,7 +74,7 @@ th, td {
 	
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url('${pageContext.request.contextPath}/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
@@ -125,7 +125,7 @@ th, td {
 					<div class="tab-content" style="margin-top: 10px;">
 						<!-- 첫번째 탭 -->
 						<div class="tab-pane in active" id="first">
-							<p>조윤상님의 마일리지 사용 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 사용 내역입니다.</p>
 							<!-- 첫번째 카드 -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
@@ -151,15 +151,14 @@ th, td {
 												<th colspan="5">사용 내역이 존재하지 않습니다.</th>
 											</tr>
 											</c:if>
-									
-											<tr>
 											<c:forEach var="item" items="${payHistory}" varStatus="status">
+											<tr>
 												<th>${status.count}</th>
 												<td>${item.name}</td>
 												<td>${item.price}</td>
 												<td>${item.payDate}</td>
-											</c:forEach>
 											</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>
@@ -167,7 +166,7 @@ th, td {
 						</div>
 						<!-- 두번째 탭 -->
 						<div class="tab-pane" id="second">
-							<p>조윤상님의 마일리지 충전 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 충전 내역입니다.</p>
 							<!-- 두번째 카드 -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
@@ -226,7 +225,7 @@ th, td {
 						</div>
 						<!-- 세번째 탭 -->
 						<div class="tab-pane" id="third">
-							<p>조윤상님의 마일리지 환전 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 환전 내역입니다.</p>
 							<!-- 세번째 카드 -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
@@ -272,7 +271,7 @@ th, td {
 						</div>
 						<!-- 네번째 탭 -->
 						<div class="tab-pane" id="fourth">
-							<p>조윤상님의 환불 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 환불 내역입니다.</p>
 							<!-- 네번째 카드 -->
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">

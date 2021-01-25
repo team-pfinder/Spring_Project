@@ -69,7 +69,7 @@
 </div>
 	<!-- 타이틀 -->
 	<section class="hero-wrap hero-wrap-2"
-		style="background-image: url('images/bg_3.jpg');"
+		style="background-image: url('${pageContext.request.contextPath}/images/bg_3.jpg');"
 		data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
@@ -113,12 +113,9 @@
 				<div class="col-lg-10 col-md-10">
 					<!-- Page Heading -->
 					<p class="mb-4">
-						마일리지 관리를 위한 계좌를 등록하고 관리하세요.<br>
-					    입금하시는 계좌 정보의 계좌번호와 이곳에 등록하신 계좌번호가<br>
-					    완전히 동일해야(띄어쓰기 및 특수문자 금지, 숫자만 허용) 
-					    자동입금확인 처리가 가능합니다.
+						마일리지 관리를 위한 계좌를 등록하고 관리하세요. 입금하시는 계좌 정보의 계좌번호와 이곳에 등록하신 계좌번호가 완전히 일치해야 자동입금확인 처리가 가능합니다.
 					</p>
-			
+					<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 계좌 목록입니다.</p>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-default">계좌 등록 / 삭제</h6>

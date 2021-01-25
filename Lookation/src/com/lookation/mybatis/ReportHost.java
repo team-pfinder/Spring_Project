@@ -25,50 +25,6 @@ public class ReportHost
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// 신고 접수 폼 호출
-	@RequestMapping(value = "/actions/reporthostform.action", method = RequestMethod.GET)
-	public String addForm(HttpServletRequest request, Model model)
-	{
-		// 세션을 통한 로그인 확인                                                                    
-		HttpSession session = request.getSession();                                                                  
-		String accountCode = (String)session.getAttribute("hostCode"); 
-
-		// 로그인 확인을 기록하기 위함                  
-		String result = "noSigned";                                                         
-
-		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
-		if(accountCode != null)                                         
-		{       
-			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
-		        // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
-
-			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
-				model.addAttribute("info", dao.getInfo(accountCode));
-
-			// 호스트측면 추가로 해야할 작업은 이 밑에 쓴다.
-
-
-
-			
-			// 로그인이 되었음을 기록한다.
-		        result = "signed";                                                                                
-		}
-
-		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
-		model.addAttribute("result", result);                                               
-
-
-		// 로그인이 안되어 있다면 
-		if(result.equals("noSigned"))
-		{
-		    // 로그인 창으로 이동한다.
-		    return "redirect:loginform.action?identify=host";
-		}
-		
-		
-		return "/WEB-INF/views/host/reportHost.jsp";
-	}
-	
 	
 	// 신고 접수 후 이미지 업로드 폼 호출
 	@RequestMapping(value = "/actions/reporthost.action", method = RequestMethod.POST)
