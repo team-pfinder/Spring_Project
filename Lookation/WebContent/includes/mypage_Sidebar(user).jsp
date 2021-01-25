@@ -19,7 +19,7 @@
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="booklist.action">예약 리스트 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li><a href="loadandexchange.action?identify=member">충전 및 환전
+				<li id="check"><a href="loadandexchange.action?identify=member">충전 및 환전
 						신청 <span class="ion-ios-arrow-forward"></span>
 				</a></li>
 				<li><a href="mileagehistory.action?identify=member">마일리지 내역 <span
@@ -28,6 +28,31 @@
 		</div>
 
 	</div>
+
+<script type="text/javascript">
+/*
+	// 충전 환전 페이지 접근시 계좌 유무 확인 후 계좌관리 페이지로 이동
+	$(function()
+	{	
+		$("#check").click(function()
+		{
+			alert("check");
+			
+			$.ajax({
+				type : "post",
+				url : ".action",
+				complete : function(xh)
+				{		
+					if()
+
+				}
+			});
+	
+		});
+	});
+*/				
+</script>
+
 
 </body>
 </html>
