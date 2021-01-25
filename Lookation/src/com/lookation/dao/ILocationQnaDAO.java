@@ -34,7 +34,7 @@ public interface ILocationQnaDAO
 	public int updateHostQna(LocationQnaDTO dto);
 	
 	// 호스트 Q&A 답글 삭제
-	public int deleteHostQna(LocationQnaDTO dto);
+	public int deleteHostQna(String qna_reply_code);
 
 
 

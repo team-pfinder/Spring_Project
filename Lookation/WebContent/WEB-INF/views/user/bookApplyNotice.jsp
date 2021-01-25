@@ -12,6 +12,18 @@
 <title>예약신청완료.jsp</title>
 <c:import url="${cp}/includes/header_user.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+<script type="text/javascript">
+
+
+	$(function()
+	{
+		$("#main").click(function()
+		{
+			$(location).attr("href","membermain.action?identify=member"+ $(this).val());
+		});
+
+	});
+</script>
 </head>
 <body>
 
@@ -79,7 +91,7 @@
 				
 				<!-- <a  role="button">메인 화면으로 돌아가기</a> -->
 				<div class="text-center">
-					<button class="btn btn-primary" type="button" onclick="location:href='membermain.action'">메인 화면으로 돌아가기</button>
+					<button class="btn btn-primary" type="button" id="main">메인 화면으로 돌아가기</button>
 				</div>
 			
 			</div><!-- End .col-md-12  -->

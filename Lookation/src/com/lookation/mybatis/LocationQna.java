@@ -194,13 +194,13 @@ public class LocationQna
 
 	// 호스트 : QnA 답글 삭제
 	@RequestMapping(value = "/actions/deleteqnareply.action", method = RequestMethod.GET)
-	public String deleteQnaReply(LocationQnaDTO dto)
+	public void deleteQnaReply(String qna_reply_code)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
+		System.out.println(qna_reply_code);
+		dao.deleteHostQna(qna_reply_code);
 
-		dao.deleteHostQna(dto);
-
-		return "redirect:locationdetailhost.action";
+		//return "redirect:locationdetailhost.action";
 
 	}
 

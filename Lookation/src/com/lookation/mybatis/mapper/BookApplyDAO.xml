@@ -64,8 +64,7 @@
 		, APPLY_DATE, PACKAGE_NAME, PACKAGE_START, PACKAGE_END
 		, PACKAGE_PRICE
 		FROM VIEW_BOOKAPPLYNOTICE
-		WHERE BOOK_CODE = (SELECT BOOK_CODE
-		                     FROM 
+		WHERE BOOK_CODE = (SELECT BOOK_CODE FROM 
 		                    (SELECT BOOK_CODE 
 		                       FROM BOOK_LIST 
 		                      WHERE MEMBER_CODE=#{member_code} 

@@ -72,14 +72,10 @@
 		<div class="row">
 			<div class="col-md-12 px-3 pb-3 pt-4 mb-4 my-0 details-box">
 				<!-- 공간 예약코드 -->
-				<c:if test="${details.checkbook == 1 }">1${details.checkbook }</c:if>
-				<c:if test="${details.checkbook == -1 }">-1${details.checkbook }</c:if>
-				<c:if test="${details.checkbook == 0 }">0${details.checkbook }</c:if>
-				예약상태 다시
 				<div class="float-right">
 					<span class="text-dark">예약번호 : ${details.book_code}</span>
 				</div>
-				<hr>
+				<hr class="my-4">
 			
 			<div class="col-md-12">
 				<!-- 이전 페이지에서 해당 예약에 대한 데이터 받아와야 함. -->
