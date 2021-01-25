@@ -3,6 +3,10 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String memberCode = (String)session.getAttribute("memberCode");
+	pageContext.setAttribute("Code", memberCode);
+	
 %>
 
 <!DOCTYPE html>
@@ -305,8 +309,8 @@ p
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deletereviewreply.action?review_reply_code=" + $(this).val());
-				//location.replace(document.referrer);
+				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
+				$(location).attr("href", "deletereviewreply.action?review_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
 		
@@ -331,7 +335,8 @@ p
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deleteqnareply.action?qna_reply_code=" + $(this).val());
+				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
+				$(location).attr("href", "deleteqnareply.action?qna_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
 		
@@ -519,7 +524,7 @@ p
 										</p>
 									</c:if>
 									
-									<c:if test="${rv.hostCode == 'H000003' && rv.count ne 1}">
+									<c:if test="${rv.hostCode == hostCode && rv.count ne 1}">
 										<button type="button" class="reply border-0 writeReview" id="reviewCode" value="${rv.boardCode }">답글</button>
 									</c:if>
 								</c:if>
@@ -537,7 +542,7 @@ p
 										
 										<c:if test="${rv.replyRemove eq 0 }">
 											<p class="pr-5">${rv.replyContent }</p>
-											<c:if test="${rv.hostCode == 'H000003'}">
+											<c:if test="${rv.hostCode == hostCode}">
 												<button type="button" class="reply border-0 modifyReview" value="${rv.replyCode }">수정</button> 
 												<button type="button" class="reply border-0 deleteReview" value="${rv.replyCode }">삭제</button>
 											</c:if>
@@ -658,7 +663,7 @@ p
 							<c:if test="${qna.removeCount==0}">
 								<p class="pr-5">${qna.qna_content }</p>
 								
-								<c:if test="${qna.hostCode == 'H000003' && qna.count ne 1}">
+								<c:if test="${qna.hostCode == hostCode && qna.count ne 1}">
 									<button type="button" class="reply border-0 writeQna" id="qnaCode" value="${qna.boardCode }">답글</button>
 								</c:if>
 							</c:if>
@@ -673,7 +678,7 @@ p
 								</c:if>
 								<c:if test="${qna.replyRemove eq 0}">
 									<p class="pr-5">${qna.replyContent }</p>
-									<c:if test="${qna.hostCode == 'H000003'}">
+									<c:if test="${qna.hostCode == hostCode}">
 										<button type="button" class="reply border-0 modifyQna" value="${qna.replyCode }">수정</button> 
 										<button type="button" class="reply border-0 deleteQna" value="${qna.replyCode }">삭제</button>
 									</c:if>

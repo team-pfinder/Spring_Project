@@ -30,7 +30,9 @@
 		color: #00043c;
 	}
 	
-	
+	a {
+	color: #00043c;
+	}
 	   form {
   width: 100%;
 }
@@ -197,11 +199,11 @@ margin-bottom: 0;
 												</c:otherwise>
 											</c:choose>
 											
-											<td>${book.loc_name }</td>
+											<td class="font-weight-bold"><a href="locationdetail.action?loc_code=${book.loc_code}">${book.loc_name }</a></td>
 											
  											<c:choose>
 												<c:when test="${book.checkbook eq '취소완료'}">
-													<td class="text-danger">취소완료${book.checkbook}</td>
+													<td class="text-danger">취소완료</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
@@ -217,7 +219,7 @@ margin-bottom: 0;
 												</c:when>
 												
 												<c:when test="${book.checkbook eq '이용완료'}">
-													<td class="text-danger">이용완료${book.checkbook}</td>
+													<td class="text-danger">이용완료</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
@@ -233,7 +235,7 @@ margin-bottom: 0;
 												</c:when>
 												
 												<c:when test="${book.checkbook eq '예약완료'}">
-													<td class="text-danger">취소완료${book.checkbook}</td>
+													<td class="text-danger">취소완료</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">

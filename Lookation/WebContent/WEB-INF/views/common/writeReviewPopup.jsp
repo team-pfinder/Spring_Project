@@ -114,16 +114,15 @@
 		{
 			event.preventDefault();
 			
-			alert("버튼 클릭");
-			
 			var form = $("#reviewForm")[0];
 			var data = new FormData(form);
-			var fileCK = $(".review_img_url").val();
-			/* if(!fileCK){
+			/* var fileCK = $(".review_img_url").val();
+			
+			if(!fileCK){
 				alert("!파일");
 			} */
 			
-			
+			// 별점 선택하지 않았을 경우
 			if($("input[name=review_rate]:radio:checked").length == 0)
 			{
 				alert("별점을 선택해주세요"); 
@@ -131,50 +130,20 @@
 			}
 			
 			//var formData = $("#reviewForm").serialize();
-			if(!fileCK)
-			{
-				alert("리뷰이미지 없음");
-
-				$.ajax({
-					type : "post",
-					url : "reviewinsert.action",
-					contentType: false,
-					processData: false,
-					data : data,
-					complete : function(xh)
-					{	
-						//$("#reviewForm").submit();
-						window.opener.parent.location.reload();				
-						window.close();
-					}
-				});
-				
-			}
-			else 
-			{
-				alert("리뷰이미지 있");
-				$.ajax({
-					type : "post",
-					url : "reviewimg.action",
-					enctype: "multipart/form-data",
-					data : data,
-					processData : false,
-					contentType : false,
-					complete : function(xh)
-					{	
-						//$("#reviewForm").submit();
-						window.opener.parent.location.reload();				
-						window.close();
-					}
-				});
-				
-			}
-			
-			
-			
+			$.ajax({
+				type : "post",
+				url : "reviewinsert.action",
+				contentType: false,
+				processData: false,
+				data : data,
+				complete : function(xh)
+				{	
+					window.opener.parent.location.reload();				
+					window.close();
+				}
+			});
 			
 		});
-		
 		//$("input[@name=review_rate]").filter('input[@value='+sValue+']').attr("checked", "checked"); 
 	});
 
@@ -204,7 +173,7 @@
 			<div class="col-md-12">
 			<!-- 이용자 -->
 			<c:if test="${identify eq 'member'}"> 
-				<form class="reviewForm" method="get">
+				<form id="reviewForm" method="post" enctype="multipart/form-data">
 					<div class="header">
 						<h3 class="title my-2">리뷰 작성하기</h3>
 						<hr>
@@ -229,20 +198,14 @@
 					
 					<div class="body">
 						<div class="form-group">
-							<%
-								String member_code = (String)request.getParameter("member_code");
-								pageContext.setAttribute("member_code", member_code);
-							%>
 							<input type="hidden" value="${loc_code}" name="loc_code">
-							<input type="hidden" value="${member_code }" name="member_code">
-							<label for="content">내용${memberCode }</label>
+							<input type="hidden" value="${memberCode }" name="member_code">
+							<label for="content">내용</label>
 							<textarea class="form-control" id="content" name="review_content"
 								rows="8" maxlength="3000" required="required"
 								placeholder="내용을 입력해주세요."></textarea>
 						</div>
 					</div>
-					</form>
-					<form>
 					<div class="body">	
 						<div class="form-group">
 								<label for="image">사진 첨부</label>
@@ -257,12 +220,12 @@
 						<button type="button" class="btn btn-dark" onClick="self.close();">닫기</button>
 						<button type="submit" class="btn btn-primary" id="submitBtn_m">작성하기</button>
 					</div>
-					</form>
+				</form>
 			</c:if>
 			
 			<!-- 호스트 -->
 			<c:if test="${identify eq 'host'}"> 
-				<form action="reviewreplyinsert.action" id="reviewForm" method="post">
+				<form action="reviewreplyinsert.action" method="post">
 					<div class="header">
 						<h3 class="title my-2">리뷰 답글 작성하기</h3>
 						<hr>

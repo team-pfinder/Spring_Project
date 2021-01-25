@@ -449,9 +449,11 @@ width: 100%;
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deleteqna.action?identify=member&qna_code=" + $(this).val());
-				location.replace(document.referrer);
+				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
+				
+				$(location).attr("href", "deleteqna.action?qna_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
+			//$(location).attr("href", "locationdetail.action?loc_code="+loc_code);
 		}); 
 		
 		// 이용자 리뷰 삭제하는 팝업 
@@ -459,8 +461,9 @@ width: 100%;
 		{
 			if(confirm("삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "deletereview.action?identify=member&review_code=" + $(this).val());
-				location.replace(document.referrer);
+				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
+				
+				$(location).attr("href", "deletereview.action?review_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
 		
@@ -648,7 +651,7 @@ width: 100%;
 										
 										<c:if test="${rv.rvimgCount ne 0 }">
 											<p>
-												<img class="review-img" src="<%=cp%>${rv.url}"
+												<img class="review-img" src="<%=cp%>/images/${rv.url}"
 													alt="리뷰사진">
 											</p>
 										</c:if>
