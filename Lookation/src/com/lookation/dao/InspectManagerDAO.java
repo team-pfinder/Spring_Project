@@ -106,7 +106,7 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	}
 
 	 //패키지
-	
+	/*
 	  @Override
 	  public InspectLocationDTO pakageInfo(String inspect_reg_code) throws SQLException 
 	  { 
@@ -136,8 +136,9 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	  
 	  return result; 
 	 }
-	
-	  //시설안내
+	*/
+	  
+	/*
 	  @Override
 	   public InspectLocationDTO facilityInfo(String inspect_reg_code) throws SQLException
 	   {
@@ -163,8 +164,40 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	      
 	      return result;
 	   }
+	  */
+	
+	//시설안내
+	  @Override
+	   public ArrayList<InspectLocationDTO> facilityInfo(String locCode) throws SQLException
+	   {
+	      ArrayList<InspectLocationDTO> result = new ArrayList<InspectLocationDTO>();
+	      
+	      Connection conn = dataSource.getConnection();
+	      String sql = "SELECT FACILITY_CONTENT FROM FACILITY_INFO_VIEW "
+	               + " WHERE INSPECT_REG_CODE = ? ";
+	      
+	      PreparedStatement pstmt = conn.prepareStatement(sql);
+	      pstmt.setString(1, locCode);
+	      
+	      ResultSet rs = pstmt.executeQuery();
+	      
+	      while(rs.next())
+	      {
+	    	  InspectLocationDTO dto = new InspectLocationDTO();
+	         dto.setFacility_content(rs.getString("FACILITY_CONTENT"));
+	         
+	         result.add(dto);
+	      }
+	      rs.close();
+	      pstmt.close();
+	      conn.close();
+	      
+	      return result;
+	   }
 
-	  //주의사항
+
+	  
+	  /*
 	   @Override
 	   public InspectLocationDTO cautionInfo(String inspect_reg_code) throws SQLException
 	   {
@@ -190,17 +223,17 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	      
 	      return result;
 	   }
-
-	   
-	   /*
-	   public ArrayList<LocationDTO> cautionInfo(String inspect_reg_code) throws SQLException
+*/
+	//주의사항
+	   @Override
+	   public ArrayList<InspectLocationDTO> cautionInfo(String inspect_reg_code) throws SQLException
 	   {
-	      ArrayList<LocationDTO> result = new ArrayList<LocationDTO>();
+	      ArrayList<InspectLocationDTO> result = new ArrayList<InspectLocationDTO>();
 	      
 	      Connection conn = dataSource.getConnection();
 	      
-	      String sql = "SELECT CAUTION_CONTENT FROM CAUTION_CONTENT_VIEW"
-	               + " WHERE INSPECT_REG_CODE=?";
+	      String sql = "SELECT CAUTION_CONTENT FROM CAUTION_VIEW "
+	               + " WHERE INSPECT_REG_CODE = ? ";
 	      
 	      PreparedStatement pstmt = conn.prepareStatement(sql);
 	      pstmt.setString(1, inspect_reg_code);
@@ -209,7 +242,7 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	      
 	      while(rs.next())
 	      {
-	         LocationDTO dto = new LocationDTO();
+	    	  InspectLocationDTO dto = new InspectLocationDTO();
 	         
 	         dto.setCaution_content(rs.getString("CAUTION_CONTENT"));
 	         
@@ -221,7 +254,7 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	      
 	      return result;
 	   }
-	   */
+	  
 	   
 	   //사이트 
 	   @Override
@@ -241,6 +274,60 @@ public class InspectManagerDAO implements IInspectManagerDAO
 	      while(rs.next())
 	      {
 	         result.setLoc_web_url(rs.getString("LOC_WEB_URL"));
+	      }
+	      
+	      rs.close();
+	      pstmt.close(); 
+	      conn.close();
+	      
+	      return result;
+	   }
+	   
+	   //공간 이미지
+	   @Override
+	   public ArrayList<String> loc_img(String inspect_reg_code) throws SQLException
+	   {
+		   ArrayList<String> result = new ArrayList<String>();
+	      
+	      Connection conn = dataSource.getConnection();
+	      
+	      String sql = "SELECT LOC_DETAIL_IMG_URL FROM LOC_IMG_VIEW "
+	               + " WHERE INSPECT_REG_CODE = ? ";
+	      
+	      PreparedStatement pstmt = conn.prepareStatement(sql);
+	      pstmt.setString(1,inspect_reg_code);
+	      ResultSet rs = pstmt.executeQuery();
+	      
+	      while(rs.next())
+	      {
+	         result.add(rs.getString("LOC_DETAIL_IMG_URL"));
+	      }
+	      
+	      rs.close();
+	      pstmt.close(); 
+	      conn.close();
+	      
+	      return result;
+	   }
+	   
+	   //사업자 등록증
+	   @Override
+	   public InspectLocationDTO biz_img(String inspect_reg_code) throws SQLException
+	   {
+		  InspectLocationDTO result = new InspectLocationDTO();
+	      
+	      Connection conn = dataSource.getConnection();
+	      
+	      String sql = "SELECT BIZ_LICENSE_URL FROM BIZ_IMG_VIEW "
+	               + " WHERE INSPECT_REG_CODE = ? ";
+	      
+	      PreparedStatement pstmt = conn.prepareStatement(sql);
+	      pstmt.setString(1,inspect_reg_code);
+	      ResultSet rs = pstmt.executeQuery();
+	      
+	      while(rs.next())
+	      {
+	         result.setBiz_license_url(rs.getString("BIZ_LICENSE_URL"));
 	      }
 	      
 	      rs.close();
