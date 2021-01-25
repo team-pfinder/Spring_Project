@@ -19,11 +19,6 @@
 
 <style type="text/css">
 
-.showBtn {
-opacity: 0%;
-padding : 10px;
-}
-
 .table th, .table td {
 vertical-align: middle;
 padding : 10px;
@@ -105,15 +100,6 @@ $(document).ready(function()
 
 
 							<div class="card-body">
-								<div align="center">
-										<form action="#" class="searchform order-lg-last">
-        								<div class="form-group d-flex">
-           								<input type="text" class="form-control pl-3" placeholder="Search">
-           									<button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
-         								</div>
-       								</form>
-								</div>
-								
 								<div class="table-responsive">
 									<table class="table table-bordered text-center" id="products1">
 										
@@ -142,8 +128,7 @@ $(document).ready(function()
 													<tr align="center">
 													
 														<td>${NoticeDTO.important_notice}</td>
-														<td>${NoticeDTO.notice_title }
-														<input type="button" value="${NoticeDTO.notice_code }" class="showBtn"></td>
+														<td><a href="noticedetail.action?identify=${identify}&notice_code=${NoticeDTO.notice_code}">${NoticeDTO.notice_title}</a></td>
 														<td><span class="icon-person"></span>Admin</td>
 														<td><span class="icon-calendar mr-1"></span>${NoticeDTO.notice_date }</td>
 													</tr>
