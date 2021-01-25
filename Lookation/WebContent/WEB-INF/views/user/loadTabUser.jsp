@@ -57,7 +57,7 @@
 									<tr>
 										<th colspan="2">
 											<label><input type="checkbox" required/> 이용약관 동의 <a 
-											href="bankAccountTerms.jsp" onclick="window.open(this.href,'약관','width=600, height=670');return false;">[약관보기]</a></label>
+											href="terms.action" onclick="window.open(this.href,'약관','width=600, height=670');return false;">[약관보기]</a></label>
 										</th>
 									</tr>
 								</table>

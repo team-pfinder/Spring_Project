@@ -26,12 +26,27 @@
       font-weight: bold !important;
    }
    
+   form {
+  width: 100%;
+}
+table {
+  border-collapse:collapse;
+  margin-bottom: 10px;
+}
+th, td {
+  padding: 3px 10px;
+}
+   
+.off-screen {
+  display: none;
+}
+   
 #li1, #li2 {
   width: 100%;
   text-align: center;
 }
 
-#li1 a, #li2 a {
+#li1 a, #li2 a{
 	color: gray;
     text-align: center;
     display: inline-block;
@@ -295,9 +310,8 @@ $setRows.submit(function (e) {
 
 $setRows.submit();	
 
-
-
 </script>
+
 <script type="text/javascript">
 
 var $setRows = $('#setRows2');

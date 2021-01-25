@@ -17,7 +17,7 @@
 	function showPopup()
 	{
 		var obj = document.frm;
-		url = "bankAccountTerms.jsp";
+		url = "terms.action";
 		option = "width=600, height=670, toolbar=no, location=no, status=no, memubar=no, scrollbars=no, resizable=no, left=150, top=150";/* 크롬은 resizable 옵션 안먹음 */
 		window.open(url, "계좌 등록 약관", option);
 	}
