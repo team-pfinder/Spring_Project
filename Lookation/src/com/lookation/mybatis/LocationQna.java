@@ -156,14 +156,13 @@ public class LocationQna
 
 	// 이용자 : QnA 삭제
 	@RequestMapping(value = "/actions/deleteqna.action", method = RequestMethod.GET)
-	public void deleteQna(LocationQnaDTO dto)
+	public String deleteQna(LocationQnaDTO dto, HttpServletRequest request)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
-
-		//String loc_code = request.getParameter("loc_code");
+		String loc_code = request.getParameter("loc_code");
 		dao.deleteMemQna(dto);
 		
-		//String result = "locationdetail.action?loc_code="+ loc_code;
+		return "redirect:locationdetail.action?loc_code="+loc_code;
 
 		//return result;
 	}
@@ -194,11 +193,12 @@ public class LocationQna
 
 	// 호스트 : QnA 답글 삭제
 	@RequestMapping(value = "/actions/deleteqnareply.action", method = RequestMethod.GET)
-	public void deleteQnaReply(String qna_reply_code)
+	public String deleteQnaReply(String qna_reply_code, HttpServletRequest request)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
-		System.out.println(qna_reply_code);
+		String loc_code = request.getParameter("loc_code");
 		dao.deleteHostQna(qna_reply_code);
+		return "redirect:locationdetailhost.action?loc_code="+loc_code;
 
 		//return "redirect:locationdetailhost.action";
 
