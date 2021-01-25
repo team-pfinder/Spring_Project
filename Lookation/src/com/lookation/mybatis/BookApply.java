@@ -116,8 +116,6 @@ public class BookApply
 
 			// 해당 멤버의 마일리지 잔액 가져오기
 			int mileage = bookDao.mileageCheck(member_code);
-			System.out.println("마일리지 : " + mileage);
-			System.out.println("package_price" + dto.getPackage_price());
 			// 마일리지 가격이 더 크면
 			if (mileage >= dto.getPackage_price())
 			{

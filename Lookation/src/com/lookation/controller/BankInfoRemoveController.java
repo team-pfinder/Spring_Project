@@ -36,7 +36,6 @@ public class BankInfoRemoveController implements Controller
 		// identify를 GET 받아야한다.
 		String identify = request.getParameter("identify");
 		
-		System.out.println("identify : " + identify);
 		
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();                                                                  
@@ -47,15 +46,8 @@ public class BankInfoRemoveController implements Controller
 		String result = "noSigned";                                                         
 
 		String sidParameter = request.getParameter("sid");
-
-		System.out.println(sidParameter);
 		
 		String [] bankNumber = sidParameter.split(",");
-		
-		for (int i = 0; i < bankNumber.length; i++)
-		{
-			System.out.println(bankNumber[i]);
-		}
 		
 		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
 		if(accountCode != null)                                         

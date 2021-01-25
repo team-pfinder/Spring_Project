@@ -34,8 +34,6 @@ public class LocationDetailAjaxController implements Controller
 		String selectDate = request.getParameter("selectDate");
 		String loc_code = request.getParameter("loc_code");
 
-		System.out.println(selectDate);
-		System.out.println(loc_code);
 		String parseJson = "";
 
 		ArrayList<LocationDetailDTO> packageInfo = new ArrayList<LocationDetailDTO>();
@@ -66,7 +64,6 @@ public class LocationDetailAjaxController implements Controller
 
 			mav.addObject("data", parseJson);
 
-			 System.out.println("tmp 출력 =======" + parseJson); 
 			mav.setViewName("../WEB-INF/views/ajax/LocationDetailAjax.jsp");
 
 		} catch (Exception e)

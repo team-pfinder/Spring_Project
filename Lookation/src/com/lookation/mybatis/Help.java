@@ -31,9 +31,6 @@ public class Help
 
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
-		// 임시 로그인 세팅
-		session.setAttribute("hostCode", "H000001");
-		session.setAttribute("memberCode", "M000001");
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 
 		// 로그인 확인을 기록하기 위함                  
@@ -119,9 +116,6 @@ public class Help
 
 				// 세션을 통한 로그인 확인                                                                    
 				HttpSession session = request.getSession();
-				// 임시 로그인 세팅
-				session.setAttribute("hostCode", "H000001");
-				session.setAttribute("memberCode", "M000001");
 				String accountCode = (String)session.getAttribute(identify + "Code"); 
 
 				// 로그인 확인을 기록하기 위함                  

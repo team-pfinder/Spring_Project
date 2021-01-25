@@ -40,8 +40,6 @@ public class DeleteFormController implements Controller
 			
 			// 세션을 통한 로그인 확인    
 			HttpSession session = request.getSession();
-			//session.setAttribute("hostCode", "H000002");
-			session.setAttribute("memberCode", "M000001");
 			
 			String accountCode = (String)session.getAttribute(identify + "Code"); 
 

@@ -58,9 +58,8 @@ public class LoadAndExchange
 	        	try
 	    		{
 	        		model.addAttribute("bankInfoList", dao.memberBankInfoList(dto));
-	        		System.out.println("bankInfoList : memberBankInfoList");
 	        		model.addAttribute("balance", dao.memberGetBalance(dto));
-	        		System.out.println("balance : memberGetBalance");
+	        		
 	    		} catch (Exception e)
 	    		{
 	    			System.out.println(e.toString());
@@ -76,14 +75,14 @@ public class LoadAndExchange
     			model.addAttribute("info", hostDao.getInfo(accountCode));
     			model.addAttribute("identify", accountCode);
 
-    			System.out.println(hostDao.getInfo(accountCode).getNick());
+ 
 
             	try
         		{
             		model.addAttribute("bankInfoList", dao.hostBankInfoList(dto));
-            		System.out.println("bankInfoList : hostBankInfoList");
+            		
             		model.addAttribute("balance", dao.hostGetBalance(dto));
-            		System.out.println("balance : hostGetBalance");
+            		
         		} catch (Exception e)
         		{
         			System.out.println(e.toString());
@@ -141,28 +140,17 @@ public class LoadAndExchange
 
 	    	dto.setIdentifyCode(accountCode);
 	    	dto.setBankNumber(request.getParameter("bankAccount"));
-	    	dto.setAmount(Integer.parseInt(request.getParameter("charge")));
-	    	
-	    	// 테스트
-	    	System.out.println(dto.getBankNumber());
-	    	System.out.println(dto.getAmount());    	
+	    	dto.setAmount(Integer.parseInt(request.getParameter("charge")));	
 	    	
 	    	// 충전신청 정보 DB 등록
 	    	try
 			{
 	    		dao.memberLoadRegister(dto);	
-	    		System.out.println("충전신청 성공");
 	        	
 	    		// 등록된 충전신청 정보 가져오기
 	        	try
 	    		{
 	    			dto = dao.memberLoadRegisterNotice(accountCode);
-	    			//--------------------------------------------
-	    			System.out.println(dto.getAmount());
-	    			System.out.println(dto.getBank());
-	    			System.out.println(dto.getBankNumber());
-	    			System.out.println(dto.getRegdate());
-	    			//--------------------------------------------
 	    			model.addAttribute("loadInfo", dto);
 
 	    		} catch (Exception e2)
@@ -206,14 +194,10 @@ public class LoadAndExchange
     	// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
     	// identify를 GET 받아야한다.
     	String identify = request.getParameter("identify");
-    	System.out.println(identify);
     	
     	// 세션을 통한 로그인 확인                                                                    
     	HttpSession session = request.getSession();                                                                  
     	String accountCode = (String)session.getAttribute(identify + "Code"); 
-
-    	System.out.println("identify : " + identify + "identifyCode : " + accountCode);
-    	
     	
     	// 로그인 확인을 기록하기 위함                  
     	String result = "noSigned";                                                         
@@ -229,11 +213,6 @@ public class LoadAndExchange
         	dto.setBankNumber(request.getParameter("bankAccount"));
         	dto.setAmount(Integer.parseInt(request.getParameter("exchange")));
         	
-        	// 테스트
-        	System.out.println(dto.getIdentifyCode());
-        	System.out.println(dto.getBankNumber());
-        	System.out.println(dto.getAmount()); 
-    		
     		// 이용자일 경우                                                                            
     		if(identify.equals("member"))                                                   
     		{                                                                               
@@ -241,20 +220,12 @@ public class LoadAndExchange
     			{
         			// 환전 신청
         			dao.memberExchangeRegister(dto);
-            		System.out.println("환전신청성공");
             		try
 					{
-            			System.out.println("신청정보 가져오는중");
+        
                 		// 등록된 충전신청 정보 가져오기
             			dto = dao.memberExchangeNotice(accountCode);
             			// 가져온 충전신청 정보 확인
-            			//-----------------------------------------------
-            			System.out.println(dto.getAmount());
-            			System.out.println(dto.getBank());
-            			System.out.println(dto.getBankNumber());
-            			System.out.println(dto.getBankHolder());
-            			System.out.println(dto.getRegdate());
-            			//-----------------------------------------------
             			model.addAttribute("exchangeInfo", dto);
 
 					} catch (Exception e)
@@ -274,19 +245,11 @@ public class LoadAndExchange
         		{
         			// 환전 신청하기
         			dao.hostExchangeRegister(dto);
-            		System.out.println("환전신청성공");
+         
         			try
 					{
-                		System.out.println("신청정보 가져오는중");
         				// 환전 신청 정보 가져오기
             			dto = dao.hostExchangeNotice(accountCode);
-            			//-----------------------------------------------
-            			System.out.println(dto.getAmount());
-            			System.out.println(dto.getBank());
-            			System.out.println(dto.getBankNumber());
-            			System.out.println(dto.getBankHolder());
-            			System.out.println(dto.getRegdate());
-            			//-----------------------------------------------
             			model.addAttribute("exchangeInfo", dto);
         				
 					} catch (Exception e2)

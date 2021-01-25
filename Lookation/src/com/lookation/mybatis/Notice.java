@@ -30,9 +30,6 @@ public class Notice
 	
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();
-		// 임시 로그인 세팅
-		session.setAttribute("hostCode", "H000001");
-		session.setAttribute("memberCode", "M000001");
 		String accountCode = (String)session.getAttribute(identify + "Code"); 
 	
 		// 로그인 확인을 기록하기 위함                  
@@ -105,8 +102,6 @@ public class Notice
 		INoticeDAO dao = sqlSession.getMapper(INoticeDAO.class);
 
 		model.addAttribute("U_ndetailList", dao.U_ndetailList(notice_code));
-		
-		System.out.println(notice_code);
 		
 		return "/WEB-INF/views/common/noticeDetail.jsp";
 	}

@@ -99,17 +99,7 @@ public class Search
 		dto.setEnd_price(end_price);
 		dto.setLoc_addr_city(loc_addr_city);
 		dto.setLoc_addr_dong(loc_addr_dong);
-		
-		// dto 초기화 결과 확인--------------------------------------
-		System.out.println("dto 초기화 결과 : " + dto);
-		System.out.println("getKeyword"+dto.getKeyword());
-		System.out.println("getLoc_type"+dto.getLoc_type());
-		System.out.println("getStart_date"+dto.getStart_date());
-		System.out.println("getEnd_date"+dto.getEnd_date());
-		System.out.println("getStart_price"+dto.getStart_price());
-		System.out.println("getEnd_price"+dto.getEnd_price());
-		System.out.println("getLoc_addr_city"+dto.getLoc_addr_city());
-		System.out.println("getLoc_addr_dong"+dto.getLoc_addr_dong());
+	
 				                    
 		
 		//정렬--------------------------------------------------------------------------------------------------------------
@@ -120,7 +110,7 @@ public class Search
 		{
 			list = dao.search(dto);
 			Collections.sort(list);
-			System.out.println(list);
+			
 			model.addAttribute("view", list);
 		}
 		// 높은 가격순
@@ -129,7 +119,7 @@ public class Search
 			list = dao.search(dto);
 			Collections.sort(list);
 			Collections.reverse(list);
-			System.out.println(list);
+			
 			model.addAttribute("view", list);
 		}
 		// 리뷰 많은순
@@ -138,7 +128,7 @@ public class Search
 			list = dao.search(dto);
 			Collections.sort(list, new ReviewCountCompare());
 			Collections.reverse(list);
-			System.out.println(list);
+			
 			model.addAttribute("view", list);
 		}
 		// 평점 높은순
@@ -147,17 +137,15 @@ public class Search
 			list = dao.search(dto);
 			Collections.sort(list, new AvgRateCompare());
 			Collections.reverse(list);
-			System.out.println(list);
+			
 			model.addAttribute("view", list);
 		}
 		else 
 		{
 			list = dao.search(dto);
-			System.out.println(list);
+			
 			model.addAttribute("view", list);
 		}
-
-		System.out.println("searchorder" + order);
 		
 		return "/WEB-INF/views/user/search.jsp";
 		
@@ -247,7 +235,7 @@ public class Search
 		{
 			list = dao.search(dto);
 			Collections.sort(list);
-			System.out.println(list);
+
 			model.addAttribute("view", list);
 		}
 		// 높은 가격순
@@ -256,7 +244,7 @@ public class Search
 			list = dao.search(dto);
 			Collections.sort(list);
 			Collections.reverse(list);
-			System.out.println(list);
+
 			model.addAttribute("view", list);
 		}
 		// 리뷰 많은순
@@ -265,7 +253,7 @@ public class Search
 			list = dao.search(dto);
 			Collections.sort(list, new ReviewCountCompare());
 			Collections.reverse(list);
-			System.out.println(list);
+
 			model.addAttribute("view", list);
 		}
 		// 평점 높은순
@@ -274,17 +262,15 @@ public class Search
 			list = dao.search(dto);
 			Collections.sort(list, new AvgRateCompare());
 			Collections.reverse(list);
-			System.out.println(list);
+
 			model.addAttribute("view", list);
 		}
 		else 
 		{
 			list = dao.search(dto);
-			System.out.println(list);
+
 			model.addAttribute("view", list);
 		}
-
-		System.out.println("searchorder" + order);
 		
 		model.addAttribute("keyword", searchWord);
 		

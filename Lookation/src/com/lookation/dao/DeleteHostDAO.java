@@ -95,7 +95,6 @@ public class DeleteHostDAO implements IDeleteHostDAO
 		cstmt.execute();
 		
 		mileage = Integer.parseInt(cstmt.getString(2));
-		System.out.println(cstmt.getString(2));
 		
 		cstmt.close();
 		conn.close();

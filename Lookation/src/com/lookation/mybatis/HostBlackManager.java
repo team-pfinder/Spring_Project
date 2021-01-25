@@ -25,10 +25,6 @@ public class HostBlackManager
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ============================================= */
-		session.setAttribute("adminCode", "admin_lookation01");
-		/* ============================================= */
-
 		String accountCode = (String) session.getAttribute("adminCode");
 
 		// 로그인이 안된경우
@@ -52,9 +48,6 @@ public class HostBlackManager
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ============================================= */
-		session.setAttribute("adminCode", "admin_lookation01");
-		/* ============================================= */
 
 		String accountCode = (String) session.getAttribute("adminCode");
 
@@ -79,10 +72,6 @@ public class HostBlackManager
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ============================================= */
-		session.setAttribute("adminCode", "admin_lookation01");
-		/* ============================================= */
-
 		String accountCode = (String) session.getAttribute("adminCode");
 
 		// 로그인이 안된경우

@@ -25,9 +25,6 @@ public class MemberBlackManager
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ============================================= */
-		session.setAttribute("adminCode", "admin_lookation01");
-		/* ============================================= */
 
 		String accountCode = (String) session.getAttribute("adminCode");
 
@@ -52,9 +49,6 @@ public class MemberBlackManager
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ============================================= */
-		session.setAttribute("adminCode", "admin_lookation01");
-		/* ============================================= */
 
 		String accountCode = (String) session.getAttribute("adminCode");
 
@@ -80,9 +74,6 @@ public class MemberBlackManager
 	{
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
-		/* ============================================= */
-		session.setAttribute("adminCode", "admin_lookation01");
-		/* ============================================= */
 
 		String accountCode = (String) session.getAttribute("adminCode");
 

@@ -29,10 +29,7 @@ public class HostMessenger
 	public String messageList(Model model, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인                                                                    
-		HttpSession session = request.getSession();  
-		/*===================================================*/
-		session.setAttribute("memberCode", "M000001");
-		/*===================================================*/                                        
+		HttpSession session = request.getSession();                                         
 		String accountCode = (String)session.getAttribute("memberCode"); 
 
 		// 로그인 확인을 기록하기 위함                  
@@ -103,13 +100,11 @@ public class HostMessenger
             model.addAttribute("imageList", imageList);
             
             String book_code = m.getParameter("book_code");
-            System.out.println("b : " + book_code);
             
             //String msg_img_url = String.valueOf(FileManager.getFileNames(m));
             String msg_img_url = m.getParameter("msg_img_url");
             model.addAttribute("book_code", book_code);
             model.addAttribute("msg_img_url", msg_img_url);
-            System.out.println(msg_img_url);
             dao.hSendImg(dto);
 
         } catch (Exception e)
