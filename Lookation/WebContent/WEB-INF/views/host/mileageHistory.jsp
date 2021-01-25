@@ -118,7 +118,7 @@ th, td {
 					<div class="tab-content" style="margin-top: 10px;">
 						<!-- 첫번째 탭 -->
 						<div class="tab-pane in active" id="first">
-							<p>조윤상님의 마일리지 정산 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 충전 내역입니다.</p>
 							<!-- 첫번째 카드 -->
 							<div class="card shadow mb-4">						
 								<div class="card-header py-3">
@@ -176,7 +176,7 @@ th, td {
 
 						<!-- 두번째 탭 -->
 						<div class="tab-pane" id="second">
-							<p>조윤상님의 마일리지 환전 내역입니다.</p>
+							<p class="my-1 ml-2"> <strong class="text-primary">${info.nick}</strong>님의 마일리지 충전 내역입니다.</p>
 							<!-- 세번째 카드 -->
 							<div class="card shadow mb-4">						
 								<div class="card-header py-3">

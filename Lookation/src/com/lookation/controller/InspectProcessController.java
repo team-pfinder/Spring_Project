@@ -50,10 +50,8 @@ public class InspectProcessController implements Controller
 			// 즉 ,  여기서 inspect_reg_code 값이 null 
 			
 			InspectLocationDTO dto1 = new InspectLocationDTO();
-			InspectLocationDTO dto2 = new InspectLocationDTO();
-			InspectLocationDTO dto3 = new InspectLocationDTO();
-			InspectLocationDTO dto4 = new InspectLocationDTO();
 			InspectLocationDTO dto5 = new InspectLocationDTO();
+			InspectLocationDTO dto6 = new InspectLocationDTO();
 			
 
 			//inspect_reg_code = "IR000001"; //이고
@@ -65,19 +63,19 @@ public class InspectProcessController implements Controller
 			 우린 아직 페이지 연결이 되지 않아서 임시로 입력
 			 */
 			
-			
+		
 			dto1 = dao.prlist(inspect_reg_code);
-			//dto2 = dao.pakageInfo(inspect_reg_code);
-			dto3 = dao.facilityInfo(inspect_reg_code);
-			dto4 = dao.cautionInfo(inspect_reg_code);
 			dto5 = dao.urlInfo(inspect_reg_code);
+			dto6 = dao.biz_img(inspect_reg_code);
 
 			mav.addObject("dto1", dto1);	// 여기 다른 객체인데 
-			mav.addObject("dto2", dto2);	// 이름은 똑같음
-			mav.addObject("dto3", dto3);
-			mav.addObject("dto4", dto4);
+											// 이름은 똑같음
 			mav.addObject("dto5", dto5);
+			mav.addObject("dto6", dto6);
 			
+			mav.addObject("facilityInfo", dao.facilityInfo(inspect_reg_code));
+			mav.addObject("cautionInfo", dao.cautionInfo(inspect_reg_code));
+			mav.addObject("loc_img", dao.loc_img(inspect_reg_code));
 			
 			mav.setViewName("../WEB-INF/views/admin/inspectProcess.jsp");
 			

@@ -137,20 +137,21 @@ $(document).ready(function()
 									<p>공간주소 : ${dto1.loc_addr}</p>
 									<p>공간상세주소: ${dto1.loc_detail_addr}</p>
 									<p>공간소개: ${dto1.loc_intro} </p>
-									<p>시설안내: ${dto3.facility_content}</p>
-									<p>주의사항: ${dto4.caution_content}</p>
+
+									<c:forEach var="facility" items="${facilityInfo }">
+										<p>시설안내:${facility.facility_content}</p>
+									</c:forEach>
+										
+									<c:forEach var="caution" items="${cautionInfo }">
+										<p>주의사항:${caution.caution_content}</p>
+									</c:forEach>
+									
 
 									<h2 class="mb-3 mt-5"># 상세정보</h2>
 									<hr>
 									<p>최대 인원 : ${dto1.max_people}</p>
 									<p>최소 인원 : ${dto1.min_people}</p>
 									<p>공간 웹사이트 : ${dto5.loc_web_url}</p>
-
-									<h2 class="mb-3 mt-5"># 패키지</h2>
-									<hr>
-									<p>패키지명 : ${dto2.package_name} </p>
-									<p>패키지 시작시간 : ${dto2.package_start} </p>
-									<p>패키지 종료시간 : ${dto2.package_end} </p>
 
 									<h2 class="mb-3 mt-5"># 연락처</h2>
 									<hr>
@@ -167,7 +168,7 @@ $(document).ready(function()
 									<p>주종목 : ${dto1.biz_sub_type}</p>
 									<p>사업장 주소 : ${dto1.biz_addr}</p>
 									<p>사업자등록번호 : ${dto1.biz_license_number}</p>
-									<p>사업자등록증 : 사진</p>
+									<p>사업자등록증 : <img src="<%=cp %>/images/${dto6.biz_license_url }" width="300px"></p>
 
 									<h2 class="mb-3 mt-5"># 이용안내</h2>
 									<hr>
@@ -195,12 +196,15 @@ $(document).ready(function()
 								<div class="card-body">
 
 									<!-- 커러셀 test -->
+									
 
 									<div class="owl-carousel">
+									<c:forEach var="loc_detail_img_url" items="${loc_img }">
 										<div>
-											<img src="<%=cp%>/images/image_1.jpg">
+											<img src="<%=cp %>/images/${loc_detail_img_url }">
 										</div>
-										<div>
+									</c:forEach>
+										<%-- <div>
 											<img src="<%=cp%>/images/image_2.jpg">
 										</div>
 										<div>
@@ -211,7 +215,7 @@ $(document).ready(function()
 										</div>
 										<div>
 											<img src="<%=cp%>/images/image_6.jpg">
-										</div>
+										</div> --%>
 									</div>
 
 
