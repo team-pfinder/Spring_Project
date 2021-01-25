@@ -33,7 +33,7 @@
 		<hr class="sidebar-divider my-0">
 
 		<!-- Nav Item - Dashboard -->
-		<li class="nav-item"><a class="nav-link" href="#"> <i
+		<li class="nav-item"><a class="nav-link" href="adminmain.action"> <i
 				class="fas fa-fw fa-tachometer-alt"></i> <span>main</span></a></li>
 
 		<!-- Divider -->
@@ -135,8 +135,8 @@
 					<a class="collapse-item" href="hostqnamanager.action">Q&A답글관리</a>
 					<a class="collapse-item" href="hostreviewmanager.action">리뷰답글관리</a>
 					<h6 class="collapse-header">회원관리:</h6>
-					<a class="collapse-item" href="#">이용자관리</a>
-					<a class="collapse-item" href="#">호스트관리</a>
+					<a class="collapse-item" href="memberblackmanager.action">이용자관리</a>
+					<a class="collapse-item" href="hostblackmanager.action">호스트관리</a>
 				</div>
 			</div></li>
 
