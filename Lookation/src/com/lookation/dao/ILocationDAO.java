@@ -9,6 +9,8 @@ public interface ILocationDAO
 	// ---------------- identify --------------------
 	public int findLocation(LocationDTO dto);
 	
+	public int findBook(LocationDTO dto);
+	
 	// ----------------- list ------------------------
 	public ArrayList<LocationDTO> locList(LocationDTO dto);
 	

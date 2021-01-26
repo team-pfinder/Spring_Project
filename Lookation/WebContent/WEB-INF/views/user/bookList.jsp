@@ -218,8 +218,8 @@ margin-bottom: 0;
 													</td>
 												</c:when>
 												
-												<c:when test="${book.checkbook eq '이용완료'}">
-													<td class="text-danger">이용완료</td>
+												<c:when test="${book.checkbook eq '이용완료'}">		<!-- 예약완료 안되니까 일단 -->
+													<td class="text-dark">예약완료</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
@@ -235,7 +235,7 @@ margin-bottom: 0;
 												</c:when>
 												
 												<c:when test="${book.checkbook eq '예약완료'}">
-													<td class="text-danger">취소완료</td>
+													<td class="text-gon">예약완료</td>
 													<td>
 														<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">

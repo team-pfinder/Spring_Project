@@ -353,7 +353,7 @@ p
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" value="${basicInfo.locationCode }">${basicInfo.locationCode }
+				<input type="hidden" id="hiddenCode" value="${basicInfo.locationCode }">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->

@@ -8,6 +8,8 @@ public interface IPackageDAO
 {
 	public ArrayList<PackageDTO> packageFormList(String locationCode);
 	public ArrayList<PackageDTO> packageApplyList(String locationCode);
+	public ArrayList<PackageDTO> packageApplyBookList(String locationCode);
+	
 	
 	public int countApply(PackageDTO pack);
 	public void insertApply(PackageDTO pack);

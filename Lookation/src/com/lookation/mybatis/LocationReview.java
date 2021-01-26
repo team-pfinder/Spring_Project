@@ -150,17 +150,17 @@ public class LocationReview
 
 		MultipartRequest m = FileManager.upload(request, "images");
 		ArrayList<String> imageList = FileManager.getFileNames(m);
-		
-		String loc_code = m.getParameter("loc_code");
 
-		
 		try
 		{
 			dto.setLoc_code(m.getParameter("loc_code"));
 			dto.setMember_code(m.getParameter("member_code"));
 			dto.setReview_rate(m.getParameter("review_rate"));
 			dto.setReview_content(m.getParameter("review_content"));
-			dto.setReview_img_url(imageList.get(0));
+			
+			if( imageList.size()!=0){
+				dto.setReview_img_url(imageList.get(0));
+			}
 			
 			if (imageList.isEmpty())
 			{
@@ -178,66 +178,6 @@ public class LocationReview
 			System.out.println(e.toString());
 		}
 		
-	}
-
-	/*
-	 * // 이용자 : 리뷰 텍스트 작성
-	 * 
-	 * @RequestMapping(value="/actions/reviewinsert.action", method =
-	 * {RequestMethod.POST, RequestMethod.GET}) public void
-	 * insertReview(LocationReviewDTO dto, HttpServletRequest request) throws
-	 * IOException { ILocationReviewDAO locDao =
-	 * sqlSession.getMapper(ILocationReviewDAO.class);
-	 * 
-	 * MultipartRequest m = FileManager.upload(request, "images"); String loc_code =
-	 * m.getParameter("loc_code");
-	 * 
-	 * System.out.println("loc_code : " + loc_code);
-	 * 
-	 * dto.setLoc_code(m.getParameter("loc_code"));
-	 * dto.setMember_code(m.getParameter("member_code"));
-	 * dto.setReview_rate(m.getParameter("review_rate"));
-	 * dto.setReview_content(m.getParameter("review_content"));
-	 * 
-	 * dto.setLoc_code(request.getParameter("loc_code"));
-	 * 
-	 * dto.setMember_code(request.getParameter("member_code"));
-	 * dto.setReview_rate(request.getParameter("review_rate"));
-	 * dto.setReview_content(request.getParameter("review_content"));
-	 * 
-	 * System.out.println("확인 : " + dto.getLoc_code() + ", " + dto.getMember_code()
-	 * + ", " + dto.getReview_rate() + ", " + dto.getReview_content() +" 끝! ");
-	 * 
-	 * locDao.insertMemReview(dto); }
-	 */
-	
-	
-	// 이용자 : 리뷰 이미지 첨부 작성
-	@RequestMapping(value = "/actions/reviewimg.action", method ={ RequestMethod.POST, RequestMethod.GET })
-	public void insertReviewImg(LocationReviewDTO dto, HttpServletRequest request)
-	{
-		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
-		
-		try
-		{
-			MultipartRequest m = FileManager.upload(request, "images");
-			ArrayList<String> imageList = FileManager.getFileNames(m);
-
-			// ('L000001', 'M000002', 4, '안녕하세용', 'too.png');
-
-			dto.setLoc_code(m.getParameter("loc_code"));
-			dto.setMember_code(m.getParameter("member_code"));
-			dto.setReview_rate(m.getParameter("review_rate"));
-			dto.setReview_content(m.getParameter("review_content"));
-			dto.setReview_img_url(imageList.get(0));
-
-		} catch (Exception e)
-		{
-			e.toString();
-		}
-
-		// 리뷰쓰기
-		locDao.insertMemImg(dto);
 	}
 
 	// 이용자 : 리뷰 수정

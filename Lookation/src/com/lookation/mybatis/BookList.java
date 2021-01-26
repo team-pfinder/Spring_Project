@@ -13,8 +13,6 @@ import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dto.BookListDTO;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -54,8 +52,6 @@ public class BookList
 
 			model.addAttribute("nick", bookDao.memberNick(accountCode));
 			model.addAttribute("bookList", bookDao.bookList(accountCode));
-
-			ArrayList<BookListDTO> dto1 = bookDao.bookList(accountCode);
 
 			model.addAttribute("member_code", accountCode);
 

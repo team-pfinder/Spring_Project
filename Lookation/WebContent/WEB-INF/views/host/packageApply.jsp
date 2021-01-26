@@ -47,6 +47,7 @@
   document.addEventListener('DOMContentLoaded', function() {
 
    var index = 0;
+   // 예약이 없는 적용된 패키지
    <c:forEach var="apply" items="${applyList}">   
       arrPackageApply[index] = new structApply();
       arrPackageApply[index].apply_code = '${apply.apply_code}';
@@ -56,6 +57,18 @@
       arrPackageApply[index].date = '${apply.apply_date}';
       arrPackageApply[index].state = 'none';
       index++;
+   </c:forEach>  
+   
+   // 이미 예약된 적용된 패키지
+   <c:forEach var="applyBook" items="${applyBookList}">   
+	   arrPackageApply[index] = new structApply();
+	   arrPackageApply[index].apply_code = '${applyBook.apply_code}';
+	   arrPackageApply[index].code = '${applyBook.code}';
+	   arrPackageApply[index].start = '${applyBook.time_start}';
+	   arrPackageApply[index].end = '${applyBook.time_end}';
+	   arrPackageApply[index].date = '${applyBook.apply_date}';
+	   arrPackageApply[index].state = 'none';
+	   index++;
    </c:forEach>  
    
     /* initialize the external events
@@ -95,7 +108,7 @@
       eventDrop: function(arg) 
       {
          var id = arg.event.id;      
-        var title = arg.event.title;   
+         var title = arg.event.title;   
           date = arg.event.startStr;
           
           var now = new Date();
@@ -107,6 +120,14 @@
             alert("오늘과 이전 날짜는 패키지 등록이 불가능합니다.");
             arg.revert();
             return;
+         }
+         
+         // 이미 예약된 적용된 패키지를 옮기려고 할 경우
+         if(id == 'booked')
+         {
+        	 alert("이미 예약된 패키지는 수정할 수 없습니다.");
+        	 arg.revert();
+        	 return;
          }
           
          // title 문자열을 쪼개서 start, end를 가져온다.
@@ -123,7 +144,7 @@
           else
           {
               alert("겹치는 시간대의 패키지가 있습니다. 다른 날짜를 선택해주세요.");
-            arg.revert();
+              arg.revert();
            }  
       },
       
@@ -171,18 +192,25 @@
           else
           {
               alert("겹치는 시간대의 패키지가 있습니다. 다른 날짜를 선택해주세요.");
-            info.revert();
+              info.revert();
            }
       },
       
       // 삭제
       eventDragStop: function(info) {
- 
+
           if(isEventOverDiv(info.jsEvent.clientX, info.jsEvent.clientY)) 
           {
+        	  // 이미 예약된 적용된 패키지를 삭제하려고 할 경우
+              if(info.event.id == 'booked')
+              {
+             	 alert("이미 예약된 패키지는 삭제할 수 없습니다.");
+             	 info.revert();
+             	 return;
+              }
+        	  
              removeApply(info.event.id);
              info.event.remove();
-             
           }
       },
 
@@ -192,8 +220,18 @@
            <c:forEach var="apply" items="${applyList}">
           {
              id : '${apply.apply_code }',
-                title: '${apply.time_start }:00 ~ <c:if test="${apply.time_end <= 24}">${apply.time_end }</c:if><c:if test="${apply.time_end > 24}">익일 ${apply.time_end - 24}</c:if>:00 ${apply.name}',
-            start: '${apply.apply_date}'
+             title: '${apply.time_start }:00 ~ <c:if test="${apply.time_end <= 24}">${apply.time_end }</c:if><c:if test="${apply.time_end > 24}">익일 ${apply.time_end - 24}</c:if>:00 ${apply.name}',
+             start: '${apply.apply_date}'
+          },
+           </c:forEach>
+          
+          <c:forEach var="applyBook" items="${applyBookList}">
+          {
+             id : 'booked',
+             title: '${applyBook.time_start }:00 ~ <c:if test="${applyBook.time_end <= 24}">${applyBook.time_end }</c:if><c:if test="${applyBook.time_end > 24}">익일 ${applyBook.time_end - 24}</c:if>:00 ${applyBook.name}',
+             start: '${applyBook.apply_date}',
+             color : '#FDBE34',
+             textColor : '#000000'
           },
            </c:forEach>
       ]
@@ -502,6 +540,11 @@ body {
 #calendar {
    max-width: 1100px;
    margin: 0 auto;
+}
+
+a.fc-event {
+  -webkit-transition: 0s;
+  transition: 0s;
 }
 </style>
 

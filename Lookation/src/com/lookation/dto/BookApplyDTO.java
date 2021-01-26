@@ -20,12 +20,22 @@ public class BookApplyDTO
 	, book_code, apply_package_code, book_date, book_req
 	, actual_booker, actual_booker_tel
 	, book_pay_date, member_tel, member_name
-	, hours;
+	, hours, thumbnail_url;
 	
 	private int book_people, package_price;
 	
 	
 	
+	public String getThumbnail_url()
+	{
+		return thumbnail_url;
+	}
+
+	public void setThumbnail_url(String thumbnail_url)
+	{
+		this.thumbnail_url = thumbnail_url;
+	}
+
 	public String getHours()
 	{
 		return hours;

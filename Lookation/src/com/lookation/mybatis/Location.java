@@ -73,7 +73,14 @@ public class Location
 		{       
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
-
+			
+		    result = "signed";                                                                                
+		}                                                                                
+		model.addAttribute("result", result); 
+	    
+		
+		if(accountCode != null)                                         
+		{   
 			ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
 
 			String loc_code = request.getParameter("loc_code");
@@ -86,12 +93,21 @@ public class Location
 			// 실제 이 공간이 해당 호스트의 공간인지 검사
 			// 맞다면 삭제한다.
 			if(locDao.findLocation(loc) > 0)
-				locDao.deleteLocation(loc);
-
-		    result = "signed";                                                                                
-		}                                                                                
-		model.addAttribute("result", result); 
-	    
+			{
+				// 만약 이용이 시작되지 않은
+				// 예약이 되어 있다면 삭제하지 않는다.
+				if(locDao.findBook(loc) > 0)
+				{
+					model.addAttribute("delete", "fail"); 
+				}
+				else
+				{
+					locDao.deleteLocation(loc);
+				}
+			}
+		}
+		
+		
 		if(result.equals("noSigned"))
 		{
 		    return "redirect:loginform.action?identify=host";

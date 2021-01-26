@@ -346,6 +346,20 @@
 
 	</select>
 	 -->
+	<select id="findBook" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM LOC L JOIN PACKAGE_FORM PF
+		ON L.LOC_CODE = PF.LOC_CODE
+		    JOIN PACKAGE P
+		    ON PF.PACKAGE_FORM_CODE = P.PACKAGE_FORM_CODE
+		        JOIN APPLY_PACKAGE AP
+		            ON P.PACKAGE_CODE = AP.PACKAGE_CODE
+		                JOIN BOOK_LIST BL
+		                    ON AP.APPLY_PACKAGE_CODE = BL.APPLY_PACKAGE_CODE
+		WHERE L.LOC_CODE = #{loc_code}
+		  AND (AP.APPLY_DATE + P.PACKAGE_START/24) > SYSDATE
+	</select>
+	 
  	<insert id="deleteLocation">
  		INSERT INTO LOC_REMOVE(LOC_REMOVE_CODE, LOC_CODE, LOC_REMOVE_DATE)
         VALUES(F_CODE('LRM', LRM_SEQ.NEXTVAL), #{loc_code}, SYSDATE)

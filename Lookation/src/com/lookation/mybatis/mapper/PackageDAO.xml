@@ -29,6 +29,17 @@ resultType="com.lookation.dto.PackageDTO">
 	  AND APPLY_DATE > SYSDATE
 </select>
 
+<select id="packageApplyBookList" parameterType="java.lang.String"
+resultType="com.lookation.dto.PackageDTO">
+	SELECT CODE, APPLY_CODE, NAME
+	     , TIME_START, TIME_END
+	     , PRICE, APPLY_DATE
+	FROM APPLY_PACKAGE_VIEW
+	WHERE LOC_CODE = #{loc_code}
+	  AND BOOK_CODE IS NOT NULL
+	  AND APPLY_DATE > SYSDATE
+</select>
+
 
 <select id="countApply" resultType="java.lang.Integer">
 	SELECT COUNT(*) AS COUNT

@@ -3,6 +3,9 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
+	
+	String delete = request.getParameter("delete");
+	pageContext.setAttribute("delete", delete);
 %>
 <!DOCTYPE html>
 <html>
@@ -13,6 +16,15 @@
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 <script type="text/javascript">
+	$(function() {
+		
+		var del = "<c:out value='${delete}'/>";
+		
+		if(del=='fail')
+			alert("공간 삭제 실패!\n이미 예약된 내역이 존재합니다.");
+
+	});
+
 	function del(code)
 	{
 		if(confirm("삭제하면 다시 복구가 불가능합니다. 정말 이 공간을 삭제하시겠습니까? "))

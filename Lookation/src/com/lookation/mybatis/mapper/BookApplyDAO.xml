@@ -7,7 +7,7 @@
 	<!-- 공간 기본정보 항목 -->
 	<select id="bookapplyBasic" resultType="com.lookation.dto.BookApplyDTO">
 		SELECT LOC_CODE, LOC_NAME, LOC_TYPE, LOC_SHORT_INTRO
-		, MIN_PEOPLE, MAX_PEOPLE, HOST_CODE
+		, MIN_PEOPLE, MAX_PEOPLE, HOST_CODE, THUMBNAIL_URL
 		FROM VIEW_BASIC_INFO
 		WHERE LOC_CODE = #{loc_code}
 	</select>
