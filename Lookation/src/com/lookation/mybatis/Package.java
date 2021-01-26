@@ -205,6 +205,9 @@ public class Package
 				IPackageDAO packDao = sqlSession.getMapper(IPackageDAO.class);
 				model.addAttribute("formList", packDao.packageFormList(loc_code));
 				model.addAttribute("applyList", packDao.packageApplyList(loc_code));
+				model.addAttribute("applyBookList", packDao.packageApplyBookList(loc_code));
+				
+				// 예약이 되어있는 패키지도 불러온다.
 			}
 			//
 		    
