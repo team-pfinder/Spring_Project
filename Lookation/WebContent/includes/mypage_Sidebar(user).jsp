@@ -40,13 +40,16 @@
 		$("#check").click(function()
 		{
 			alert("check");
-			
+			var count = 0;
 			$.ajax({
 				type : "post",
 				url : "checkifhavebankinfo.action",
 				async: true,
 				complete : function(xh)
 				{		
+
+					count++;
+
 					if(xh == "OK")
 					{
 						confirm("등록된 계좌가 존재하지 않습니다. 계좌를 등록하러 가시겠습니까?")
@@ -55,8 +58,16 @@
 						}
 					}
 
+
 				}
 			});
+			if(count == 0)
+			{
+				confirm("등록된 계좌가 존재하지 않습니다. 계좌를 등록해주세요.")
+				{
+					location.href="loadandexchange.action?identify=member";
+				}
+			}
 	
 		});
 	});
