@@ -19,10 +19,13 @@
 						class="ion-ios-arrow-forward"></span></a></li>
 				<li><a href="booklist.action">예약 리스트 <span
 						class="ion-ios-arrow-forward"></span></a></li>
-				<li id="check"><a href="loadandexchange.action?identify=member">충전 및 환전
-						신청 <span class="ion-ios-arrow-forward"></span>
+				<li id="check"><a href="loadandexchange.action?identify=member">충전 및 환전 <span class="ion-ios-arrow-forward"></span>
 				</a></li>
 				<li><a href="mileagehistory.action?identify=member">마일리지 내역 <span
+						class="ion-ios-arrow-forward"></span></a></li>
+				<li><a href="userreviewlist.action">리뷰 관리 <span
+						class="ion-ios-arrow-forward"></span></a></li>
+				<li><a href="userqnalist.action">Q&A 관리 <span
 						class="ion-ios-arrow-forward"></span></a></li>
 			</div>
 		</div>
@@ -40,10 +43,17 @@
 			
 			$.ajax({
 				type : "post",
-				url : ".action",
+				url : "checkifhavebankinfo.action",
+				async: true,
 				complete : function(xh)
 				{		
-					if()
+					if(xh == "OK")
+					{
+						confirm("등록된 계좌가 존재하지 않습니다. 계좌를 등록하러 가시겠습니까?")
+						{
+							location.href = "bankinfomanage.action?identify=member";
+						}
+					}
 
 				}
 			});

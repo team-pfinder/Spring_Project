@@ -43,7 +43,7 @@ String cp = request.getContextPath();
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="profile.action?identify=member" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
+							style="background-image: url('<%=cp%>/images/mypage/Profile.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -56,7 +56,7 @@ String cp = request.getContextPath();
 					<div class="blog-entry align-self-stretch">
 						<a href="bankinfomanage.action?identify=member"
 							class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
+							style="background-image: url('<%=cp%>/images/mypage/BankAccount.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -68,7 +68,7 @@ String cp = request.getContextPath();
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="booklist.action" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Exchange.png');">
+							style="background-image: url('<%=cp%>/images/mypage/BookList.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -82,7 +82,7 @@ String cp = request.getContextPath();
 					<div class="blog-entry align-self-stretch">
 						<a href="loadandexchange.action?identify=member"
 							class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_4.jpg');">
+							style="background-image: url('<%=cp%>/images/mypage/MileageLoadAndExchange.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -95,12 +95,40 @@ String cp = request.getContextPath();
 					<div class="blog-entry align-self-stretch">
 						<a href="mileagehistory.action?identify=member"
 							class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_5.jpg');">
+							style="background-image: url('<%=cp%>/images/mypage/MileageHistory.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
 							<h3 class="heading">
 								<a href="mileagehistory.action?identify=member">마일리지 내역</a>
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 ftco-animate">
+					<div class="blog-entry align-self-stretch">
+						<a href="mileagehistory.action?identify=member"
+							class="block-20 rounded" 
+							style="background-image: url('<%=cp%>/images/mypage/Review.png'); background-size: auto 100%;">
+						</a>
+						<div class="text mt-3 text-center">
+							<div class="meta mb-2"></div>
+							<h3 class="heading">
+								<a href="userreviewlist.action">리뷰 관리</a>
+							</h3>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 ftco-animate">
+					<div class="blog-entry align-self-stretch">
+						<a href="mileagehistory.action?identify=member"
+							class="block-20 rounded"
+							style="background-image: url('<%=cp%>/images/mypage/QnA.png'); background-size: auto 100%;">
+						</a>
+						<div class="text mt-3 text-center">
+							<div class="meta mb-2"></div>
+							<h3 class="heading">
+								<a href="userqnalist.action">Q&A 관리</a>
 							</h3>
 						</div>
 					</div>
