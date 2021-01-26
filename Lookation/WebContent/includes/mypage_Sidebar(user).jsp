@@ -37,16 +37,22 @@
 		$("#check").click(function()
 		{
 			alert("check");
-			
+			var count = 0;
 			$.ajax({
 				type : "post",
 				url : ".action",
 				complete : function(xh)
 				{		
-					if()
-
+					count++;
 				}
 			});
+			if(count == 0)
+			{
+				confirm("등록된 계좌가 존재하지 않습니다. 계좌를 등록해주세요.")
+				{
+					location.href="loadandexchange.action?identify=member";
+				}
+			}
 	
 		});
 	});
