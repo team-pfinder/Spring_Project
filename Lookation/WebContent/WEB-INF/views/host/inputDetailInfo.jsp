@@ -52,7 +52,7 @@
 
 		// 함수 호출
 		
-		setMinPeople($('#inputMinPeople'), 1, 10, '최소 수용인원');
+		setMinPeople($('#inputMinPeople'), 1, 9, '최소 수용인원');
 		setMaxPeople($('#inputMaxPeople'), 1, '최대 수용인원');
 		
 		// submit 제어
@@ -79,9 +79,9 @@
 				
 			}
 			else if (parseInt($('#inputMinPeople').val()) < 1
-					|| parseInt($('#inputMinPeople').val()) > 10)
+					|| parseInt($('#inputMinPeople').val()) > 9)
 			{
-				alert("최소 수용인원은 최소 1명 ~ 최대 10명으로 입력해야합니다.");
+				alert("최소 수용인원은 최소 1명 ~ 최대 9명으로 입력해야합니다.");
 				$('#inputMinPeople').focus();
 			}
 			else if (parseInt($('#inputMaxPeople').val()) > 30)
