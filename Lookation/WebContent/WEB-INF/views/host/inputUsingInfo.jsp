@@ -132,7 +132,7 @@
    
    <!-- Page Heading -->
    <h1 class="mb-2 text-gray-800">이용안내 입력</h1>
-   <p class="mb-4"> 이용안내를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
+   <p class="mb-4"> 이용안내를 입력하세요. <a target="_blank" href="#"></a></p>
       
       <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
       

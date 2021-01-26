@@ -329,7 +329,7 @@
    
    <!-- Page Heading -->
    <h1 class="mb-2 text-gray-800">사업자정보 입력</h1>
-   <p class="mb-4"> 사업자정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
+   <p class="mb-4"> 사업자정보를 입력하세요. <a target="_blank" href="#"></a></p>
       
       <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
       
@@ -474,7 +474,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">주업태 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text"  class="form-control"
-				   placeholder="주업태를 입력하세요. [최소 5자 ~ 최대 30자]"
+				   placeholder="주업태를 입력하세요. [최소 2자 ~ 최대 30자]"
 				   id="inputBizMainType" name="inputBizMainType">
 			<span style="font-weight: bold; "></span>
 		</div>
@@ -490,7 +490,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">주종목 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text"  class="form-control"
-				   placeholder="주종목을 입력하세요. [최소 5자 ~ 최대 30자]"
+				   placeholder="주종목을 입력하세요. [최소 2자 ~ 최대 30자]"
 				   id="inputBizSubType" name="inputBizSubType">
 			<span style="font-weight: bold; "></span>
 		</div>
