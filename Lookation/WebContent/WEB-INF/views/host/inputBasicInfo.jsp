@@ -98,7 +98,7 @@ ul.precautions-list > li {
 		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 4, 20);
 		setInputLength($('#inputIntro'), '공간 소개', 20, 400);
 		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
-		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 20, 100);
+		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 10, 50);
 
 		
 		// 썸네일 이미지 등록
@@ -371,9 +371,9 @@ ul.precautions-list > li {
 		
 		var content = $('#inputPrecaution').val();
 		
-		if (content.length < 20 || content.length > 100 )
+		if (content.length < 10 || content.length > 50 )
 		{
-			alert("예약 시 주의사항은 20자 이상 ~ 100자 이하로 입력해야합니다.")
+			alert("예약 시 주의사항은 10자 이상 ~ 50자 이하로 입력해야합니다.")
 			return;
 		}
 		
@@ -518,7 +518,7 @@ ul.precautions-list > li {
 	
    <!-- Page Heading -->
    <h1 class="mb-2 text-gray-800">기본정보 입력</h1>
-   <p class="mb-4"> 기본정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
+   <p class="mb-4"> 기본정보를 입력하세요. <a target="_blank" href="#"></a></p>
       
       <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
       
@@ -642,7 +642,7 @@ ul.precautions-list > li {
 			<ul class="precautions-list">
 				<li>
 				    <input class="form-control" id="inputPrecaution" 
-						placeholder="예약 시 주의사항은 [최소 20자 ~ 최대 100자] 로 입력하여 10개까지 추가 가능합니다."/>
+						placeholder="예약 시 주의사항은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."/>
 					<span style="font-weight: bold; display: none; color: red;"></span>
 				</li>
 			</ul>
