@@ -133,7 +133,8 @@ public class LocationDetailDAO implements ILocationDetailDAO
 				   + ", PACKAGE_END, PACKAGE_PRICE, APPLY_DATE"
 				   + ", APPLY_PACKAGE_CODE"
 				   + " FROM VIEW_APPLY_PACKAGE_INFO"
-				   + " WHERE LOC_CODE = ? AND APPLY_DATE=? AND COUNT=0";
+				   + " WHERE (COUNT=0 OR MEMBER_CANCEL>=1 OR HOST_CANCEL>=1)"
+				   + " AND LOC_CODE = ? AND APPLY_DATE=?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, locCode);

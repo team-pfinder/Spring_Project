@@ -106,7 +106,6 @@
 		// 전화번호 정규식 검사(입력시마다)
 		$("#tel").keyup(function()
 		{
-			//alert("나와");
 			if(!regTel.test($(this).val()))
 			{	
 				$(this).removeClass("full");
@@ -124,6 +123,7 @@
 		// 이름 정규식 검사(입력시마다)
 		$("#name").keyup(function()
 		{
+			
 			if(!regName.test($(this).val()))
 			{	
 				$(this).removeClass("full");
@@ -263,7 +263,7 @@
 				<input type="hidden" value="${profile.member_name }" id="hiddenName"> 
 				<input type="hidden" value="${profile.member_tel }" id="hiddenTel">
 				<p class="ftco-animate">
-					<img src="<%=cp%>/images/image_1.jpg" alt="템플릿 이미지" class="img-fluid">
+					<img src="<%=cp%>/images/${basic.thumbnail_url}" alt="템플릿 이미지" class="img-fluid">
 				</p>
 				<input hidden="hidden" value="${check.mileage }" name="mileage">
 				<h2 class="mb-3 mt-5 font-weight-bold"># 공간 정보</h2><hr>

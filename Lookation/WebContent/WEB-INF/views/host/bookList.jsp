@@ -254,8 +254,8 @@ margin-bottom: 0;
 											</c:otherwise> 
 											
 										</c:choose> --%>
-											<c:if test="${book.checkbook == -1}">
-												<td class="text-danger">취소완료${book.checkbook}</td>	<!-- -1 취소완료 -->
+											<c:if test="${book.checkbook eq '취소완료'}">
+												<td class="text-danger">취소완료</td>	<!-- -1 취소완료 -->
 												<td>
 													<button type="button" value="${book.book_code}"
 													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
@@ -271,8 +271,8 @@ margin-bottom: 0;
 											</c:if>
 											
 											<c:if
-												test="${book.checkbook == 0 }">			<!-- 0 : 이용완료 -->
-												<td class="text-dark">이용완료${book.checkbook}</td>
+												test="${book.checkbook eq '이용완료'}">			<!-- 0 : 이용완료 -->
+												<td class="text-dark">예약완료</td>
 												<td>
 													<button type="button" value="${book.book_code}"
 													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
@@ -287,8 +287,8 @@ margin-bottom: 0;
 												</td>
 											</c:if>
 											
-											<c:if test="${book.checkbook == 1 }">		<!-- 1 : 예약완료 -->
-												<td class="text-gon">예약완료${book.checkbook}</td>
+											<c:if test="${book.checkbook eq '예약완료'}">		<!-- 1 : 예약완료 -->
+												<td class="text-gon">예약완료</td>
 												<td>
 													<button type="button" value="${book.book_code}"
 													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
