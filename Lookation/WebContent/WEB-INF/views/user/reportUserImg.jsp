@@ -63,7 +63,6 @@
 			<input type="file" class="form-control" id="loc_report_img_url" name="loc_report_img_url"><br>
 			<button type="submit" class="btn btn-primary report">신고하기</button>
 			<button type="reset" class="btn btn-secondary">다시작성</button>
-			<button type="button" class="btn btn-default close">닫기</button>
 		</form>
 	</div>
 </div>
@@ -99,12 +98,6 @@
 				}
 				
 			});
-		});
-		
-		$(".close").click(function()
-		{
-			// 지금 이거 안먹는거같던데 .....
-			window.self.close(); 
 		});
 	});
 	
