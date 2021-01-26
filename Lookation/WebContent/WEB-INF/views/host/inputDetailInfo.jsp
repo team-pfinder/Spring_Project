@@ -233,7 +233,7 @@
    
    <!-- Page Heading -->
    <h1 class="mb-2 text-gray-800">상세정보 입력</h1>
-   <p class="mb-4"> 상세정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
+   <p class="mb-4"> 상세정보를 입력하세요. <a target="_blank" href="#"></a></p>
       
       <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
       
@@ -261,7 +261,7 @@
 				</div>
 		</c:forEach>
 				<br><br>
-				<span style="color: gray">* 최소/최대 1장, 최대 5MB, 최대해상도 2048*1158</span>
+				<span style="color: gray">각 1장, 최대 10MB 제한</span>
 		</div>
 	
 	<br><br><br>
@@ -273,7 +273,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">최소 수용인원 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control"
-					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 10명 이하]"
+					placeholder="최소 수용인원을 입력하세요.[최소 1명 이상 ~ 최대 9명 이하]"
 					id="inputMinPeople" name="inputMinPeople"
 					onKeyup="this.value=this.value.replace(/[^0-9]/g,'');">
 					<!-- onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" -->
