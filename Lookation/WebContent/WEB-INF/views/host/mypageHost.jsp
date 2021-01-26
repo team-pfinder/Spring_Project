@@ -43,7 +43,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="profile.action?identify=host" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/Mypage_BankAccount.png');">
+							style="background-image: url('<%=cp%>/images/mypage/Profile.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -55,7 +55,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="bankinfomanage.action?identify=host" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Charge.png');">
+							style="background-image: url('<%=cp%>/images/mypage/BankAccount.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -67,7 +67,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="booklisthost.action" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/Mypage_Mileage_Exchange.png');">
+							style="background-image: url('<%=cp%>/images/mypage/BookList.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -80,7 +80,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="loadandexchange.action?identify=host" class="block-20 rounded"
-							style="background-image:url('<%=cp%>/images/image_4.jpg');">
+							style="background-image:url('<%=cp%>/images/mypage/MileageLoadAndExchange.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<h3 class="heading">
@@ -92,7 +92,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="mileagehistory.action?identify=host" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_5.jpg');">
+							style="background-image: url('<%=cp%>/images/mypage/MileageHistory.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>
@@ -105,7 +105,7 @@
 				<div class="col-md-4 ftco-animate">
 					<div class="blog-entry align-self-stretch">
 						<a href="locationlist.action" class="block-20 rounded"
-							style="background-image: url('<%=cp%>/images/image_5.jpg');">
+							style="background-image: url('<%=cp%>/images/mypage/Location.png'); background-size: auto 100%;">
 						</a>
 						<div class="text mt-3 text-center">
 							<div class="meta mb-2"></div>

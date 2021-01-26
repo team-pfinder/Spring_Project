@@ -43,7 +43,7 @@
 		
 		if(ex_remained < 0)
 		{
-			alert("너 돈 없 음");
+			alert("환전하려는 마일리지가 보유마일리지를 초과합니다.");
 			return false;
 		}
 		document.getElementById("ex_remained").value = ex_remained;
@@ -61,6 +61,11 @@
 	function cccSubmit()
 	{
 		alert(i);
+		if($('input:checkbox[id="chkbox"]').is(":checked") == false)
+		{
+			alert("약관을 확인하여 주세요");
+			return;
+		}
 		var tag = document.createElement("input");
 		tag.setAttribute("type","hidden");
 		tag.setAttribute("name", "charge");

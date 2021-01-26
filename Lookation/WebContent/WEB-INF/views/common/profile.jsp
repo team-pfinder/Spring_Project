@@ -257,7 +257,7 @@
 					<th>계좌정보</th>
 					<td>
 						<div>
-							<a class="clickAble" href="#">관리</a>
+							<a class="clickAble" href="bankinfomanage.action?identify=${identify} ">관리</a>
 						</div>
 					</td>
 				</tr>
