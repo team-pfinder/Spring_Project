@@ -71,8 +71,8 @@
 		setInputLength($('#inputBizCeo'), '대표자명', 2, 10);
 		bizNumReg($('#inputBizNum'));
 		setSelectFilter($('#inputBizCeoType'), '사업자 유형');
-		setInputLength($('#inputBizMainType'), '주업태', 5, 30);
-		setInputLength($('#inputBizSubType'), '주종목', 5, 30);
+		setInputLength($('#inputBizMainType'), '주업태', 2, 30);
+		setInputLength($('#inputBizSubType'), '주종목', 2, 30);
 		
 		
 		// 사업자등록증 이미지 등록
@@ -142,15 +142,15 @@
 				$("#inputBizNum").focus();
 				
 			} 
-			else if (tBizMainType.length < 5 || tBizMainType.length > 30) {
+			else if (tBizMainType.length < 2 || tBizMainType.length > 30) {
 				
-				alert("주업태는 5자~30자로 입력해야합니다.");
+				alert("주업태는 2자~30자로 입력해야합니다.");
 				$("#inputBizMainType").focus();
 				
 			}
-			else if (tBizSubType.length < 5 || tBizSubType.length > 30) {
+			else if (tBizSubType.length < 2 || tBizSubType.length > 30) {
 				
-				alert("주종목은 5자~30자로 입력해야합니다.");
+				alert("주종목은 2자~30자로 입력해야합니다.");
 				$("#inputBizSubType").focus();
 				
 			}
