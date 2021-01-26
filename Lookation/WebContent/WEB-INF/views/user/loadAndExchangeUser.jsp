@@ -23,14 +23,12 @@
 		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 10000;
 		document.getElementById("after").value = parseInt(document.getElementById("after").value) + 10000;
 		i += 10000;
-		alert(i);
 	}
 	function add50000()
 	{
 		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 50000;
 		document.getElementById("after").value = parseInt(document.getElementById("after").value) + 50000;
 		i += 50000;
-		alert(i);
 	}
 	
 	function calc()
@@ -60,7 +58,6 @@
 	
 	function cccSubmit()
 	{
-		alert(i);
 		if($('input:checkbox[id="chkbox"]').is(":checked") == false)
 		{
 			alert("약관을 확인하여 주세요");
