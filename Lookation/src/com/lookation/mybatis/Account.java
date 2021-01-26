@@ -121,7 +121,6 @@ public class Account
 		// 로그인 확인
 		if(accountCode == null)                               
 		{   
-			System.out.println("check!");
 			// 로그인이 안되어 있다면 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;	
 		}
@@ -155,7 +154,6 @@ public class Account
 			// 세션에 저장했던 이전 요청 액션을 가지고 온다.
 			String requestUrl = (String)session.getAttribute("requestUrl");
 			session.setAttribute("requestUrl", null);
-			System.out.println(requestUrl);
 			// 다음 요청 페이지를 요청해야 함
 			// 뭔지는 상황마다 다르다.
 			return "redirect:" + requestUrl + "?identify=" + identify;
@@ -189,7 +187,6 @@ public class Account
 		        // 멤버일 경우
 			if(identify.equals("member"))                                           
 			{             
-				System.out.println("test");
 				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	
 				model.addAttribute("info", dao.getInfo(accountCode)); 
 				model.addAttribute("blackListDate", dao.getBlackListDate(accountCode));

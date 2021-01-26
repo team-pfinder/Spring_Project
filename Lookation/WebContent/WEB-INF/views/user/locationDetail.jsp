@@ -475,6 +475,13 @@ width: 100%;
 			window.open(url, "", option);
 		}); 
 		
+		
+		// 달력 클릭 이벤트
+		$("#selectDate").click(function()
+		{
+			alert("성공");
+		});
+		
 	});
 
 	// 질문 작성하는 팝업

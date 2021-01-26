@@ -65,13 +65,11 @@ public class BankInfoManageController implements Controller
 				
 				try
 				{
-					System.out.println("member1");
 					bankInfoList = dao.memberBankInfoLists(accountCode);
 
 					mav.addObject("memberBankInfoList", bankInfoList );
 					
 					mav.setViewName("../WEB-INF/views/common/bankAccount.jsp?identify=" + identify);
-					System.out.println("member2");
 					
 				} catch (Exception e)
 				{

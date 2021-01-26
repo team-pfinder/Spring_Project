@@ -41,13 +41,7 @@ public class BankInfoAddPopupController implements Controller
 		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned";           
 		
-		// BankInfoAddPopupController 들어온값 테스트-------------------------
-		System.out.println("BankInfoAddPopupController 들어온값");
-		System.out.println("identify : " + identify);
-		System.out.println("accountCode :" + accountCode);
-		System.out.println("---------------------------------------");
-		//--------------------------------------------------------------------
-		
+
 		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
 		if(accountCode != null)                                         
 		{       

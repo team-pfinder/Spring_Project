@@ -46,7 +46,6 @@ public class DeleteMemberController implements Controller
 		{	
 			// 세션을 통한 로그인 확인                                                                    
 			HttpSession session = request.getSession();                    
-			session.setAttribute("memCode", "M000006");
 			String accountCode = (String)session.getAttribute("memberCode"); 
 
 			// 로그인 확인을 기록하기 위함                  

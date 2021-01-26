@@ -29,9 +29,6 @@ public class Location
 	public String locationList(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
-		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
 		
@@ -69,9 +66,6 @@ public class Location
 	public String deleteAction(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
-		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
 		                                                                                 
@@ -112,8 +106,6 @@ public class Location
 	{
 		HttpSession session = request.getSession();
 
-		session.setAttribute("hostCode", "H000001");
-
 		String accountCode = (String) session.getAttribute("hostCode");
 		String result = "noSigned";
 
@@ -138,8 +130,6 @@ public class Location
 	public String basicAjax(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -187,8 +177,6 @@ public class Location
 	{
 		HttpSession session = request.getSession();       
 		
-		session.setAttribute("hostCode", "H000001");
-		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
 		                                                                                   
@@ -234,8 +222,6 @@ public class Location
 	{
 		HttpSession session = request.getSession();       
 		
-		session.setAttribute("hostCode", "H000001");
-		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
 		                                                                                   
@@ -266,8 +252,6 @@ public class Location
 	public String inputBusinessInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -316,8 +300,6 @@ public class Location
 	{
 		HttpSession session = request.getSession();       
 		
-		session.setAttribute("hostCode", "H000001");
-		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
 		                                                                                   
@@ -359,8 +341,6 @@ public class Location
 	public String inputUsingInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -541,9 +521,7 @@ public class Location
 		// 세션으로부터 호스트코드 불러와 담기(test : H000001)
 		String host_code = request.getParameter("host_code"); // 현재 null
 		host_code = "H000001";
-		//System.out.println(host_code);
 		dto.setHost_code(host_code);
-		//System.out.println(dto.getHost_code());
 		/*
 		arr = dao.selectLoc(dto);
 		
@@ -579,8 +557,6 @@ public class Location
  	    //dao.selectBasicInfo(dto);		
  	    
  	    LocationDTO test = dao.selectBasicInfo(dto);
- 	    System.out.println(test.getLoc_basic_info_code());
- 	    
  	   
  	    // Idao로부터 dao.xml 매퍼로 새팅한 loc_code를 dao를 호출하며 
  	    // model.addAtrribute로 담음(key값은 테이블파일과 유사하도록)

@@ -50,7 +50,7 @@ public class LocationReview
 				model.addAttribute("info", dao.getInfo(accountCode));
 				String member_code = request.getParameter("member_code");
 				model.addAttribute("member_code", member_code);
-				System.out.println("리뷰폼 호출" + member_code);
+				
 
 			}
 			// 호스트일 경우
@@ -68,7 +68,7 @@ public class LocationReview
 		// 로그인 여부 데이터를 뷰에 넘겨준다.
 		model.addAttribute("result", result);
 		model.addAttribute("accountCode", accountCode);
-		System.out.println("뷰에 넘겨줄때 : " + accountCode);
+		
 
 		// 로그인이 안되어 있다면
 		if (result.equals("noSigned"))
@@ -78,7 +78,7 @@ public class LocationReview
 		}
 
 		model.addAttribute("loc_code", loc_code);
-		System.out.println("뷰에 넘겨줄때 : " + loc_code);
+	
 
 		return "../WEB-INF/views/common/writeReviewPopup.jsp";
 	}
@@ -153,7 +153,6 @@ public class LocationReview
 		
 		String loc_code = m.getParameter("loc_code");
 
-		System.out.println("loc_code : " + loc_code);
 		
 		try
 		{
@@ -166,12 +165,12 @@ public class LocationReview
 			if (imageList.isEmpty())
 			{
 				locDao.insertMemReview(dto);
-				System.out.println("파일 없음");
+				
 			}
 			else 
 			{
 				locDao.insertMemImg(dto);
-				System.out.println("파일 있음");
+				
 			}
 			
 		} catch (Exception e)
@@ -179,8 +178,6 @@ public class LocationReview
 			System.out.println(e.toString());
 		}
 		
-		System.out.println("확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() + ", " + dto.getReview_rate()
-				+ ", " + dto.getReview_content() + ", " +dto.getReview_img_url() + " 끝! ");
 	}
 
 	/*
@@ -220,8 +217,7 @@ public class LocationReview
 	public void insertReviewImg(LocationReviewDTO dto, HttpServletRequest request)
 	{
 		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
-		System.out.println("여기서 2 " + dto.getMember_code());
-
+		
 		try
 		{
 			MultipartRequest m = FileManager.upload(request, "images");
@@ -239,9 +235,6 @@ public class LocationReview
 		{
 			e.toString();
 		}
-
-		System.out.println("파일첨부 확인 : " + dto.getLoc_code() + ", " + dto.getMember_code() + ", " + dto.getReview_rate()
-				+ ", " + dto.getReview_img_url() + " 끝! ");
 
 		// 리뷰쓰기
 		locDao.insertMemImg(dto);

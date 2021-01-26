@@ -68,7 +68,6 @@ public class BlindContent
 		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
 		model.addAttribute("result", result);
 		
-		System.out.println(result);
 		
 		
 		return "/WEB-INF/views/common/blindContent.jsp?identify=" + identify;

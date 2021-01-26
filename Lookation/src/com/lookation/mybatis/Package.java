@@ -30,7 +30,6 @@ public class Package
 	{
 		String loc_code = request.getParameter("loc_code");
 		HttpSession session = request.getSession();       
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -68,8 +67,7 @@ public class Package
 	{	
 		String loc_code = request.getParameter("loc_code");
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
+	
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -97,7 +95,6 @@ public class Package
 		String loc_code = request.getParameter("loc_code");
 		HttpSession session = request.getSession();       
 		
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -137,8 +134,6 @@ public class Package
 		String loc_code = request.getParameter("loc_code");
 
 		HttpSession session = request.getSession();
-
-		session.setAttribute("hostCode", "H000001");
 
 		String accountCode = (String) session.getAttribute("hostCode");
 		String result = "noSigned";
@@ -183,12 +178,9 @@ public class Package
 	@RequestMapping(value="/actions/packageapplyform.action", method=RequestMethod.GET)
 	public String packageApplyForm(HttpServletRequest request, Model model)
 	{
-		System.out.println("host");
 		String loc_code = request.getParameter("loc_code");
-		System.out.println(loc_code);
 		
 		HttpSession session = request.getSession();       
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -236,8 +228,6 @@ public class Package
 		String loc_code = request.getParameter("loc_code");
 		
 		HttpSession session = request.getSession();       
-		
-		session.setAttribute("hostCode", "H000001");
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		                                                                               

@@ -29,10 +29,7 @@ public class MemberMessenger
 	public String messageList(Model model, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인                                                                    
-		HttpSession session = request.getSession();  
-		/*===================================================*/
-		session.setAttribute("memberCode", "M000001");
-		/*===================================================*/                                        
+		HttpSession session = request.getSession();                                      
 		String accountCode = (String)session.getAttribute("memberCode"); 
 
 		// 로그인 확인을 기록하기 위함                  
@@ -83,7 +80,6 @@ public class MemberMessenger
 	{
 		IMemberMessengerDAO dao = sqlSession.getMapper(IMemberMessengerDAO.class);
 		
-		System.out.println("일루오라고! " + dto.getBook_code());
 		dao.mSendMsg(dto);
 		
 		// 원래 있던 채팅방으로 돌아가기
@@ -103,13 +99,12 @@ public class MemberMessenger
             model.addAttribute("imageList", imageList);
             
             String book_code = m.getParameter("book_code");
-            System.out.println("b : " + book_code);
             
             //String msg_img_url = String.valueOf(FileManager.getFileNames(m));
             String msg_img_url = m.getParameter("msg_img_url");
             model.addAttribute("book_code", book_code);
             model.addAttribute("msg_img_url", msg_img_url);
-            System.out.println(msg_img_url);
+         
             dao.mSendImg(dto);
 
         } catch (Exception e)

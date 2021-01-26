@@ -57,15 +57,6 @@ public class BookList
 
 			ArrayList<BookListDTO> dto1 = bookDao.bookList(accountCode);
 
-			for (int i = 0; i < dto1.size(); i++)
-			{
-				System.out.println("--------------------------");
-				System.out.println("Checkbook : " + dto1.get(i).getCheckbook());
-				System.out.println(dto1.get(i).getPackage_start());
-				System.out.println(dto1.get(i).getApply_date());
-				System.out.println("--------------------------");
-			}
-
 			model.addAttribute("member_code", accountCode);
 
 			// 로그인이 되었음을 기록한다.
@@ -305,9 +296,7 @@ public class BookList
 		IBookListDAO dao = sqlSession.getMapper(IBookListDAO.class);
 
 		dao.hostCancel(dto);
-		System.out.println("hostCancel() 실행완료");
 		dao.refund(dto);
-		System.out.println("refund() 실행완료");
 	}
 
 	// 신고 접수 폼 호출

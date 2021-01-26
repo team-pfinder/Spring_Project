@@ -197,10 +197,6 @@ public class BankInfoDAO implements IBankInfoDAO
 		cstmt.setString(1, identify);
 		cstmt.setString(2, bankNumber);
 		int result = cstmt.executeUpdate();
-		if (result > 0)
-		{
-			System.out.println(">> 프로시저 호출을 통해 계좌정보들 삭제 완료~!!!");
-		}
 
 		cstmt.close();
 		conn.close();

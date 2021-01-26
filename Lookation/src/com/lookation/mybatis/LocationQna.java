@@ -62,7 +62,6 @@ public class LocationQna
 		// 로그인 여부 데이터를 뷰에 넘겨준다.
 		model.addAttribute("result", result);
 		model.addAttribute("accountCode", accountCode);
-		System.out.println("여기서 + " + accountCode);
 		// ********* 만약 로그인기능이 사용되는 뷰페이지의 경우 이 코드를 추가한다. *********
 		// 로그인이 안되어 있다면
 		if (result.equals("noSigned"))

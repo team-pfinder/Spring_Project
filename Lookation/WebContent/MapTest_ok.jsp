@@ -8,7 +8,6 @@
 %>    
 <%
 	String loc_code = request.getParameter("loc_code");
-	System.out.println(loc_code);
 
 	String[] type = {"파티룸", "엠티장소"};
 	String[] name = {"어승승일산", "어승승응암"};
@@ -27,8 +26,6 @@
 		
 		jsonArr.add(jsonObj);		
 	}
-
-	System.out.println(jsonArr.toString());
 
 	out.println(jsonArr.toString());
 

@@ -45,7 +45,6 @@ public class DeleteHostController implements Controller
 		{	
 			// 세션을 통한 로그인 확인                                                                    
 			HttpSession session = request.getSession();       
-			session.setAttribute("hostCode", "H000001");
 			String accountCode = (String)session.getAttribute("hostCode"); 
 
 			// 로그인 확인을 기록하기 위함                  

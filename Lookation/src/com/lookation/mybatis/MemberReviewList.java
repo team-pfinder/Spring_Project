@@ -26,10 +26,7 @@ public class MemberReviewList
 	public String userReviewList(String member_code, Model model, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인                                                                    
-		HttpSession session = request.getSession();  
-		/*===================================================*/
-		session.setAttribute("memberCode", "M000001");
-		/*===================================================*/                                        
+		HttpSession session = request.getSession();                                      
 		String accountCode = (String)session.getAttribute("memberCode"); 
 
 		// 로그인 확인을 기록하기 위함                  

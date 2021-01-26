@@ -58,7 +58,6 @@ public class BankInfoAddController implements Controller
 			dto.setBankNumber(request.getParameter("bankNum"));
 			dto.setBankHolder(request.getParameter("bankHol"));
 			
-			System.out.println(identify);
 			// 이용자일 경우                                                                            
 			if(identify.equals("member"))                                                   
 			{                                                                               
@@ -66,13 +65,11 @@ public class BankInfoAddController implements Controller
 				{
 					if(dao.memberBankInfoCount(accountCode) >= 3)
 					{
-						System.out.println("이용자 계좌 이미 3개");
+						
 					}
 					else
 					{
-						System.out.println("계좌 등록전");
 						dao.memberBankInfoAdd(dto);
-						System.out.println("계좌 등록완료");
 						mav.setViewName("../WEB-INF/views/common/timeout.jsp");
 					}
 				} catch (Exception e)
@@ -87,10 +84,9 @@ public class BankInfoAddController implements Controller
 			{                                                                               
 				try
 				{
-					System.out.println("계좌 갯수 체크전");
 					if(dao.hostBankInfoCount(accountCode) >= 3)
 					{
-						System.out.println("호스트 계좌 이미 3개");
+						
 					}
 					else 
 					{
