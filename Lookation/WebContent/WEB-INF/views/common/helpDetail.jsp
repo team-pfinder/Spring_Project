@@ -70,7 +70,7 @@ String cp = request.getContextPath();
               
             <!-- 버튼 -->  
             <div class="form-group">
-               <button type="button" class="btn py-3 px-4 btn-primary" style="float: right;" onclick="location.href='help.action'">목록으로</button>
+               <button type="button" class="btn py-3 px-4 btn-primary" style="float: right;" onclick="location.href='help.action?identify=${identify}'">목록으로</button>
             </div>
 
           
