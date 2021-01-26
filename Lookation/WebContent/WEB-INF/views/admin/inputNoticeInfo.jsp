@@ -53,7 +53,7 @@ $(document).ready(function()
 							<!-- general form elements -->
 							<div class="box box-primary">
 								<div class="box-header">
-									<h3 class="box-title">도움말 등록하기</h3>
+									<h3 class="box-title">공지사항 등록하기</h3>
 								</div>
 								<br>
 
