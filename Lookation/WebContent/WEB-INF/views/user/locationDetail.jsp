@@ -3,21 +3,6 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
-/* 	
-	String identify = request.getParameter("identify");
-	pageContext.setAttribute("identify", identify);
-	
-	// 세션 접속시 아이디 확인
-	if(identify.equals("host"))
-	{
-		String hostCode = (String)session.getAttribute("hostCode");
-		pageContext.setAttribute("Code", hostCode);
-	}
-	else
-	{
-		String memberCode = (String)session.getAttribute("memberCode");
-		pageContext.setAttribute("Code", memberCode);
-	} */
 	
 	String memberCode = (String)session.getAttribute("memberCode");
 	pageContext.setAttribute("Code", memberCode);
@@ -319,12 +304,16 @@ width: 100%;
 		$("#selectDate").attr("min", today);
 		$("#selectDate").attr("max", maxdate);
 		
+		
 	    /* 숫자 버튼 증가 및 최소, 최댓값 설정 */
 	    $("#increase").on("click", function(){
 			
-		   	if($("#amount").val() >= 29)
+	    	// 해당 공간의 최대인원수와 비교 → 최대인원 넘지 않으면 + 1 해줌
+	    	// 넘으면 maxPeople 값으로 초기화
+		   	if($("#amount").val() >= parseInt($("#maxPeople").val()))
 		    {
-		   		$("#amount").val(30);
+		   		$("#amount").val(parseInt($("#maxPeople").val()));
+		   		return false;
 		    }
 		   	else
 		   	{
@@ -334,9 +323,10 @@ width: 100%;
 	    
 	    $("#decrease").on("click", function(){
 	    	
-	    	 if($("#amount").val() <= 0)
+	    	 if($("#amount").val() <= parseInt($("#minPeople").val()))
 	         {
-	         	$("#amount").val(0);
+	         	$("#amount").val(parseInt($("#minPeople").val()));
+	         	return false;
 	         }
 	    	 else
 	    	 {
@@ -363,6 +353,10 @@ width: 100%;
 					// 받은 데이터 JSON으로 파싱함
 					var obj = JSON.parse(data);
 					
+					// 선택된 패키지의 가격 받아올 변수
+					var i = 1;							//-- for문 돌 때 증가값, #price0 선택자 구성할 용도
+					var temp = "";						//-- 선택된 라디오버튼의 id값 저장
+					
 					// 데이터 없으면 패키지 없다고 표시
 					if(obj.length==0﻿)
 					{
@@ -374,7 +368,7 @@ width: 100%;
 					{
 						// 배열에서 key랑 value값으로 꺼냄
 						$.each(obj,function(key,value) {
-
+							
 							//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
 							if(parseInt(value.packEnd) >= 24)
 							{
@@ -387,12 +381,13 @@ width: 100%;
 							}
 							
 							html = "<div class='packageSelect'><label>";
-							html += "<input type='radio' name='apply_package_code' value='" + value.packCode + "'>";
+							html += "<input type='radio' id='" + i + "' name='apply_package_code' value='" + value.packCode + "'>";
 							html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
 									+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
 							
+							// 각 패키지 가격 구분하기 위해 #price1, #price2로 설정
 							html += "<div class='flex float-right vertical-down'><strong id='price"
-								    + obj.length + "'>" + value.packPrice + " (원)</strong></div>"
+								    + i + "'>" + value.packPrice + " (원)</strong></div>";
 							html += "</label></div>";
 							
 							// 라디오버튼 packageDiv에 추가
@@ -401,10 +396,14 @@ width: 100%;
 							// 라디오버튼 선택시 선택한 가격 보여주기
 							$("input:radio[name=apply_package_code]").click(function()
 							{
-								//alert("나 선택됐어");
-								$("#selectPrice").text($("#price"+obj.length).text());
+								// 선택된 라디오버튼의 id 가져옴
+								temp = $("input:radio[name=apply_package_code]:checked").attr("id");
+								// 패키지 가격 출력
+								$("#selectPrice").text($("#price"+temp).text());
 								
 							});
+							
+							i++;
 						});
 					}
 				}
@@ -414,27 +413,14 @@ width: 100%;
 			});
 		});
 		
-	    // 리뷰 사진만보기
-		/* $("#switch1").change(function()
+	    // 폼 전송 전 패키지 선택했는지 검사
+	    $("form[id=reserveForm]").bind("submit", function()
 		{
-			var html = "";
-			
-			$("#review").html("");
-			
-			$.ajax({
-				url : "reviewajax.action"
-				, type : "post"
-				, data : {selectDate : $("#selectDate").val(), locCode : $("#hiddenCode").val()}
-				, success : function(data) {
-					
-					// 받은 데이터 JSON으로 파싱함
-					var obj = JSON.parse(data);
-				}
-			    , error:function(e){
-			    	alert(e.responseText);
-			    }
-			});
-		}); */
+			if(! $('input[name="apply_package_code"]:checked').val()){
+				alert("결제할 패키지를 선택해 주세요.");
+				return false;
+			}
+		});
 	    
 		// 이용자 QnA 수정하는 팝업
 		$(".modifyQna").click(function()
@@ -475,13 +461,6 @@ width: 100%;
 			window.open(url, "", option);
 		}); 
 		
-		
-		// 달력 클릭 이벤트
-		$("#selectDate").click(function()
-		{
-			alert("성공");
-		});
-		
 	});
 
 	// 질문 작성하는 팝업
@@ -503,8 +482,6 @@ width: 100%;
 		var member_code = '<%=(String)session.getAttribute("memberCode")%>';
 		var loc_code = '<%=(String)request.getParameter("loc_code")%>';
 		
-		alert(member_code);
-		alert(loc_code);
 		var url = "writereview.action?identify=member&loc_code="+ loc_code + "&member_code=" + member_code;
 		var option = "width=450, height=400, resizable=no, scrollbars=yes, status=no";
 		window.open(url, "", option);
@@ -517,8 +494,10 @@ width: 100%;
 	<div class="container">
 		<div class="row">	
 			<div class="col-md-12">
-				<input type="hidden" id="hiddenCode" name="loc_code" value="${loc_code }">${loc_code }
+				<input type="hidden" id="hiddenCode" name="loc_code" value="${loc_code }">
 				<input type="hidden" id="packPrice" name="packPrice" value="${packageInfo.packPrice }">
+				<input type="hidden" id="minPeople" value="${basicInfo.minPeople}">
+				<input type="hidden" id="maxPeople" value="${basicInfo.maxPeople}">
 				<h2 class="mb-1 font-weight-bold">${basicInfo.locName }</h2>
 				<h4 class="mb-3">${basicInfo.shortIntro }</h4>
 				<!-- 태그모양으로 카테고리 표시해줌  -->
@@ -535,36 +514,7 @@ width: 100%;
 							style="background-image: url(<%=cp%>/images/${url});">
 						</div>
 					</c:forEach>
-				
-					<%-- <div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_1.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_2.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_3.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_4.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_5.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_6.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/location1.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/location4.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_2.jpg);">
-					</div> --%>
 				</div>
-				<!-- 이미지 클릭하면 확대  -->
 			</div>
 		</div>
 			
@@ -654,7 +604,7 @@ width: 100%;
 									</c:if>
 									
 									<c:if test="${rv.removeCount eq 0}">
-										<p>${rv.content }${rv.memCode }</p>
+										<p>${rv.content }</p>
 										
 										<c:if test="${rv.rvimgCount ne 0 }">
 											<p>
@@ -856,7 +806,7 @@ width: 100%;
 							<hr>
 						<!-- 예약하고 싶은 날짜를 선택하면 해당 날짜에 적용된 -->
 						<!-- 패키지정보가 나타남. -->
-						<!-- 선택한 날짜를 date 변수에 담고, 해당 날짜에 존재하는 패키지정보를 불러와서 출력한다... ? -->
+						<!-- 선택한 날짜를 date 변수에 담고, 해당 날짜에 존재하는 패키지정보를 불러와서 출력한다.-->
 						
 						
 						<div class="py-2 calendar">
@@ -885,7 +835,7 @@ width: 100%;
 							<div class="btn-group" style="width: 230px;">
 								<button type="button" class="btn btn-primary py-3 my-0 btn-group-addon"
 								id="decrease" >-</button>
-								<input type="text" id="amount" required="required"
+								<input type="text" id="amount" readonly="readonly" required="required"
 								class="form-control border-0" name="book_people" value="${basicInfo.minPeople }" style="text-align:center;">
 								<button type="button" class="btn btn-primary py-0 mb-0 btn-group-addon"
 								id="increase">+</button>

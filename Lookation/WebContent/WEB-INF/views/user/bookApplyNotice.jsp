@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>예약신청완료.jsp</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <script type="text/javascript">
 
