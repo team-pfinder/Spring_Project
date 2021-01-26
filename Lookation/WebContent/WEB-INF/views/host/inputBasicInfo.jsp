@@ -98,7 +98,7 @@ ul.precautions-list > li {
 		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 4, 20);
 		setInputLength($('#inputIntro'), '공간 소개', 20, 400);
 		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
-		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 20, 100);
+		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 10, 50);
 
 		
 		// 썸네일 이미지 등록

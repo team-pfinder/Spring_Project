@@ -68,53 +68,15 @@ String cp = request.getContextPath();
               </div>
             </div>
               
-            <!-- 버튼 -->  
+        <!-- 버튼 -->  
             <div class="form-group">
-              <input type="submit" value="목록으로" class="btn py-3 px-4 btn-primary" style="float: right;">
+               <button type="button" class="btn py-3 px-4 btn-primary" style="float: right;" onclick="location.href='notice.action?identify=${identify}'">목록으로</button>
             </div>
 
           
 
           </div> <!-- end class="col-lg-8 ftco-animate" -->
           
-          <!-- 사이드 -->
-          <div class="col-lg-4 sidebar pl-lg-5 ftco-animate">
-            
-            <div class="sidebar-box ftco-animate">
-              <div class="categories">
-                <h3>Categories</h3>
-                <li><a href="#">Construction <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">House Renovation <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Painting <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Architecture Design <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Interior Design <span class="ion-ios-arrow-forward"></span></a></li>
-                <li><a href="#">Preconstruction Planning <span class="ion-ios-arrow-forward"></span></a></li>
-              </div>
-            </div>
-
-            <div class="sidebar-box ftco-animate">
-              <h3>이전 이후 공지</h3>
-              <div class="block-21 mb-4 d-flex">
-                <div class="text">
-                  <h3 class="heading"><a href="#">▲도움말1</a></h3>
-                  <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> Jan. 30, 2020</a></div>
-                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                  </div>
-                </div>
-              </div>
-              <div class="block-21 mb-4 d-flex">
-                <div class="text">
-                  <h3 class="heading"><a href="#">▼도움말3</a></h3>
-                  <div class="meta">
-                    <div><a href="#"><span class="icon-calendar"></span> Jan. 30, 2020</a></div>
-                    <div><a href="#"><span class="icon-person"></span> Admin</a></div>
-                  </div>
-                </div>
-              </div>
-						
-					</div>
-				</div>
 			</div>
 		</div>
 	</section>

@@ -71,11 +71,11 @@ public class DeleteHostController implements Controller
 				}
 				else if(dao.checkMileage(accountCode)!=0)	// 마일리지 남아있으면
 				{
-					out.println("<script>alert('마일리지가 남아있어 마일리지 환전 페이지로 이동합니다.');</script>");
+					out.println("<script>alert('마일리지가 남아있어 마이페이지로 이동합니다.');</script>");
 					out.flush();
 					
 					// 마이페이지로 보냄
-					mav.setViewName("loadandexchange.action?identify=host");
+					mav.setViewName("mypage.action?identify=host");
 					
 					return mav;
 				}
