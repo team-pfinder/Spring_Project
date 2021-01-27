@@ -223,7 +223,7 @@ span.price
 					<div class="col-md-4 mb-4 ftco-animate">
 						<div onclick="location.href='locationdetail.action?loc_code=${todayLocation.code}'" 
 						    class="box-up z-depth-5 flex-center sumnail" id="img"
-							style="background-image: url('<%=cp %>/images/image_1.jpg');" ></div>
+							style="background-image: url('<%=cp %>/images/${todayLocation.url}');" ></div>
 						<div class="box-down z-depth-5 flex-center">
 							<h2 class="font-default padding-side padding-upside">${todayLocation.name }</h2>
 							<a class="padding-side"> <span
