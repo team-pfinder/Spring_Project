@@ -970,12 +970,12 @@ CREATE OR REPLACE VIEW VIEW_BOOKLIST
 AS
 SELECT A.*,
 CASE WHEN MEMBER_CANCEL > 0 OR HOST_CANCEL > 0
-THEN -1                 -- 취소완료
+THEN '취소완료'                 -- 취소완료
 WHEN APPLY_DATE > SYSDATE -- 현재시간이 예약시작시간보다 뒤
-THEN 1                    -- 이용완료 
+THEN '이용완료'                    -- 이용완료 
 WHEN APPLY_DATE < SYSDATE
-THEN 0                    -- 예약완료
-ELSE 2
+THEN '예약완료'                    -- 예약완료
+ELSE '알수없음'
 END AS CHECKBOOK
 FROM
 (

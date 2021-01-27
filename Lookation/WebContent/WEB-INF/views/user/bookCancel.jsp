@@ -181,6 +181,7 @@
 							class="text-primary">${int_package_price}</span>원이 마일리지로 환불됩니다.</div>
 						</c:if>
 						
+						<div>이용시작 전일 23:59분까지 취소할 수 있으며,</div>
 						<div>취소한 예약은 되돌릴 수 없습니다.</div>
 					</div>
 					
@@ -195,7 +196,9 @@
 						<div class="div-row">
 							<div class="div-col-half"><button type="button" class="btn btn-secondary btn-block" onclick="window.close();">닫기</button></div>
 							<!-- 확인 버튼 클릭시 예약취소테이블 insert -->
-							<div class="div-col-half"><button type="submit" class="btn btn-danger btn-block" value="${cancel.book_code}" id="cancleBtn">예약 취소하기</button></div>
+							<c:if test="${cancel.days < 7 && cancel.days >= 1}">
+								<div class="div-col-half"><button type="submit" class="btn btn-danger btn-block" value="${cancel.book_code}" id="cancleBtn">예약 취소하기</button></div>
+							</c:if>
 						</div>
 					</div><!-- End .div-table-body-->
 				</div><!-- End .div-table -->
