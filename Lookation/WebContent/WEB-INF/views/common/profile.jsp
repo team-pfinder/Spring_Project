@@ -276,8 +276,8 @@
 			<hr>
 			<!-- 서비스 탈퇴 -->
 			<div class="centerClick">
-				<a class="clickAble" href="#" 
-				style="color:red; font-weight:bold">회원 탈퇴</a>
+			   <a class="clickAble" href="deleteform.action?identify=${identify }" 
+			style="color:red; font-weight:bold">회원 탈퇴</a>
 			</div>
 		</div>
 	</div>

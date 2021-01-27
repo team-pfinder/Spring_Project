@@ -58,7 +58,7 @@
 			<span style="font-size: 150%; font-family: inherit; 
 			font-weight: bold; color: black;">공간 등록하기</span>
 		</button> 
-		<p>궁금한 점이 있으신가요? <a href="faq">FAQ 바로가기</a></p> <!-- 작은폰트, 회색폰트 -->
+		<p>궁금한 점이 있으신가요? <a href="help.action?identify=host">FAQ 바로가기</a></p> <!-- 작은폰트, 회색폰트 -->
 	</div>
 	
 	<!-- 슬라이드쇼 -->

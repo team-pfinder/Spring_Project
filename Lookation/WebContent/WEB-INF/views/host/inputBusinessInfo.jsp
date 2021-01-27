@@ -71,8 +71,8 @@
 		setInputLength($('#inputBizCeo'), '대표자명', 2, 10);
 		bizNumReg($('#inputBizNum'));
 		setSelectFilter($('#inputBizCeoType'), '사업자 유형');
-		setInputLength($('#inputBizMainType'), '주업태', 5, 30);
-		setInputLength($('#inputBizSubType'), '주종목', 5, 30);
+		setInputLength($('#inputBizMainType'), '주업태', 2, 30);
+		setInputLength($('#inputBizSubType'), '주종목', 2, 30);
 		
 		
 		// 사업자등록증 이미지 등록
@@ -142,15 +142,15 @@
 				$("#inputBizNum").focus();
 				
 			} 
-			else if (tBizMainType.length < 5 || tBizMainType.length > 30) {
+			else if (tBizMainType.length < 2 || tBizMainType.length > 30) {
 				
-				alert("주업태는 5자~30자로 입력해야합니다.");
+				alert("주업태는 2자~30자로 입력해야합니다.");
 				$("#inputBizMainType").focus();
 				
 			}
-			else if (tBizSubType.length < 5 || tBizSubType.length > 30) {
+			else if (tBizSubType.length < 2 || tBizSubType.length > 30) {
 				
-				alert("주종목은 5자~30자로 입력해야합니다.");
+				alert("주종목은 2자~30자로 입력해야합니다.");
 				$("#inputBizSubType").focus();
 				
 			}
@@ -329,7 +329,7 @@
    
    <!-- Page Heading -->
    <h1 class="mb-2 text-gray-800">사업자정보 입력</h1>
-   <p class="mb-4"> 사업자정보를 입력하세요. <a target="_blank" href="#">이전으로</a>.</p>
+   <p class="mb-4"> 사업자정보를 입력하세요. <a target="_blank" href="#"></a></p>
       
       <!-- 필요하다면 마이페이지로 돌아가는 왼쪽 사이드바 -->
       
@@ -474,7 +474,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">주업태 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text"  class="form-control"
-				   placeholder="주업태를 입력하세요. [최소 5자 ~ 최대 30자]"
+				   placeholder="주업태를 입력하세요. [최소 2자 ~ 최대 30자]"
 				   id="inputBizMainType" name="inputBizMainType">
 			<span style="font-weight: bold; "></span>
 		</div>
@@ -490,7 +490,7 @@
 			<span style="font-size: 14pt; font-weight: bold;">주종목 <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text"  class="form-control"
-				   placeholder="주종목을 입력하세요. [최소 5자 ~ 최대 30자]"
+				   placeholder="주종목을 입력하세요. [최소 2자 ~ 최대 30자]"
 				   id="inputBizSubType" name="inputBizSubType">
 			<span style="font-weight: bold; "></span>
 		</div>
