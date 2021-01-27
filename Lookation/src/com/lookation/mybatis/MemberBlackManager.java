@@ -26,10 +26,10 @@ public class MemberBlackManager
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
 
-		String accountCode = (String) session.getAttribute("adminCode");
+		String admin_id = (String) session.getAttribute("admin_id");
 
 		// 로그인이 안된경우
-		if (accountCode == null)
+		if (admin_id == null)
 		{
 			// 로그인 실패. 다시 로그인창으로
 			return "redirect:adminloginform.action";
@@ -50,10 +50,10 @@ public class MemberBlackManager
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
 
-		String accountCode = (String) session.getAttribute("adminCode");
+		String admin_id = (String) session.getAttribute("admin_id");
 
 		// 로그인이 안된경우
-		if (accountCode == null)
+		if (admin_id == null)
 		{
 			// 로그인 실패. 다시 로그인창으로
 			return "redirect:adminloginform.action";
@@ -75,10 +75,10 @@ public class MemberBlackManager
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
 
-		String accountCode = (String) session.getAttribute("adminCode");
+		String admin_id = (String) session.getAttribute("admin_id");
 
 		// 로그인이 안된경우
-		if (accountCode == null)
+		if (admin_id == null)
 		{
 			// 로그인 실패. 다시 로그인창으로
 			return "redirect:adminloginform.action";
