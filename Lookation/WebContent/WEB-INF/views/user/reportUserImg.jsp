@@ -59,7 +59,7 @@
 		<p> ※ 파일명이 한글로 되어있을 경우 제대로 업로드 되지 않을 수 있습니다.
 		영문명으로 변경하시고 업로드 해주시길 바랍니다.</p>
 		<form id="reportForm" method="post" enctype="multipart/form-data">
-		<input type="text" id="loc_report_code" name="loc_report_code" value="${list.loc_report_code }">
+		<input type="text" id="loc_report_code" name="loc_report_code" value="${list.loc_report_code }" style="display: none;">
 			<input type="file" class="form-control" id="loc_report_img_url" name="loc_report_img_url"><br>
 			<button type="submit" class="btn btn-primary report">신고하기</button>
 			<button type="reset" class="btn btn-secondary">다시작성</button>
