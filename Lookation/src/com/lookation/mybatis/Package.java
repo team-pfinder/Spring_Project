@@ -89,7 +89,7 @@ public class Package
 		return "../WEB-INF/views/host/inputPackageInfo.jsp?loc_code=" + loc_code; 
 	}
 	// 패키지 추가
-	@RequestMapping(value="/actions/inputpackageform.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/inputpackageform.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputPackageForm(HttpServletRequest request, Model model)
 	{	
 		String loc_code = request.getParameter("loc_code");
@@ -128,7 +128,7 @@ public class Package
 		return "redirect:packagemanager.action?loc_code=" + loc_code; 
 	}
 	// 패키지 삭제
-	@RequestMapping(value = "/actions/deletepackageform.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/actions/deletepackageform.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String deletePackageForm(HttpServletRequest request, Model model)
 	{
 		String loc_code = request.getParameter("loc_code");
@@ -225,7 +225,7 @@ public class Package
 	
 	
 	// 패키지 실제 저장
-	@RequestMapping(value="/actions/packageapplyajax.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/packageapplyajax.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String packageApplyAjax(HttpServletRequest request, Model model)
 	{
 		String loc_code = request.getParameter("loc_code");

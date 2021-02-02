@@ -142,7 +142,7 @@ public class Location
 		return "../WEB-INF/views/host/inputBasicInfo.jsp";
 	}
 	
-	@RequestMapping(value="/actions/basicajax.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/basicajax.action", method=RequestMethod.POST)
 	public String basicAjax(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
@@ -155,7 +155,12 @@ public class Location
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
 		    
-			//
+			if (request.getParameterValues("facility[]") == null
+					|| request.getParameterValues("precaution[]") == null)
+			{
+				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+			}
+			
 			String[] arrFacility = request.getParameterValues("facility[]");
 			String[] arrPrecaution = request.getParameterValues("precaution[]");
 			
@@ -177,7 +182,8 @@ public class Location
 			//
 			
 		    result = "signed";                                                                                
-		}                                                                                   
+		}
+		
 		model.addAttribute("result", result); 
 	    
 		if(result.equals("noSigned"))
@@ -185,10 +191,11 @@ public class Location
 		    return "redirect:loginform.action?identify=host";
 		}
 
+		
 		return "";
 	}
 	
-	@RequestMapping(value="/actions/inputbasicinfo.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/inputbasicinfo.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputBasicInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
@@ -206,6 +213,17 @@ public class Location
 			{
 				MultipartRequest m = FileManager.upload(request, "images");
 				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				
+				if (m.getParameter("inputLocName") == null
+				   || m.getParameter("inputLocType") == null
+				   || m.getParameter("inputShortIntro") == null
+				   || m.getParameter("inputIntro") == null
+				   || fileNames.get(0) == null
+				   || m.getParameter("inputAddr") == null
+				   || m.getParameter("inputDetailAddr") == null)
+				{
+					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+				}
 				
 			 	LocationManager.setName(m.getParameter("inputLocName"));
 			 	LocationManager.setType(m.getParameter("inputLocType"));
@@ -233,7 +251,7 @@ public class Location
 		return "../WEB-INF/views/host/inputContactInfo.jsp";
 	}
 	
-	@RequestMapping(value="/actions/inputcontactinfo.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/inputcontactinfo.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputContactInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
@@ -246,11 +264,17 @@ public class Location
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
 		    
-			//
+			if (request.getParameter("inputEmail") == null
+			   || request.getParameter("inputContact") == null
+			   || request.getParameter("inputMainContact") == null)
+			{
+				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+			}
+	
 			LocationManager.setEmail(request.getParameter("inputEmail"));
 			LocationManager.setTel(request.getParameter("inputContact"));
 			LocationManager.setMainTel(request.getParameter("inputMainContact"));
-			//
+			
 			
 		    result = "signed";                                                                                
 		}                                                                                   
@@ -264,7 +288,7 @@ public class Location
 		return "../WEB-INF/views/host/inputBusinessInfo.jsp";
 	}
 	
-	@RequestMapping(value="/actions/inputbusinessinfo.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/inputbusinessinfo.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputBusinessInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
@@ -282,6 +306,20 @@ public class Location
 			{
 				MultipartRequest m = FileManager.upload(request, "images");
 				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				
+				if (m.getParameter("inputBizName") == null
+				   || m.getParameter("inputBizCeo") == null
+				   || m.getParameter("inputBizNum") == null
+				   || fileNames.get(0) == null
+				   || m.getParameter("inputBizCeoType") == null
+				   || m.getParameter("inputBizMainType") == null
+				   || m.getParameter("inputBizSubType") == null
+				   || m.getParameter("inputAddr") == null
+				   || m.getParameter("inputDetailAddr") == null)
+				{
+					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+				}
+
 				
 			 	LocationManager.setBizName(m.getParameter("inputBizName"));
 			 	LocationManager.setBizCeo(m.getParameter("inputBizCeo"));
@@ -311,7 +349,7 @@ public class Location
 		return "../WEB-INF/views/host/inputDetailInfo.jsp";
 	}
 	
-	@RequestMapping(value="/actions/inputdetailinfo.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/inputdetailinfo.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputDetailInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
@@ -330,6 +368,14 @@ public class Location
 				MultipartRequest m = FileManager.upload(request, "images");
 				ArrayList<String> fileNames = FileManager.getFileNames(m);
 				
+				if (fileNames.get(0) == null
+				   || m.getParameter("inputMinPeople") == null
+				   || m.getParameter("inputMaxPeople") == null
+				   || m.getParameter("inputWebUrl") == null)
+				{
+					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+				}
+
 			 	LocationManager.setArrDetailImage(fileNames);
 			 	LocationManager.setMinPeople(m.getParameter("inputMinPeople"));
 			 	LocationManager.setMaxPeople(m.getParameter("inputMaxPeople"));
@@ -353,7 +399,7 @@ public class Location
 		return "../WEB-INF/views/host/inputUsingInfo.jsp";
 	}
 	
-	@RequestMapping(value="/actions/inputusinginfo.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/inputusinginfo.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputUsingInfo(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       
@@ -366,6 +412,13 @@ public class Location
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
 		    
+			if (request.getParameter("inputUsingHour") == null
+			   || request.getParameter("inputDayOff") == null
+			   || request.getParameter("inputAppointDayoff") == null)
+			{
+				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+			}
+
 			//
 			LocationManager.setUsingHour(request.getParameter("inputUsingHour"));
 			LocationManager.setDayOff(request.getParameter("inputDayOff"));
@@ -667,7 +720,7 @@ public class Location
 		 */
 	}
 	
-	@RequestMapping(value="/actions/modifybasicinfo.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/modifybasicinfo.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String modifyBasicInfo(HttpServletRequest request, Model model)
 	{
 		// 본격적인 이전 입력값의 조회 -> 업데이트 액션처리 반복 부분...
