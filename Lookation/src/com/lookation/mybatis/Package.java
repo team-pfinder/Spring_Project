@@ -241,7 +241,7 @@ public class Package
 	
 	
 	// 패키지 실제 저장
-	@RequestMapping(value="/actions/packageapplyajax.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/packageapplyajax.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String packageApplyAjax(HttpServletRequest request, Model model)
 	{
 		String loc_code = request.getParameter("loc_code");
