@@ -38,13 +38,9 @@ public class MemberMessenger
 		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
 		if(accountCode != null)                                         
 		{       
-			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
-		    // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
-
 			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
 
-			// 이용자측면 추가로 해야할 작업은 이 밑에 쓴다.
 			// 예약 코드로 접속
 			String book_code = request.getParameter("book_code");
 			
@@ -61,28 +57,22 @@ public class MemberMessenger
 			// 로그인이 되었음을 기록한다.
 		    result = "signed";                                                                                
 		}
-
-		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
 		model.addAttribute("result", result);                                               
 
 		if(result.equals("noSigned"))
 		{
-		    // 로그인 창으로 이동한다.
 		    return "redirect:loginform.action?identify=member";
 		}
 		return "../WEB-INF/views/user/userMessenger.jsp";
 	}
-	
 	
 	// 메시지 전송
 	@RequestMapping(value="/actions/mmsgsend.action", method=RequestMethod.POST)
 	public String messageSend(Model model, MessengerDTO dto)
 	{
 		IMemberMessengerDAO dao = sqlSession.getMapper(IMemberMessengerDAO.class);
-		
 		dao.mSendMsg(dto);
 		
-		// 원래 있던 채팅방으로 돌아가기
 		return "redirect:mmessenger.action?book_code=" + dto.getBook_code();
 	}
 	
@@ -91,7 +81,6 @@ public class MemberMessenger
     public String imgSend(HttpServletRequest request, Model model, MessengerDTO dto)
     {
 		IMemberMessengerDAO dao = sqlSession.getMapper(IMemberMessengerDAO.class);
-		
         try
         {
             MultipartRequest m = FileManager.upload(request, "images");

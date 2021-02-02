@@ -12,8 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.IHostMessengerDAO;
-import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dto.MessengerDTO;
 import com.lookation.util.FileManager;
 import com.oreilly.servlet.MultipartRequest;
@@ -30,7 +30,7 @@ public class HostMessenger
 	{
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();                                         
-		String accountCode = (String)session.getAttribute("memberCode"); 
+		String accountCode = (String)session.getAttribute("hostCode"); 
 
 		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned";                                                         
@@ -40,7 +40,7 @@ public class HostMessenger
 		{       
 			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
 		    // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
-			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
 
 			// 이용자측면 추가로 해야할 작업은 이 밑에 쓴다.
@@ -68,7 +68,7 @@ public class HostMessenger
 		if(result.equals("noSigned"))
 		{
 		    // 로그인 창으로 이동한다.
-		    return "redirect:loginform.action?identify=member";
+		    return "redirect:loginform.action?identify=host";
 		}
 		
 		return "../WEB-INF/views/host/hostMessenger.jsp";

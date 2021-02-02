@@ -35,6 +35,12 @@ public class SendSignUpEmailController implements Controller
 		String name = request.getParameter("name");
 		String tel = request.getParameter("tel");
 		
+		if(email == null || nick == null || pw == null || name == null || tel == null)
+		{
+			mav.setViewName("../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify);
+			return mav;
+		}
+		
 		// 이메일 전송
 		
 		// html 폼 준비
