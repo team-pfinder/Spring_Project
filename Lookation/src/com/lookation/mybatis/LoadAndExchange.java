@@ -24,7 +24,7 @@ public class LoadAndExchange
     private SqlSession sqlSession;
     
     // 이용자, 호스트 잔액 및 등록 계좌 조회
-    @RequestMapping(value="/actions/loadandexchange.action", method = RequestMethod.GET)
+    @RequestMapping(value="/actions/loadandexchange.action", method = {RequestMethod.GET, RequestMethod.POST})
     public String bankInfoAndBalance(ModelMap model, HttpServletRequest request)
     {
     	ILoadAndExchangeDAO dao = sqlSession.getMapper(ILoadAndExchangeDAO.class);
@@ -111,12 +111,12 @@ public class LoadAndExchange
     }
     
     // 이용자 충전 신청
-    @RequestMapping(value="/actions/memberload.action", method = RequestMethod.POST)
+    @RequestMapping(value="/actions/memberload.action", method = {RequestMethod.POST})
     public String loadReg(ModelMap model, HttpServletRequest request)
     {
     	ILoadAndExchangeDAO dao = sqlSession.getMapper(ILoadAndExchangeDAO.class);
     	LoadAndExchangeDTO dto = new LoadAndExchangeDTO();
-    
+    	
     	//-----------------------------------------------------------------------------
 
     	// 세션을 통한 로그인 확인                                                                    
@@ -126,6 +126,14 @@ public class LoadAndExchange
     	// 로그인 확인을 기록하기 위함                  
     	String result = "noSigned";                                                         
 
+    	//------------------
+    	System.out.println("테스트");
+    	
+    	System.out.println("bankAccount : " + request.getParameter("bankAccount"));
+    	System.out.println("session : " + request.getParameter("accountCode"));
+    	
+    	//-------------------
+    	
     	// 회원 코드가 세션에 세팅되어 있다면                                                                                   
     	if(accountCode != null)                                         
     	{       
