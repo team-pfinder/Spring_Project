@@ -28,7 +28,7 @@ public class Account
 		return "../WEB-INF/views/common/login.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/login.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/login.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String login(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
@@ -43,15 +43,18 @@ public class Account
 		account.setEmail(request.getParameter("email"));
 		account.setPw(request.getParameter("pw"));
 		
-		if(identify.equals("member"))
+		if(request.getParameter("email") != null && request.getParameter("pw") != null)
 		{
-			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
-			accountCode = dao.isLogin(account);
-		}
-		else if(identify.equals("host"))
-		{
-			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
-			accountCode = dao.isLogin(account);
+			if(identify.equals("member"))
+			{
+				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+				accountCode = dao.isLogin(account);
+			}
+			else if(identify.equals("host"))
+			{
+				IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+				accountCode = dao.isLogin(account);
+			}
 		}
 		
 		// 로그인 실패시
@@ -106,7 +109,7 @@ public class Account
 		return "../WEB-INF/views/common/confirmPassword.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/confirmpassword.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/confirmpassword.action", method={RequestMethod.POST, RequestMethod.GET})
 	public String confirmPassword(HttpServletRequest request, Model model)
 	{
 		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
@@ -216,7 +219,7 @@ public class Account
 		return "../WEB-INF/views/common/profile.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/ajaxmodifytel.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/ajaxmodifytel.action", method={RequestMethod.POST, RequestMethod.GET})
 	public String ajaxModifyTel(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
@@ -299,7 +302,7 @@ public class Account
 		return "../WEB-INF/views/common/changePassword.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/changepassword.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/changepassword.action", method={RequestMethod.POST, RequestMethod.GET})
 	public String changePassword(HttpServletRequest request, Model model)
 	{
 		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
@@ -348,7 +351,7 @@ public class Account
 		return "../WEB-INF/views/common/findPassword.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/ajaxfindemail.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/ajaxfindemail.action", method={RequestMethod.POST, RequestMethod.GET})
 	public String ajaxFindEmail(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
@@ -381,7 +384,7 @@ public class Account
 		return "../WEB-INF/views/ajax/AccountAjax.jsp"; 
 	}
 	
-	@RequestMapping(value="/actions/changepasswordnologinform.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/changepasswordnologinform.action", method={RequestMethod.POST, RequestMethod.GET})
 	public String changePasswordNoLoginForm(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
@@ -392,7 +395,7 @@ public class Account
 		return "../WEB-INF/views/common/changePasswordNoLogin.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/changepasswordnologin.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/changepasswordnologin.action", method={RequestMethod.POST, RequestMethod.GET})
 	public String changePasswordNoLogin(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
