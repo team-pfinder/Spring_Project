@@ -89,12 +89,21 @@ public class Package
 		return "../WEB-INF/views/host/inputPackageInfo.jsp?loc_code=" + loc_code; 
 	}
 	// 패키지 추가
-	@RequestMapping(value="/actions/inputpackageform.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/inputpackageform.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String inputPackageForm(HttpServletRequest request, Model model)
 	{	
 		String loc_code = request.getParameter("loc_code");
 		HttpSession session = request.getSession();       
 		
+		String name = request.getParameter("inputPackageName");
+		String start = request.getParameter("locationPackageStart");
+		String end = request.getParameter("locationPackageEnd");
+		String price = request.getParameter("locationPackagePrice");
+		
+		if(name == null || start == null || end == null || price == null)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+		}
 		
 		String accountCode = (String)session.getAttribute("hostCode"); 
 		String result = "noSigned";    
@@ -106,10 +115,10 @@ public class Package
 
 			//
 			PackageDTO p = new PackageDTO();
-			p.setName(request.getParameter("inputPackageName")); 
-			p.setTime_start(request.getParameter("locationPackageStart")); 
-			p.setTime_end(request.getParameter("locationPackageEnd")); 
-			p.setPrice(request.getParameter("locationPackagePrice")); 
+			p.setName(name); 
+			p.setTime_start(start); 
+			p.setTime_end(end); 
+			p.setPrice(price); 
 			p.setLoc_code(loc_code);
 			
 			IPackageDAO locDao = sqlSession.getMapper(IPackageDAO.class);
@@ -128,7 +137,7 @@ public class Package
 		return "redirect:packagemanager.action?loc_code=" + loc_code; 
 	}
 	// 패키지 삭제
-	@RequestMapping(value = "/actions/deletepackageform.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/actions/deletepackageform.action", method = {RequestMethod.POST, RequestMethod.GET})
 	public String deletePackageForm(HttpServletRequest request, Model model)
 	{
 		String loc_code = request.getParameter("loc_code");
@@ -154,8 +163,15 @@ public class Package
 			
 			if (locDao.findLocation(loc) > 0)
 			{
+				String selectPackage = request.getParameter("selectPackage");
+				
+				if(selectPackage == null)
+				{
+					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+				}
+				
 				PackageDTO p = new PackageDTO();
-				p.setCode(request.getParameter("selectPackage"));
+				p.setCode(selectPackage);
 
 				IPackageDAO packDao = sqlSession.getMapper(IPackageDAO.class);
 				packDao.deletePackage(p);
