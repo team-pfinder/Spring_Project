@@ -110,9 +110,20 @@ margin-bottom: 0;
     	// 신고하기
     	$(".report").click(function()
 		{
-			var popUrl = "reportuserform.action?loc_code=" + $("#loc").val() + "&member_code=" +  $("#member").val() + "&loc_name=" + $("#loc_name").val();
-			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
-			window.open(popUrl, "", popOption);
+    		// 이미 신고 내역이 존재하는지 검사
+    		if ($(this).val() == "0")
+    		{
+    			var popUrl = "reportuserform.action?loc_code=" + encodeURI($("#loc").val()) + "&member_code=" +  encodeURI($("#member").val()) + "&loc_name=" + encodeURI($("#loc_name").val());
+    			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+    			window.open(popUrl, "", popOption);
+    		}
+    		else
+    		{
+    			// alert($(this).val())
+    			alert("이미 신고접수가 된 공간입니다.");
+    			return false;
+    		}
+			
 		});
     	
 	})
@@ -174,6 +185,7 @@ margin-bottom: 0;
 										<input type="text" id="loc" value="${book.loc_code }" style="display: none;">
 										<input type="text" id="member" value="${book.member_code }" style="display: none;">
 										<input type="text" id="loc_name" value="${book.loc_name }" style="display: none;">
+										<input type="text" id="loc_count" value="${book.loc_count }" style="display: none;">
 										<fmt:parseDate var="pdate" value="${book.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
 										<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 										<%-- <span>today : ${today } <br> fdate : ${fdate }<br></span> --%>
@@ -205,7 +217,7 @@ margin-bottom: 0;
 												<c:when test="${book.checkbook eq '취소완료'}">
 													<td class="text-danger">취소완료</td>
 													<td>
-														<button type="button" value="${book.book_code}"
+														<button type="button" value="${book.loc_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														신고</button>
 														<button type="button" value="${book.book_code}"
@@ -221,7 +233,7 @@ margin-bottom: 0;
 												<c:when test="${book.checkbook eq '이용완료'}">		<!-- 예약완료 안되니까 일단 -->
 													<td class="text-dark">예약완료</td>
 													<td>
-														<button type="button" value="${book.book_code}"
+														<button type="button" value="${book.loc_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														신고</button>
 														<button type="button" value="${book.book_code}"
@@ -237,7 +249,7 @@ margin-bottom: 0;
 												<c:when test="${book.checkbook eq '예약완료'}">
 													<td class="text-gon">예약완료</td>
 													<td>
-														<button type="button" value="${book.book_code}"
+														<button type="button" value="${book.loc_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														신고</button>
 														<button type="button" value="${book.book_code}"

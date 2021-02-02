@@ -5,7 +5,7 @@ public class BookListDTO
 	private String book_code, member_code, apply_package_code, loc_code
 	, apply_date, package_code, package_name, package_start
 	, package_end, book_hour, host_cancel, member_cancel
-	, refund, loc_name
+	, refund, loc_name, loc_count
 	, actual_booker, actual_booker_tel, book_people, book_date
 	, book_req, biz_name, biz_ceo, biz_license_number
 	, member_cancel_reason, host_cancel_reason, member_email
@@ -16,6 +16,16 @@ public class BookListDTO
 	private int days, package_price;
 	
 
+
+	public String getLoc_count()
+	{
+		return loc_count;
+	}
+
+	public void setLoc_count(String loc_count)
+	{
+		this.loc_count = loc_count;
+	}
 
 	public String getCheckbook()
 	{
