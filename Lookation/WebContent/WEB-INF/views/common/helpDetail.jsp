@@ -8,7 +8,7 @@ String cp = request.getContextPath();
 <%
    String identify = request.getParameter("identify");
    pageContext.setAttribute("identify", identify);
-   System.out.println(identify);
+
 %>
 
 
@@ -56,12 +56,17 @@ String cp = request.getContextPath();
             <hr>
             <br>
             <p>${U_detailList.help_content }</p>
-            
+       		
+       		<!-- 이미지 있을 때만 이미지가 나오게 -->
+       		<c:if test="${!empty Help_img.help_img_url}">
+            <p><img src="<%=cp %>/images/${Help_img.help_img_url }" width="300px"></p>
+            </c:if>
+
             
             <div class="tag-widget post-tag-container mb-5 mt-5">
               <div class="tagcloud">
                 <a href="#" class="tag-cloud-link">#${U_detailList.board_type }</a>
-                <!-- <a href="#" class="tag-cloud-link">Sport</a>
+              <!--  <a href="#" class="tag-cloud-link">Sport</a>
                 <a href="#" class="tag-cloud-link">Tech</a>
                 <a href="#" class="tag-cloud-link">Travel</a>
                  -->

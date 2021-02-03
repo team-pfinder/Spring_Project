@@ -84,6 +84,7 @@ public class Help
 		IHelpDAO dao = sqlSession.getMapper(IHelpDAO.class);
 		
 		model.addAttribute("U_helpList", dao.U_helpList());
+		
 		/*
 		String help_code = request.getParameter("help_code");
 		
@@ -158,6 +159,7 @@ public class Help
 		IHelpDAO dao = sqlSession.getMapper(IHelpDAO.class);
 
 		model.addAttribute("U_detailList", dao.U_detailList(help_code));
+		model.addAttribute("Help_img", dao.Help_img(help_code));
 		
 		//System.out.println(help_code);
 		
@@ -165,6 +167,7 @@ public class Help
 		
 		return "/WEB-INF/views/common/helpDetail.jsp?identify=" + identify;
 	}
+	
 	
 
 }

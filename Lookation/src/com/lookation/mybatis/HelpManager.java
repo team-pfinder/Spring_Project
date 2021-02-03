@@ -1,6 +1,9 @@
 package com.lookation.mybatis;
 
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,8 +14,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 import com.lookation.dao.IHelpManagerDAO;
 import com.lookation.dto.HelpDTO;
+import com.lookation.util.FileManager;
+import com.oreilly.servlet.MultipartRequest;
 
 //※ Spring 이 제공하는 『Controller』 인터페이스를 구현함으로써
 //사용자 정의 컨트롤러 클래스를 구성한다.
@@ -76,12 +82,46 @@ public class HelpManager
 	}
 	
 	//인서트 같은 경우 폼 안에서 서브밋할거기때문에 post방식
-	@RequestMapping(value="/actions/helpinsert.action", method = RequestMethod.POST)
-	public String helpInsert(HelpDTO dto, HttpServletRequest request)
+	@RequestMapping(value="/actions/helpinsert.action", method= {RequestMethod.POST, RequestMethod.GET})
+	public String helpInsert(HelpDTO dto, HttpServletRequest request) throws IOException
 	{
 		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
 		
-		dao.add(dto);
+		
+		MultipartRequest m = FileManager.upload(request, "images");
+		ArrayList<String> imageList = FileManager.getFileNames(m);
+		
+		String help_code = m.getParameter("help_code");
+		
+		try
+		{
+			dto.setHelp_code(m.getParameter("help_code"));
+			dto.setBoard_type_code(m.getParameter("board_type_code"));
+			dto.setHelp_date(m.getParameter("help_date"));
+			dto.setHelp_title(m.getParameter("help_title"));
+			dto.setHelp_content(m.getParameter("help_content"));
+			
+			if (imageList.size()!=0){
+				dto.setHelp_img_url(imageList.get(0));
+			}
+			
+			
+			if (imageList.isEmpty())
+			{
+				dao.add(dto);
+			}
+			else 
+			{
+				//help_code = dao.add(dto);
+				//dto.setHelp_code(help_code);
+				dao.add(dto);
+				dao.addimg(dto);
+			}
+			
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
 		
 		//System.out.println(dto.getHelp_content());
 		
@@ -153,7 +193,7 @@ public class HelpManager
 	}
 	
 
-	@RequestMapping(value="/actions/helpupdate.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/helpupdate.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String helpUpdate(HelpDTO dto,HttpServletRequest request) 
 	{ 
 		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);

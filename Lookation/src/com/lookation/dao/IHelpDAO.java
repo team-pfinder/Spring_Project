@@ -10,4 +10,6 @@ public interface IHelpDAO
 	public ArrayList<HelpDTO> U_helpList();
 	//도움말 클릭시 내용 조회
 	public HelpDTO U_detailList(String help_code);
+	//도움말 이미지 조회
+	public HelpDTO Help_img(String help_code);
 }
