@@ -97,6 +97,9 @@ public class LocationReview
 
 				String review_code = request.getParameter("review_code");
 				model.addAttribute("modifyReview", locDao.updateReviewForm(review_code));
+				
+				String img_url = locDao.updateReviewImg(review_code).getReview_img_url();
+				model.addAttribute("modifyImg", img_url);
 			}
 			// 호스트일 경우
 			else if (identify.equals("host"))
@@ -161,12 +164,41 @@ public class LocationReview
 	}
 
 	// 이용자 : 리뷰 수정
-	@RequestMapping(value = "/actions/modifyreview.action", method = RequestMethod.POST)
-	public void modifyReview(LocationReviewDTO dto)
+	@RequestMapping(value = "/actions/modifyreview.action", method = { RequestMethod.POST, RequestMethod.GET })
+	public void modifyReview(LocationReviewDTO dto, HttpServletRequest request) throws IOException
 	{
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 
-		dao.updateMemReview(dto);
+		MultipartRequest m = FileManager.upload(request, "images");
+		ArrayList<String> fileNames = FileManager.getFileNames(m);
+		
+		// 이미지가 수정되었다면
+		// 기존 이미지 삭제 후 추가
+		try
+		{	
+			// 현재 리뷰 폼 정보를 set해준다.
+			dto.setReview_code(m.getParameter("review_code"));
+			dto.setReview_content(m.getParameter("review_content"));
+			dto.setReview_rate(m.getParameter("review_rate"));
+			
+			dao.updateMemReview(dto);
+			
+			// 만약 이미지 수정을 했다면
+			if(!fileNames.isEmpty())
+			{
+				String beforeImgFile = m.getParameter("beforeImgName");
+				FileManager.doFileDelete(request, "images", beforeImgFile);
+				
+				// DB 이미지 url 변경
+				dto.setReview_img_url(fileNames.get(0));
+				dao.updateMemImg(dto);
+			}
+			
+		} catch(Exception e)
+		{
+			System.out.println(e.toString());
+		}
+		
 
 		// return "redirect:locationdetail.action";
 	}

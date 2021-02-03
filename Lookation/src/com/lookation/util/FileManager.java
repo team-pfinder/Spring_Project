@@ -24,7 +24,7 @@ public class FileManager
 	{
 		// 올린 파일들의 경로정보를 받아온다.(상대경로 /Lookaion 부터)
 		String realFolder = "";
-		int maxSize = 1024*1024*100;
+		int maxSize = 1024*1024*10;
 		String encType = "utf-8";
 		ServletContext sContext = request.getServletContext();
 		realFolder = sContext.getRealPath(saveFolderName);
@@ -107,10 +107,13 @@ public class FileManager
 	}
 	
 	// 실제 파일 삭제(제거)
-	public static void doFileDelete(String fileName, String path)
+	public static void doFileDelete(HttpServletRequest request, String folderName, String fileName)
 	{
 		try
 		{
+			ServletContext sContext = request.getServletContext();
+			String path = sContext.getRealPath(folderName);
+			
 			File file = null;
 			String fullFileName = path + File.separator + fileName;
 			file = new File(fullFileName);
