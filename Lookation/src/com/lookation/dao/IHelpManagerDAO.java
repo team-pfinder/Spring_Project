@@ -10,6 +10,8 @@ public interface IHelpManagerDAO
 	public ArrayList<HelpDTO> A_helpList();
 	//도움말 작성
 	public int add(HelpDTO dto);
+	//도움말 이미지
+	public int addimg(HelpDTO dto);
 	//도움말 삭제
 	public int remove(HelpDTO dto);
 	//도움말 수정

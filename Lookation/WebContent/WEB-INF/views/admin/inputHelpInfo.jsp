@@ -22,7 +22,30 @@ $(document).ready(function()
 			
 			$("#btn_submit").click(function()
 			{
-				//alert("나야");
+				//카테고리 누락 시
+				if($("#mainCategory").val()=="")
+				{
+					alert("카테고리가 누락되었습니다. 다시 선택해주세요.");
+					return;
+				}
+				
+				//제목 누락 시
+				if($("#help_title").val()=="")
+				{
+					alert("제목이 누락되었습니다. 다시 작성해주세요.");
+					$("#help_title").focus();
+					return;
+				}
+				
+				// 내용 누락 시
+				if($("#help_content").val()=="")
+				{
+					alert("내용이 누락되었습니다. 다시 작성해주세요.");
+					$("#help_content").focus();
+					return;
+				}
+				
+				
 				$("#insertForm").submit();
 			});
 		});
@@ -58,13 +81,13 @@ $(document).ready(function()
 								<br>
 
 								<!-- /.box-header -->
-								<form id="insertForm" role="form" action="helpinsert.action" method="post" >
+								<form id="insertForm" role="form" action="helpinsert.action" method="post"  enctype="multipart/form-data">
 									<div class="box-body">
 									<label for="exampleInputEmail1">카테고리</label>
 										<div class="form-group">
 											<select class="form-control" id="mainCategory" name="board_type_code"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
-												<option value="default">전체</option>
+												<option value="">전체</option>
 												<option value="BT000010">회원</option> 
 												<option value="BT000001">호스트되기</option>
 												<option value="BT000002">공간등록</option>
@@ -94,7 +117,8 @@ $(document).ready(function()
 
 										<div class="form-group">
 											<label for="exampleInputEmail1">Upload Image</label> 
-											<input type="file" id="file1" name="file1" class="form-control" />
+											<input type="file" id="file1" class="form-control" 
+													accept="image/*" name="help_img_url"/>
 										</div>
 									</div><!-- .box-body -->
 								</form>
