@@ -8,9 +8,21 @@ public class HelpDTO
 				, help_title
 				, help_content
 				, help_date
-				, board_type_code;
+				, board_type_code
+				, help_img_url;
 	
+
+
 	//getter, setter 구성
+	public String getHelp_img_url()
+	{
+		return help_img_url;
+	}
+
+	public void setHelp_img_url(String help_img_url)
+	{
+		this.help_img_url = help_img_url;
+	}
 	public String getHelp_code()
 	{
 		return help_code;

@@ -22,6 +22,28 @@ $(document).ready(function()
 			
 			$("#btn_submit").click(function()
 			{
+				//카테고리 누락 시
+				if($("#mainCategory").val()=="")
+				{
+					alert("카테고리가 누락되었습니다. 다시 선택해주세요.");
+					return;
+				}
+				
+				//제목 누락 시
+				if($("#notice_title").val()=="")
+				{
+					alert("제목이 누락되었습니다. 다시 작성해주세요.");
+					$("#notice_title").focus();
+					return;
+				}
+				
+				// 내용 누락 시
+				if($("#notice_content").val()=="")
+				{
+					alert("내용이 누락되었습니다. 다시 작성해주세요.");
+					$("#notice_content").focus();
+					return;
+				}
 				
 				$("#insertForm").submit();
 			});
@@ -64,7 +86,7 @@ $(document).ready(function()
 										<div class="form-group">
 											<select class="form-control" id="mainCategory" name="important_notice_code"
 												style="width: 30%; margin-right: 10px; display: inline-block;">
-												<option value="default">전체</option>
+												<option value="">전체</option>
 												<option value="IN000002">일반공지</option>
 												<option value="IN000001">중요공지</option>
 											</select>

@@ -1,5 +1,6 @@
 package com.lookation.mybatis;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +58,6 @@ public class HostMessenger
 			model.addAttribute("msg", msgDao.hMsgList(book_code));
 			// 메시지 코드 검색
 			model.addAttribute("msg_code", msgDao.hSearchMsg(book_code));
-
 			// 로그인이 되었음을 기록한다.
 		    result = "signed";                                                                                
 		}
@@ -76,43 +76,38 @@ public class HostMessenger
 	
 	
 	// 메시지 전송
-	@RequestMapping(value="/actions/hmsgsend.action", method=RequestMethod.POST)
-	public String messageSend(Model model, MessengerDTO dto)
-	{
-		IHostMessengerDAO dao = sqlSession.getMapper(IHostMessengerDAO.class);
-		
-		dao.hSendMsg(dto);
-		
-		// 원래 있던 채팅방으로 돌아가기
-		return "redirect:hmessenger.action?book_code=" + dto.getBook_code();
-	}
-	
-	
-	@RequestMapping(value="/actions/himgsend.action", method = RequestMethod.POST)
-    public String imgSend(HttpServletRequest request, Model model, MessengerDTO dto)
+	@RequestMapping(value="/actions/hmsgsend.action", method = { RequestMethod.POST, RequestMethod.GET })
+    public String imgSend(HttpServletRequest request, Model model, MessengerDTO dto) throws IOException
     {
 		IHostMessengerDAO dao = sqlSession.getMapper(IHostMessengerDAO.class);
 		
+		MultipartRequest m = FileManager.upload(request, "images");
+        ArrayList<String> imageList = FileManager.getFileNames(m);
+		
         try
         {
-            MultipartRequest m = FileManager.upload(request, "images");
-            ArrayList<String> imageList = FileManager.getFileNames(m);
-            model.addAttribute("imageList", imageList);
+            dto.setBook_code(m.getParameter("book_code"));
+            dto.setHost_msg_content(m.getParameter("host_msg_content"));
+            dto.setMsg_code(m.getParameter("msg_code"));
             
-            String book_code = m.getParameter("book_code");
-            
-            //String msg_img_url = String.valueOf(FileManager.getFileNames(m));
-            String msg_img_url = m.getParameter("msg_img_url");
-            model.addAttribute("book_code", book_code);
-            model.addAttribute("msg_img_url", msg_img_url);
-            dao.hSendImg(dto);
+			if (imageList.isEmpty())
+			{
+				dao.hSendMsg(dto);
+				
+			}
+			else 
+			{
+				dto.setMsg_img_url(imageList.get(0));
+				dao.hSendImg(dto);
+			}
 
         } catch (Exception e)
         {
             e.toString();
         }
 		
-        return "redirect:hmessenger.action";
+        // 원래 있던 채팅방으로 돌아가기
+     	return "redirect:hmessenger.action?book_code=" + dto.getBook_code();
     }
 	
 }

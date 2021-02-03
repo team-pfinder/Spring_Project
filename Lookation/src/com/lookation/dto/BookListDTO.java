@@ -12,10 +12,7 @@ public class BookListDTO
 	, loc_addr, loc_detail_addr, member_nickname
 	, host_code;
 
-	private String checkbook;
 	private int days, package_price;
-	
-
 
 	public String getLoc_count()
 	{
@@ -25,16 +22,6 @@ public class BookListDTO
 	public void setLoc_count(String loc_count)
 	{
 		this.loc_count = loc_count;
-	}
-
-	public String getCheckbook()
-	{
-		return checkbook;
-	}
-
-	public void setCheckbook(String checkbook)
-	{
-		this.checkbook = checkbook;
 	}
 
 	public int getPackage_price()

@@ -12,8 +12,26 @@
 	
 	<!-- helpManager(관리자 도움말) 작성 쿼리문 -->
 	<insert id="add">
-		INSERT INTO HELP(HELP_CODE,BOARD_TYPE_CODE,HELP_TITLE,HELP_CONTENT,HELP_DATE)
-    	VALUES(F_CODE('HLP',HLP_SEQ.NEXTVAL),#{board_type_code},#{help_title},#{help_content},SYSDATE)
+	
+	<selectKey keyProperty="help_code" resultType="String" order="AFTER">
+           SELECT F_CODE('HLP',HLP_SEQ.CURRVAL) AS HELP_CODE FROM DUAL
+	</selectKey>
+	
+	INSERT INTO HELP(HELP_CODE,BOARD_TYPE_CODE,HELP_TITLE,HELP_CONTENT,HELP_DATE)
+   	VALUES(F_CODE('HLP',HLP_SEQ.NEXTVAL),#{board_type_code},#{help_title},#{help_content},SYSDATE)
+	
+	</insert>
+	
+	<!-- helpManager (관리자 도움말) 이미지 -->
+	<insert id="addimg" parameterType="com.lookation.dto.HelpDTO">
+		
+		<selectKey keyProperty="help_code" resultType="String" order="AFTER">
+           SELECT F_CODE('HLP',HLP_SEQ.CURRVAL) AS HELP_CODE FROM DUAL
+		</selectKey>
+		
+		INSERT INTO HELP_IMG(HELP_IMG_CODE,HELP_CODE,HELP_IMG_URL)
+    	VALUES(F_CODE('HLPIMG',HLPIMG_SEQ.NEXTVAL),#{help_code },#{help_img_url })
+
 	</insert>
 	
 	<!-- helpManager(관리자 도움말) 삭제 쿼리문 -->

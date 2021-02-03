@@ -125,7 +125,7 @@ public class LocationReview
 
 	/* === 이용자 === */
 
-	// 이용자 : 리뷰 텍스트 작성
+	// 이용자 : 리뷰 작성
 	@RequestMapping(value = "/actions/reviewinsert.action", method = { RequestMethod.POST, RequestMethod.GET })
 	public void insertReview(LocationReviewDTO dto, HttpServletRequest request) throws IOException
 	{

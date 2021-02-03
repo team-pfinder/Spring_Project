@@ -240,72 +240,63 @@ overflow: hidden;
 						
 						
 						<c:forEach var="m" items="${msg}">
-							<c:choose>
-								<c:when test="${not empty msg}">
-									<c:if test="${m.horm eq 1}">
-										<c:choose>
-											<c:when test="${m.imgcount eq 0}">
-												<div class="message">
-													<div class="send">
-														<p class="text">${m.msg_content}</p>
-													</div>
-												</div>
-												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-											
-											<c:when test="${m.imgcount eq 1}">
-												<div class="message">
-													<div class="send">
-														<p class="text">${m.msg_img_url }
-															<img class="message-img" alt="" src="<%=cp%>/images/${m.msg_img_url }" onclick="popImg(this.src)">
-														</p>
-													</div>
-												</div>
-												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-										</c:choose>
-									</c:if>
-										
-									<c:if test="${m.horm eq 0}">
-										<c:choose>
-											<c:when test="${m.imgcount eq 0}">
-												<div class="message">
-													<p class="text">${m.msg_content }</p>
-												</div>
-												<div class="message">
-													<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-											
-											<c:when test="${m.imgcount eq 1}">
-												<div class="message">
-													<p class="text">
-														<img class="message-img" alt="" src="<%=cp%>/images/${m.msg_img_url }" onclick="popImg(this.src)">
-													</p>
-												</div>
-												<div class="message">
-													<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-										</c:choose>
-									</c:if>
-								</c:when>
-							
-								<c:otherwise>
-									메시지가 없습니다.
-								</c:otherwise>
-							
-							</c:choose>
+							<c:if test="${m.horm eq 1}">
+								<c:choose>
+									<c:when test="${m.imgcount eq 0}">
+										<div class="message">
+											<div class="send">
+												<p class="text">${m.msg_content}</p>
+											</div>
+										</div>
+										<div class="message float-right">
+											<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+									
+									<c:when test="${m.imgcount eq 1}">
+										<div class="message">
+											<div class="send">
+												<p class="text">
+													<img class="message-img" alt="" src="<%=cp%>/images/${m.msg_img_url }" onclick="popImg(this.src)">
+												</p>
+											</div>
+										</div>
+										<div class="message float-right">
+											<p class="send-timestamp">${fn:substring(m.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+								</c:choose>
+							</c:if>
+								
+							<c:if test="${m.horm eq 0}">
+								<c:choose>
+									<c:when test="${m.imgcount eq 0}">
+										<div class="message">
+											<p class="text">${m.msg_content }</p>
+										</div>
+										<div class="message">
+											<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+									
+									<c:when test="${m.imgcount eq 1}">
+										<div class="message">
+											<p class="text">
+												<img class="message-img" alt="" src="<%=cp%>/images/${m.msg_img_url }" onclick="popImg(this.src)">
+											</p>
+										</div>
+										<div class="message">
+											<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+								</c:choose>
+							</c:if>
 						</c:forEach>
 					</div><!-- End .message-chat  -->
 					
 					
 					
-					<form action="mimgsend.action" method="post" enctype="multipart/form-data" id="msgForm">
+					<form action="mmsgsend.action" method="post" enctype="multipart/form-data" id="msgForm">
 					<!-- .footer-chat -->
 						<div class="footer-chat" id="footer">
 								<!-- 사진첨부버튼 -->
@@ -320,7 +311,7 @@ overflow: hidden;
 									</div>
 									<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content" id="file"></input>
 									<i class="icon send fa fa-paper-plane-o clickable"
-										aria-hidden="true" onclick="msgSend();"></i>
+										aria-hidden="true" onclick="msgSend()"></i>
 								
 						</div>
 						<input type="hidden" name="msg_code" value="${msg_code }">
