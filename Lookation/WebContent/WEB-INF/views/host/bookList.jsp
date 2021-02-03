@@ -113,6 +113,13 @@ margin-bottom: 0;
 			window.open(popUrl, "", popOption);
 		});
     	
+    	// 메신저 팝업
+    	$(".messenger").click(function()
+    	{
+    		var url = "hmessenger.action?book_code=" + $(this).val();
+    		window.open(url);
+    	});
+    	
 	})
 	
 </script>
@@ -205,9 +212,13 @@ margin-bottom: 0;
 	 											<c:when test="${book.host_cancel >= 1 || book.member_cancel >= 1}">
 	 											<td class="text-danger">취소완료</td>
 	 											<td>
-													<button type="button" value="${book.loc_count}"
+	 												<button type="button" value="${book.loc_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-														신고</button>
+														🚨</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-light border-0 rounded messenger"
+														disabled="disabled">
+														💬</button>
 													<button type="button" value="${book.book_code}"
 														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
 														disabled="disabled">
@@ -219,34 +230,42 @@ margin-bottom: 0;
 	 											</c:when>
 	 											
 	 											<c:when test="${pdate >= now}">
-	 											<td class="text-gon">예약완료</td>
-	 											<td>
-												<button type="button" value="${book.loc_count}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-													신고</button>
-												<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel">
-													취소</button>
-												<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-													상세보기</button>
-												</td>
+		 											<td class="text-gon">예약완료</td>
+		 											<td>
+		 											<button type="button" value="${book.loc_count}"
+														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+														🚨</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-light border-0 rounded messenger">
+														💬</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel">
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+													</td>
 	 											</c:when>
 	 											
 	 											<c:when test="${pdate < now}">
-												<td>이용완료</td>
-												<td>
-												<button type="button" value="${book.loc_count}"
-													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-													신고</button>
-												<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-													disabled="disabled">
-													취소</button>
-												<button type="button" value="${book.book_code}"
-													class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-													상세보기</button>
-												</td>
+													<td>이용완료</td>
+													
+													<td>
+													<button type="button" value="${book.loc_count}"
+														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+														🚨</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-light border-0 rounded messenger"
+														disabled="disabled">
+														💬</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														disabled="disabled">
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+													</td>
 												</c:when>
  											</c:choose>
 											
