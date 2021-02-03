@@ -195,6 +195,12 @@ body {
 				.write("<style>body{margin:0px;}</style><img src='"+url+"'>");
 	}
 	
+	function send()
+	{
+		var f = document.getElementById("msgForm");
+		
+		f.submit();
+	}
 </script>
 
 </head>
@@ -222,72 +228,64 @@ body {
 						
 						
 						<c:forEach var="h" items="${msg}">
-							<c:choose>
-								<c:when test="${not empty msg}">
-									<c:if test="${h.horm eq 0}">
-										<c:choose>
-											<c:when test="${h.imgcount eq 0}">
-												<div class="message">
-													<div class="send">
-														<p class="text">${h.msg_content}</p>
-													</div>
-												</div>
-												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(h.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-											
-											<c:when test="${h.imgcount eq 1}">
-												<div class="message">
-													<div class="send">
-														<p class="text">${h.msg_img_url }
-															<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
-														</p>
-													</div>
-												</div>
-												<div class="message float-right">
-													<p class="send-timestamp">${fn:substring(h.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-										</c:choose>
-									</c:if>
-										
-									<c:if test="${h.horm eq 1}">
-										<c:choose>
-											<c:when test="${h.imgcount eq 0}">
-												<div class="message">
-													<p class="text">${h.msg_content }</p>
-												</div>
-												<div class="message">
-													<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-											
-											<c:when test="${m.imgcount eq 1}">
-												<div class="message">
-													<p class="text">
-														<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
-													</p>
-												</div>
-												<div class="message">
-													<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
-												</div>
-											</c:when>
-										</c:choose>
-									</c:if>
-								</c:when>
+							<c:if test="${h.horm eq 0}">
+								<c:choose>
+									<c:when test="${h.imgcount eq 0}">
+										<div class="message">
+											<div class="send">
+												<p class="text">${h.msg_content}</p>
+											</div>
+										</div>
+										<div class="message float-right">
+											<p class="send-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+									
+									<c:when test="${h.imgcount eq 1}">
+										<div class="message">
+											<div class="send">
+												<p class="text">
+													<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
+												</p>
+											</div>
+										</div>
+										<div class="message float-right">
+											<p class="send-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+								</c:choose>
+							</c:if>
+								
+							<c:if test="${h.horm eq 1}">
+								<c:choose>
+									<c:when test="${h.imgcount eq 0}">
+										<div class="message">
+											<p class="text">${h.msg_content }</p>
+										</div>
+										<div class="message">
+											<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+									
+									<c:when test="${h.imgcount eq 1}">
+										<div class="message">
+											<p class="text">
+												<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
+											</p>
+										</div>
+										<div class="message">
+											<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
+										</div>
+									</c:when>
+								</c:choose>
+							</c:if>
 							
-								<c:otherwise>
-									메시지가 없습니다.
-								</c:otherwise>
-							
-							</c:choose>
 						</c:forEach>
 					</div><!-- End .message-chat  -->
 					
 					
 					
-					<form action="">
+					<form action="hmsgsend.action" enctype="multipart/form-data" method="post" id="msgForm">
 					<!-- .footer-chat -->
 					<div class="footer-chat">
 						<!-- 사진첨부버튼 -->
@@ -300,9 +298,9 @@ body {
 										accept=".jpg,.jpeg,.png,.gif,.bmp">
 						</div>
 						
-						<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="member_msg_content" id="file"></input>
+						<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="host_msg_content" id="file"></input>
 						<i class="icon send fa fa-paper-plane-o clickable"
-							aria-hidden="true"></i>
+							aria-hidden="true" onclick="send()"></i>
 							
 						<input type="hidden" name="msg_code" value="${msg_code }">
 						<input type="hidden" name="book_code" value="${book_code }">

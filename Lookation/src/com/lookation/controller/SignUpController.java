@@ -35,13 +35,22 @@ public class SignUpController implements Controller
 		String identify = request.getParameter("identify");
 		String email = request.getParameter("email");
 		String nick = request.getParameter("nick");
+		String pw = request.getParameter("pw");
+		String name = request.getParameter("name");
+		String tel = request.getParameter("tel");
+		
+		if(email == null || nick == null || pw == null || name == null || tel == null)
+		{
+			mav.setViewName("../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify);
+			return mav;
+		}
 		
 		AccountDTO account = new AccountDTO();
 		account.setEmail(email);
 		account.setNick(nick);
-		account.setPw(request.getParameter("pw"));
-		account.setName(request.getParameter("name"));
-		account.setTel(request.getParameter("tel"));
+		account.setPw(pw);
+		account.setName(name);
+		account.setTel(tel);
 		
 		try
 		{	

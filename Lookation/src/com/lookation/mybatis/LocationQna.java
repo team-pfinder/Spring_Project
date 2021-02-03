@@ -58,18 +58,13 @@ public class LocationQna
 			// 로그인이 되었음을 기록한다.
 			result = "signed";
 		}
-
-		// 로그인 여부 데이터를 뷰에 넘겨준다.
 		model.addAttribute("result", result);
 		model.addAttribute("accountCode", accountCode);
-		// ********* 만약 로그인기능이 사용되는 뷰페이지의 경우 이 코드를 추가한다. *********
-		// 로그인이 안되어 있다면
+
 		if (result.equals("noSigned"))
 		{
-			// 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;
 		}
-		// *********************************************************************************
 
 		model.addAttribute("loc_code", loc_code);
 
@@ -80,17 +75,13 @@ public class LocationQna
 	@RequestMapping(value = "/actions/modifyformqna.action", method = RequestMethod.GET)
 	public String modifyFormQna(Model model, HttpServletRequest request)
 	{
-		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해
-		// identify를 GET 받아야한다.
 		String identify = request.getParameter("identify");
 
 		ILocationQnaDAO locDao = sqlSession.getMapper(ILocationQnaDAO.class);
 
-		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
 		String accountCode = (String) session.getAttribute(identify + "Code");
 
-		// 로그인 확인을 기록하기 위함
 		String result = "noSigned";
 
 		if (accountCode != null)
@@ -177,8 +168,6 @@ public class LocationQna
 		dao.insertHostQna(dto);
 
 		return "redirect:locationdetailhost.action";
-		// ajax 쓰면 void로 돌려줘야 하는줄 알았는데 이렇게 해도 먹어서
-		// 냅둬야 할지 어쩔지 모르겠다.
 	}
 
 	// 호스트 : Qna 답글 수정
@@ -198,8 +187,6 @@ public class LocationQna
 		String loc_code = request.getParameter("loc_code");
 		dao.deleteHostQna(qna_reply_code);
 		return "redirect:locationdetailhost.action?loc_code="+loc_code;
-
-		//return "redirect:locationdetailhost.action";
 
 	}
 
