@@ -148,7 +148,6 @@ margin-bottom: 0;
 	<div class="row">
 		<!-- include mypage_Sidebar.jsp -->
 		<c:import url="${cp}/includes/mypage_Sidebar(user).jsp"></c:import>
-		<%-- <%@ include file="../../../includes/mypage_Sidebar(user).jsp"%> --%>
 	
 		<div class="col-lg-10 col-md-10">
 			<!-- Page Heading -->
@@ -214,54 +213,53 @@ margin-bottom: 0;
 											<td class="font-weight-bold"><a href="locationdetail.action?loc_code=${book.loc_code}">${book.loc_name }</a></td>
 											
  											<c:choose>
-												<c:when test="${book.checkbook eq '취소완료'}">
-													<td class="text-danger">취소완료</td>
-													<td>
-														<button type="button" value="${book.loc_count}"
+	 											<c:when test="${book.host_cancel >= 1 || book.member_cancel >= 1}">
+	 											<td class="text-danger">취소완료</td>
+	 											<td>
+													<button type="button" value="${book.loc_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														신고</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															disabled="disabled">
-															취소</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-															상세보기</button>
-													</td>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+														disabled="disabled">
+														취소</button>
+													<button type="button" value="${book.book_code}"
+														class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+														상세보기</button>
+												</td>
+	 											</c:when>
+	 											
+	 											<c:when test="${pdate >= now}">
+	 											<td class="text-gon">예약완료</td>
+	 											<td>
+												<button type="button" value="${book.loc_count}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+													신고</button>
+												<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel">
+													취소</button>
+												<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+													상세보기</button>
+												</td>
+	 											</c:when>
+	 											
+	 											<c:when test="${pdate < now}">
+												<td>이용완료</td>
+												<td>
+												<button type="button" value="${book.loc_count}"
+													class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
+													신고</button>
+												<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
+													disabled="disabled">
+													취소</button>
+												<button type="button" value="${book.book_code}"
+													class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
+													상세보기</button>
+												</td>
 												</c:when>
-												
-												<c:when test="${book.checkbook eq '이용완료'}">		<!-- 예약완료 안되니까 일단 -->
-													<td class="text-dark">예약완료</td>
-													<td>
-														<button type="button" value="${book.loc_count}"
-														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-														신고</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															>
-															취소</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-															상세보기</button>
-													</td>
-												</c:when>
-												
-												<c:when test="${book.checkbook eq '예약완료'}">
-													<td class="text-gon">예약완료</td>
-													<td>
-														<button type="button" value="${book.loc_count}"
-														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
-														신고</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-danger border-0 rounded popCancel"
-															>
-															취소</button>
-														<button type="button" value="${book.book_code}"
-															class="btn py-1 px-1 mb-0 btn-gon border-0 rounded popDetails">
-															상세보기</button>
-													</td>
-												</c:when>
-											</c:choose>
+ 											</c:choose>
 											</tr>
 										</c:forEach><!-- .c:forEach 끝 -->
 									</c:when>
