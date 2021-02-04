@@ -27,12 +27,12 @@ public class HostMessenger
 	
 	// 메시지 전체 출력하기	
 	@RequestMapping(value="/actions/hmessenger.action", method=RequestMethod.GET)
-	public String messageList(Model model, HttpServletRequest request)
+	public String messageList(Model model, HttpServletRequest request) throws IOException
 	{
 		// 세션을 통한 로그인 확인                                                                    
 		HttpSession session = request.getSession();                                         
 		String accountCode = (String)session.getAttribute("hostCode"); 
-
+		
 		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned";                                                         
 
@@ -51,6 +51,12 @@ public class HostMessenger
 			IHostMessengerDAO msgDao = sqlSession.getMapper(IHostMessengerDAO.class);
 			
 			model.addAttribute("book_code", book_code);
+			
+			// 본인확인 -- 해당 book_code에 연결된 host_code와 일치하지 않는다면
+			if(!accountCode.equals(msgDao.checkInfo(book_code)))
+			{
+				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+			}
 			
 			// 상대방 닉네임 검색
 			model.addAttribute("nick", msgDao.hSearch(book_code));
