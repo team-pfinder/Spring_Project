@@ -11,6 +11,13 @@
 		WHERE REVIEW_CODE=#{review_code}
 	</select>
 	
+	<!-- 리뷰 사진폼 불러오기 -->
+	<select id="updateReviewImg" resultType="com.lookation.dto.LocationReviewDTO" >
+		SELECT REVIEW_IMG_URL
+		FROM REVIEW_IMG
+		WHERE REVIEW_CODE=#{review_code}
+	</select>
+	
 	<!-- 리뷰답글폼 불러오기 -->
 	<select id="updateReviewReplyForm" resultType="com.lookation.dto.LocationReviewDTO" >
 		SELECT REVIEW_REPLY_CODE, REVIEW_REPLY_CONTENT
@@ -38,11 +45,16 @@
 		}
 	</insert>
 	
-	
 	<update id="updateMemReview">
 		UPDATE REVIEW
 		SET REVIEW_RATE=#{review_rate}, REVIEW_CONTENT=#{review_content}
 		, REVIEW_DATE=SYSDATE
+		WHERE REVIEW_CODE =#{review_code}
+	</update>
+	
+	<update id="updateMemImg">
+		UPDATE REVIEW_IMG
+		SET REVIEW_IMG_URL=#{review_img_url}
 		WHERE REVIEW_CODE =#{review_code}
 	</update>
 	

@@ -15,6 +15,9 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+
 <style type="text/css">
 body, html {
 width: 100%;
@@ -249,6 +252,35 @@ p {
 label {
 width: 100%;
 }
+
+/*===달력 패키지 적용 날짜 표시===*/
+.highlighted-cal-dates {
+	color : black;
+    background :  #fdbe34;
+	font-weight: bold;
+}
+
+/*===달력 그림 표시===*/
+#datePicker {
+  
+  background-image: url(<%=cp%>/images/calendar-icon.jpg);
+  background-repeat : no-repeat;
+  background-position: 5px center;
+  padding-left: 40px;
+  border: 1px solid #2e3238;
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 3px;
+  
+  height: 52px !important;
+  font-size: 18px;
+  border-radius: 5px;
+  box-shadow: none !important;
+}
+
+
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
@@ -302,8 +334,7 @@ width: 100%;
 		
 		$("#selectDate").val(today);
 		$("#selectDate").attr("min", today);
-		$("#selectDate").attr("max", maxdate);
-		
+		$("#selectDate").attr("maxDate", maxdate);
 		
 	    /* 숫자 버튼 증가 및 최소, 최댓값 설정 */
 	    $("#increase").on("click", function(){
@@ -337,80 +368,9 @@ width: 100%;
 	    
 	    // 패키지 정보 가져오기
 		// 날짜가 변경되었을 경우 수행할 코드 처리
-		$("#selectDate").change(function()
+		$(".selectDate").change(function()
 		{
-			var intPackEnd;					//-- 익일 처리할 변수
-			var html = "";
-			
-			$(".packageDiv").html("");
-			
-			$.ajax({
-				url : "locdetailajax.action"
-				, type : "post"
-				, data : {selectDate : $("#selectDate").val(), loc_code : $("#hiddenCode").val()}
-				, success : function(data) {
-					
-					// 받은 데이터 JSON으로 파싱함
-					var obj = JSON.parse(data);
-					
-					// 선택된 패키지의 가격 받아올 변수
-					var i = 1;							//-- for문 돌 때 증가값, #price0 선택자 구성할 용도
-					var temp = "";						//-- 선택된 라디오버튼의 id값 저장
-					
-					// 데이터 없으면 패키지 없다고 표시
-					if(obj.length==0﻿)
-					{
-						$(".packageDiv").html("<div class='text-center my-3'>해당 날짜에 등록된 패키지가 없습니다.</div>");
-						$("#selectPrice").text(" (원)");
-						return false;
-					}
-					else
-					{
-						// 배열에서 key랑 value값으로 꺼냄
-						$.each(obj,function(key,value) {
-							
-							//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
-							if(parseInt(value.packEnd) >= 24)
-							{
-								intPackEnd = parseInt(value.packEnd) - 24;
-								intPackEnd = "익일 " + intPackEnd;
-							}
-							else
-							{
-								intPackEnd = value.packEnd;
-							}
-							
-							html = "<div class='packageSelect'><label>";
-							html += "<input type='radio' id='" + i + "' name='apply_package_code' value='" + value.packCode + "'>";
-							html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
-									+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
-							
-							// 각 패키지 가격 구분하기 위해 #price1, #price2로 설정
-							html += "<div class='flex float-right vertical-down'><strong id='price"
-								    + i + "'>" + value.packPrice + " (원)</strong></div>";
-							html += "</label></div>";
-							
-							// 라디오버튼 packageDiv에 추가
-							$(".packageDiv").append(html);
-							
-							// 라디오버튼 선택시 선택한 가격 보여주기
-							$("input:radio[name=apply_package_code]").click(function()
-							{
-								// 선택된 라디오버튼의 id 가져옴
-								temp = $("input:radio[name=apply_package_code]:checked").attr("id");
-								// 패키지 가격 출력
-								$("#selectPrice").text($("#price"+temp).text());
-								
-							});
-							
-							i++;
-						});
-					}
-				}
-			    , error:function(e){
-			    	alert(e.responseText);
-			    }
-			});
+			checkPackage();
 		});
 		
 	    // 폼 전송 전 패키지 선택했는지 검사
@@ -487,9 +447,86 @@ width: 100%;
 		window.open(url, "", option);
 	}
 	
+	function checkPackage()
+	{
+		var intPackEnd;					//-- 익일 처리할 변수
+		var html = "";
+		
+		$(".packageDiv").html("");
+		
+		$.ajax({
+			url : "locdetailajax.action"
+			, type : "post"
+			, data : {selectDate : $('#datePicker').val(), loc_code : $("#hiddenCode").val()}
+			, success : function(data) {
+				
+				// 받은 데이터 JSON으로 파싱함
+				var obj = JSON.parse(data);
+				
+				// 선택된 패키지의 가격 받아올 변수
+				var i = 1;							//-- for문 돌 때 증가값, #price0 선택자 구성할 용도
+				var temp = "";						//-- 선택된 라디오버튼의 id값 저장
+				
+				// 데이터 없으면 패키지 없다고 표시
+				if(obj.length==0﻿)
+				{
+					$(".packageDiv").html("<div class='text-center my-3'>해당 날짜에 등록된 패키지가 없습니다.</div>");
+					$("#selectPrice").text(" (원)");
+					return false;
+				}
+				else
+				{
+					// 배열에서 key랑 value값으로 꺼냄
+					$.each(obj,function(key,value) {
+						
+						//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
+						if(parseInt(value.packEnd) >= 24)
+						{
+							intPackEnd = parseInt(value.packEnd) - 24;
+							intPackEnd = "익일 " + intPackEnd;
+						}
+						else
+						{
+							intPackEnd = value.packEnd;
+						}
+						
+						html = "<div class='packageSelect'><label>";
+						html += "<input type='radio' id='" + i + "' name='apply_package_code' value='" + value.packCode + "'>";
+						html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
+								+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
+						
+						// 각 패키지 가격 구분하기 위해 #price1, #price2로 설정
+						html += "<div class='flex float-right vertical-down'><strong id='price"
+							    + i + "'>" + value.packPrice + " (원)</strong></div>";
+						html += "</label></div>";
+						
+						// 라디오버튼 packageDiv에 추가
+						$(".packageDiv").append(html);
+						
+						// 라디오버튼 선택시 선택한 가격 보여주기
+						$("input:radio[name=apply_package_code]").click(function()
+						{
+							// 선택된 라디오버튼의 id 가져옴
+							temp = $("input:radio[name=apply_package_code]:checked").attr("id");
+							// 패키지 가격 출력
+							$("#selectPrice").text($("#price"+temp).text());
+							
+						});
+						
+						i++;
+					});
+				}
+			}
+		    , error:function(e){
+		    	alert(e.responseText);
+		    }
+		});
+	}
+	
 </script>
 </head>
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="15">
+
 <div class="ftco-section ftco-degree-bg">
 	<div class="container">
 		<div class="row">	
@@ -537,7 +574,7 @@ width: 100%;
 				
 				<div class="info-div mb-5">
 					<h4 class="my-4 info-sub">공간소개</h4>
-					<p>${basicInfo.intro }</p>
+					<p style="white-space:pre-line;"><c:out value="${basicInfo.intro }" /></p>
 				</div>
 
 			
@@ -572,10 +609,6 @@ width: 100%;
 				<h4 class="info-sub">
 					이용후기<span class="set-star ml-3">${countReview }</span>
 					<span class="ml-2" style="font-size: 10pt;">(평균별점 <span class="set-star icon-star mr-1"></span>${avgReviewRate }점)</span>
-
-					<!-- 이용후기 작성권한이 있을 경우(이용완료, 후기작성 안했는지 확인) -->
-					<!-- 에만 이용후기 작성버튼 표시  -->
-					<button class="btn btn-primary float-right" onclick="writeReview()">후기 작성하기</button>
 				</h4>
 				<br>
 
@@ -596,15 +629,15 @@ width: 100%;
 											<span class="set-star icon-star mr-1"></span>
 										</c:forEach>
 									</h6>
-									
 									<div class="meta mb-2">${rv.date }</div>
-									
+										
 									<c:if test="${rv.removeCount eq 1}">
 										<p>삭제된 리뷰입니다.</p>
 									</c:if>
 									
 									<c:if test="${rv.removeCount eq 0}">
-										<p>${rv.content }</p>
+										
+										<p style="white-space:pre-line;"><c:out value="${rv.content }" /></p>
 										
 										<c:if test="${rv.rvimgCount ne 0 }">
 											<p>
@@ -619,13 +652,21 @@ width: 100%;
 										</c:if>
 									</c:if>
 									
-									<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
+									
+									<c:if test="${rv.count eq 1}">
 										<li class="children children-reply">
-											<h4>${basicInfo.hostNickName }</h4>
-											<span class="meta mb-2">${rv.replyDate }</span>
-											<p class="">${rv.replyContent }</p>
+											<c:if test="${rv.replyRemove eq 1 }">
+												<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
+											</c:if>
+											
+											<c:if test="${rv.replyRemove eq 0 }">
+												<h4>${basicInfo.hostNickName }</h4>
+												<span class="meta mb-2">${rv.replyDate }</span>
+												<p class="pr-5" style="white-space:pre-line;"><c:out value="${rv.replyContent }" /></p>
+											</c:if>
 										</li>
 									</c:if>
+									
 								</li>
 						</ul>
 					</c:forEach><!-- .comment-list -->
@@ -639,9 +680,6 @@ width: 100%;
 				<div class="d-flex p-4 host-box mb-5">
 					<div class="host-info">
 						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
-						<p>
-							<a href="mmessenger.action" class="reply">호스트에게 DM</a>
-						</p>
 					</div>
 													
 						
@@ -656,7 +694,7 @@ width: 100%;
 						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
 						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
 						<c:if test="${not empty basicInfo.url }">
-							<p>웹사이트 주소 : <a href="${basicInfo.url }" style="color: gray;">${basicInfo.url }</a></p>
+							<p>웹사이트 주소 : <a href="http://${basicInfo.url }" style="text-decoration: underline;">${basicInfo.url }</a></p>
 						</c:if>
 						
 						<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
@@ -741,7 +779,8 @@ width: 100%;
 								<p class="">이용자가 삭제한 게시글입니다.</p>
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
-								<p class="">${qna.qna_content }</p>
+								<div style="white-space:pre-line;"><c:out value="${qna.qna_content }" /></div>
+								
 								<c:if test="${qna.memCode == memberCode}">
 									<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
 									<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
@@ -754,7 +793,7 @@ width: 100%;
 							<li class="children-reply">
 								<h4>${basicInfo.hostNickName }</h4>
 								<span class="meta">${qna.replyDate }</span>
-								<p class="">${qna.replyContent }</p>
+								<div style="white-space:pre-line;"><c:out value="${qna.replyContent }" /></div>
 							</li>
 						</c:if>
 					</ul>
@@ -810,7 +849,47 @@ width: 100%;
 						
 						
 						<div class="py-2 calendar">
-							<input type="date" class="form-control" id="selectDate">
+							
+							<!-- 달력 세팅 -->
+							<input type="text" class="selectDate" id="datePicker" 
+							readonly="readonly" placeholder="날짜를 선택해주세요"> 
+							
+							
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+							
+							<script type="text/javascript">
+							
+							var user_busy_days = [];
+							
+							// 적용 가능한 패키지 날짜를 배열에 세팅한다.
+							<c:forEach var="packageDate" items="${detailPackages}">
+								user_busy_days.push('${packageDate}');
+							</c:forEach>
+							
+							$('#datePicker').datepicker({
+								format : "yyyy-mm-dd", // 달력에서 클릭시 표시할 값 형식
+								inline: true,
+								sideBySide: true,
+								autoclose: true,
+								title: "예약가능날짜",
+								startDate: '+1d',	   // 오늘 이후 날짜부터 예약 가능
+								beforeShowDay : function(date) {
+									
+									calender_date = date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0'+date.getDate()).slice(-2);
+									
+									var search_index = $.inArray(calender_date, user_busy_days);
+									
+									if (search_index > -1) 
+									{
+					                    return {classes: 'highlighted-cal-dates', tooltip: 'User available on this day.'};
+					                }			
+								}
+							}).on("changeDate", function() { checkPackage(); });
+
+							</script>
+							
+							<!-- <input type="date" class="form-control" id="selectDate"> -->
 						</div>
 						
 						
@@ -856,7 +935,6 @@ width: 100%;
 		</div><!-- End .row -->
 	</div><!-- End .container -->
 </div>
-
 
 
 <div>

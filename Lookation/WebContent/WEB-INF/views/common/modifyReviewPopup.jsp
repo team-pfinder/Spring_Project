@@ -102,7 +102,7 @@
 	
 	
 	$(function()
-	{	
+	{		
 		// 이용자 리뷰목록에서 수정
 		$("#submitBtn").click(function()
 		{
@@ -115,8 +115,9 @@
 			$.ajax({
 				type : "post",
 				url : "modifyreviewinlist.action",
+				enctype : "multipart/form-data",
 				complete : function(xh)
-				{			
+				{		
 					window.opener.parent.location.reload();				
 					window.close();
 				}
@@ -136,8 +137,9 @@
 			$.ajax({
 				type : "post",
 				url : "modifyreview.action",
+				enctype : "multipart/form-data",
 				complete : function(xh)
-				{			
+				{	
 					window.opener.parent.location.reload();				
 					window.close();
 				}
@@ -162,6 +164,20 @@
 		});
 	}
 	
+	// 이미지 미리보기
+	function setImage(event)
+	{
+		var reader = new FileReader();
+		
+		reader.onload = function(event) 
+		{
+			var img = document.getElementById("curImg");
+			img.setAttribute("src", event.target.result);
+		};
+		
+		reader.readAsDataURL(event.target.files[0]);
+	}
+	
 </script>
 
 </head>
@@ -174,7 +190,7 @@
 				
 					<c:choose>
 						<c:when test="${reqpage eq 'list'}">
-							<form action="modifyreviewinlist.action" method="post" name="reviewForm">
+							<form action="modifyreviewinlist.action" method="post" name="reviewForm" enctype="multipart/form-data">
 								<div class="header">
 									<h3 class="title">리뷰 수정하기</h3>
 									<hr>
@@ -204,13 +220,17 @@
 										<textarea class="form-control" id="content" name="review_content"
 											rows="8" maxlength="3000">${modifyReview.review_content }</textarea>
 									</div>
-			
+
 									<div class="form-group">
-										<label for="image">사진 첨부</label>
-										<input type="file" id="image"
-											class="form-control">
+										<label>현재 첨부된 사진</label> <br> <img id="curImg"
+											alt="등록된 사진 없음" src="<%=cp%>/images/${modifyImg}"
+											width="100px">
+										<hr>
+										<label for="image">사진 수정 첨부</label> 
+										<input type="file" id="image" class="form-control" accept="image/*" onchange="setImage(event)"
+										name="review_img_url"/>
 									</div>
-									
+
 									<div class="text-center">
 										<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
 										<button type="submit" class="btn btn-primary" id="submitBtn_m">수정하기</button>
@@ -219,7 +239,7 @@
 							</form>
 						</c:when>
 					<c:otherwise>
-						<form action="modifyreview.action" method="post" name="reviewForm">
+						<form action="modifyreview.action" method="post" name="reviewForm" enctype="multipart/form-data">
 							<div class="header">
 								<h3 class="title">리뷰 수정하기</h3>
 								<hr>
@@ -249,14 +269,22 @@
 									<textarea class="form-control" id="content" name="review_content"
 										rows="8" maxlength="3000">${modifyReview.review_content }</textarea>
 								</div>
-		
+
+
+
 								<div class="form-group">
-									<label for="image">사진 첨부</label>
-									<input type="file" id="image"
-										class="form-control">
+									<label>현재 첨부된 사진</label> <br>
+									<input type="hidden" name="beforeImgName" value="${modifyImg}">
+									<img id="curImg"
+										alt="등록된 사진 없음" src="<%=cp%>/images/${modifyImg}"
+										width="100px">
+									<hr>
+									<label for="image">사진 수정 첨부</label> 
+									<input type="file" id="image" class="form-control" accept="image/*" onchange="setImage(event)"
+									name="review_img_url"/>
 								</div>
-								
-								<div class="text-center">
+
+									<div class="text-center">
 									<button type="button" class="btn btn-dark" onClick="window.close();">목록으로</button>
 									<button type="submit" class="btn btn-primary" id="submitBtn_m">수정하기</button>
 								</div>

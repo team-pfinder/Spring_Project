@@ -16,11 +16,16 @@ import com.lookation.util.EmailManager;
 public class Email
 {
 
-	@RequestMapping(value="/actions/sendconfirmemail.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/sendconfirmemail.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String sendPasswordEmail(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
 		String email = request.getParameter("email");
+		
+		if(email == null)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
 		
 		String html = 
 				"<!DOCTYPE html>" + 

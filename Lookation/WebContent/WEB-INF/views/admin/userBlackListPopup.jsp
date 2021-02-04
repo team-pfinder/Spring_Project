@@ -32,6 +32,7 @@
 				, url : "userblack.action?member_email=<%=member_email%>" + "&member_blacklist_reason=" + $("#member_blacklist_reason").val()
 				, complete : function()
 				{
+					
 					window.opener.parent.location.reload();
 					window.self.close();
 				}

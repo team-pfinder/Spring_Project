@@ -33,27 +33,20 @@ public class LocationReview
 		String loc_code = request.getParameter("loc_code");
 		String identify = request.getParameter("identify");
 
-		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
 		String accountCode = (String) session.getAttribute(identify + "Code");
 
-		// 로그인 확인을 기록하기 위함
 		String result = "noSigned";
 
-		// 회원 코드가 세션에 세팅되어 있다면
 		if (accountCode != null)
 		{
-			// 이용자일 경우
 			if (identify.equals("member"))
 			{
 				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
 				model.addAttribute("info", dao.getInfo(accountCode));
 				String member_code = request.getParameter("member_code");
 				model.addAttribute("member_code", member_code);
-				
-
 			}
-			// 호스트일 경우
 			else if (identify.equals("host"))
 			{
 				IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
@@ -61,7 +54,6 @@ public class LocationReview
 				String hostCode = request.getParameter("hostCode");
 				model.addAttribute("hostCode", hostCode);
 			}
-			// 로그인이 되었음을 기록한다.
 			result = "signed";
 		}
 
@@ -69,34 +61,26 @@ public class LocationReview
 		model.addAttribute("result", result);
 		model.addAttribute("accountCode", accountCode);
 		
-
 		// 로그인이 안되어 있다면
 		if (result.equals("noSigned"))
 		{
-			// 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;
 		}
-
 		model.addAttribute("loc_code", loc_code);
 	
-
 		return "../WEB-INF/views/common/writeReviewPopup.jsp";
 	}
 
 	@RequestMapping(value = "/actions/modifyformreview.action", method = RequestMethod.GET)
 	public String reviewModifyForm(Model model, HttpServletRequest request)
 	{
-		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해
-		// identify를 GET 받아야한다.
 		String identify = request.getParameter("identify");
 
 		ILocationReviewDAO locDao = sqlSession.getMapper(ILocationReviewDAO.class);
 
-		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
 		String accountCode = (String) session.getAttribute(identify + "Code");
 
-		// 로그인 확인을 기록하기 위함
 		String result = "noSigned";
 
 		if (accountCode != null)
@@ -113,6 +97,9 @@ public class LocationReview
 
 				String review_code = request.getParameter("review_code");
 				model.addAttribute("modifyReview", locDao.updateReviewForm(review_code));
+				
+				String img_url = locDao.updateReviewImg(review_code).getReview_img_url();
+				model.addAttribute("modifyImg", img_url);
 			}
 			// 호스트일 경우
 			else if (identify.equals("host"))
@@ -123,26 +110,22 @@ public class LocationReview
 				String review_reply_code = request.getParameter("review_reply_code");
 				model.addAttribute("modifyReviewReply", locDao.updateReviewReplyForm(review_reply_code));
 			}
-			// 로그인이 되었음을 기록한다.
 			result = "signed";
 		}
 
-		// 로그인 여부 데이터를 뷰에 넘겨준다.
 		model.addAttribute("result", result);
 
 		if (result.equals("noSigned"))
 		{
-			// 로그인 창으로 이동한다.
 			return "redirect:loginform.action?identify=" + identify;
 		}
 
-		// 뒤에 identify를 GET 해준다.
 		return "../WEB-INF/views/common/modifyReviewPopup.jsp?identify=" + identify;
 	}
 
 	/* === 이용자 === */
 
-	// 이용자 : 리뷰 텍스트 작성
+	// 이용자 : 리뷰 작성
 	@RequestMapping(value = "/actions/reviewinsert.action", method = { RequestMethod.POST, RequestMethod.GET })
 	public void insertReview(LocationReviewDTO dto, HttpServletRequest request) throws IOException
 	{
@@ -181,12 +164,41 @@ public class LocationReview
 	}
 
 	// 이용자 : 리뷰 수정
-	@RequestMapping(value = "/actions/modifyreview.action", method = RequestMethod.POST)
-	public void modifyReview(LocationReviewDTO dto)
+	@RequestMapping(value = "/actions/modifyreview.action", method = { RequestMethod.POST, RequestMethod.GET })
+	public void modifyReview(LocationReviewDTO dto, HttpServletRequest request) throws IOException
 	{
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 
-		dao.updateMemReview(dto);
+		MultipartRequest m = FileManager.upload(request, "images");
+		ArrayList<String> fileNames = FileManager.getFileNames(m);
+		
+		// 이미지가 수정되었다면
+		// 기존 이미지 삭제 후 추가
+		try
+		{	
+			// 현재 리뷰 폼 정보를 set해준다.
+			dto.setReview_code(m.getParameter("review_code"));
+			dto.setReview_content(m.getParameter("review_content"));
+			dto.setReview_rate(m.getParameter("review_rate"));
+			
+			dao.updateMemReview(dto);
+			
+			// 만약 이미지 수정을 했다면
+			if(!fileNames.isEmpty())
+			{
+				String beforeImgFile = m.getParameter("beforeImgName");
+				FileManager.doFileDelete(request, "images", beforeImgFile);
+				
+				// DB 이미지 url 변경
+				dto.setReview_img_url(fileNames.get(0));
+				dao.updateMemImg(dto);
+			}
+			
+		} catch(Exception e)
+		{
+			System.out.println(e.toString());
+		}
+		
 
 		// return "redirect:locationdetail.action";
 	}
@@ -201,7 +213,6 @@ public class LocationReview
 		dao.deleteMemReview(dto);
 
 		return "redirect:locationdetail.action?loc_code=" + loc_code;
-		// return "redirect:locationdetail.action";
 	}
 
 	// 호스트 : 리뷰 답글 작성
@@ -221,8 +232,6 @@ public class LocationReview
 		ILocationReviewDAO dao = sqlSession.getMapper(ILocationReviewDAO.class);
 
 		dao.updateHostReview(dto);
-
-		// return "redirect:locationdetailhost.action";
 	}
 
 	// 호스트 : 리뷰 답글 삭제

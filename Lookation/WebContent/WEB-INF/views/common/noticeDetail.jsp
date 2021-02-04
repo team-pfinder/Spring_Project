@@ -55,7 +55,9 @@ String cp = request.getContextPath();
             <div class="meta">${U_ndetailList.notice_date }</div>
             <hr>
             <br>
-            <p>${U_ndetailList.notice_content }</p>
+            <div style="white-space:pre;"><c:out value="${U_ndetailList.notice_content }" /></div>
+
+         
             
             
             <div class="tag-widget post-tag-container mb-5 mt-5">

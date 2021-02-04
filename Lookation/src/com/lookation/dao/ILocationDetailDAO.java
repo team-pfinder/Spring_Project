@@ -33,4 +33,6 @@ public interface ILocationDetailDAO
 	public ArrayList<LocationDetailDTO> viewPhoto() throws Exception;
 	
 	public ArrayList<String> detailPhoto(String locCode) throws Exception;
+	
+	public ArrayList<String> detailPackage(String locCode) throws Exception;
 }

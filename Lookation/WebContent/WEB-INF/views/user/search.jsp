@@ -43,7 +43,7 @@
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 
 <style>
-.mapbar {
+.mapbar{
 	height: 500px;
 	background-color: #FFF;
 	display: none;
@@ -58,27 +58,7 @@
 }
 </style>
 <style type="text/css">
-#li {
-	width: 100%;
-	text-align: center;
-}
 
-#li a {
-	color: gray;
-	text-align: center;
-	display: inline-block;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	border-radius: 50%;
-	border: 1px solid #e6e6e6;
-}
-
-#li a.active {
-	background: #fdbe34;
-	color: #fff;
-	border: 1px solid transparent;
-}
 
 #img
 {
@@ -130,7 +110,7 @@
 
 
 			<!-- 검색 폼 -->
-			<form>
+			<form action="search.action" method="get">
 
 				<div class="row ftco-animate">
 					<div class="col-md-3">
@@ -138,43 +118,39 @@
 							<dt class="ml-1">공간유형</dt>
 							<dd>
 								<select class="form-control" name="loc_type">
-									<option selected>모든공간</option>
-									<option value="브라이덜샤워">브라이덜샤워</option>
-									<option value="파티룸">파티룸</option>
-									<option value="엠티장소">엠티장소</option>
-									<option value="루프탑">루프탑</option>
-									<option value="클럽">클럽</option>
+									<option ${loc_type == null ? "selected=\"selected\"":""}>모든공간</option>
+									<option ${loc_type eq "브라이덜샤워" ? "selected=\"selected\"":"" } value="브라이덜샤워">브라이덜샤워</option>
+									<option ${loc_type eq "파티룸" ? "selected=\"selected\"":"" } value="파티룸">파티룸</option>
+									<option ${loc_type eq "엠티장소" ? "selected=\"selected\"":"" } value="엠티장소">엠티장소</option>
+									<option ${loc_type eq "루프탑" ? "selected=\"selected\"":"" } value="루프탑">루프탑</option>
+									<option ${loc_type eq "클럽" ? "selected=\"selected\"":"" } value="클럽">클럽</option>
 								</select>
 							</dd>
 						</dl>
 					</div>
 					<div class="col-md-3">
 						<dl>
-							<dt>시작일</dt>
+							<dt>날짜</dt>
 							<dd>
-								<input type="date" class="form-control" id="start_date"
-									name="start_date">
+								<input type="date" class="form-control" id="start_date"	name="start_date" ><!-- value=${start_date eq null ? null : start_date} -->
 							</dd>
+							<!-- 
 							<dt>종료일</dt>
 							<dd>
-								<input type="date" class="form-control" id="end_date"
-									name="end_date">
-							</dd>
+								<input type="date" class="form-control" id="end_date" name="end_date">
+							</dd> -->
 						</dl>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-6">
 						<dl>
-							<dt>
-								<label for="customRange">가격</label>
-							</dt>
+							<dt>가격</dt>
 							<dd>
 								<div class="form-group">
 									<span class="d-flex"> <!-- 처음 입력한 숫자가 뒤 숫자보다 작아야 검색가능. -->
-										<input type="number" class="form-control" name="start_price"
-										value="10000" min="0" max="400000" step="10000"> <span
-										class="mt-2 mx-1">-</span> <input type="number"
-										class="form-control" name="end_price" value="60000" min="0"
-										max="400000" step="10000"> <span class="mt-2 mx-1">(원)</span>
+										<input type="number" class="form-control" name="start_price" value = ${start_price eq null ? "0" : start_price} min="0" max="400000" step="10000"> 
+										<span class="mt-2 mx-1">-</span> 
+										<input type="number" class="form-control" name="end_price" value = ${end_price eq null ? "400000" : end_price} min="0" max="400000" step="10000">
+										<span class="mt-2 mx-1">(원)</span>
 									</span>
 								</div>
 							</dd>
@@ -182,41 +158,47 @@
 					</div>
 					<div class="col-md-3">
 						<dl>
-
 							<dt>지역</dt>
 							<dd>
 								<select class="form-control px-10" name="loc_addr_city">
-									<option selected="selected">전체</option>
-									<option value="서울">서울</option>
-									<option value="경기">경기</option>
-									<option value="충북">충북</option>
-									<option value="충남">충남</option>
-									<option value="전북">전북</option>
-									<option value="전남">전남</option>
-									<option value="경북">경북</option>
-									<option value="경남">경남</option>
+									<option ${loc_addr_city == null ? "selected=\"selected\"":""}>전체</option>
+									<option ${loc_addr_city eq "서울" ? "selected=\"selected\"":""} value="서울">서울</option>
+									<option ${loc_addr_city eq "경기" ? "selected=\"selected\"":""} value="경기">경기</option>
+									<option ${loc_addr_city eq "충북" ? "selected=\"selected\"":""} value="충북">충북</option>
+									<option ${loc_addr_city eq "충남" ? "selected=\"selected\"":""} value="충남">충남</option>
+									<option ${loc_addr_city eq "전북" ? "selected=\"selected\"":""} value="전북">전북</option>
+									<option ${loc_addr_city eq "전남" ? "selected=\"selected\"":""} value="전남">전남</option>
+									<option ${loc_addr_city eq "경북" ? "selected=\"selected\"":""} value="경북">경북</option>
+									<option ${loc_addr_city eq "경남" ? "selected=\"selected\"":""} value="경남">경남</option>
 								</select>
-								<!-- 선택시 지역명 텍스트 입력 가능-->
-								<div class="input-group d-flex mt-2">
-									<input type="text" class="form-control border"
-										name="loc_addr_dong" placeholder="동 이름을 입력하세요.">
-									<div class="input-group-append">
-										<button type="submit" class="btn btn-primary pb-3">
-											<span class="fa fa-search"></span>
-										</button>
-									</div>
-								</div>
 							</dd>
-
+						</dl>	
+					</div>
+					<div class="col-md-3">
+						<dl>					
+							<dt>상세지역</dt>
+							<dd>
+								<input type="text" class="form-control border float-right" name="loc_addr_dong" placeholder="동 이름을 입력하세요." value=${loc_addr_dong eq null ? null : loc_addr_dong}>
+							</dd>
+						</dl>
+					</div>
+					<div class="col-md-4">
+						<br />
+						<button type="submit" class="btn btn-primary pb-3" style="width:100%">
+							상세검색 <span class="fa fa-search"></span>
+						</button>
+					</div>				
+					<div class="col-md-12">	
+						<dl>
 							<dd class="float-right">
 								<!-- 지도 버튼 클릭시 핀 찍은 지도 창 열림 -->
-								<button type="button"
-									class="btn btn-outline-dark rounded-pill border map">
+								<button type="button" class="btn btn-outline-dark rounded-pill border map">
 									<span class="icon-map-marker" style="font-size: 1.2em;">지도</span>
 								</button>
 							</dd>
 						</dl>
 					</div>
+					<input type="hidden" value="${keyword }" name="keyword"/>
 					<div class="col-md-12 mb-3">
 						<div id="map" class="mapbar border" style="width:100%;height:350px;"></div>
 					</div>
@@ -224,7 +206,7 @@
 				<!-- End .row ftco animate -->
 			</form>
 			<!-- 상세검색창 form end -->
-
+			<hr />
 			<!-- 정렬 start -->
 			<div class="row">
 				<div class="col-md-9">
@@ -233,11 +215,11 @@
 				<div class="col-md-3 m-0 text-right">
 					<!-- 우측정렬 -->
 					<select class="form-control" id="order">
-						<option selected="selected">정렬방법선택</option>
-						<option value="sortLtH">가격 낮은 순</option>
-						<option value="sortHtL">가격 높은 순</option>
-						<option value="sortReview">이용후기 많은 순</option>
-						<option value="sortRateAvg">평균 별점 순</option>
+						<option ${order == null ? "selected=\"selected\"":""}>정렬방법선택</option>
+						<option ${order == "sortLtH" ? "selected=\"selected\"":""} value="sortLtH">가격 낮은 순</option>
+						<option ${order == "sortHtL" ? "selected=\"selected\"":""} value="sortHtL">가격 높은 순</option>
+						<option ${order == "sortReview" ? "selected=\"selected\"":""} value="sortReview">이용후기 많은 순</option>
+						<option ${order == "sortRateAvg" ? "selected=\"selected\"":""} value="sortRateAvg">평균 별점 순</option>
 						<!-- 선택시 해당 순서대로 정렬한 페이지 요청-->
 					</select>
 				</div>
@@ -294,26 +276,6 @@
 				</c:otherwise>
 			</c:choose>
 
-
-
-			<!-- 페이징 아니면 무한스크롤 방식 -->
-			<!-- 페이징 처리할 부분 -->
-	<!-- 		<div class="row mt-5">
-				<div class="col text-center">
-					<div class="block-27">
-						<ul>
-							<li><a href="#">&lt;</a></li>
-							<li class="active"><span>1</span></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">&gt;</a></li>
-						</ul>
-					</div>
-				</div>
-			</div> -->
-
 		</div>
 	</section>
 
@@ -323,45 +285,89 @@
 </div>
 
 <script type="text/javascript">
-   $(function(){
-      
-      /* 날짜 기본값 */
-       var now = new Date();
-      
-      // 시작날짜 오늘
-       var day = ("0" + now.getDate()).slice(-2);
-      var month = ("0" + (now.getMonth() + 1)).slice(-2);
-      var today = now.getFullYear()+"-"+(month)+"-"+(day);
-      
-      // 최대 3개월까지만으로 제한하기
-      var maxmonth = ("0" + (now.getMonth() + 3)).slice(-2);
-      
-      var maxdate = now.getFullYear()+"-"+(maxmonth)+"-"+(day);
-      
-      $("#start_date").val(today);
-      $("#start_date").attr("min", today);
-      $("#start_date").attr("max", maxdate);
-      
-      $("#end_date").attr("min", today);
-      $("#end_date").attr("max", maxdate);
-      
-      // 지도 버튼 클릭시 내려오게
-       $("button.map").click( function() {
-             $(".mapbar").slideToggle();
-        });
-   });
+
+	function getParam(sname) {
+	
+	    var params = location.search.substr(location.search.indexOf("?") + 1);
+	
+	    var sval = "";
+	
+	    params = params.split("&");
+	
+	    for (var i = 0; i < params.length; i++) {
+	
+	        temp = params[i].split("=");
+	
+	        if ([temp[0]] == sname) { sval = temp[1]; }
+	
+	    }
+	
+	    return sval;
+	}
+	
+	$(function()
+	{
+
+		/* 날짜 기본값 */
+		var now = new Date();
+
+		// 시작날짜 오늘
+		var day = ("0" + now.getDate()).slice(-2);
+		var month = ("0" + (now.getMonth() + 1)).slice(-2);
+		var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+		// 최대 3개월까지만으로 제한하기
+		var maxmonth = ("0" + (now.getMonth() + 3)).slice(-2);
+
+		var maxdate = now.getFullYear() + "-" + (maxmonth) + "-" + (day);
+		
+		var start_date_param = getParam("start_date");
+
+		alert(start_date_param);
+		
+
+		alert(start_date_param);
+
+		if(start_date_param == null)
+		{
+			$("#start_date").val(today);
+		}
+		else if(start_date_param != null)
+		{
+			$("#start_date").val(start_date_param);
+		}
+
+		else if(start_date_param == "")
+		{
+			$("#start_date").val(today);
+		}
+
+		$("#start_date").attr("min", today);
+		$("#start_date").attr("max", maxdate);
+
+		$("#end_date").attr("min", today);
+		$("#end_date").attr("max", maxdate);
+
+		// 지도 버튼 클릭시 내려오게
+		$("button.map").click(function()
+		{
+			$(".mapbar").slideToggle();
+		});
+	});
 </script>
 
-<!-- 검색 -->
+	<!-- 검색 -->
 <script type="text/javascript">
-$(function()
-{
-	$("#order").change(function()
+
+	$(function()
 	{
-		$(location).attr("href", 
-						"search.action?keyword=${keyword}&loc_type=${loc_type}&start_date=${start_date}&end_date=${end_date}&start_price=${start_price}&end_price=${end_price}&loc_addr_city=${loc_addr_city}&loc_addr_dong=${loc_addr_dong}&order=" + $(this).val());
+		$("#order").change(function()
+		{
+			$(location).attr("href", 
+							"search.action?keyword=${keyword}&loc_type=${loc_type}&start_date=${start_date}&end_date=${end_date}&start_price=${start_price}&end_price=${end_price}&loc_addr_city=${loc_addr_city}&loc_addr_dong=${loc_addr_dong}&order=" + $(this).val());
+		});
 	});
-});
+
 </script>
 
 <!-- 지도API -->

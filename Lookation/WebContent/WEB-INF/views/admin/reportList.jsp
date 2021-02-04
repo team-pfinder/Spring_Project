@@ -155,6 +155,15 @@
 			window.open(popUrl, "", popOption);
 		})
 		
+		// 블라인드 추가 버튼 클릭
+		$(".blind").click(function()
+		{
+			// alert($(this).val());
+			var popUrl = "blindform.action?loc_code=" + $(this).val();
+			var popOption = "width=500, height=500, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+		});
+		
 		// -------------------------------------------- 공간 신고
 		
 		// 예약신고 관리 페이지로
@@ -254,19 +263,26 @@
 																	<button type="button" class="btn btn-primary locDetailBtn1"
 																	value="${reportDTO.loc_report_code }">처리결과보기</button>
 																</td>
+																<td>
 																<c:choose>
 																	<c:when test="${reportDTO.black_count ==0 }">
-																		<td>
-																			<button type="button" class="btn btn-danger hostBlack"
-																			value="${reportDTO.host_email }">블랙리스트 추가</button>
-																		</td>
+																		<button type="button" class="btn btn-danger hostBlack"
+																		value="${reportDTO.host_email }">블랙리스트</button>
 																	</c:when>
 																	<c:otherwise>
-																	<td>
 																		블랙리스트처리됨
-																	</td>
 																	</c:otherwise>
 																</c:choose>
+																<c:choose>
+																	<c:when test="${reportDTO.blind_count ==0 }">
+																		<button type="button" class="btn btn-warning blind"
+																		value="${reportDTO.loc_code }">블라인드</button>
+																	</c:when>
+																	<c:otherwise>
+																		| 블라인드처리됨
+																	</c:otherwise>
+																</c:choose>
+																</td>
 															</c:otherwise>
 														</c:choose>
 													</tr>

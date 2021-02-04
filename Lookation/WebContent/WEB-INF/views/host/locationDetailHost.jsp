@@ -371,36 +371,7 @@ p
 							style="background-image: url(<%=cp%>/images/${url});">
 						</div>
 					</c:forEach>
-				
-					<%-- <div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_1.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_2.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_3.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_4.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_5.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_6.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/location1.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/location4.jpg);">
-					</div>
-					<div class="slider-item"
-						style="background-image: url(<%=cp%>/images/image_2.jpg);">
-					</div> --%>
 				</div>
-				<!-- 이미지 클릭하면 확대  -->
 			</div>
 		</div>
 			
@@ -423,7 +394,7 @@ p
 				
 				<div class="info-div mb-5">
 					<h4 class="my-4 info-sub">공간소개</h4>
-					<p>${basicInfo.intro }</p>
+					<p style="white-space:pre-line;"><c:out value="${basicInfo.intro }" /></p>
 				</div>
 
 			
@@ -499,57 +470,54 @@ p
 					
 				<c:forEach var="rv" items="${review }">
 					<ul class="comment-list">	
-						
-							<li class="comment">
-								<h4>${rv.memberNickName }</h4>
-								<h6 class="float-right">
-									<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
-										<span class="set-star icon-star mr-1"></span>
-									</c:forEach>
-								</h6>
+						<li class="comment">
+							<h4>${rv.memberNickName }</h4>
+							<h6 class="float-right">
+								<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
+									<span class="set-star icon-star mr-1"></span>
+								</c:forEach>
+							</h6>
+							<div class="meta mb-2">${rv.date }</div>
+							
+							<c:if test="${rv.removeCount eq 1}">
+								<p>작성자가 삭제한 리뷰입니다.</p>
+							</c:if>
+							
+							<c:if test="${rv.removeCount eq 0}">
+								<p style="white-space:pre-line;"><c:out value="${rv.content }" /></p>
 								
-								<div class="meta mb-2">${rv.date }</div>
-								
-								<c:if test="${rv.removeCount eq 1}">
-									<p>작성자가 삭제한 리뷰입니다.</p>
+								<c:if test="${rv.rvimgCount ne 0 }">
+									<p>
+										<img class="review-img" src="<%=cp%>${rv.url}"
+											alt="리뷰사진">
+									</p>
 								</c:if>
 								
-								<c:if test="${rv.removeCount eq 0}">
-									<p class="pr-5">${rv.content }</p>
-									
-									<c:if test="${rv.rvimgCount ne 0 }">
-										<p>
-											<img class="review-img" src="<%=cp%>${rv.url}"
-												alt="리뷰사진">
-										</p>
-									</c:if>
-									
-									<c:if test="${rv.hostCode == hostCode && rv.count ne 1}">
-										<button type="button" class="reply border-0 writeReview" id="reviewCode" value="${rv.boardCode }">답글</button>
-									</c:if>
+								<c:if test="${rv.hostCode == hostCode && rv.count ne 1}">
+									<button type="button" class="reply border-0 writeReview" id="reviewCode" value="${rv.boardCode }">답글</button>
 								</c:if>
-								
-								
-								
-								<c:if test="${rv.count eq 1}">
-									<li class="children children-reply">
+							</c:if>
+							
+							
+							
+							<c:if test="${rv.count eq 1}">
+								<li class="children children-reply">
+									<c:if test="${rv.replyRemove eq 1 }">
+										<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
+									</c:if>
+									
+									<c:if test="${rv.replyRemove eq 0 }">
 										<h4>${basicInfo.hostNickName }</h4>
 										<span class="meta mb-2">${rv.replyDate }</span>
-										
-										<c:if test="${rv.replyRemove eq 1 }">
-											<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
+										<p class="pr-5" style="white-space:pre-line;"><c:out value="${rv.replyContent }" /></p>
+										<c:if test="${rv.hostCode == hostCode}">
+											<button type="button" class="reply border-0 modifyReview" value="${rv.replyCode }">수정</button> 
+											<button type="button" class="reply border-0 deleteReview" value="${rv.replyCode }">삭제</button>
 										</c:if>
-										
-										<c:if test="${rv.replyRemove eq 0 }">
-											<p class="pr-5">${rv.replyContent }</p>
-											<c:if test="${rv.hostCode == hostCode}">
-												<button type="button" class="reply border-0 modifyReview" value="${rv.replyCode }">수정</button> 
-												<button type="button" class="reply border-0 deleteReview" value="${rv.replyCode }">삭제</button>
-											</c:if>
-										</c:if>
-									</li>
-								</c:if>
-							</li>
+									</c:if>
+								</li>
+							</c:if>
+						</li>
 						
 					</ul>
 				</c:forEach><!-- .comment-list -->
@@ -577,7 +545,7 @@ p
 						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
 						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
 						<c:if test="${not empty basicInfo.url }">
-							<p>웹사이트 주소 : <a href="${basicInfo.url }" style="color: gray;">${basicInfo.url }</a></p>
+							<p>웹사이트 주소 : <a href="http://${basicInfo.url }" style="text-decoration: underline;">${basicInfo.url }</a></p>
 						</c:if>
 					</div>
 				</div>
@@ -657,11 +625,13 @@ p
 						<li class="comment mb-5">
 							<h4>${qna.memberNickName }</h4>
 							<span class="meta">${qna.date }</span>
+							
 							<c:if test="${qna.removeCount==1}">
 								<p class="">작성자가 삭제한 질문입니다.</p>
 							</c:if>
+							
 							<c:if test="${qna.removeCount==0}">
-								<p class="pr-5">${qna.qna_content }</p>
+								<p class="pr-5" style="white-space:pre-line;"><c:out value="${qna.qna_content }" /></p>
 								
 								<c:if test="${qna.hostCode == hostCode && qna.count ne 1}">
 									<button type="button" class="reply border-0 writeQna" id="qnaCode" value="${qna.boardCode }">답글</button>
@@ -673,11 +643,13 @@ p
 							<li class="children-reply">
 								<h4>${basicInfo.hostNickName }</h4>
 								<span class="meta">${qna.replyDate }</span>
+								
 								<c:if test="${qna.replyRemove eq 1}">
 									<p>작성자가 삭제한 답변입니다.</p>
 								</c:if>
+								
 								<c:if test="${qna.replyRemove eq 0}">
-									<p class="pr-5">${qna.replyContent }</p>
+									<p class="pr-5" style="white-space:pre-line;"><c:out value="${qna.replyContent }" /></p>
 									<c:if test="${qna.hostCode == hostCode}">
 										<button type="button" class="reply border-0 modifyQna" value="${qna.replyCode }">수정</button> 
 										<button type="button" class="reply border-0 deleteQna" value="${qna.replyCode }">삭제</button>

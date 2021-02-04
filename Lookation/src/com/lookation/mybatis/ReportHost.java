@@ -27,7 +27,7 @@ public class ReportHost
 	
 	
 	// 신고 접수 후 이미지 업로드 폼 호출
-	@RequestMapping(value = "/actions/reporthost.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/actions/reporthost.action", method = {RequestMethod.POST, RequestMethod.GET})
 	public String add(reportHostDTO dto,String book_code,String host_code, Model model, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인                                                                    
