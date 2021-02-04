@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dao.ISearchDAO;
 import com.lookation.dto.AvgRateCompare;
 import com.lookation.dto.ReviewCountCompare;
@@ -30,6 +32,27 @@ public class Search
 	@RequestMapping(value="/actions/search.action", method = {RequestMethod.GET, RequestMethod.POST})
 	public String searchKeyword(Model model, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();   
+		String accountCode = (String)session.getAttribute("memberCode");
+		// 로그인 확인을 기록하기 위함                  
+		String result = "noSigned";                                                         
+
+		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
+		if(accountCode != null)                                         
+		{       
+			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
+			// db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
+
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			model.addAttribute("info", dao.getInfo(accountCode));
+			model.addAttribute("member_code", accountCode);
+
+			// 로그인이 되었음을 기록한다.
+			result = "signed";
+			model.addAttribute("result", result);
+		}     
+		model.addAttribute("result", result);
+		
 		ISearchDAO dao = sqlSession.getMapper(ISearchDAO.class);
 		
 		// 키워드 파라미터
@@ -154,6 +177,29 @@ public class Search
 	@RequestMapping(value="/actions/searchkeyword.action", method = {RequestMethod.GET, RequestMethod.POST})
 	public String searchKeywordOther(Model model, HttpServletRequest request)
 	{
+		HttpSession session = request.getSession();   
+		String accountCode = (String)session.getAttribute("memberCode");
+
+		// 로그인 확인을 기록하기 위함                  
+		String result = "noSigned";                                                         
+
+		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
+		if(accountCode != null)                                         
+		{       
+			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
+			// db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
+
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			model.addAttribute("info", dao.getInfo(accountCode));
+			model.addAttribute("member_code", accountCode);
+
+			// 로그인이 되었음을 기록한다.
+			result = "signed";
+			model.addAttribute("result", result);
+		}   
+		model.addAttribute("result", result);
+		
+		
 		ISearchDAO dao = sqlSession.getMapper(ISearchDAO.class);
 		
 		// 키워드 파라미터

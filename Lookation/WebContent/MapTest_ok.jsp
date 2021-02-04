@@ -1,7 +1,7 @@
 <%@page import="net.sf.json.JSONObject"%>
 <%@page import="net.sf.json.JSONArray"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.s un.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();

@@ -39,8 +39,9 @@
 <head>
 <meta charset="utf-8">
 <title>Lookation</title>
-<c:import url="${cp}/includes/header_user.jsp"></c:import>
+<c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
+
 
 <style>
 .mapbar{
@@ -76,6 +77,82 @@
 
 </style>
 
+<style>
+.overlay_info {
+	border-radius: 6px;
+	margin-bottom: 12px;
+	float: left;
+	position: relative;
+	border: 1px solid #ccc;
+	border-bottom: 2px solid #ddd;
+	background-color: #fff;
+	width: 210px;
+	height: 170px;
+}
+
+.overlay_info:nth-of-type(n) {
+	border: 0;
+	box-shadow: 0px 1px 2px #888;
+}
+
+.overlay_info a {
+	display: block;
+	background: #d95050;
+	background: #d95050
+		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+		no-repeat right 14px center;
+	text-decoration: none;
+	color: #fff;
+	padding: 12px 36px 12px 14px;
+	font-size: 14px;
+	border-radius: 6px 6px 0 0
+}
+
+.overlay_info a strong {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 190px;
+	height: 20px;
+}
+
+.overlay_info .desc {
+	padding: 7px;
+	position: relative;
+	width: 190px;
+	height: 75px;
+}
+
+.overlay_info img {
+	/* vertical-align: top; */
+	width: 195px;
+	height: 110px;
+}
+
+.overlay_info .address {
+	font-size: 12px;
+	color: #333;
+	position: absolute;
+	left: 80px;
+	right: 14px;
+	top: 24px;
+	white-space: normal
+}
+
+.overlay_info:after {
+	content: '';
+	position: absolute;
+	margin-left: -11px;
+	left: 50%;
+	bottom: -12px;
+	width: 22px;
+	height: 12px;
+	background:
+		url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png)
+		no-repeat 0 bottom;
+}
+</style>
 
 </head>
 <body>
@@ -132,13 +209,8 @@
 						<dl>
 							<dt>날짜</dt>
 							<dd>
-								<input type="date" class="form-control" id="start_date"	name="start_date" ><!-- value=${start_date eq null ? null : start_date} -->
+								<input type="date" class="form-control" id="start_date"	name="start_date" >
 							</dd>
-							<!-- 
-							<dt>종료일</dt>
-							<dd>
-								<input type="date" class="form-control" id="end_date" name="end_date">
-							</dd> -->
 						</dl>
 					</div>
 					<div class="col-md-6">
@@ -200,7 +272,7 @@
 					</div>
 					<input type="hidden" value="${keyword }" name="keyword"/>
 					<div class="col-md-12 mb-3">
-						<div id="map" class="mapbar border" style="width:100%;height:350px;"></div>
+						<div id="map" class="mapbar border" style="width:100%;height:500px;"></div>
 					</div>
 				</div>
 				<!-- End .row ftco animate -->
@@ -268,6 +340,13 @@
 										<h3 class="heading">
 											<a href="locationdetail.action?loc_code=${item.loc_code}">${item.loc_name }</a>
 										</h3>
+										<!-- 맵정보 -->
+										<form name="mapInfo">
+											<input type="hidden" name="loc_code" value="${item.loc_code}"/>
+											<input type="hidden" name="loc_name" value="${item.loc_name}"/>
+											<input type="hidden" name="loc_addr" value="${item.loc_addr}"/>
+											<input type="hidden" name="thumbnail_url" value="${item.thumbnail_url}"/>
+										</form>			
 									</div>
 								</div>
 							</div>
@@ -323,12 +402,11 @@
 		
 		var start_date_param = getParam("start_date");
 
-		alert(start_date_param);
-		
-
-		alert(start_date_param);
-
 		if(start_date_param == null)
+		{
+			$("#start_date").val(today);
+		}
+		else if(start_date_param == "")
 		{
 			$("#start_date").val(today);
 		}
@@ -337,10 +415,6 @@
 			$("#start_date").val(start_date_param);
 		}
 
-		else if(start_date_param == "")
-		{
-			$("#start_date").val(today);
-		}
 
 		$("#start_date").attr("min", today);
 		$("#start_date").attr("max", maxdate);
@@ -351,6 +425,7 @@
 		// 지도 버튼 클릭시 내려오게
 		$("button.map").click(function()
 		{
+			setTimeout(function(){ map.relayout(); }, 1000);
 			$(".mapbar").slideToggle();
 		});
 	});
@@ -373,107 +448,94 @@
 <!-- 지도API -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services"></script>
 <script type="text/javascript">
-//지도를 초기화 시키는 함수
-function initMap(){
- 
-
-	var map = new daum.maps.Map(document.getElementById('map'),
-	{ // 지도를 표시할 div
-		center : new daum.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
-		level : 3
-	// 지도의 확대 레벨 
-	});
-
-	// 마커 클러스터러를 생성합니다 
-	var clusterer = new daum.maps.MarkerClusterer(
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	mapOption = {
+	    center : new daum.maps.LatLng(36.633535, 127.425882), // 지도의 중심좌표
+	    level : 3
+	// 지도의 확대 레벨
+	};
+	
+	// 지도를 생성합니다    
+	var map = new daum.maps.Map(mapContainer, mapOption);
+	
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new daum.maps.services.Geocoder();
+	
+	//배열 사이즈 지정
+	var num_of_result = $("input[name=loc_code]").length;
+	
+	//배열 생성
+	var loc_code_arr = new Array(num_of_result);
+	var loc_name_arr = new Array(num_of_result);
+	var loc_addr_arr = new Array(num_of_result);
+	var thumbnail_url_arr = new Array(num_of_result);
+	
+	console.log("--------------obj result ----------");
+	
+	//배열에 값 주입
+	for(var i=0; i<num_of_result; i++)
 	{
-		map : map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-		averageCenter : true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-		minLevel : 10
-		// 클러스터 할 최소 지도 레벨 
-	});
-
-	//Ajax를 통해 좌표 데이터 map를 전송받는다.
-
-	$.ajax(
-	{
-
-		url : "데이터를 요청할 URL (to server...)",
-		type : "GET",
-		data : "",
-		dataType : "json",
-		success : function(data)
-		{
-			//요청에 성공하면 DB에서 꺼낸 데이터를 json 형식으로 응답 받는다.
-
-			//마커들을 저장할 변수
-			var markers = $(data).map(function(i, position){
-				//마커를 하나 새로 만드는데, 위치값을 지정하고 클릭이 가능하게 설정함.
-				var marker = new daum.maps.Marker({
-					position : new daum.maps.LatLng(position.LAT, position.LNG),
-					clickable : true
-				});
-
-				//띄울 인포윈도우 정의
-				var iwContent = '<div style="padding:5px;">'
-					+ position.NAME + '<br/>'
-					+ position.ADDRESS + 
-					'</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-					iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-				// 인포윈도우를 생성합니다
-				var infowindow = new daum.maps.InfoWindow({
-					content : iwContent,
-					removable : iwRemoveable
-				});
-
-				// 마커에 클릭이벤트를 등록합니다
-				daum.maps.event.addListener(marker, 'click',function(){
-					// 마커 위에 인포윈도우를 표시합니다
-
-					infowindow.open(map, marker);
-				});
-
-				//생성된 마커를 반환합니다.
-				return marker;
-		});
-
-				// 마커 클러스터러에 클릭이벤트를 등록합니다
-				// 마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
-				// 이벤트 헨들러로 cluster 객체가 넘어오지 않을 수도 있습니다
-				daum.maps.event.addListener(clusterer, 'clusterclick',function(cluster){
-
-					// 현재 지도 레벨에서 1레벨 확대한 레벨
-					var level = map.getLevel() - 1;
-
-					// 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
-					map.setLevel(level,	{anchor : cluster.getCenter()});
-				});
-
-				//클러스터에 마커들을 저장합니다.
-				clusterer.addMarkers(markers);
-
-			},
-			error : function(xhr, status, error){
-				//요청에 실패하면 에러코드 출력  
-				alert("에러코드 : " + xhr.status);
-			}
-
-		});
+		loc_code_arr[i] = $("input[name=loc_code]").eq(i).val();
+		loc_name_arr[i] = $("input[name=loc_name]").eq(i).val();
+		loc_addr_arr[i] = $("input[name=loc_addr]").eq(i).val();
+		thumbnail_url_arr[i] = $("input[name=thumbnail_url]").eq(i).val();
+		console.log(loc_code_arr[i]);
+		console.log(loc_name_arr[i]);
+		console.log(loc_addr_arr[i]);
+		console.log(thumbnail_url_arr[i]);
+		console.log("----------------------------------");
 
 	}
+
+	// 마커 생성
+	for (i = 0; i < num_of_result; i++)
+	{
+		myMarker(i + 1, loc_addr_arr[i], loc_name_arr[i], loc_code_arr[i], thumbnail_url_arr[i]);
+	}
+	
+	function myMarker(number, address, name, code, img)
+	{
+		// 주소로 좌표를 검색합니다
+		geocoder.addressSearch(
+						//'주소',
+						address,
+						function(result, status)
+						{
+							// 정상적으로 검색이 완료됐으면 
+							if (status === daum.maps.services.Status.OK)
+							{
+								var coords = new daum.maps.LatLng(
+										result[0].y,
+										result[0].x);
+
+								// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+								var content = '<div class="overlay_info">';
+								content += '    <a href="locationdetail.action?loc_code='+code+'"><strong style="text-overflow: ellipsis";>'+name+'</strong></a>';
+								content += '    <div class="desc">';
+								content += '        <img src="<%=cp%>/images/'+ img +'" alt="">';
+								content += '    </div>';
+								content += '</div>';
+									
+								// 커스텀 오버레이가 표시될 위치입니다 
+								var position = new daum.maps.LatLng(
+										result[0].y, result[0].x);
+
+								// 커스텀 오버레이를 생성합니다
+								var customOverlay = new daum.maps.CustomOverlay(
+								{
+									map : map,
+									position : position,
+									content : content,
+								    xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+								    yAnchor: 1.1 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+								});
+
+								// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+								map.setCenter(coords);
+							}
+						});
+	}
 </script>
-
-<!-- 무한 스크롤 -->
-<!-- 
-<script type="text/javascript">
-window.onscroll = function(ev) {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        alert("you're at the bottom of the page");
-    }
-};
-
-</script> -->
 
 </body>
 </html>

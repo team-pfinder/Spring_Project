@@ -134,12 +134,11 @@ String cp = request.getContextPath();
 			console.log("--------------obj result ----------");
 			console.log(myAddress);
 
-			/*
 			for (i = 0; i < myAddress.length; i++)
 			{
 				myMarker(i + 1, myAddress[i].addr);
 			}
-			*/
+		
 			
 	</script>
  
