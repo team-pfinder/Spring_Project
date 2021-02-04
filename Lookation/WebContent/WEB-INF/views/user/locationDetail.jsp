@@ -15,6 +15,9 @@
 <meta charset="UTF-8">
 <title>Lookation</title>
 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css">
+
 <style type="text/css">
 body, html {
 width: 100%;
@@ -249,6 +252,35 @@ p {
 label {
 width: 100%;
 }
+
+/*===달력 패키지 적용 날짜 표시===*/
+.highlighted-cal-dates {
+	color : black;
+    background :  #fdbe34;
+	font-weight: bold;
+}
+
+/*===달력 그림 표시===*/
+#datePicker {
+  
+  background-image: url(<%=cp%>/images/calendar-icon.jpg);
+  background-repeat : no-repeat;
+  background-position: 5px center;
+  padding-left: 40px;
+  border: 1px solid #2e3238;
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 3px;
+  
+  height: 52px !important;
+  font-size: 18px;
+  border-radius: 5px;
+  box-shadow: none !important;
+}
+
+
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bbdc5d69c0be5fc4d930f65664018993&libraries=services,clusterer,drawing"></script>
 <script type="text/javascript">
@@ -337,80 +369,9 @@ width: 100%;
 	    
 	    // 패키지 정보 가져오기
 		// 날짜가 변경되었을 경우 수행할 코드 처리
-		$("#selectDate").change(function()
+		$(".selectDate").change(function()
 		{
-			var intPackEnd;					//-- 익일 처리할 변수
-			var html = "";
-			
-			$(".packageDiv").html("");
-			
-			$.ajax({
-				url : "locdetailajax.action"
-				, type : "post"
-				, data : {selectDate : $("#selectDate").val(), loc_code : $("#hiddenCode").val()}
-				, success : function(data) {
-					
-					// 받은 데이터 JSON으로 파싱함
-					var obj = JSON.parse(data);
-					
-					// 선택된 패키지의 가격 받아올 변수
-					var i = 1;							//-- for문 돌 때 증가값, #price0 선택자 구성할 용도
-					var temp = "";						//-- 선택된 라디오버튼의 id값 저장
-					
-					// 데이터 없으면 패키지 없다고 표시
-					if(obj.length==0﻿)
-					{
-						$(".packageDiv").html("<div class='text-center my-3'>해당 날짜에 등록된 패키지가 없습니다.</div>");
-						$("#selectPrice").text(" (원)");
-						return false;
-					}
-					else
-					{
-						// 배열에서 key랑 value값으로 꺼냄
-						$.each(obj,function(key,value) {
-							
-							//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
-							if(parseInt(value.packEnd) >= 24)
-							{
-								intPackEnd = parseInt(value.packEnd) - 24;
-								intPackEnd = "익일 " + intPackEnd;
-							}
-							else
-							{
-								intPackEnd = value.packEnd;
-							}
-							
-							html = "<div class='packageSelect'><label>";
-							html += "<input type='radio' id='" + i + "' name='apply_package_code' value='" + value.packCode + "'>";
-							html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
-									+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
-							
-							// 각 패키지 가격 구분하기 위해 #price1, #price2로 설정
-							html += "<div class='flex float-right vertical-down'><strong id='price"
-								    + i + "'>" + value.packPrice + " (원)</strong></div>";
-							html += "</label></div>";
-							
-							// 라디오버튼 packageDiv에 추가
-							$(".packageDiv").append(html);
-							
-							// 라디오버튼 선택시 선택한 가격 보여주기
-							$("input:radio[name=apply_package_code]").click(function()
-							{
-								// 선택된 라디오버튼의 id 가져옴
-								temp = $("input:radio[name=apply_package_code]:checked").attr("id");
-								// 패키지 가격 출력
-								$("#selectPrice").text($("#price"+temp).text());
-								
-							});
-							
-							i++;
-						});
-					}
-				}
-			    , error:function(e){
-			    	alert(e.responseText);
-			    }
-			});
+			checkPackage();
 		});
 		
 	    // 폼 전송 전 패키지 선택했는지 검사
@@ -487,9 +448,86 @@ width: 100%;
 		window.open(url, "", option);
 	}
 	
+	function checkPackage()
+	{
+		var intPackEnd;					//-- 익일 처리할 변수
+		var html = "";
+		
+		$(".packageDiv").html("");
+		
+		$.ajax({
+			url : "locdetailajax.action"
+			, type : "post"
+			, data : {selectDate : $('#datePicker').val(), loc_code : $("#hiddenCode").val()}
+			, success : function(data) {
+				
+				// 받은 데이터 JSON으로 파싱함
+				var obj = JSON.parse(data);
+				
+				// 선택된 패키지의 가격 받아올 변수
+				var i = 1;							//-- for문 돌 때 증가값, #price0 선택자 구성할 용도
+				var temp = "";						//-- 선택된 라디오버튼의 id값 저장
+				
+				// 데이터 없으면 패키지 없다고 표시
+				if(obj.length==0﻿)
+				{
+					$(".packageDiv").html("<div class='text-center my-3'>해당 날짜에 등록된 패키지가 없습니다.</div>");
+					$("#selectPrice").text(" (원)");
+					return false;
+				}
+				else
+				{
+					// 배열에서 key랑 value값으로 꺼냄
+					$.each(obj,function(key,value) {
+						
+						//alert('key:'+key+', name:'+value.packageName+',age:'+value.packStart);
+						if(parseInt(value.packEnd) >= 24)
+						{
+							intPackEnd = parseInt(value.packEnd) - 24;
+							intPackEnd = "익일 " + intPackEnd;
+						}
+						else
+						{
+							intPackEnd = value.packEnd;
+						}
+						
+						html = "<div class='packageSelect'><label>";
+						html += "<input type='radio' id='" + i + "' name='apply_package_code' value='" + value.packCode + "'>";
+						html += "<span class='ml-3 package-bundle' >"+ value.packageName + " "
+								+ value.packStart +":00 ~ "+ intPackEnd + ":00</span>";
+						
+						// 각 패키지 가격 구분하기 위해 #price1, #price2로 설정
+						html += "<div class='flex float-right vertical-down'><strong id='price"
+							    + i + "'>" + value.packPrice + " (원)</strong></div>";
+						html += "</label></div>";
+						
+						// 라디오버튼 packageDiv에 추가
+						$(".packageDiv").append(html);
+						
+						// 라디오버튼 선택시 선택한 가격 보여주기
+						$("input:radio[name=apply_package_code]").click(function()
+						{
+							// 선택된 라디오버튼의 id 가져옴
+							temp = $("input:radio[name=apply_package_code]:checked").attr("id");
+							// 패키지 가격 출력
+							$("#selectPrice").text($("#price"+temp).text());
+							
+						});
+						
+						i++;
+					});
+				}
+			}
+		    , error:function(e){
+		    	alert(e.responseText);
+		    }
+		});
+	}
+	
 </script>
 </head>
 <body data-spy="scroll" data-target="#myScrollspy" data-offset="15">
+
 <div class="ftco-section ftco-degree-bg">
 	<div class="container">
 		<div class="row">	
@@ -810,7 +848,48 @@ width: 100%;
 						
 						
 						<div class="py-2 calendar">
-							<input type="date" class="form-control" id="selectDate">
+							
+							<!-- 달력 세팅 -->
+							<input type="text" class="selectDate" id="datePicker" 
+							readonly="readonly" placeholder="날짜를 선택해주세요"> 
+							
+							
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+							<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+							
+							<script type="text/javascript">
+							
+							var user_busy_days = [];
+							
+							// 적용 가능한 패키지 날짜를 배열에 세팅한다.
+							<c:forEach var="packageDate" items="${detailPackages}">
+								user_busy_days.push('${packageDate}');
+							</c:forEach>
+							
+							$('#datePicker').datepicker({
+								format : "yyyy-mm-dd", // 달력에서 클릭시 표시할 값 형식
+								inline: true,
+								sideBySide: true,
+								autoclose: true,
+								title: "예약가능날짜",
+								startDate: '+1d',	   // 오늘 이후 날짜부터 예약 가능
+								beforeShowDay : function(date) {
+									
+									calender_date = date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0'+date.getDate()).slice(-2);
+									
+									var search_index = $.inArray(calender_date, user_busy_days);
+									
+									if (search_index > -1) 
+									{
+					                    return {classes: 'highlighted-cal-dates', tooltip: 'User available on this day.'};
+					                }			
+								}
+							}).on("changeDate", function() { checkPackage(); });
+							
+				
+							</script>
+							
+							<!-- <input type="date" class="form-control" id="selectDate"> -->
 						</div>
 						
 						
@@ -856,7 +935,6 @@ width: 100%;
 		</div><!-- End .row -->
 	</div><!-- End .container -->
 </div>
-
 
 
 <div>

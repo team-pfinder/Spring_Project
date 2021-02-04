@@ -29,6 +29,8 @@ public interface IReportDAO
 	public reportDTO locDetailList1(String loc_report_code);
 	// 신고처리 테이블 추가 쿼리문
 	public int locReportProc(@Param("loc_report_code") String loc_report_code, @Param("report_proc_type_code") String report_proc_type_code);
-	//블랙리스트 테이블 추가 쿼리문
+	// 블랙리스트 테이블 추가 쿼리문
 	public int hostBlackList(@Param("host_email") String host_email,@Param("host_blacklist_reason") String host_blacklist_reason);
+	// 블라인드 추가 쿼리문
+	public int addBlind(@Param("loc_code") String loc_code, @Param("loc_blind_reason") String loc_blind_reason);
 }

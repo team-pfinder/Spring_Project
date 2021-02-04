@@ -73,7 +73,8 @@ public class LocationDetailController implements Controller
 			
 			mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
 			
-			
+			// 패키지 날짜 정보를 뷰에 넘겨준다.
+			mav.addObject("detailPackages", dao.detailPackage(loc_code));
 			
 			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
 			
