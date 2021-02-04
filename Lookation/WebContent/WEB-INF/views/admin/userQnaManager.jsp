@@ -142,9 +142,9 @@
 		});
 		
 		/* 선택삭제 버튼 클릭 */
-		$(".modal-footer .removeBtn").click(function()
+		$(".selectDelete").click(function()
 		{
-			// 추후 추가
+			// 추후 수정
 		});
 	});
         
@@ -183,7 +183,7 @@
 		            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		              <h6 class="m-0 font-weight-bold text-primary">QnA목록</h6>
 		          
-		              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal2">선택삭제</button>
+		              <button type="button" class="btn btn-danger selectDelete">선택삭제</button>
 		              </div>
 		              
 		              
@@ -220,7 +220,7 @@
 	                                    	<c:choose>
 	                                    		<c:when test="${adminUserDTO.count == 0 }">
 			                                    	<tr>
-			                                    		<td><input type="checkbox" name="rowCheck" value="${adminUserDTO.qna_code }"></td>
+			                                    		<td><input type="checkbox" name="rowCheck" class="checkSelect" value="${adminUserDTO.qna_code }"></td>
 			                                    		<td>${adminUserDTO.qna_code }</td>
 			                                    		<td>${adminUserDTO.member_nickname }</td>
 			                                    		<td>${adminUserDTO.member_email }</td>
@@ -258,29 +258,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
-				      aria-labelledby="myModalLabel" aria-hidden="true">
-				      <div class="modal-dialog">
-				         <div class="modal-content">
-				            <div class="modal-header">
-				            	<h4 class="modal-title" id="myModalLabel">삭제하기</h4>
-				               <button type="button" class="close" data-dismiss="modal">
-				                  <span aria-hidden="true">×</span><span class="sr-only">Close</span>
-				               </button>
-				            </div>
-				            <div class="modal-body">
-				            <!-- 해당 리뷰, 리뷰답글 받아와야함 -->
-				               <p>삭제하시겠습니까?</p>
-				               
-				            </div>
-				            <div class="modal-footer">
-				            	<button type="button" class="btn btn-primary removeBtn">확인</button>
-				               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-				            </div>
-				         </div>
-				      </div>
-				   </div>
 
                 </div>
                 <!-- /.container-fluid -->

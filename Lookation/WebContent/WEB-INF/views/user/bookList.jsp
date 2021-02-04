@@ -204,7 +204,6 @@ margin-bottom: 0;
 										<input type="text" id="loc" value="${book.loc_code }" style="display: none;">
 										<input type="text" id="member" value="${book.member_code }" style="display: none;">
 										<input type="text" id="loc_name" value="${book.loc_name }" style="display: none;">
-										<input type="text" id="loc_count" value="${book.loc_count }" style="display: none;">
 										<fmt:parseDate var="pdate" value="${book.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
 										<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 										<%-- <span>today : ${today } <br> fdate : ${fdate }<br></span> --%>

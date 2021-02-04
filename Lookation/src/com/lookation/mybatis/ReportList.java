@@ -302,5 +302,50 @@ public class ReportList
 		
 	}
 	
+	// 블라인드 추가 버튼 클릭
+	@RequestMapping(value = "/actions/blindform.action", method = RequestMethod.GET)
+	public String blindForm(String loc_code, HttpServletRequest request)
+	{
+		// 세션을 통한 로그인 확인
+				HttpSession session = request.getSession();
+
+				String admin_id = (String)session.getAttribute("admin_id");
+
+				// 로그인이 안된경우                                                                   
+				if(admin_id == null)                                                      
+				{                                                                            
+					// 로그인 실패. 다시 로그인창으로                                                     
+					return "redirect:adminloginform.action";
+				}
+				
+				String result = null;
+				
+				result = "/WEB-INF/views/admin/addBlind.jsp";
+				
+				return result;
+	}
+	
+	// 블라인드 처리
+	@RequestMapping(value = "/actions/blind.action", method = RequestMethod.GET)
+	public String addBlind(String loc_code, String loc_blind_reason, HttpServletRequest request)
+	{
+		// 세션을 통한 로그인 확인
+				HttpSession session = request.getSession();
+
+				String admin_id = (String)session.getAttribute("admin_id");
+
+				// 로그인이 안된경우                                                                   
+				if(admin_id == null)                                                      
+				{                                                                            
+					// 로그인 실패. 다시 로그인창으로                                                     
+					return "redirect:adminloginform.action";
+				}
+				
+				IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
+				
+				dao.addBlind(loc_code, loc_blind_reason);
+				
+				return "";
+	}
 	
 }

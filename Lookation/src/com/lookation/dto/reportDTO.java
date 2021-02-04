@@ -8,8 +8,8 @@ public class reportDTO
 		, loc_report_code, report_proc_type, loc_report_proc_date
 		, loc_report_proc_code, report_proc_type_code
 		, host_blacklist_reason, host_blacklist_date
-		, host_nickname, member_nickname;
-	private int result_count, black_count;
+		, host_nickname, member_nickname, loc_blind_reason;
+	private int result_count, black_count, blind_count;
 	
 	// 주요 속성 구성 (예약 신고) 호스트가 이용자 신고
 	private String book_code, book_report_type, book_report_date
@@ -296,5 +296,25 @@ public class reportDTO
 	public void setMember_nickname(String member_nickname)
 	{
 		this.member_nickname = member_nickname;
+	}
+
+	public String getLoc_blind_reason()
+	{
+		return loc_blind_reason;
+	}
+
+	public void setLoc_blind_reason(String loc_blind_reason)
+	{
+		this.loc_blind_reason = loc_blind_reason;
+	}
+
+	public int getBlind_count()
+	{
+		return blind_count;
+	}
+
+	public void setBlind_count(int blind_count)
+	{
+		this.blind_count = blind_count;
 	}
 }
