@@ -7,6 +7,8 @@
 	
 	String identify = (String)request.getParameter("identify");
 	pageContext.setAttribute("identify", identify);
+	
+	pageContext.setAttribute("path", cp);
 %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +16,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>createAccountSuccess.jsp</title>
+<title>deletedLocation</title>
 
 <style type="text/css">
 	*
@@ -92,33 +94,20 @@
 			
 			<div class="dbox" style="margin-bottom: 30px;">
 				<div class="icon d-flex align-items-center justify-content-center">
-	                  <span class="fa fa-check"></span>
+	                  <span class="fa fa-close" style="font-size:400%"></span>
 	            </div>
             </div>
 			<%-- <img src="<%=cp%>/images/check.png" style="width:15%;"/> --%>
-			<h2>회원가입이 <span>완료</span> 되었습니다.</h2>
+			<h2><span>관리자에 의해 블라인드 되었거나 삭제된 공간입니다.</span></h2>
 			<br>
 			
-			<c:if test="${identify eq 'host'}">
-				<p>호스트님의 회원가입을 축하합니다!</p> 
-			</c:if>
-			<c:if test="${identify eq 'member'}">
-				<p>이용자님의 회원가입을 축하합니다!</p> 
-			</c:if>
-			
-			<p>알차고 실속있는 서비스로 찾아뵙겠습니다.</p> 
+			<p>다른 공간을 이용해주세요.</p> 
 			<hr style="border: solid thin silver;
 			           margin: 50px 0px 35px 0px;">
 			
 			<div class="buttonForm">
-				<c:if test="${identify eq 'host'}">
-					<button style="background: #ffffff"
-							onclick="location.href='hostmain.action'">홈으로</button> 
-				</c:if>
-				<c:if test="${identify eq 'member'}">
-					<button style="background: #ffffff"
-					        onclick="location.href='membermain.action'">홈으로</button> 
-				</c:if> 
+				<button style="float: center; "
+				        onclick="location.href='membermain.action'">홈으로</button> 
 			</div>
 		</div>
 	</div>

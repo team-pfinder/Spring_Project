@@ -35,4 +35,10 @@ public interface ILocationDetailDAO
 	public ArrayList<String> detailPhoto(String locCode) throws Exception;
 	
 	public ArrayList<String> detailPackage(String locCode) throws Exception;
+	
+	public int deleteCheck(String locCode) throws SQLException;
+	
+	public int blindCheck(String locCode) throws SQLException;
+	
+	public int hostCheck(String locCode, String hostCode) throws SQLException;
 }

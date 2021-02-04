@@ -334,8 +334,7 @@ width: 100%;
 		
 		$("#selectDate").val(today);
 		$("#selectDate").attr("min", today);
-		$("#selectDate").attr("max", maxdate);
-		
+		$("#selectDate").attr("maxDate", maxdate);
 		
 	    /* 숫자 버튼 증가 및 최소, 최댓값 설정 */
 	    $("#increase").on("click", function(){
@@ -575,7 +574,7 @@ width: 100%;
 				
 				<div class="info-div mb-5">
 					<h4 class="my-4 info-sub">공간소개</h4>
-					<p>${basicInfo.intro }</p>
+					<p style="white-space:pre-line;"><c:out value="${basicInfo.intro }" /></p>
 				</div>
 
 			
@@ -610,10 +609,6 @@ width: 100%;
 				<h4 class="info-sub">
 					이용후기<span class="set-star ml-3">${countReview }</span>
 					<span class="ml-2" style="font-size: 10pt;">(평균별점 <span class="set-star icon-star mr-1"></span>${avgReviewRate }점)</span>
-
-					<!-- 이용후기 작성권한이 있을 경우(이용완료, 후기작성 안했는지 확인) -->
-					<!-- 에만 이용후기 작성버튼 표시  -->
-					<button class="btn btn-primary float-right" onclick="writeReview()">후기 작성하기</button>
 				</h4>
 				<br>
 
@@ -634,15 +629,15 @@ width: 100%;
 											<span class="set-star icon-star mr-1"></span>
 										</c:forEach>
 									</h6>
-									
 									<div class="meta mb-2">${rv.date }</div>
-									
+										
 									<c:if test="${rv.removeCount eq 1}">
 										<p>삭제된 리뷰입니다.</p>
 									</c:if>
 									
 									<c:if test="${rv.removeCount eq 0}">
-										<p>${rv.content }</p>
+										
+										<p style="white-space:pre-line;"><c:out value="${rv.content }" /></p>
 										
 										<c:if test="${rv.rvimgCount ne 0 }">
 											<p>
@@ -657,13 +652,21 @@ width: 100%;
 										</c:if>
 									</c:if>
 									
-									<c:if test="${rv.count eq 1 && rv.replyRemove eq 0 }">
+									
+									<c:if test="${rv.count eq 1}">
 										<li class="children children-reply">
-											<h4>${basicInfo.hostNickName }</h4>
-											<span class="meta mb-2">${rv.replyDate }</span>
-											<p class="">${rv.replyContent }</p>
+											<c:if test="${rv.replyRemove eq 1 }">
+												<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
+											</c:if>
+											
+											<c:if test="${rv.replyRemove eq 0 }">
+												<h4>${basicInfo.hostNickName }</h4>
+												<span class="meta mb-2">${rv.replyDate }</span>
+												<p class="pr-5" style="white-space:pre-line;"><c:out value="${rv.replyContent }" /></p>
+											</c:if>
 										</li>
 									</c:if>
+									
 								</li>
 						</ul>
 					</c:forEach><!-- .comment-list -->
@@ -677,9 +680,6 @@ width: 100%;
 				<div class="d-flex p-4 host-box mb-5">
 					<div class="host-info">
 						<h3 class="mb-4">${basicInfo.hostNickName}</h3>
-						<p>
-							<a href="mmessenger.action" class="reply">호스트에게 DM</a>
-						</p>
 					</div>
 													
 						
@@ -694,7 +694,7 @@ width: 100%;
 						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
 						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
 						<c:if test="${not empty basicInfo.url }">
-							<p>웹사이트 주소 : <a href="${basicInfo.url }" style="color: gray;">${basicInfo.url }</a></p>
+							<p>웹사이트 주소 : <a href="http://${basicInfo.url }" style="text-decoration: underline;">${basicInfo.url }</a></p>
 						</c:if>
 						
 						<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
@@ -779,7 +779,8 @@ width: 100%;
 								<p class="">이용자가 삭제한 게시글입니다.</p>
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
-								<p class="">${qna.qna_content }</p>
+								<div style="white-space:pre-line;"><c:out value="${qna.qna_content }" /></div>
+								
 								<c:if test="${qna.memCode == memberCode}">
 									<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 
 									<button type="button" class="reply border-0 deleteQna" value="${qna.boardCode }">삭제</button>
@@ -792,7 +793,7 @@ width: 100%;
 							<li class="children-reply">
 								<h4>${basicInfo.hostNickName }</h4>
 								<span class="meta">${qna.replyDate }</span>
-								<p class="">${qna.replyContent }</p>
+								<div style="white-space:pre-line;"><c:out value="${qna.replyContent }" /></div>
 							</li>
 						</c:if>
 					</ul>
@@ -885,8 +886,7 @@ width: 100%;
 					                }			
 								}
 							}).on("changeDate", function() { checkPackage(); });
-							
-				
+
 							</script>
 							
 							<!-- <input type="date" class="form-control" id="selectDate"> -->
