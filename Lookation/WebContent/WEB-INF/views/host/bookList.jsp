@@ -108,9 +108,19 @@ margin-bottom: 0;
     	// 신고하기
     	$(".report").click(function()
 		{
-			var popUrl = "reporthostform.action?book_code=" + $("#book").val() + "&host_code=" +  $("#host").val();
-			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
-			window.open(popUrl, "", popOption);
+    		// 이미 신고한 내역인지 검사
+    		if ($(this).val() == "0")
+    		{
+    			var popUrl = "reporthostform.action?book_code=" + $("#book").val() + "&host_code=" +  $("#host").val();
+    			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+    			window.open(popUrl, "", popOption);
+    		}
+    		else
+    		{
+    			alert("이미 신고한 예약건입니다.");
+    			return false;
+    		}
+			
 		});
     	
     	// 메신저 팝업
@@ -212,7 +222,7 @@ margin-bottom: 0;
 	 											<c:when test="${book.host_cancel >= 1 || book.member_cancel >= 1}">
 	 											<td class="text-danger">취소완료</td>
 	 											<td>
-	 												<button type="button" value="${book.loc_count}"
+	 												<button type="button" value="${book.book_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														🚨</button>
 													<button type="button" value="${book.book_code}"
@@ -232,7 +242,7 @@ margin-bottom: 0;
 	 											<c:when test="${pdate >= now}">
 		 											<td class="text-gon">예약완료</td>
 		 											<td>
-		 											<button type="button" value="${book.loc_count}"
+		 											<button type="button" value="${book.book_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														🚨</button>
 													<button type="button" value="${book.book_code}"
@@ -251,7 +261,7 @@ margin-bottom: 0;
 													<td>이용완료</td>
 													
 													<td>
-													<button type="button" value="${book.loc_count}"
+													<button type="button" value="${book.book_count}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														🚨</button>
 													<button type="button" value="${book.book_code}"

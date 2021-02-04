@@ -27,7 +27,7 @@ public class Search
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@RequestMapping(value="/actions/search.action", method = RequestMethod.GET)
+	@RequestMapping(value="/actions/search.action", method = {RequestMethod.GET, RequestMethod.POST})
 	public String searchKeyword(Model model, HttpServletRequest request)
 	{
 		ISearchDAO dao = sqlSession.getMapper(ISearchDAO.class);
@@ -151,7 +151,7 @@ public class Search
 		
 	}
 	
-	@RequestMapping(value="/actions/searchkeyword.action", method = RequestMethod.POST)
+	@RequestMapping(value="/actions/searchkeyword.action", method = {RequestMethod.GET, RequestMethod.POST})
 	public String searchKeywordOther(Model model, HttpServletRequest request)
 	{
 		ISearchDAO dao = sqlSession.getMapper(ISearchDAO.class);

@@ -136,11 +136,10 @@ margin-bottom: 0;
     	// 후기 작성하는 팝업
     	$(".review").click(function()
 		{
-    		var loc_code = $("#loc").val(); 
     		var member_code = '<%=(String)session.getAttribute("memberCode")%>';
     		
     		// 이미 후기 작성했는지 검사
-    		var url = "writereview.action?identify=member&loc_code="+ loc_code + "&member_code=" + member_code;
+    		var url = "writereview.action?identify=member&loc_code="+ $(this).val() + "&member_code=" + member_code;
     		var option = "width=450, height=600, resizable=no, scrollbars=yes, status=no";
 			window.open(url, "", option);
 		}); 
@@ -204,7 +203,6 @@ margin-bottom: 0;
 										<input type="text" id="loc" value="${book.loc_code }" style="display: none;">
 										<input type="text" id="member" value="${book.member_code }" style="display: none;">
 										<input type="text" id="loc_name" value="${book.loc_name }" style="display: none;">
-										<input type="text" id="loc_count" value="${book.loc_count }" style="display: none;">
 										<fmt:parseDate var="pdate" value="${book.apply_date}" pattern="yy-MM-dd HH:mm:ss" />
 										<fmt:formatDate var="fdate" value="${pdate}" pattern="yyyy-MM-dd" />
 										<%-- <span>today : ${today } <br> fdate : ${fdate }<br></span> --%>
@@ -281,7 +279,7 @@ margin-bottom: 0;
 														class="btn py-1 px-1 mb-0 btn-light border-0 rounded messenger"
 														disabled="disabled">
 														💬</button>
-													<button type="button" value="${book.book_code}"
+													<button type="button" value="${book.loc_code}"
 														class="btn py-1 px-1 mb-0 btn-danger border-0 rounded review">
 														리뷰</button>
 													<button type="button" value="${book.book_code}"

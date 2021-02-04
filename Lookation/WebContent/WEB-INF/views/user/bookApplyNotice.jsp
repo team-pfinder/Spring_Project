@@ -105,7 +105,7 @@
 					
 					<div class="form-inline form-group">
 						<span class="col-md-2 align-self-start font-weight-bold">요청사항</span>
-						<span class="col-md-10">${notice.book_req }</span>
+						<span class="col-md-10" style="white-space:pre-line;"><c:out value="${notice.book_req }" /></span>
 					</div>
 				
 				<!-- <a  role="button">메인 화면으로 돌아가기</a> -->

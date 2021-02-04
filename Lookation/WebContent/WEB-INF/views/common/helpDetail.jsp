@@ -55,7 +55,7 @@ String cp = request.getContextPath();
             <div class="meta">${U_detailList.help_date }</div>
             <hr>
             <br>
-            <p>${U_detailList.help_content }</p>
+             <div style="white-space:pre;"><c:out value="${U_detailList.help_content }" /></div>
        		
        		<!-- 이미지 있을 때만 이미지가 나오게 -->
        		<c:if test="${!empty Help_img.help_img_url}">

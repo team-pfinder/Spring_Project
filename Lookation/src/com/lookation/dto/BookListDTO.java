@@ -10,7 +10,7 @@ public class BookListDTO
 	, book_req, biz_name, biz_ceo, biz_license_number
 	, member_cancel_reason, host_cancel_reason, member_email
 	, loc_addr, loc_detail_addr, member_nickname
-	, host_code;
+	, host_code, book_count;
 
 	private int days, package_price;
 
@@ -332,6 +332,16 @@ public class BookListDTO
 	public void setHost_code(String host_code)
 	{
 		this.host_code = host_code;
+	}
+
+	public String getBook_count()
+	{
+		return book_count;
+	}
+
+	public void setBook_count(String book_count)
+	{
+		this.book_count = book_count;
 	}
 	
 }
