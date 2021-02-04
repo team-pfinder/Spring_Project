@@ -53,8 +53,21 @@ public class LocationDTO
 	// inspect type
 	private String inspect_type;
 	
+	// blind check
+	private int blind_check;
 	
 	
+	
+	public int getBlind_check()
+	{
+		return blind_check;
+	}
+
+	public void setBlind_check(int blind_check)
+	{
+		this.blind_check = blind_check;
+	}
+
 	public String getInspect_type()
 	{
 		return inspect_type;
