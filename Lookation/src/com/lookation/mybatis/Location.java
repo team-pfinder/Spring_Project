@@ -1,5 +1,6 @@
 package com.lookation.mybatis;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -635,7 +636,7 @@ public class Location
 	
 	
 	@RequestMapping(value="/actions/modifybasicform.action", method = RequestMethod.GET)
-	public String modifyBasicForm(HttpServletRequest request, Model model)
+	public String modifyBasicForm(HttpServletRequest request, Model model) throws IOException
 	{
 		String loc_code = request.getParameter("loc_code");
 		HttpSession session = request.getSession();
@@ -647,12 +648,30 @@ public class Location
 		{
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
 			model.addAttribute("info", dao.getInfo(accountCode));
-
-			//loc_code = "L0000019";
+			
 			ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
 			LocationDTO dto = new LocationDTO();
-			model.addAttribute("basicInfoList", locDao.selectBasicInfo(loc_code));
 			
+		    dto.setHost_code(accountCode);
+	        dto.setLoc_code(loc_code);
+	        
+	        
+	        // 기본정보 조회 쿼리문으로 정보 미리 세팅
+	        model.addAttribute("basicInfoList", locDao.selectBasicInfo(loc_code));
+	        
+	        // 기본정보 코드 set
+	        dto.setLoc_basic_info_code(locDao.selectBasicInfo(loc_code).getLoc_basic_info_code());
+			
+	        // 대표이미지 조회 쿼리문 정보 미리 세팅
+	        //MultipartRequest m = FileManager.upload(request, "images");
+			//ArrayList<String> fileNames = FileManager.getFileNames(m);
+			
+		 	//LocationManager.setThumbnail(fileNames.get(0));
+	        dto.setThumbnail_url(LocationManager.getThumbnail());
+			
+	        model.addAttribute("thumbnailList", locDao.selectThumbnail(dto));
+	        
+	        
 			// 대표이미지, 시설안내, 주의사항
 			//model.addAttribute("thumbnailList", locDao.selectThumbnail(dto));
 			//model.addAttribute("facilityInfoList", locDao.selectFacilityInfo(dto));
@@ -803,14 +822,18 @@ public class Location
 		
 		ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
         LocationDTO dto = new LocationDTO();
-		                                                                                   
+		                                 
 		if(accountCode != null)                                         
 		{   
 			// dao.select 로 정보 받아옴
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
-			model.addAttribute("basicInfoList", locDao.selectBasicInfo(loc_code));
 			
+		    dto.setHost_code(accountCode);
+	        dto.setLoc_code(loc_code);
+	        dto.setLoc_basic_info_code(locDao.selectBasicInfo(loc_code).getLoc_basic_info_code());
+			
+
 			// 연락처정보 쿼리문 미리 세팅
 			model.addAttribute("contactList", locDao.selectContact(loc_code));
 			
@@ -823,7 +846,7 @@ public class Location
 				   //|| m.getParameter("inputLocType") == null
 				   || m.getParameter("inputShortIntro") == null
 				   || m.getParameter("inputIntro") == null
-				   //|| fileNames.get(0) == null
+				   || fileNames.get(0) == null
 				   || m.getParameter("inputAddr") == null
 				   || m.getParameter("inputDetailAddr") == null)
 				{
@@ -836,14 +859,11 @@ public class Location
 			 	//LocationManager.setType(m.getParameter("inputLocType"));
 			 	LocationManager.setShortIntro(m.getParameter("inputShortIntro"));
 			 	LocationManager.setIntro(m.getParameter("inputIntro"));
-			 	//LocationManager.setThumbnail(fileNames.get(0));
+			 	LocationManager.setThumbnail(fileNames.get(0));
 			 	LocationManager.setAddress(m.getParameter("inputAddr"));
 			 	LocationManager.setDetailAddress(m.getParameter("inputDetailAddr"));
 			 	
 			 	
-		        dto.setHost_code(accountCode);
-		        dto.setLoc_code(loc_code);
-		    
 		        
 		        // 1. 기본 정보
 		        //dto.setLoc_type(LocationManager.getType());
@@ -880,12 +900,12 @@ public class Location
 					dto.setCaution_content(str);
 					dao.inputCaution(dto);
 				}
-		        
+		        */
 		        // 1-3. 썸네일(기본정보)
 		        dto.setThumbnail_url(LocationManager.getThumbnail());
 		       
-		        dao.inputThumbnail(dto);
-				*/
+		        locDao.modifyThumbnail(dto);
+				
 			 	
 			} catch (Exception e)
 			{

@@ -102,7 +102,7 @@ public interface ILocationDAO
 	public LocationDTO selectBasicInfo(String loc_code);
 	
 	// 기본 정보(썸네일)
-	public LocationDTO selectThumbnail(String loc_code);
+	public LocationDTO selectThumbnail(LocationDTO dto);
 	
 	// 기본 정보(시설안내)
 	public ArrayList<LocationDTO> selectFacilityInfo(LocationDTO dto);

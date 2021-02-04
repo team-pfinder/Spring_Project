@@ -113,7 +113,6 @@ ul.precautions-list > li {
 		// 썸네일 이미지 등록
 		
 		var fileTarget = $('.filebox .upload-hidden');
-			
 		
 		fileTarget.on('change', function(){ // 값이 변경되면 
 			
@@ -152,13 +151,13 @@ ul.precautions-list > li {
 			//var tPrecaution = $("#precautionInfo_1").children().first().html();
 			var tShortIntro = $("#inputShortIntro").val();
 			var tIntro = $("#inputIntro").val();
-			//var tThumbnail = $("#ex_filename").val();
+			var tThumbnail = $("#ex_filename").val();
 			var tLocAddr = $("#inputAddr").val();
 			var tLocDetailAddr = $("#inputDetailAddr").val();
 			
 			
 			if (tLocName == "" || tShortIntro == "" || tIntro == "" 
-			|| tLocAddr == "" || tLocDetailAddr == "") {
+			|| tThumbnail == "" || tLocAddr == "" || tLocDetailAddr == "") {
 			 
 				alert("필수 입력사항을 모두 입력해 주세요.");
 				
@@ -679,22 +678,21 @@ ul.precautions-list > li {
 		</div>
 		
 	<br><br><br>
+	-->	
 		
-		
-		7. 대표이미지
+		<!-- 7. 대표이미지 -->
 		<div>
 			<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
 			<br><br>
 			<div class="filebox"> 
 				<input class="upload-name" name="inputThumbnail" 
-					   placeholder="이미지 등록" disabled="disabled" style="width: 70%">
+					   placeholder="이미지 등록" disabled="disabled" style="width: 70%" value="${thumbnailList.thumbnail_url}">
 				<label for="ex_filename"><span class="glyphicon fa fa-upload"></span></label> 
-				<input type="file" name="thumbnail" id="ex_filename" class="upload-hidden"
-				value="">
+				<input type="file" name="thumbnail" id="ex_filename" class="upload-hidden">
 			</div>
 		</div>
 		
-		
+	<!-- 	
 		<div>
 		
 			<span style="font-size: 14pt; font-weight: bold;">대표이미지 <span style="color: red">*</span></span>
