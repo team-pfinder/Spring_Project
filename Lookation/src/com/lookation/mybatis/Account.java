@@ -25,6 +25,37 @@ public class Account
 	public String loginForm(HttpServletRequest request)
 	{
 		String identify = request.getParameter("identify");
+		
+		// 이전 페이지를 세션에 저장해놓고
+		// 로그인이 성공하면 그 이전 페이지를
+		// 다시 요청할 수 있도록 한다.
+		HttpSession session = request.getSession();
+		String beforeUrl = request.getHeader("referer");
+		
+		// 이전 페이지가 없다는 것은 링크를 직접 타고 들어왔다는 것이므로...
+		if(beforeUrl == null)
+		{
+			beforeUrl = "";
+			
+			if(identify.equals("host"))
+				beforeUrl = "hostmain.action";
+			else if(identify.equals("member"))
+				beforeUrl = "membermain.action";
+		}
+		
+		// 우리가 필요한 것은 맨 뒤 .action 부분이므로
+		// 자른 후 필요한 부분만 대입
+		String[] arrUrl = beforeUrl.split("/");
+		beforeUrl = arrUrl[arrUrl.length-1];
+		
+		// 만약 로그인 실패로 로그인 폼을 또 요청하는 경우
+		// 이전 페이지는 로그인 폼이 될것이다.
+		// 이 경우에는 세션에 담아주지 않는다.	
+		if(!beforeUrl.contains("loginform"))
+		{
+			session.setAttribute("beforeUrl", beforeUrl);
+		}
+		
 		return "../WEB-INF/views/common/login.jsp?identify=" + identify;
 	}
 	
@@ -77,13 +108,8 @@ public class Account
 			// 세션 저장
 			session.setAttribute(identify + "Code", accountCode);
 			
-			// 메인 페이지로 간다..
-			String requestUrl = "";
-			
-			if(identify.equals("host"))
-				requestUrl = "hostmain.action";
-			else if(identify.equals("member"))
-				requestUrl = "membermain.action";
+			// 이전 페이지로 간다..
+			String requestUrl = (String)session.getAttribute("beforeUrl");
 			
 			// 이전 요청 페이지를 다시 요청해야 함
 			return "redirect:" + requestUrl;

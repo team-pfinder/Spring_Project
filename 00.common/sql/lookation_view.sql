@@ -288,8 +288,14 @@ FROM LOC L JOIN LOC_BASIC_INFO LBI
                            LEFT OUTER JOIN APPLY_PACKAGE AP
                            ON P.PACKAGE_CODE = AP.PACKAGE_CODE
                                LEFT OUTER JOIN BOOK_LIST BL
-                               ON AP.APPLY_PACKAGE_CODE = BL.APPLY_PACKAGE_CODE;
- 
+                               ON AP.APPLY_PACKAGE_CODE = BL.APPLY_PACKAGE_CODE
+                                    LEFT OUTER JOIN LOC_REMOVE LR
+                                    ON L.LOC_CODE = LR.LOC_CODE
+                                        LEFT OUTER JOIN LOC_BLIND LB
+                                        ON L.LOC_CODE = LB.LOC_CODE
+WHERE LR.LOC_REMOVE_CODE IS NULL
+  AND LB.LOC_BLIND_CODE IS NULL;
+
 -- 평점순으로 100개 뽑음        
 -- 예약 X, 적용 패키지 O(보여주기용)                               
 CREATE OR REPLACE VIEW TODAYS_LOC_NOT_REAL_VIEW
@@ -354,7 +360,17 @@ FROM LOC L JOIN LOC_BASIC_INFO LBI
                    LEFT OUTER JOIN PACKAGE P
                    ON PF.PACKAGE_FORM_CODE = P.PACKAGE_FORM_CODE
                        LEFT OUTER JOIN APPLY_PACKAGE AP
-                       ON P.PACKAGE_CODE = AP.PACKAGE_CODE;
+                       ON P.PACKAGE_CODE = AP.PACKAGE_CODE
+                            LEFT OUTER JOIN LOC_REMOVE LR
+                            ON L.LOC_CODE = LR.LOC_CODE
+                                LEFT OUTER JOIN LOC_BLIND LB
+                                ON L.LOC_CODE = LB.LOC_CODE
+                                    LEFT OUTER JOIN REVIEW_REMOVE RVRM
+                                    ON R.REVIEW_CODE = RVRM.REVIEW_CODE
+WHERE LR.LOC_REMOVE_CODE IS NULL
+  AND LB.LOC_BLIND_CODE IS NULL
+  AND RVRM.REVIEW_REMOVE_CODE IS NULL;
+  
 
 -- 최종 뷰 구성           
 CREATE OR REPLACE VIEW TODAYS_REVIEW_VIEW
@@ -398,6 +414,9 @@ SELECT H.HOST_CODE AS HOST_CODE, LRM.LOC_REMOVE_CODE AS REMOVE_CODE
      , TO_CHAR(L.LOC_REG_DATE, 'YYYY.MM.DD') AS LOC_REG_DATE
      , T.THUMBNAIL_URL AS THUMBNAIL_URL
      , NVL(IT.INSPECT_TYPE, '검수대기') AS INSPECT_TYPE
+     , (SELECT COUNT(*) 
+        FROM LOC_BLIND
+        WHERE LOC_CODE = L.LOC_CODE) AS BLIND_CHECK
 FROM HOST H JOIN LOC L
 ON H.HOST_CODE = L.HOST_CODE
     LEFT OUTER JOIN LOC_REMOVE LRM
@@ -412,6 +431,7 @@ ON H.HOST_CODE = L.HOST_CODE
                     ON IR.INSPECT_REG_CODE = IP.INSPECT_REG_CODE
                         LEFT OUTER JOIN INSPECT_TYPE IT
                         ON IP.INSPECT_TYPE_CODE = IT.INSPECT_TYPE_CODE;
+                    
                         
 
 -- ############################################################## 혜지
@@ -1205,5 +1225,20 @@ ORDER BY MSG_DATE;
           
 
 
+--○ 메신저 본인확인
+CREATE OR REPLACE VIEW VIEW_CHECKMSG
+AS
+SELECT M.BOOK_CODE, B.MEMBER_CODE, L.HOST_CODE
+FROM MSG M
+JOIN BOOK_LIST B
+ON M.BOOK_CODE = B.BOOK_CODE
+    JOIN APPLY_PACKAGE AP
+    ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+        JOIN PACKAGE P
+        ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+            JOIN PACKAGE_FORM PF
+            ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+                JOIN LOC L
+                ON PF.LOC_CODE = L.LOC_CODE;
 
 

@@ -19,8 +19,8 @@
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 <script type="text/javascript">
-	
-	$(function() {
+	$(function() 
+	{
 		
 		var mod = "<c:out value='${modify}'/>";
 		
@@ -122,7 +122,12 @@
 									<div class="text mt-3 text-left">
 										<span style="size: 10pt;">등록일</span><span> ${location.loc_reg_date }</span> 
 										<c:if test="${location.inspect_type eq '검수승인'}">
-											<span class="btn btn-success" style="float: right;">검수승인</span>
+											<c:if test="${location.blind_check == 0}">
+												<span class="btn btn-success" style="float: right;">검수승인</span>
+											</c:if>
+											<c:if test="${location.blind_check > 0}">
+												<span class="btn btn-danger" style="float: right;">블라인드</span>
+											</c:if>
 										</c:if>
 										<c:if test="${location.inspect_type eq '검수반려'}">
 											<span class="btn btn-danger" style="float: right;">검수반려</span>
@@ -134,18 +139,23 @@
 									<br><br>
 									<div class="text mt-3">
 										<c:if test="${location.inspect_type eq '검수승인'}">
-											<a href="packagemanager.action?loc_code=${location.loc_code}" 
-											class="btn btn-primary" style="width:35%;">패키지 등록</a>
-											<a href="packageapplyform.action?loc_code=${location.loc_code }" 
-											class="btn btn-dark" style="width:35%;">예약 등록</a>
-											<a href="modifybasicform.action?loc_code=${location.loc_code}" 
-											onclick="mod('${location.loc_code}')" 
-											class="btn btn-warning" style="width:35%; color: white;">수정</a>
-											<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
-											class="btn btn-danger" style="width:35%;">삭제</a>
+
+											<c:if test="${location.blind_check == 0}">
+												<a href="packagemanager.action?loc_code=${location.loc_code}" 
+												class="btn btn-primary" style="width:35%;">패키지 등록</a>
+												<a href="packageapplyform.action?loc_code=${location.loc_code }" 
+												class="btn btn-dark" style="width:35%;">예약 등록</a>
+												<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
+												class="btn btn-danger" style="width:20%;">삭제</a>
+											</c:if>
+											<c:if test="${location.blind_check > 0}">
+												 <a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
+												class="btn btn-danger" style="width:100%;">삭제</a>
+											</c:if>	
+
 										</c:if>
 										<c:if test="${location.inspect_type eq '검수반려'}">
-										    <a href="javascript:void(0);" onclick="del(${location.loc_code})" 
+										    <a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
 											class="btn btn-danger" style="width:100%;">삭제</a>
 										</c:if>
 									</div>

@@ -5,7 +5,7 @@
 <mapper namespace="com.lookation.dao.ILocationDAO"> 
 	
 	<select id="locList" resultType="com.lookation.dto.LocationDTO">
-		SELECT LOC_CODE, LOC_NAME, LOC_REG_DATE, THUMBNAIL_URL, INSPECT_TYPE
+		SELECT LOC_CODE, LOC_NAME, LOC_REG_DATE, THUMBNAIL_URL, INSPECT_TYPE, BLIND_CHECK
 		FROM LOC_LIST_VIEW	
 		WHERE REMOVE_CODE IS NULL
 		  AND HOST_CODE = #{host_code}

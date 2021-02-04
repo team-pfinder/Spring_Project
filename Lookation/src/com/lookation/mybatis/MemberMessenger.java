@@ -48,6 +48,27 @@ public class MemberMessenger
 			IMemberMessengerDAO msgDao = sqlSession.getMapper(IMemberMessengerDAO.class);
 			
 			model.addAttribute("book_code", book_code);
+			
+			// 본인확인 -- 해당 book_code에 연결된 member_code와 일치하지 않는다면
+			if(!accountCode.equals(msgDao.checkInfo(book_code)))
+			{
+				return "../WEB-INF/views/common/wrongAccess.jsp?identify=member";
+			}
+			
+			
+			// 예약일 확인
+			/*
+			 * SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //cf. HH는 24시간,
+			 * hh는 12시간
+			 * 
+			 * 
+			 * Date now = new Date(); System.out.println(now);
+			 * 
+			 * Date apply_date = sdf.parse(msgDao.checkDate(book_code));
+			 * System.out.println(apply_date);
+			 */
+			
+			
 			// 상대방 닉네임 검색
 			model.addAttribute("nick", msgDao.mSearch(book_code));
 			// 메시지 리스트 전체
