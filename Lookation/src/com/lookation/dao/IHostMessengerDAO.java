@@ -6,6 +6,12 @@ import com.lookation.dto.MessengerDTO;
 
 public interface IHostMessengerDAO
 {
+	// 본인확인
+	public String checkInfo(String book_code);
+	
+	// 예약일 확인
+	public String checkDate(String book_code);
+	
 	// 상대방 닉네임 찾기
 	public String hSearch(String book_code);
 	

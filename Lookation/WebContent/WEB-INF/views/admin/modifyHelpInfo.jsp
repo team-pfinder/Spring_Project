@@ -80,7 +80,7 @@ $(document).ready(function()
 								<br>
 
 								<!-- /.box-header -->
-								<form id='updateForm' role="form" action="helpupdate.action" method="post">
+								<form id='updateForm' role="form" action="helpupdate.action" method="post" enctype="multipart/form-data">
 									<div class="box-body">
 									<input type="hidden" value="${search.help_code }" name="help_code">
 									<label for="exampleInputEmail1">카테고리</label>
@@ -118,7 +118,8 @@ $(document).ready(function()
 
 										<div class="form-group">
 											<label for="exampleInputEmail1">Upload Image</label> 
-											<input type="file" id="file1" name="file1" class="form-control" />
+											<input type="file" id="file1" class="form-control" 
+													accept="image/*" name="help_img_url"/>
 										</div>
 										
 									</div><!-- end box-body -->

@@ -92,5 +92,32 @@ public class UserQnaManager
 	}
 	
 	// qna 삭제 (다중)
-	
+	@RequestMapping(value = "/actions/selectdelete.action", method = RequestMethod.GET)
+	public String multiRemove(HttpServletRequest request)
+	{
+		// 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
+
+		String admin_id = (String)session.getAttribute("admin_id");
+
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		
+		String sidParameter = request.getParameter("sid");
+		
+		String [] qna_code = sidParameter.split(",");
+		
+		IuserQnaManagerDAO dao = sqlSession.getMapper(IuserQnaManagerDAO.class);
+		
+		for (int i = 0; i < qna_code.length; i++)
+		{
+			dao.remove(qna_code[i]);
+		}
+		
+		return "redirect:userqnamanager.action";
+	}
 }

@@ -14,8 +14,14 @@ public interface IHelpManagerDAO
 	public int addimg(HelpDTO dto);
 	//도움말 삭제
 	public int remove(HelpDTO dto);
+	//도움말 이미지 삭제
+	public int removeimg(HelpDTO dto);
+	//삭제 시 해당 코드 찾기
+	public int testcode(HelpDTO dto);
 	//도움말 수정
 	public int update(HelpDTO dto);
+	//도움말 이미지 수정
+	public int updateimg(HelpDTO dto);
 	//도움말 데이터 확인
 	//(help_code를 활용하여 도움말 정보 검색)
 	public HelpDTO search(String help_code);

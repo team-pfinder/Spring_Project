@@ -55,28 +55,41 @@ public class LocationDetailController implements Controller
 			    result = "signed";                                                                                
 			}
 			
+			// 만약 블랙리스트이거나 삭제된 공간일 경우 
+			// 접근 제한 페이지로 이동한다.
+			// 해당 공간 코드에 대해 테이블에 내역이 하나라도 존재하는 경우...
+			int wrongLocCount = dao.blindCheck(loc_code) + dao.deleteCheck(loc_code);
 			
-			// 로그인 여부 데이터를 뷰에 넘겨준다.
-			mav.addObject("result", result);
-			mav.addObject("loc_code", loc_code);
-			
-			mav.addObject("basicInfo", dao.basicInfo(loc_code));
-			mav.addObject("usingInfo", dao.usingInfo(loc_code));
-			mav.addObject("facilityInfo", dao.facilityInfo(loc_code));
-			mav.addObject("cautionInfo", dao.cautionInfo(loc_code));
-			mav.addObject("bizInfo", dao.bizInfo(loc_code));
-			mav.addObject("countQna", dao.countQna(loc_code));
-			mav.addObject("countReview", dao.countReview(loc_code));
-			mav.addObject("qna", dao.qna(loc_code));
-			mav.addObject("review", dao.review(loc_code));
-			mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
-			
-			mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
-			
-			// 패키지 날짜 정보를 뷰에 넘겨준다.
-			mav.addObject("detailPackages", dao.detailPackage(loc_code));
-			
-			mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
+			// 삭제되었거나 블라인드된 경우
+			if(wrongLocCount > 0)
+			{
+				mav.setViewName("../WEB-INF/views/user/wrongLocation.jsp");
+			}
+			// 그렇지 않은 경우
+			else
+			{
+				// 로그인 여부 데이터를 뷰에 넘겨준다.
+				mav.addObject("result", result);
+				mav.addObject("loc_code", loc_code);
+				
+				mav.addObject("basicInfo", dao.basicInfo(loc_code));
+				mav.addObject("usingInfo", dao.usingInfo(loc_code));
+				mav.addObject("facilityInfo", dao.facilityInfo(loc_code));
+				mav.addObject("cautionInfo", dao.cautionInfo(loc_code));
+				mav.addObject("bizInfo", dao.bizInfo(loc_code));
+				mav.addObject("countQna", dao.countQna(loc_code));
+				mav.addObject("countReview", dao.countReview(loc_code));
+				mav.addObject("qna", dao.qna(loc_code));
+				mav.addObject("review", dao.review(loc_code));
+				mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
+				
+				mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
+				
+				// 패키지 날짜 정보를 뷰에 넘겨준다.
+				mav.addObject("detailPackages", dao.detailPackage(loc_code));
+				
+				mav.setViewName("../WEB-INF/views/user/locationDetail.jsp");
+			}
 			
 		} catch (Exception e)
 		{

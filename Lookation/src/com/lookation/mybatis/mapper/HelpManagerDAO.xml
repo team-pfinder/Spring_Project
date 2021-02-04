@@ -35,9 +35,19 @@
 	</insert>
 	
 	<!-- helpManager(관리자 도움말) 삭제 쿼리문 -->
+	<select id ="testcode" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT FROM HELP_IMG WHERE HELP_CODE = #{help_code}
+	</select>
+	
 	<delete id="remove">
 		DELETE FROM HELP WHERE HELP_CODE = #{help_code}
 	</delete>
+	
+	<delete id="removeimg">
+		DELETE FROM HELP_IMG WHERE HELP_CODE = #{help_code}
+	</delete>
+	
+	
 	
 	<!-- helpManager(관리자 도움말) 수정 쿼리문 -->
  	<update id="update">
@@ -46,6 +56,12 @@
           , HELP_CONTENT = #{help_content}
           , HELP_DATE = SYSDATE
 		WHERE HELP_CODE = #{help_code}
+	</update>
+	
+	<update id= "updateimg">
+		UPDATE HELP_IMG
+		SET HELP_IMG_URL=#{help_img_url}
+		WHERE HELP_CODE =#{help_code}
 	</update>
 	
 	<select id="search" resultType="com.lookation.dto.HelpDTO">

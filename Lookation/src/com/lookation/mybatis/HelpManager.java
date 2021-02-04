@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lookation.dao.IHelpManagerDAO;
 import com.lookation.dto.HelpDTO;
+import com.lookation.dto.LocationDTO;
 import com.lookation.util.FileManager;
 import com.oreilly.servlet.MultipartRequest;
 
@@ -143,28 +144,38 @@ public class HelpManager
 	}
 
 	//관리자가 작성한 도움말 <<삭제>>
-	@RequestMapping(value="/actions/helpdelete.action", method=RequestMethod.GET)
-	public String helpDelete(HelpDTO dto,HttpServletRequest request) 
-	{ 
-		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
-	  
-	    dao.remove(dto);
-	    
-	 // 세션을 통한 로그인 확인
-	HttpSession session = request.getSession();
+		@RequestMapping(value="/actions/helpdelete.action", method=RequestMethod.GET)
+		public String helpDelete(HelpDTO dto,HttpServletRequest request) 
+		{ 
+			IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
+			
+			String help_code = request.getParameter("help_code");
+			
+			if (dao.testcode(dto) > 0)
+			{
+				dao.removeimg(dto);
+				dao.remove(dto);
+			}
+			else 
+			{
+				dao.remove(dto);
+			}
+		    
+		 // 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
 
-	String admin_id = (String)session.getAttribute("admin_id");
+		String admin_id = (String)session.getAttribute("admin_id");
 
-	// 로그인이 안된경우                                                                   
-	if(admin_id == null)                                                      
-	{                                                                            
-		// 로그인 실패. 다시 로그인창으로                                                     
-		return "redirect:adminloginform.action";
-	}
-	                                                                                  
-	// 다음 페이지로 이동                                
-	    return "redirect:helpmanager.action"; 
-	}
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		                                                                                  
+		// 다음 페이지로 이동                                
+		    return "redirect:helpmanager.action"; 
+		}
 	
 	//관리자가 작성한 도움말 <<수정>>
 	@RequestMapping(value="/actions/helpupdateform.action", method=RequestMethod.GET)
@@ -194,13 +205,51 @@ public class HelpManager
 	
 
 	@RequestMapping(value="/actions/helpupdate.action", method= {RequestMethod.POST, RequestMethod.GET})
-	public String helpUpdate(HelpDTO dto,HttpServletRequest request) 
+	public String helpUpdate(HelpDTO dto,HttpServletRequest request) throws IOException
 	{ 
 		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
 		
-		dao.update(dto);
+		MultipartRequest m = FileManager.upload(request, "images");
+		ArrayList<String> imageList = FileManager.getFileNames(m);
 		
-		//System.out.println(dto.getHelp_code());
+		String help_code = m.getParameter("help_code");
+		
+		// 이미지가 수정되었다면
+		// 기존 이미지 삭제 후 추가
+		try
+		{
+			// 현재 리뷰 폼 정보
+			dto.setHelp_code(m.getParameter("help_code"));
+			dto.setBoard_type_code(m.getParameter("board_type_code"));
+			dto.setHelp_date(m.getParameter("help_date"));
+			dto.setHelp_title(m.getParameter("help_title"));
+			dto.setHelp_content(m.getParameter("help_content"));
+			
+			if (imageList.size()!=0){
+				dto.setHelp_img_url(imageList.get(0));
+			}
+			
+			
+			if (imageList.isEmpty())
+			{
+				dao.update(dto);
+			}
+			//이미지 수정 시
+			else
+			{
+				String beforeImgFile = m.getParameter("beforeImgName");
+				FileManager.doFileDelete(request, "images", beforeImgFile);
+				
+				// DB 이미지 url 변경
+				dto.setHelp_img_url(imageList.get(0));
+				dao.update(dto);
+				dao.updateimg(dto);
+			}
+			
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
 		
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
