@@ -322,10 +322,11 @@
 		var maxdate = now.getFullYear() + "-" + (maxmonth) + "-" + (day);
 		
 		var start_date_param = getParam("start_date");
-	
 
 		alert(start_date_param);
 		
+
+		alert(start_date_param);
 
 		if(start_date_param == null)
 		{
