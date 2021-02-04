@@ -339,9 +339,21 @@ p
 				$(location).attr("href", "deleteqnareply.action?qna_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
-		
 	
-		
+		// 사진리뷰만 보기 기능
+		$("input:checkbox[id=onlyPhoto]").click(function()
+		{
+			// 사진 리뷰만 보기 선택
+			if($("input:checkbox[id=onlyPhoto]").is(":checked") == true)
+			{
+				// 이미지 없는 댓글 안보이게
+				$(".comment-list:not(:has( .review-img ))").css( 'display', 'none' );
+			}
+			if($("input:checkbox[id=onlyPhoto]").is(":checked") == false)
+			{
+				$(".comment-list:not(:has( .review-img ))").css( 'display', 'inline' );
+			}
+		});
 	});
 	
 	
@@ -463,9 +475,8 @@ p
 
 				<!-- 사진 후기만 보기 클릭시 사진있는 후기만 보여주기-->
 				<div class="custom-control custom-switch float-right">
-					<input type="checkbox" class="custom-control-input" id="switch1">
-					<label class="custom-control-label" for="switch1">사진 후기만
-						보기</label>
+					<input type="checkbox" class="custom-control-input" id="onlyPhoto">
+					<label class="custom-control-label" for="onlyPhoto">사진 후기만 보기</label>
 				</div>
 					
 				<c:forEach var="rv" items="${review }">
