@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lookation.dao.IReportDAO;
+import com.lookation.util.EmailManager;
 
 @Controller
 public class ReportList
@@ -157,6 +158,46 @@ public class ReportList
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
 		
 		dao.userBlackList(member_email, member_blacklist_reason);
+		
+		String html =
+			"<!DOCTYPE html>" +
+			"<html>" +
+			"<head>" +
+			"<meta charset=\"UTF-8\">" +
+			"<title>email.html</title>" +
+			"</head>" +
+			"<body class=\"back-default\" style=\"background-color: #f6f6f6;\">" +
+				"<div class=\"email-form\" style=\"font-family : 'Poppins', Arial, sans-serif; width : 800px; margin:0 auto; text-align: center;\">" +
+					"<div style=\"text-align: center; padding-top: 40px;\">" +
+						"<h1 class=\"brand\" style=\"font-size: 64px; font-size: 400%; font-weight: 800;\">Look<span style=\"color: #fdbe34\">ation.</span></h1>" +
+					"</div>" +
+					"<hr>" +
+					"<div class=\"content-form\" style=\"width : 100%; background: #ffffff; padding: 50px 0px 50px 0px;\">" +
+						"<h1>블랙리스트 계정 전환 안내</h1>" +
+						"<form action=\"http://localhost:8090/Lookation/actions/changepasswordnologinform.action?identify=\" + identify + \"\" method=\"post\">" +
+							"<p>아래와 같은 이유로 해당 계정은 블랙리스트처리 되었음을 알립니다.</p>" +
+							"<table style=\"margin:0 auto;\">" +
+								"<tr>" +
+									"<th>사유</th>" +
+									"<td>" + member_blacklist_reason + "</td>" +
+								"</tr>" +
+							"</table>" +
+						"</form>" +
+					"</div>" +
+					"<hr>" +
+					"<div>" +
+						"<p>본 메일은 발신 전용 입니다. 이용 관련 제안사항은 <a class=\"clickAble\" href=\"#\">FAQ</a>를 이용해주세요.</p>" +
+						"<p> <a class=\"clickAble\" href=\"#\">이용약관</a> | <a class=\"clickAble\" href=\"#\">개인정보처리방침</a></p>" +
+						"<p>Copyright ⓒ Pfinder Corp. All Rights Reserved.</p>" +
+					"</div>" +
+				"</div>" +
+			"</body>" +
+			"</html>";
+		
+		String title = "■■■■■  블랙리스트 전환 알림 메일입니다.  ■■■■■";
+
+
+		EmailManager.sendHtml(member_email, "lookation", title, html);
 		
 		return "";
 		
