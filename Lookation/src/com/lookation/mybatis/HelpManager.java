@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lookation.dao.IHelpManagerDAO;
 import com.lookation.dto.HelpDTO;
+import com.lookation.dto.LocationDTO;
 import com.lookation.util.FileManager;
 import com.oreilly.servlet.MultipartRequest;
 
@@ -143,28 +144,38 @@ public class HelpManager
 	}
 
 	//관리자가 작성한 도움말 <<삭제>>
-	@RequestMapping(value="/actions/helpdelete.action", method=RequestMethod.GET)
-	public String helpDelete(HelpDTO dto,HttpServletRequest request) 
-	{ 
-		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
-	  
-	    dao.remove(dto);
-	    
-	 // 세션을 통한 로그인 확인
-	HttpSession session = request.getSession();
+		@RequestMapping(value="/actions/helpdelete.action", method=RequestMethod.GET)
+		public String helpDelete(HelpDTO dto,HttpServletRequest request) 
+		{ 
+			IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
+			
+			String help_code = request.getParameter("help_code");
+			
+			if (dao.testcode(dto) > 0)
+			{
+				dao.removeimg(dto);
+				dao.remove(dto);
+			}
+			else 
+			{
+				dao.remove(dto);
+			}
+		    
+		 // 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
 
-	String admin_id = (String)session.getAttribute("admin_id");
+		String admin_id = (String)session.getAttribute("admin_id");
 
-	// 로그인이 안된경우                                                                   
-	if(admin_id == null)                                                      
-	{                                                                            
-		// 로그인 실패. 다시 로그인창으로                                                     
-		return "redirect:adminloginform.action";
-	}
-	                                                                                  
-	// 다음 페이지로 이동                                
-	    return "redirect:helpmanager.action"; 
-	}
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		                                                                                  
+		// 다음 페이지로 이동                                
+		    return "redirect:helpmanager.action"; 
+		}
 	
 	//관리자가 작성한 도움말 <<수정>>
 	@RequestMapping(value="/actions/helpupdateform.action", method=RequestMethod.GET)

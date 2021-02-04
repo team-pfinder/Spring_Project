@@ -499,4 +499,92 @@ public class LocationDetailDAO implements ILocationDetailDAO
       return result;
    }
 
+
+	@Override
+	public int deleteCheck(String locCode) throws SQLException
+	{
+		int result = 0;
+	      
+		Connection conn = dataSource.getConnection();
+		String sql = "SELECT COUNT(*) AS COUNT"
+				+ " FROM LOC_REMOVE"
+				+ " WHERE LOC_CODE = ?";
+
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, locCode);
+
+		ResultSet rs = pstmt.executeQuery();
+
+		if (rs.next())
+		{
+			result = rs.getInt("COUNT");
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+
+		return result;
+	}
+	
+	
+	@Override
+	public int blindCheck(String locCode) throws SQLException
+	{
+		int result = 0;
+	      
+		Connection conn = dataSource.getConnection();
+		String sql = "SELECT COUNT(*) AS COUNT"
+				+ " FROM LOC_BLIND"
+				+ " WHERE LOC_CODE = ?";
+
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, locCode);
+
+		ResultSet rs = pstmt.executeQuery();
+
+		if (rs.next())
+		{
+			result = rs.getInt("COUNT");
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+
+		return result;
+	}
+
+
+	@Override
+	public int hostCheck(String locCode, String hostCode) throws SQLException
+	{
+		int result = 0;
+	      
+		Connection conn = dataSource.getConnection();
+		String sql = "SELECT COUNT(*) AS COUNT"
+				+ " FROM LOC"
+				+ " WHERE LOC_CODE = ?"
+				+ " AND HOST_CODE = ?";
+
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, locCode);
+		pstmt.setString(2, hostCode);
+
+		ResultSet rs = pstmt.executeQuery();
+
+		if (rs.next())
+		{
+			result = rs.getInt("COUNT");
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+
+		return result;
+	}
+
+   
+   
 }

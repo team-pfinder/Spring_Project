@@ -47,22 +47,32 @@ public class LocationDetailHostController implements Controller
 				IHostAccountDAO hoDao = sqlSession.getMapper(IHostAccountDAO.class);	    
 				mav.addObject("info", hoDao.getInfo(accountCode));
 				
-				mav.addObject("result", result);
-				mav.addObject("loc_code", loc_code);
-				
-				mav.addObject("basicInfo", dao.basicInfo(loc_code));
-				mav.addObject("usingInfo", dao.usingInfo(loc_code));
-				mav.addObject("facilityInfo", dao.facilityInfo(loc_code));
-				mav.addObject("cautionInfo", dao.cautionInfo(loc_code));
-				mav.addObject("bizInfo", dao.bizInfo(loc_code));
-				mav.addObject("countQna", dao.countQna(loc_code));
-				mav.addObject("countReview", dao.countReview(loc_code));
-				mav.addObject("qna", dao.qna(loc_code));
-				mav.addObject("review", dao.review(loc_code));
-				mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
-
-				mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
-				
+				// 본인의 공간인지 확인한다.
+				int hostLocCount = dao.hostCheck(loc_code, accountCode);
+				if(hostLocCount > 0)
+				{
+					mav.addObject("result", result);
+					mav.addObject("loc_code", loc_code);
+					
+					mav.addObject("basicInfo", dao.basicInfo(loc_code));
+					mav.addObject("usingInfo", dao.usingInfo(loc_code));
+					mav.addObject("facilityInfo", dao.facilityInfo(loc_code));
+					mav.addObject("cautionInfo", dao.cautionInfo(loc_code));
+					mav.addObject("bizInfo", dao.bizInfo(loc_code));
+					mav.addObject("countQna", dao.countQna(loc_code));
+					mav.addObject("countReview", dao.countReview(loc_code));
+					mav.addObject("qna", dao.qna(loc_code));
+					mav.addObject("review", dao.review(loc_code));
+					mav.addObject("avgReviewRate", dao.avgReviewRate(loc_code));
+	
+					mav.addObject("detailPhotoUrl", dao.detailPhoto(loc_code));
+					
+					mav.setViewName("../WEB-INF/views/host/locationDetailHost.jsp");
+				}
+				else
+				{
+					mav.setViewName("../WEB-INF/views/common/wrongAccess.jsp?identify=host");
+				}
 				// 로그인이 되었음을 기록한다.
 				result = "signed";
 			}
@@ -75,8 +85,6 @@ public class LocationDetailHostController implements Controller
 			    // 로그인 창으로 이동한다.
 			    mav.setViewName("redirect:loginform.action?identify=host");
 			}
-			
-			mav.setViewName("../WEB-INF/views/host/locationDetailHost.jsp");
 			
 		} catch (Exception e)
 		{
