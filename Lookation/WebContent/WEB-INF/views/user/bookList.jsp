@@ -110,6 +110,7 @@ margin-bottom: 0;
     	// 신고하기
     	$(".report").click(function()
 		{
+    		/*
     		// 이미 신고 내역이 존재하는지 검사
     		if ($(this).val() == "0")
     		{
@@ -123,6 +124,20 @@ margin-bottom: 0;
     			alert("이미 신고접수가 된 공간입니다.");
     			return false;
     		}
+    		*/
+    		var str = "";
+    		var tdArr = new Array();
+    		var checkBtn = $(this);
+    		var tr = checkBtn.parent().parent();
+    		var td = tr.children();
+    		var loc_name = td.eq(2).text();
+    		
+    		// alert(loc_name);
+    		
+    		var popUrl = "reportuserform.action?loc_code=" + encodeURI($(this).val()) + "&member_code=" +  encodeURI($("#member").val()) + "&loc_name=" + encodeURI(loc_name);
+			var popOption = "width=500, height=700, resizable=no, scrollbars=yes, status=no";
+			window.open(popUrl, "", popOption);
+			
 			
 		});
 
@@ -234,7 +249,7 @@ margin-bottom: 0;
 	 											<c:when test="${book.host_cancel >= 1 || book.member_cancel >= 1}">
 	 											<td class="text-danger">취소완료</td>
 	 											<td>
-													<button type="button" value="${book.loc_count}"
+													<button type="button" value="${book.loc_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														🚨</button>
 													<button type="button" value="${book.book_code}"
@@ -254,7 +269,7 @@ margin-bottom: 0;
 	 											<c:when test="${pdate >= now}">
 	 											<td class="text-gon">예약완료</td>
 	 											<td>
-	 												<button type="button" value="${book.loc_count}"
+	 												<button type="button" value="${book.loc_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														🚨</button>
 													<button type="button" value="${book.book_code}"
@@ -272,7 +287,7 @@ margin-bottom: 0;
 	 											<c:when test="${pdate < now}">
 												<td>이용완료</td>
 												<td>
-													<button type="button" value="${book.loc_count}"
+													<button type="button" value="${book.loc_code}"
 														class="btn py-1 px-1 mb-0 btn-warning border-0 rounded report">
 														🚨</button>
 													<button type="button" value="${book.book_code}"
