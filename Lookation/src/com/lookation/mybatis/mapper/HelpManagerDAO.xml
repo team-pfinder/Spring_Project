@@ -58,6 +58,12 @@
 		WHERE HELP_CODE = #{help_code}
 	</update>
 	
+	<update id= "updateimg">
+		UPDATE HELP_IMG
+		SET HELP_IMG_URL=#{help_img_url}
+		WHERE HELP_CODE =#{help_code}
+	</update>
+	
 	<select id="search" resultType="com.lookation.dto.HelpDTO">
  		SELECT HELP_CODE,BOARD_TYPE_CODE,HELP_TITLE,HELP_CONTENT,HELP_DATE
 		FROM HELP
