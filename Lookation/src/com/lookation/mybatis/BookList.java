@@ -34,7 +34,7 @@ public class BookList
 	public String bookList(ModelMap model, BookListDTO dto, HttpServletRequest request)
 	{	
 		HttpSession session = request.getSession();   
-		String accountCode = (String)session.getAttribute("memberCode"); 
+		String accountCode = (String)session.getAttribute("memberCode");
 
 		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned";                                                         

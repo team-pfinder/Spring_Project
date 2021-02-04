@@ -23,12 +23,9 @@
 	
 	<!-- 텍스트 메시지코드 찾기 -->
 	<select id="mSearchMsg" resultType="java.lang.String">
-	<![CDATA[
-		SELECT MSG_CODE FROM ( SELECT ROWNUM, MSG_CODE
-		FROM VIEW_MESSENGER
-		WHERE BOOK_CODE=#{book_code})
-		WHERE ROWNUM <= 1
-	]]>
+		SELECT MSG_CODE
+		FROM MSG
+		WHERE BOOK_CODE=#{book_code}
 	</select>
 	
 	<!-- 텍스트 메시지 보내기 -->

@@ -30,15 +30,11 @@ public class MemberQnaList
 		HttpSession session = request.getSession();
 		String accountCode = (String)session.getAttribute("memberCode"); 
 
-		// 로그인 확인을 기록하기 위함                  
 		String result = "noSigned";                                                         
 
 		// 회원 코드가 세션에 세팅되어 있다면                                                                                   
 		if(accountCode != null)                                         
 		{       
-			// 다음 사이트 header에 이용자 정보를 보여줄 수 있게
-		        // db에서 회원 정보를 받아 뷰에 데이터를 넘겨준다.
-
 			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);	    
 			model.addAttribute("info", dao.getInfo(accountCode));
 
@@ -50,14 +46,10 @@ public class MemberQnaList
 			// 로그인이 되었음을 기록한다.
 		    result = "signed";                                                                                
 		}
-
-		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
 		model.addAttribute("result", result);                                               
 
-		// 로그인이 안되어 있다면 
 		if(result.equals("noSigned"))
 		{
-		    // 로그인 창으로 이동한다.
 		    return "redirect:loginform.action?identify=member";
 		}
 		
@@ -72,8 +64,6 @@ public class MemberQnaList
 		IMemberQnaListDAO dao = sqlSession.getMapper(IMemberQnaListDAO.class);
 		
 		dao.modifyqnalist(dto);
-	
-		//return "/WEB-INF/views/user/userQnaList.jsp";
 	}
 	
 	// QnA 리스트에서 QnA 삭제

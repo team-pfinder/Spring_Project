@@ -27,6 +27,7 @@ public interface IBookListDAO
 	public String memberNick(String member_code);
 	
 	
+	
 	// 호스트 예약 리스트
 	public ArrayList<BookListDTO> bookListHost(String host_code);
 	

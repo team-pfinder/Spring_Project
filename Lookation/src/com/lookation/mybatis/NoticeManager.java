@@ -153,7 +153,7 @@ public class NoticeManager
 	}
 	
 
-	@RequestMapping(value="/actions/noticeupdate.action", method=RequestMethod.POST)
+	@RequestMapping(value="/actions/noticeupdate.action",  method= {RequestMethod.POST, RequestMethod.GET})
 	public String noticeUpdate(NoticeDTO dto,HttpServletRequest request) 
 	{ 
 		INoticeManagerDAO dao = sqlSession.getMapper(INoticeManagerDAO.class);

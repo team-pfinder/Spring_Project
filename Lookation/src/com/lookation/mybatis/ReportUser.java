@@ -26,7 +26,7 @@ public class ReportUser
 	
 	
 	// 신고 접수 후 이미지 업로드 폼 호출
-	@RequestMapping(value = "/actions/reportuser.action", method = RequestMethod.POST)
+	@RequestMapping(value = "/actions/reportuser.action", method = {RequestMethod.POST, RequestMethod.GET})
 	public String add(reportUserDTO dto, String loc_code, String member_code, Model model, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인                                                                    

@@ -40,22 +40,30 @@ public class Account
 		// 로그인 검증	
 		String accountCode = null;
 		AccountDTO account = new AccountDTO();
-		account.setEmail(request.getParameter("email"));
-		account.setPw(request.getParameter("pw"));
 		
-		if(request.getParameter("email") != null && request.getParameter("pw") != null)
+		String email = request.getParameter("email");
+		String pw = request.getParameter("pw");
+		
+		if(email == null || pw == null)
 		{
-			if(identify.equals("member"))
-			{
-				IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
-				accountCode = dao.isLogin(account);
-			}
-			else if(identify.equals("host"))
-			{
-				IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
-				accountCode = dao.isLogin(account);
-			}
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
+		
+		account.setEmail(email);
+		account.setPw(pw);
+		
+	
+		if(identify.equals("member"))
+		{
+			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
+			accountCode = dao.isLogin(account);
+		}
+		else if(identify.equals("host"))
+		{
+			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
+			accountCode = dao.isLogin(account);
+		}
+	
 		
 		// 로그인 실패시
 		if(accountCode == null)
@@ -128,10 +136,17 @@ public class Account
 			return "redirect:loginform.action?identify=" + identify;	
 		}
 		
+		String pw = request.getParameter("pw");
+		
+		if(pw == null)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+		
 		// 패스워드 검증	
 		AccountDTO account = new AccountDTO();
 		account.setCode(accountCode);
-		account.setPw(request.getParameter("pw"));
+		account.setPw(pw);
 		
 		int count = 0;
 		if(identify.equals("member"))
@@ -321,6 +336,11 @@ public class Account
 		  
 		String newPw = request.getParameter("pw_new");
 		
+		if(newPw == null)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+		
 		AccountDTO account = new AccountDTO();
 		account.setCode(accountCode);
 		account.setPw(newPw);
@@ -390,6 +410,11 @@ public class Account
 		String identify = request.getParameter("identify");
 		String email = request.getParameter("email");
 		
+		if(email == null)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+		
 		model.addAttribute("email", email);
 		
 		return "../WEB-INF/views/common/changePasswordNoLogin.jsp?identify=" + identify;
@@ -402,6 +427,11 @@ public class Account
 		String email = request.getParameter("email");
 		String newPw = request.getParameter("pw_new");
 		String requestUrl = "";
+		
+		if(email == null || newPw == null)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
 		
 		AccountDTO account = new AccountDTO();
 		account.setEmail(email);

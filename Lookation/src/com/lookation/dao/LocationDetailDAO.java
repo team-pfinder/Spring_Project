@@ -472,21 +472,31 @@ public class LocationDetailDAO implements ILocationDetailDAO
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// 해당 패키지의 모든 적용날짜...
+   @Override
+   public ArrayList<String> detailPackage(String locCode) throws Exception {
+
+      ArrayList<String> result = new ArrayList<String>();
+      
+      Connection conn = dataSource.getConnection();
+      String sql = "SELECT DISTINCT TO_CHAR(APPLY_DATE, 'YYYY-MM-DD') AS APPLY_DATE"
+    		   + " FROM VIEW_APPLY_PACKAGE_INFO"
+               + " WHERE LOC_CODE = ? AND COUNT=0";
+      
+      PreparedStatement pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, locCode);
+      
+      ResultSet rs = pstmt.executeQuery();
+      
+      while(rs.next())
+      {
+         result.add(rs.getString("APPLY_DATE"));
+      }
+      rs.close();
+      pstmt.close();
+      conn.close();
+      
+      return result;
+   }
 
 }

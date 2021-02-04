@@ -17,5 +17,11 @@
 		FROM HELP_VIEW
 		WHERE HELP_CODE= #{help_code}
 	</select>
-
+	
+	<select id="Help_img" resultType="com.lookation.dto.HelpDTO">
+		SELECT HELP_IMG_URL
+		FROM HELP_IMG
+		WHERE HELP_CODE= #{help_code}
+	</select>
+	
 </mapper>
