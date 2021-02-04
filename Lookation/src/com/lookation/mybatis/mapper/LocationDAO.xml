@@ -156,7 +156,7 @@
 		
 	</insert>
 	
-	
+	<!-- 
 	<update id="modifyBasicInfo" parameterType="com.lookation.dto.LocationDTO">
 		
 		UPDATE LOC_BASIC_INFO
@@ -167,7 +167,18 @@
 		    , LOC_DETAIL_ADDR = #{loc_detail_addr}
 		WHERE LOC_CODE = #{loc_code}
 		
-	</update>
+	</update>  -->
+
+	<update id="modifyBasicInfo" parameterType="com.lookation.dto.LocationDTO">
+		
+		UPDATE LOC_BASIC_INFO
+		SET LOC_NAME = #{loc_name}
+		    , LOC_SHORT_INTRO = #{loc_short_intro}
+		    , LOC_INTRO = #{loc_intro}
+		    , LOC_DETAIL_ADDR = #{loc_detail_addr}
+		WHERE LOC_CODE = #{loc_code}
+		
+	</update> 
 	
 	<update id="modifyThumbnail" parameterType="com.lookation.dto.LocationDTO">
 		
@@ -249,18 +260,25 @@
 		WHERE HOST_CODE = #{host_code}
 		
 	</select>
-	
-	<select id="selectBasicInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
+	<!-- 
+	<select id="selectBasicInfo" parameterType="java.lang.String" resultType="com.lookation.dto.LocationDTO">
 	
 		SELECT LOC_BASIC_INFO_CODE, LOC_CODE, LOC_TYPE_CODE
         , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO
         , LOC_ADDR, LOC_DETAIL_ADDR
 		FROM LOC_BASIC_INFO
-		WHERE LOC_CODE=#{loc_code}
+		WHERE LOC_CODE = #{loc_code}
 	</select>
-
+ 	-->
+	<select id="selectBasicInfo" parameterType="java.lang.String" resultType="com.lookation.dto.LocationDTO">
 	
-	<!-- 
+		SELECT LOC_BASIC_INFO_CODE, LOC_CODE
+        , LOC_NAME, LOC_SHORT_INTRO, LOC_INTRO
+        , LOC_ADDR, LOC_DETAIL_ADDR
+		FROM LOC_BASIC_INFO
+		WHERE LOC_CODE = #{loc_code}
+	</select>
+ 	
 	<select id="selectThumbnail" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT THUMBNAIL_CODE, LOC_BASIC_INFO_CODE, THUMBNAIL_URL
@@ -278,6 +296,7 @@
 		
 	</select>
 	
+	
 	<select id="selectCaution" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT CAUTION_CODE, LOC_BASIC_INFO_CODE, CAUTION_CONTENT
@@ -287,8 +306,7 @@
 	</select>
 	
 	
-	
-	<select id="selectContact" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectContact" parameterType="java.lang.String" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_CONTACT_CODE, LOC_CODE
         , LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL
@@ -298,7 +316,7 @@
 	</select>
 	
 	
-	<select id="selectBizInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectBizInfo" parameterType="java.lang.String" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT BIZ_INFO_CODE, LOC_CODE, BIZ_NAME
         , BIZ_CEO, BIZ_LICENSE_URL, BIZ_CEO_TYPE
@@ -309,7 +327,7 @@
 
 	</select>
 	
-	<select id="selectDetailInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectDetailInfo" parameterType="java.lang.String" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_DETAIL_INFO_CODE, LOC_CODE
         , MIN_PEOPLE, MAX_PEOPLE
@@ -336,7 +354,7 @@
 
 	</select>
 	
-	<select id="selectUsingInfo" parameterType="com.lookation.dto.LocationDTO" resultType="com.lookation.dto.LocationDTO">
+	<select id="selectUsingInfo" parameterType="java.lang.String" resultType="com.lookation.dto.LocationDTO">
 		
 		SELECT LOC_USE_INFO_CODE, LOC_CODE
 	        , LOC_USE_HOUR, LOC_USE_DAY_OFF
@@ -345,7 +363,7 @@
 		WHERE LOC_CODE=#{loc_code}
 
 	</select>
-	 -->
+
 	<select id="findBook" resultType="java.lang.Integer">
 		SELECT COUNT(*) AS COUNT
 		FROM LOC L JOIN PACKAGE_FORM PF
@@ -364,5 +382,7 @@
  		INSERT INTO LOC_REMOVE(LOC_REMOVE_CODE, LOC_CODE, LOC_REMOVE_DATE)
         VALUES(F_CODE('LRM', LRM_SEQ.NEXTVAL), #{loc_code}, SYSDATE)
  	</insert>
+ 	
+ 	
 
 </mapper>

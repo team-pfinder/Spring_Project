@@ -4,6 +4,9 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
+	String modify = request.getParameter("delete");
+	pageContext.setAttribute("modify", modify);
+	
 	String delete = request.getParameter("delete");
 	pageContext.setAttribute("delete", delete);
 %>
@@ -16,7 +19,14 @@
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
 
 <script type="text/javascript">
+	
 	$(function() {
+		
+		var mod = "<c:out value='${modify}'/>";
+		
+		if(mod=='fail')
+			alert("공간 수정 실패!\n이미 예약된 내역이 존재합니다.");
+
 		
 		var del = "<c:out value='${delete}'/>";
 		
@@ -35,7 +45,11 @@
 	
 	function mod(code)
 	{
-		location.href = "#";
+		if (confirm("해당 공간의 정보를 수정하시겠습니까?"))
+		{
+			location.href = "modifylocation.action?loc_code" + code;
+		}
+		
 	}
 </script>
 
@@ -124,8 +138,11 @@
 											class="btn btn-primary" style="width:35%;">패키지 등록</a>
 											<a href="packageapplyform.action?loc_code=${location.loc_code }" 
 											class="btn btn-dark" style="width:35%;">예약 등록</a>
+											<a href="modifybasicform.action?loc_code=${location.loc_code}" 
+											onclick="mod('${location.loc_code}')" 
+											class="btn btn-warning" style="width:35%; color: white;">수정</a>
 											<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
-											class="btn btn-danger" style="width:20%;">삭제</a>
+											class="btn btn-danger" style="width:35%;">삭제</a>
 										</c:if>
 										<c:if test="${location.inspect_type eq '검수반려'}">
 										    <a href="javascript:void(0);" onclick="del(${location.loc_code})" 
