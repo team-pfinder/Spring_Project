@@ -323,8 +323,10 @@
 		
 		var start_date_param = getParam("start_date");
 	
+
 		alert(start_date_param);
 		
+
 		if(start_date_param == null)
 		{
 			$("#start_date").val(today);
@@ -333,10 +335,12 @@
 		{
 			$("#start_date").val(start_date_param);
 		}
+
 		else if(start_date_param == "")
 		{
 			$("#start_date").val(today);
 		}
+
 		$("#start_date").attr("min", today);
 		$("#start_date").attr("max", maxdate);
 
