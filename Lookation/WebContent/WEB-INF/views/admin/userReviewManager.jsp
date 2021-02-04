@@ -144,10 +144,32 @@ String cp = request.getContextPath();
 		});
 		
 		/* 선택삭제 버튼 클릭 */
-		$(".modal-footer .removeBtn").click(function()
-		{
-			// 추후 추가
-		});
+		$(".selectDelete").click(function()
+				{
+					var send_array = Array();
+					var send_cnt = 0;
+					var chkbox = $(".checkSelect");
+					
+					for(i=0;i<chkbox.length;i++)
+					{
+						if (chkbox[i].checked == true)
+						{
+							send_array[send_cnt] = chkbox[i].value;
+							send_cnt++;
+						}
+					}
+					if(send_array.length == 0)
+					{
+						alert("선택된 항목이 존재하지 않습니다.");
+						return;
+					}
+					
+					if(confirm("선택하신 항목을 정말 삭제 하시겠습니까?") == true)
+					{
+						$(location).attr("href", "selectremove.action?sid=" + send_array);
+					}
+					
+				});
 	});
         
     </script>
@@ -186,7 +208,7 @@ String cp = request.getContextPath();
 		            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		              <h6 class="m-0 font-weight-bold text-primary">Review목록</h6>
 		          
-		              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal2">선택삭제</button>
+		              <button type="button" class="btn btn-danger selectDelete">선택삭제</button>
 		              </div>
 		              
 		              
@@ -223,7 +245,7 @@ String cp = request.getContextPath();
 											<c:choose>
 												<c:when test="${adminUserDTO.count ==0 }">
 													<tr>
-														<td><input type="checkbox" name="rowCheck" value="${adminUserDTO.qna_code }"></td>
+														<td><input type="checkbox" name="rowCheck" class="checkSelect" value="${adminUserDTO.review_code }"></td>
 														<td>${adminUserDTO.review_code }</td>
 														<td>${adminUserDTO.member_nickname }</td>
 														<td>${adminUserDTO.member_email }</td>
@@ -261,29 +283,6 @@ String cp = request.getContextPath();
 							</div>
 						</div>
 					</div>
-					
-					<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
-				      aria-labelledby="myModalLabel" aria-hidden="true">
-				      <div class="modal-dialog">
-				         <div class="modal-content">
-				            <div class="modal-header">
-				            	<h4 class="modal-title" id="myModalLabel">삭제하기</h4>
-				               <button type="button" class="close" data-dismiss="modal">
-				                  <span aria-hidden="true">×</span><span class="sr-only">Close</span>
-				               </button>
-				            </div>
-				            <div class="modal-body">
-				            <!-- 해당 리뷰, 리뷰답글 받아와야함 -->
-				               <p>삭제하시겠습니까?</p>
-				               
-				            </div>
-				            <div class="modal-footer">
-				            	<button type="button" class="btn btn-primary removeBtn">확인</button>
-				               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-				            </div>
-				         </div>
-				      </div>
-				   </div>
 
 				</div>
 				<!-- /.container-fluid -->

@@ -64,7 +64,7 @@ public class UserReviewManager
 		return "/WEB-INF/views/admin/userReviewPopup.jsp";
 	}
 	
-	// qna 삭제 (단일)
+	// review 삭제 (단일)
 	@RequestMapping(value ="/actions/reviewdelete.action", method = RequestMethod.GET)
 	public String remove(String review_code, HttpServletRequest request)
 	{
@@ -83,6 +83,36 @@ public class UserReviewManager
 		IuserReviewManagerDAO dao = sqlSession.getMapper(IuserReviewManagerDAO.class);
 		
 		dao.remove(review_code);
+		
+		return "redirect:userreviewmanager.action";
+	}
+	
+	// review 삭제 (다중)
+	@RequestMapping(value = "/actions/selectremove.action", method = RequestMethod.GET)
+	public String multiRemove(HttpServletRequest request)
+	{
+		// 세션을 통한 로그인 확인
+		HttpSession session = request.getSession();
+
+		String admin_id = (String)session.getAttribute("admin_id");
+
+		// 로그인이 안된경우                                                                   
+		if(admin_id == null)                                                      
+		{                                                                            
+			// 로그인 실패. 다시 로그인창으로                                                     
+			return "redirect:adminloginform.action";
+		}
+		
+		String sidParameter = request.getParameter("sid");
+		
+		String [] review_code = sidParameter.split(",");
+		
+		IuserReviewManagerDAO dao = sqlSession.getMapper(IuserReviewManagerDAO.class);
+		
+		for (int i = 0; i < review_code.length; i++)
+		{
+			dao.remove(review_code[i]);
+		}
 		
 		return "redirect:userreviewmanager.action";
 	}
