@@ -428,11 +428,11 @@ width: 100%;
 			if($("input:checkbox[id=onlyPhoto]").is(":checked") == true)
 			{
 				// 이미지 없는 댓글 안보이게
-				$(".comment:not(:has( .review-img ))").css( 'display', 'none' );
+				$(".comment-list:not(:has( .review-img ))").css( 'display', 'none' );
 			}
 			if($("input:checkbox[id=onlyPhoto]").is(":checked") == false)
 			{
-				$(".comment:not(:has( .review-img ))").css( 'display', 'inline' );
+				$(".comment-list:not(:has( .review-img ))").css( 'display', 'inline' );
 			}
 		});
 		

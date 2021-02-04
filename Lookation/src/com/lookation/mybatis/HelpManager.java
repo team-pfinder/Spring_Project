@@ -205,13 +205,51 @@ public class HelpManager
 	
 
 	@RequestMapping(value="/actions/helpupdate.action", method= {RequestMethod.POST, RequestMethod.GET})
-	public String helpUpdate(HelpDTO dto,HttpServletRequest request) 
+	public String helpUpdate(HelpDTO dto,HttpServletRequest request) throws IOException
 	{ 
 		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
 		
-		dao.update(dto);
+		MultipartRequest m = FileManager.upload(request, "images");
+		ArrayList<String> imageList = FileManager.getFileNames(m);
 		
-		//System.out.println(dto.getHelp_code());
+		String help_code = m.getParameter("help_code");
+		
+		// 이미지가 수정되었다면
+		// 기존 이미지 삭제 후 추가
+		try
+		{
+			// 현재 리뷰 폼 정보
+			dto.setHelp_code(m.getParameter("help_code"));
+			dto.setBoard_type_code(m.getParameter("board_type_code"));
+			dto.setHelp_date(m.getParameter("help_date"));
+			dto.setHelp_title(m.getParameter("help_title"));
+			dto.setHelp_content(m.getParameter("help_content"));
+			
+			if (imageList.size()!=0){
+				dto.setHelp_img_url(imageList.get(0));
+			}
+			
+			
+			if (imageList.isEmpty())
+			{
+				dao.update(dto);
+			}
+			//이미지 수정 시
+			else
+			{
+				String beforeImgFile = m.getParameter("beforeImgName");
+				FileManager.doFileDelete(request, "images", beforeImgFile);
+				
+				// DB 이미지 url 변경
+				dto.setHelp_img_url(imageList.get(0));
+				dao.update(dto);
+				dao.updateimg(dto);
+			}
+			
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
 		
 		// 세션을 통한 로그인 확인
 		HttpSession session = request.getSession();
