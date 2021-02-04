@@ -141,7 +141,7 @@ height: 200px;
              <div class="table-responsive">
 				<table class="table table-bordered text-center" id="products1">
 					
-					<form action="" id="setRows1">
+					<form action="" id="setRows1" >
 					    <input type="hidden" name="rowPerPage1" value="5">
 					</form>
 						<colgroup>
