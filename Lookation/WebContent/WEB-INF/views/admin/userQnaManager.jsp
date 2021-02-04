@@ -144,7 +144,29 @@
 		/* 선택삭제 버튼 클릭 */
 		$(".selectDelete").click(function()
 		{
-			// 추후 수정
+			var send_array = Array();
+			var send_cnt = 0;
+			var chkbox = $(".checkSelect");
+			
+			for(i=0;i<chkbox.length;i++)
+			{
+				if (chkbox[i].checked == true)
+				{
+					send_array[send_cnt] = chkbox[i].value;
+					send_cnt++;
+				}
+			}
+			if(send_array.length == 0)
+			{
+				alert("선택된 항목이 존재하지 않습니다.");
+				return;
+			}
+			
+			if(confirm("선택하신 항목을 정말 삭제 하시겠습니까?") == true)
+			{
+				$(location).attr("href", "selectdelete.action?sid=" + send_array);
+			}
+			
 		});
 	});
         

@@ -421,6 +421,22 @@ width: 100%;
 			window.open(url, "", option);
 		}); 
 		
+		// 사진리뷰만 보기 기능
+		$("input:checkbox[id=onlyPhoto]").click(function()
+		{
+			// 사진 리뷰만 보기 선택
+			if($("input:checkbox[id=onlyPhoto]").is(":checked") == true)
+			{
+				// 이미지 없는 댓글 안보이게
+				$(".comment-list:not(:has( .review-img ))").css( 'display', 'none' );
+			}
+			if($("input:checkbox[id=onlyPhoto]").is(":checked") == false)
+			{
+				$(".comment-list:not(:has( .review-img ))").css( 'display', 'inline' );
+			}
+		});
+		
+		
 	});
 
 	// 질문 작성하는 팝업
@@ -614,60 +630,59 @@ width: 100%;
 
 				<!-- 사진 후기만 보기 클릭시 사진있는 후기만 보여주기-->
 				<div class="custom-control custom-switch float-right">
-					<input type="checkbox" class="custom-control-input" id="switch1">
-					<label class="custom-control-label" for="switch1">사진 후기만
-						보기</label>
+					<input type="checkbox" class="custom-control-input" id="onlyPhoto">
+					<label class="custom-control-label" for="onlyPhoto">사진 후기만 보기</label>
 				</div>
 				
 				<div id="review">
 					<c:forEach var="rv" items="${review }">
 						<ul class="comment-list">	
-								<li class="comment">
-									<h4>${rv.memberNickName }</h4>
-									<h6 class="float-right">
-										<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
-											<span class="set-star icon-star mr-1"></span>
-										</c:forEach>
-									</h6>
-									<div class="meta mb-2">${rv.date }</div>
-										
-									<c:if test="${rv.removeCount eq 1}">
-										<p>삭제된 리뷰입니다.</p>
+							<li class="comment">
+								<h4>${rv.memberNickName }</h4>
+								<h6 class="float-right">
+									<c:forEach var="star" begin="1" end="${rv.reviewRate }" step="1">
+										<span class="set-star icon-star mr-1"></span>
+									</c:forEach>
+								</h6>
+								<div class="meta mb-2">${rv.date }</div>
+									
+								<c:if test="${rv.removeCount eq 1}">
+									<p>삭제된 리뷰입니다.</p>
+								</c:if>
+								
+								<c:if test="${rv.removeCount eq 0}">
+									
+									<p style="white-space:pre-line;"><c:out value="${rv.content }" /></p>
+									
+									<c:if test="${rv.rvimgCount ne 0 }">
+										<p>
+											<img class="review-img" src="<%=cp%>/images/${rv.url}"
+												alt="리뷰사진">
+										</p>
 									</c:if>
 									
-									<c:if test="${rv.removeCount eq 0}">
-										
-										<p style="white-space:pre-line;"><c:out value="${rv.content }" /></p>
-										
-										<c:if test="${rv.rvimgCount ne 0 }">
-											<p>
-												<img class="review-img" src="<%=cp%>/images/${rv.url}"
-													alt="리뷰사진">
-											</p>
+									<c:if test="${rv.memCode == memberCode}">
+										<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
+										<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+									</c:if>
+								</c:if>
+								
+								
+								<c:if test="${rv.count eq 1}">
+									<li class="children children-reply">
+										<c:if test="${rv.replyRemove eq 1 }">
+											<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
 										</c:if>
 										
-										<c:if test="${rv.memCode == memberCode}">
-											<button type="button" class="reply border-0 modifyReview" value="${rv.boardCode }">수정</button> 
-											<button type="button" class="reply border-0 deleteReview" value="${rv.boardCode }">삭제</button>
+										<c:if test="${rv.replyRemove eq 0 }">
+											<h4>${basicInfo.hostNickName }</h4>
+											<span class="meta mb-2">${rv.replyDate }</span>
+											<p class="pr-5" style="white-space:pre-line;"><c:out value="${rv.replyContent }" /></p>
 										</c:if>
-									</c:if>
-									
-									
-									<c:if test="${rv.count eq 1}">
-										<li class="children children-reply">
-											<c:if test="${rv.replyRemove eq 1 }">
-												<p class="pr-5">작성자가 삭제한 리뷰답글입니다.</p>
-											</c:if>
-											
-											<c:if test="${rv.replyRemove eq 0 }">
-												<h4>${basicInfo.hostNickName }</h4>
-												<span class="meta mb-2">${rv.replyDate }</span>
-												<p class="pr-5" style="white-space:pre-line;"><c:out value="${rv.replyContent }" /></p>
-											</c:if>
-										</li>
-									</c:if>
-									
-								</li>
+									</li>
+								</c:if>
+								
+							</li>
 						</ul>
 					</c:forEach><!-- .comment-list -->
 				</div>
