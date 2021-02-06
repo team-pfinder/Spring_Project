@@ -146,18 +146,18 @@ ul.precautions-list > li {
 			var f = $("#inputBasicInfo");
 		
 			var tLocName = $("#inputLocName").val();
-			var tLocType = $("#inputLocType").val();
+			//var tLocType = $("#inputLocType").val();
 			//var tFacility = $("#facilityInfo_1").children().first().html();
 			//var tPrecaution = $("#precautionInfo_1").children().first().html();
 			var tShortIntro = $("#inputShortIntro").val();
 			var tIntro = $("#inputIntro").val();
-			var tThumbnail = $("#ex_filename").val();
+			var tThumbnail = $(".upload-name").val();
 			var tLocAddr = $("#inputAddr").val();
 			var tLocDetailAddr = $("#inputDetailAddr").val();
 			
 			
 			if (tLocName == "" || tShortIntro == "" || tIntro == "" 
-			|| tThumbnail == "" || tLocAddr == "" || tLocDetailAddr == "") {
+			 || tThumbnail == ""  || tLocAddr == "" || tLocDetailAddr == "") {
 			 
 				alert("필수 입력사항을 모두 입력해 주세요.");
 				
