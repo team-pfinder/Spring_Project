@@ -45,16 +45,8 @@
 	
 	function mod(code)
 	{
-		var con = confirm("해당 공간의 정보를 수정하시겠습니까?");
-		
-		if (con == true)
-		{
-			location.href = "modifylocation.action?loc_code" + code;
-		}
-		else
-		{
-			return;
-		}
+		alert("해당 공간 수정페이지로 이동합니다.")
+		location.href = "modifylocation.action?loc_code" + code;
 		
 	}
 </script>
