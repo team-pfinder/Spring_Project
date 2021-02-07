@@ -1010,7 +1010,8 @@ public class Location
 		{
 		    return "redirect:loginform.action?identify=host";
 		}
-
+		
+		
 		return "../WEB-INF/views/host/modifyDetailInfo.jsp?loc_code=" + loc_code;
 	}
 
@@ -1044,7 +1045,7 @@ public class Location
 			try
 			{
 				MultipartRequest m = FileManager.upload(request, "images");
-				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				//ArrayList<String> fileNames = FileManager.getFileNames(m);
 				
 				if (//fileNames.get(0) == null
 				   m.getParameter("inputMinPeople") == null
