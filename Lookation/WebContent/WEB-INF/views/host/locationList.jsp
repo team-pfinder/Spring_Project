@@ -4,7 +4,7 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	
-	String modify = request.getParameter("delete");
+	String modify = request.getParameter("modify");
 	pageContext.setAttribute("modify", modify);
 	
 	String delete = request.getParameter("delete");
@@ -45,10 +45,8 @@
 	
 	function mod(code)
 	{
-		if (confirm("해당 공간의 정보를 수정하시겠습니까?"))
-		{
-			location.href = "modifylocation.action?loc_code" + code;
-		}
+		alert("해당 공간 수정페이지로 이동합니다.")
+		location.href = "modifylocation.action?loc_code" + code;
 		
 	}
 </script>
@@ -142,11 +140,14 @@
 
 											<c:if test="${location.blind_check == 0}">
 												<a href="packagemanager.action?loc_code=${location.loc_code}" 
-												class="btn btn-primary" style="width:35%;">패키지 등록</a>
+												class="btn btn-info" style="width:35%;">패키지 등록</a>
 												<a href="packageapplyform.action?loc_code=${location.loc_code }" 
 												class="btn btn-dark" style="width:35%;">예약 등록</a>
+												<a href="modifybasicform.action?loc_code=${location.loc_code }" 
+												   onclick="mod('${location.loc_code}')" 
+												   class="btn btn-warning" style="width:35%; color: white;">수정</a>
 												<a href="javascript:void(0);" onclick="del('${location.loc_code}')" 
-												class="btn btn-danger" style="width:20%;">삭제</a>
+												class="btn btn-danger" style="width:35%;">삭제</a>
 											</c:if>
 											<c:if test="${location.blind_check > 0}">
 												 <a href="javascript:void(0);" onclick="del('${location.loc_code}')" 

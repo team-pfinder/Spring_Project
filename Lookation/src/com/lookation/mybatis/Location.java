@@ -316,8 +316,7 @@ public class Location
 				   || m.getParameter("inputBizCeoType") == null
 				   || m.getParameter("inputBizMainType") == null
 				   || m.getParameter("inputBizSubType") == null
-				   || m.getParameter("inputAddr") == null
-				   || m.getParameter("inputDetailAddr") == null)
+				   || m.getParameter("inputAddr") == null)
 				{
 					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 				}
@@ -331,7 +330,6 @@ public class Location
 			 	LocationManager.setBizMainType(m.getParameter("inputBizMainType"));
 			 	LocationManager.setBizSubType(m.getParameter("inputBizSubType"));
 	 			LocationManager.setBizAddresss(m.getParameter("inputAddr"));
-	 			LocationManager.setBizDetailAddress(m.getParameter("inputDetailAddr"));
 			 	
 			} catch (Exception e)
 			{
