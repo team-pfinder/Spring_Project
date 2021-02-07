@@ -980,7 +980,6 @@ public class Location
 			// 상세정보 코드 set
 			model.addAttribute("webList", locDao.selectLocWeb(dto));
 		    
-			
 			// 연락처 정보 수정
 			
 			if (request.getParameter("inputEmail") == null
@@ -1005,13 +1004,11 @@ public class Location
 		}                                                                                   
 		model.addAttribute("result", result); 
 
-		
 		if(result.equals("noSigned"))
 		{
 		    return "redirect:loginform.action?identify=host";
 		}
-		
-		
+
 		return "../WEB-INF/views/host/modifyDetailInfo.jsp?loc_code=" + loc_code;
 	}
 
@@ -1036,6 +1033,8 @@ public class Location
 		 	dto.setHost_code(accountCode);
 			dto.setLoc_code(loc_code);
 			dto.setLoc_detail_info_code(locDao.selectDetailInfo(loc_code).getLoc_detail_info_code());
+			
+
 			
 			// 이용안내 조회 쿼리문, 이용안내코드 미리 세팅
 			model.addAttribute("usingInfoList", locDao.selectUsingInfo(loc_code));
@@ -1069,24 +1068,24 @@ public class Location
 		    
 		    dto.setMin_people(LocationManager.getMinPeople());
 		    dto.setMax_people(LocationManager.getMaxPeople());
-			
+		    
 		    locDao.modifyDetailInfo(dto);	// 상세정보코드 set
-
+		    
 		    
 		    // 5-1. 웹 사이트
 		    dto.setLoc_web_url(LocationManager.getWebUrl());
 		    locDao.modifyLocWeb(dto);
-		    
+			
 		    result = "signed";                                                                                
 		}                                                                                   
 		model.addAttribute("result", result); 
 	    
-		
+
 		if(result.equals("noSigned"))
 		{
 		    return "redirect:loginform.action?identify=host";
 		}
-
+		
 		return "../WEB-INF/views/host/modifyUsingInfo.jsp?loc_code=" + loc_code;
 	}
 	
