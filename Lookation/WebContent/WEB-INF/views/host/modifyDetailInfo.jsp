@@ -6,8 +6,12 @@
 	
 	String loc_code = request.getParameter("loc_code");
     pageContext.setAttribute("loc_code", loc_code);
+
+    System.out.println(loc_code);
+
     
     
+
 %>
 <!DOCTYPE html>
 <html>

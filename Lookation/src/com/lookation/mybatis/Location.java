@@ -962,7 +962,7 @@ public class Location
 		
 		ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
 		LocationDTO dto = new LocationDTO();
-		                                                                                   
+		                   
 		if(accountCode != null)                                         
 		{      
 			// dao.select 로 정보 받아옴
@@ -997,7 +997,7 @@ public class Location
 			dto.setLoc_email(LocationManager.getEmail());
 			dto.setLoc_tel(LocationManager.getTel());
 			dto.setLoc_main_tel(LocationManager.getMainTel());
-			
+						
 			locDao.modifyContact(dto); //
 			
 		    result = "signed";                                                                                
@@ -1009,6 +1009,7 @@ public class Location
 		    return "redirect:loginform.action?identify=host";
 		}
 
+		
 		return "../WEB-INF/views/host/modifyDetailInfo.jsp?loc_code=" + loc_code;
 	}
 
@@ -1017,10 +1018,9 @@ public class Location
 	{
 		String loc_code = request.getParameter("loc_code");
 		HttpSession session = request.getSession();
-		
+
 		String accountCode = (String)session.getAttribute("hostCode");
 		String result = "noSigned";
-
 
 		if(accountCode != null)                                         
 		{      
@@ -1033,9 +1033,7 @@ public class Location
 		 	dto.setHost_code(accountCode);
 			dto.setLoc_code(loc_code);
 			dto.setLoc_detail_info_code(locDao.selectDetailInfo(loc_code).getLoc_detail_info_code());
-			
 
-			
 			// 이용안내 조회 쿼리문, 이용안내코드 미리 세팅
 			model.addAttribute("usingInfoList", locDao.selectUsingInfo(loc_code));
 

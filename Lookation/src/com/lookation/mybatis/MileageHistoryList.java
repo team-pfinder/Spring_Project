@@ -80,7 +80,11 @@ public class MileageHistoryList
 			// 로그인이 되었음을 기록한다.
 			result = "signed";                                                                                
 		}
-
+		if(result.equals("noSigned"))
+		{
+			return "../WEB-INF/views/common/login.jsp?identify=" + identify;	
+		}
+		
 		// 로그인 여부 데이터를 뷰에 넘겨준다.                                                                                   
 		model.addAttribute("result", result);    
 
