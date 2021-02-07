@@ -98,7 +98,13 @@ public class LocationReview
 				String review_code = request.getParameter("review_code");
 				model.addAttribute("modifyReview", locDao.updateReviewForm(review_code));
 				
-				String img_url = locDao.updateReviewImg(review_code).getReview_img_url();
+				LocationReviewDTO review = locDao.updateReviewImg(review_code);
+				String img_url = null;
+				if(review != null) 
+				{
+					img_url = review.getReview_img_url();
+				}
+
 				model.addAttribute("modifyImg", img_url);
 			}
 			// 호스트일 경우
