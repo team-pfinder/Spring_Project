@@ -174,7 +174,7 @@ public class ReportList
 					"<hr>" +
 					"<div class=\"content-form\" style=\"width : 100%; background: #ffffff; padding: 50px 0px 50px 0px;\">" +
 						"<h1>블랙리스트 계정 전환 안내</h1>" +
-						"<form action=\"http://localhost:8090/Lookation/actions/changepasswordnologinform.action?identify=\" + identify + \"\" method=\"post\">" +
+						"<form action=\"http://sb92120.cafe24.com/actions/changepasswordnologinform.action?identify=\" + identify + \"\" method=\"post\">" +
 							"<p>아래와 같은 이유로 해당 계정은 블랙리스트처리 되었음을 알립니다.</p>" +
 							"<table style=\"margin:0 auto;\">" +
 								"<tr>" +

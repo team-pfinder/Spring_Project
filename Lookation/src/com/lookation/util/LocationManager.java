@@ -30,6 +30,42 @@ public class LocationManager
 	private static String usingHour, dayOff, appointDayOff;
 	
 	
+	public static void init()
+	{
+		name = "";
+		type = "";
+		shortIntro = "";
+		intro = "";
+		thumbnail = "";
+		
+		arrPrecaution = null;
+		arrFacility = null;
+		
+		bizName = "";
+		bizCeo = "";
+		bizNum = "";
+		bizCeoType = "";
+		bizMainType = "";
+		bizSubType = "";
+		bizLicense = "";
+		bizAddresss = "";
+		bizDetailAddress = "";
+		
+		email = "";
+		tel = "";
+		mainTel = "";
+		
+		minPeople = "";
+		maxPeople = "";
+		
+		arrDetailImage = null;
+		
+		webUrl = "";
+		
+		usingHour = "";
+		dayOff = "";
+		appointDayOff = "";
+	}
 	
 	
 	public static String getBizAddresss()

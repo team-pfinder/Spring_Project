@@ -130,7 +130,11 @@ public class Location
 		{
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
 			model.addAttribute("info", dao.getInfo(accountCode));
-
+			
+			// 새로운 공간정보를 담기 위한 준비
+			// 임시 공간정보 초기화
+			LocationManager.init();
+			
 			result = "signed";
 		}
 		model.addAttribute("result", result);
@@ -139,7 +143,7 @@ public class Location
 		{
 			return "redirect:loginform.action?identify=host";
 		}
-
+		
 		return "../WEB-INF/views/host/inputBasicInfo.jsp";
 	}
 	

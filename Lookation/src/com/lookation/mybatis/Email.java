@@ -44,7 +44,7 @@ public class Email
 				"			<!-- <h1>내용이 입력될 곳</h1> -->" + 
 				"			<h1>비밀번호 변경 안내</h1>" + 
 				"			<br>" + 
-				"			<form action=\"http://localhost:8090/Lookation/actions/changepasswordnologinform.action?identify=" + identify + "\" method=\"post\">" + 
+				"			<form action=\"http://sb92120.cafe24.com/actions/changepasswordnologinform.action?identify=" + identify + "\" method=\"post\">" + 
 				"				<p>변경할 계정의 이메일을 다시 한번 확인해주세요.</p>" + 
 				"				<table style=\"margin:0 auto;\">" + 
 				"					<tr>" + 

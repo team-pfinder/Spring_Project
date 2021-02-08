@@ -60,7 +60,7 @@ public class SendSignUpEmailController implements Controller
 				"			<!-- <h1>내용이 입력될 곳</h1> -->" + 
 				"			<h1>계정 인증 안내</h1>" + 
 				"			<br>" + 
-				"			<form action=\"http://localhost:8090/Lookation/actions/signup.action?identify="+ identify + "\" method=\"post\">" + 
+				"			<form action=\"http://sb92120.cafe24.com/actions/signup.action?identify="+ identify + "\" method=\"post\">" + 
 				"				<table style=\"margin:0 auto;\">" + 
 				"					<tr>" + 
 				"						<th>이메일 : </th>" + 

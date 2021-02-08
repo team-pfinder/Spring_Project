@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마일리지 충전 & 환전</title>
+<title>마일리지 충전, 환전</title>
 
 <script type="text/javascript">
 	
@@ -20,15 +20,30 @@
 
 	function add10000()
 	{
-		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 10000;
-		document.getElementById("after").value = parseInt(document.getElementById("after").value) + 10000;
-		i += 10000;
+		if(i <= 990000)
+		{
+			document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 10000;
+			document.getElementById("after").value = parseInt(document.getElementById("after").value) + 10000;
+			i += 10000;			
+		}
+		else if(i >= 1000000)
+		{
+			alert("최대 1,000,000원 까지 충전할 수 있습니다.");	
+		}
 	}
 	function add50000()
 	{
-		document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 50000;
-		document.getElementById("after").value = parseInt(document.getElementById("after").value) + 50000;
-		i += 50000;
+		if(i <= 990000)
+		{
+			document.getElementById("chargeAmount").value = parseInt(document.getElementById("chargeAmount").value) + 50000;
+			document.getElementById("after").value = parseInt(document.getElementById("after").value) + 50000;
+			i += 50000;
+		}
+		else if(i >= 1000000)
+		{
+			alert("최대 1,000,000원 까지 충전할 수 있습니다.");	
+		}
+		
 	}
 	
 	function calc()
