@@ -18,7 +18,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Lookation</title>
+<title>Q&A수정</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <script type="text/javascript">
 

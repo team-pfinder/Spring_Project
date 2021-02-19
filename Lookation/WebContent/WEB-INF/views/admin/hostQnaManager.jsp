@@ -9,7 +9,7 @@
 <head>
 
  <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
-  <title>호스트 QnA 조회</title>
+  <title>Q&A조회</title>
   
   <style type="text/css">
 	table 

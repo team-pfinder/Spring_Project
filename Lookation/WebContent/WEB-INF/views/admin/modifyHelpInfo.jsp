@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>도움말 수정하기</title>
+<title>도움말 수정</title>
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 
 <script type="text/javascript">

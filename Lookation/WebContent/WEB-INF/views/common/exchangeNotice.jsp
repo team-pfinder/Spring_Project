@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <!-- include NAV -->
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
-<title>환전신청완료</title>
+<title>환전신청 완료</title>
 <style type="text/css">
 button
     {

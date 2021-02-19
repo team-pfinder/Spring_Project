@@ -12,7 +12,7 @@
 
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>main.jsp</title>
+<title>Lookation</title>
 <style type="text/css">
 
 .box-up 
@@ -72,14 +72,16 @@ span.price
 #img
 {
 	transition: background-size ease-out 200ms;
-	background-size: auto 100%;
+	background-size: 100% 100%;
 	cursor: default;
+	
+	background-repeat: no-repeat;
 }
 
 #img:hover
 {
 	transition: background-size ease-out 200ms;
-	background-size: auto 120%;
+	background-size: 120% 120%;
 	cursor: pointer;
 }
 

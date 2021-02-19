@@ -25,7 +25,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Lookation</title>
+<title>리뷰작성</title>
 <c:import url="${cp}/includes/includes_home_end.jsp"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">

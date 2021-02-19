@@ -11,7 +11,7 @@ String cp = request.getContextPath();
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
-<title>userReview.jsp</title>
+<title>리뷰관리</title>
 <style type="text/css">
 	
 	table{

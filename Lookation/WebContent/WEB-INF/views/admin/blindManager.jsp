@@ -11,7 +11,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
-<title>BlindList.jsp</title>
+<title>블라인드 목록</title>
 
 <script type="text/javascript">
 

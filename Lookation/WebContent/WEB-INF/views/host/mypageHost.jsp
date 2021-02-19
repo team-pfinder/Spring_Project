@@ -11,7 +11,7 @@
 <meta charset="UTF-8">
 <!-- include head -->
 
-<title>mypageMain.jsp</title>
+<title>마이페이지</title>
 </head>
 <body>
 	<!-- header 출력부분 -->

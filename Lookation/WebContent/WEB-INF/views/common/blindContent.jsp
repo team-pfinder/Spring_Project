@@ -13,7 +13,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>BlindContent.jsp</title>
+<title>블라인드 알림</title>
 	
 <!-- css 등 공통적으로 들어가는 요소 include -->
 <c:import url="${cp }/includes/includes_home.jsp"></c:import>

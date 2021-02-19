@@ -17,7 +17,7 @@
 <!-- include NAV -->
 <%@ include file="../01.ksb/head(host).jsp"%> --%>
 
-<title>5.Withdraw(host).jsp</title>
+<title>마일리지 관리</title>
 <style type="text/css">
 .nav-tabs .pill-1 .nav-link:not(.active)
 {

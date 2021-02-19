@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>locationDelete.jsp</title>
+<title>공간삭제</title>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>

@@ -14,7 +14,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>BankAccount.jsp</title>
+<title>계좌관리</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript">
 	

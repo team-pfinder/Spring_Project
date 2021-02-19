@@ -9,7 +9,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>reportHostImg.jsp</title>
+<title>신고</title>
 	
 <!-- css 등 공통적으로 들어가는 요소 include -->
 <c:import url="${cp }/includes/includes_home.jsp"></c:import>

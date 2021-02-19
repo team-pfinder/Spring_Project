@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Lookation 예약확인</title>
+<title>예약상세</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 

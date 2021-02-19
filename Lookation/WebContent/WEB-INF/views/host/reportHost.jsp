@@ -15,7 +15,7 @@
 
 <!-- css 등 공통적으로 들어가는 요소 include -->
 <c:import url="${cp }/includes/includes_home.jsp"></c:import>
-<title>reportHost.jsp</title>
+<title>신고</title>
 
 <style type="text/css">
 

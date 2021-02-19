@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Lookation</title>
+<title>블랙리스트 등록</title>
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <style type="text/css">
 	.font-default

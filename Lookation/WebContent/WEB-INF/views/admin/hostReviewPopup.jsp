@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
-<title>호스트리뷰상세보기</title>
+<title>리뷰상세보기</title>
 <style type="text/css">
    .font-default
    {

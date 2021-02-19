@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>공지사항 수정하기</title>
+<title>공지사항 수정</title>
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 
 <script type="text/javascript">

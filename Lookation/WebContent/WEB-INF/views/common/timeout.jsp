@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Lookation</title>
 <script type="text/javascript">
 	var wintimer;
 	clearTimeout(wintimer);

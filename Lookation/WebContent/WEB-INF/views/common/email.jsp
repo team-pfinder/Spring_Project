@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>email(user).jsp</title>
+<title>email(ex).jsp</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 	*

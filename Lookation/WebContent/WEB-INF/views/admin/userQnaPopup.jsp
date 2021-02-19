@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>userQnaPopup.jsp</title>
+<title>Q&A상세</title>
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <style>
 	table

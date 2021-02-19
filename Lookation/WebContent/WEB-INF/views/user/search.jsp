@@ -38,7 +38,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Lookation</title>
+<title>검색결과</title>
 <c:import url="${cp}/includes/header_user.jsp?result=${result }&nick=${info.nick }"></c:import>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 
@@ -64,14 +64,16 @@
 #img
 {
 	transition: background-size ease-out 200ms;
-	background-size: auto 100%;
+	background-size: 100% 100%;
 	cursor: default;
+	
+	background-repeat: no-repeat;
 }
 
 #img:hover
 {
 	transition: background-size ease-out 200ms;
-	background-size: auto 120%;
+	background-size: 120% 120%;
 	cursor: pointer;
 }
 

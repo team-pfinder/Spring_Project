@@ -10,7 +10,7 @@ String cp = request.getContextPath();
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Direct Message.jsp</title>
+<title>메신저</title>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">
 body {

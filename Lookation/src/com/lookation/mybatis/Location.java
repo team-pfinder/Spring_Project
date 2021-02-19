@@ -461,19 +461,26 @@ public class Location
         dao.inputBasicInfo(dto);	// loc_basic_info_code set
         
         // 1-1. 시설안내(기본정보)
-		for (String str : LocationManager.getArrFacility())
-		{
-			dto.setFacility_content(str);
-			dao.inputFacilityInfo(dto);
-		}
+        
+        if(LocationManager.getArrFacility() != null)
+        {
+			for (String str : LocationManager.getArrFacility())
+			{
+				dto.setFacility_content(str);
+				dao.inputFacilityInfo(dto);
+			}
+        }
 
 		// 1-2. 주의사항(기본정보)
-		for (String str : LocationManager.getArrPrecaution())
-		{
-			dto.setCaution_content(str);
-			dao.inputCaution(dto);
-		}
         
+        if(LocationManager.getArrPrecaution() != null)
+        {	
+			for (String str : LocationManager.getArrPrecaution())
+			{
+				dto.setCaution_content(str);
+				dao.inputCaution(dto);
+			} 
+        }
         // 1-3. 썸네일(기본정보)
         dto.setThumbnail_url(LocationManager.getThumbnail());
        
@@ -509,11 +516,14 @@ public class Location
 	    
 
 	    // 4-1. 상세 이미지
-	    for (String str : LocationManager.getArrDetailImage())
-		{
-			dto.setLoc_detail_img_url(str);
-			dao.inputDetailImg(dto);
-		}
+	    if(LocationManager.getArrDetailImage() != null)
+        {
+		    for (String str : LocationManager.getArrDetailImage())
+			{
+				dto.setLoc_detail_img_url(str);
+				dao.inputDetailImg(dto);
+			}
+        }
 	    
 	    // 4-2. 웹 사이트
 	    dto.setLoc_web_url(LocationManager.getWebUrl());

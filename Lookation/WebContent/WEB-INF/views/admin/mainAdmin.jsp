@@ -10,7 +10,7 @@
 <head>
 
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
-<title>main.jsp</title>
+<title>admin</title>
 
 </head>
 

@@ -9,7 +9,7 @@ String cp = request.getContextPath();
 <head>
 
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
-  <title>호스트 리뷰 조회</title>
+  <title>리뷰조회</title>
   <script type="text/javascript">
   
   	//상세보기 버튼을 클릭 시 팝업창 

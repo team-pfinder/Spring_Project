@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>refundPolicy.jsp</title>
+<title>환불정책</title>
 
 <style>
 	

@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>hostBlackListPopup.jsp</title>
+<title>블랙리스트 추가</title>
 
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
 <script type="text/javascript">

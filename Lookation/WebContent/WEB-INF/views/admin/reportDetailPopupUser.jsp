@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Lookation</title>
+<title>신고상세</title>
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <style type="text/css">
 

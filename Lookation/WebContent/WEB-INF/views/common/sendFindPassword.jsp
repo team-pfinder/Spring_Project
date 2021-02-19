@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>sendConfirmAccount.jsp</title>
+<title>인증이메일 발송 성공</title>
 
 <style type="text/css">
 	*

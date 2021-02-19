@@ -19,7 +19,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>login.jsp</title>
+<title>로그인</title>
 
 <style type="text/css">
 	*

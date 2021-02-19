@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lookation_admin</title>
+<title>계정관리</title>
 <c:import url="${cp}/includes/includes_admin.jsp"></c:import>
 <style type="text/css">
 

@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>createAccountSuccess.jsp</title>
+<title>회원가입 성공</title>
 
 <style type="text/css">
 	*

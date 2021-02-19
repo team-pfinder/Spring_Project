@@ -16,7 +16,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>deletedLocation</title>
+<title>잘못된 접근</title>
 
 <style type="text/css">
 	*

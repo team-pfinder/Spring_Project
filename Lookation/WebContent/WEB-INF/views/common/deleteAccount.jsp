@@ -26,7 +26,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>탈퇴완료.jsp</title>
+<title>탈퇴완료</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <style type="text/css">

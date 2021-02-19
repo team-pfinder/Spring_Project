@@ -24,7 +24,7 @@ public class FileManager
 	{
 		// 올린 파일들의 경로정보를 받아온다.(상대경로 /Lookaion 부터)
 		String realFolder = "";
-		int maxSize = 1024*1024*10;
+		int maxSize = 1024*1024*100;
 		String encType = "utf-8";
 		ServletContext sContext = request.getServletContext();
 		realFolder = sContext.getRealPath(saveFolderName);

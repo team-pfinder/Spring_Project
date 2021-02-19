@@ -11,7 +11,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <c:import url="${cp }/includes/includes_admin.jsp"></c:import>
-<title>userQna.jsp</title>
+<title>Q&A관리</title>
 
 <style type="text/css">
 	table{

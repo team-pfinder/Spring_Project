@@ -14,7 +14,7 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
-<title>changePassword.jsp</title>
+<title>비밀번호 변경</title>
 
 <style type="text/css">
 	*
