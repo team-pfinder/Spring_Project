@@ -40,8 +40,10 @@ table {
   border-collapse:collapse;
   /*margin-bottom: 10px;*/
 }
+
 th, td {
   padding: 3px 10px;
+  white-space: nowrap;
 }
 
 .table th, .table td {

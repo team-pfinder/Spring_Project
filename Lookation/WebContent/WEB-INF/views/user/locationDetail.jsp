@@ -709,7 +709,7 @@ width: 100%;
 						<p>주업태 : ${bizInfo.bizMainType} 주종목 : ${bizInfo.bizSubType}</p>
 						<p>주소 : <span id="addr">${basicInfo.addr}</span> ${basicInfo.detailAddr}</p>
 						<c:if test="${not empty basicInfo.url }">
-							<p>웹사이트 주소 : <a href="http://${basicInfo.url }" style="text-decoration: underline;">${basicInfo.url }</a></p>
+							<p>웹사이트 주소 : <a href="http://${basicInfo.url }" target="_blank" style="text-decoration: underline;">${basicInfo.url }</a></p>
 						</c:if>
 						
 						<!-- 예약 완료한 이용자에게 DM버튼 출력 -->
