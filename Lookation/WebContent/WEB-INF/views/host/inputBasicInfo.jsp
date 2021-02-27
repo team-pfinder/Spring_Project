@@ -95,8 +95,8 @@ ul.precautions-list > li {
 		setInputFilter($('#inputLocName'));
 		setInputLength($('#inputLocName'), '공간명', 2, 20);
 		setSelectFilter($('#inputLocType'), '공간 유형');
-		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 4, 20);
-		setInputLength($('#inputIntro'), '공간 소개', 20, 400);
+		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 2, 100);
+		setInputLength($('#inputIntro'), '공간 소개', 2, 1000);
 		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
 		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 10, 50);
 
@@ -160,15 +160,15 @@ ul.precautions-list > li {
 				$("#inputLocName").focus();
 				
 			}
-			else if (tShortIntro.length < 4 || tShortIntro.length > 20) {
+			else if (tShortIntro.length < 2 || tShortIntro.length > 100) {
 				
-				alert("공간 한줄 소개는 4자~20자로 입력해야합니다.");
+				alert("공간 한줄 소개는 2자~100자로 입력해야합니다.");
 				$("#inputShortIntro").focus();
 				
 			}
-			else if (tIntro.length < 20 || tIntro.length > 400) {
+			else if (tIntro.length < 2 || tIntro.length > 1000) {
 				
-				alert("공간 소개는 20자~400자로 입력해야합니다.");
+				alert("공간 소개는 2자~1000자로 입력해야합니다.");
 				$("#inputIntro").focus();
 				
 			}
@@ -323,9 +323,9 @@ ul.precautions-list > li {
 			return;
 		}
 
-		if (content.length < 10 || content.length > 50 ) {
+		if (content.length < 5 || content.length > 50 ) {
 			
-			alert("시설 안내는 10자 이상 ~ 50자 이하로 입력해야합니다.")
+			alert("시설 안내는 5자 이상 ~ 50자 이하로 입력해야합니다.")
 			return;
 		}
 		
@@ -371,9 +371,9 @@ ul.precautions-list > li {
 		
 		var content = $('#inputPrecaution').val();
 		
-		if (content.length < 10 || content.length > 50 )
+		if (content.length < 5 || content.length > 50 )
 		{
-			alert("예약 시 주의사항은 10자 이상 ~ 50자 이하로 입력해야합니다.")
+			alert("예약 시 주의사항은 5자 이상 ~ 50자 이하로 입력해야합니다.")
 			return;
 		}
 		
@@ -580,7 +580,7 @@ ul.precautions-list > li {
 			<span style="font-size: 14pt; font-weight: bold;">공간 한줄 소개  <span style="color: red">*</span></span>
 			<br><br>
 			<input type="text" class="form-control"
-				   placeholder="공간을 한 문장으로 소개해주세요. [최소 4자 ~ 최대 20자]" 
+				   placeholder="공간을 한 문장으로 소개해주세요. [최소 2자 ~ 최대 100자]" 
 				   id="inputShortIntro" name="inputShortIntro">
 			<span style="font-weight: bold;"></span>
    		
@@ -597,7 +597,7 @@ ul.precautions-list > li {
 			<span style="font-size: 14pt; font-weight: bold;">공간 소개  <span style="color: red">*</span></span>
 			<br><br>
 			<textarea class="form-control" 
-					  placeholder="공간을 상세하게 소개해주세요. [최소 20자 ~ 최대 400자]"
+					  placeholder="공간을 상세하게 소개해주세요. [최소 5자 ~ 최대 1000자]"
 					  id="inputIntro" name="inputIntro" cols="40" rows="5"></textarea>
 		  	<span style="font-weight: bold;"></span>
 		</div>
@@ -611,7 +611,7 @@ ul.precautions-list > li {
 			<span style="font-size: 14pt; font-weight: bold;">시설 안내 <span style="color: red">*</span></span>
 			<br><br>
 			<input class="form-control" 
-				   placeholder="시설은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."
+				   placeholder="시설은 [최소 5자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."
 				   type="text" id="inputFacility" name="inputFacility">
 				   <span style="font-weight: bold; display: none; color: red;"></span>
 			<br>
@@ -642,7 +642,7 @@ ul.precautions-list > li {
 			<ul class="precautions-list">
 				<li>
 				    <input class="form-control" id="inputPrecaution" 
-						placeholder="예약 시 주의사항은 [최소 10자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."/>
+						placeholder="예약 시 주의사항은 [최소 5자 ~ 최대 50자] 로 입력하여 10개까지 추가 가능합니다."/>
 					<span style="font-weight: bold; display: none; color: red;"></span>
 				</li>
 			</ul>

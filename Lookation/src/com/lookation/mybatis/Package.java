@@ -257,7 +257,7 @@ public class Package
 		}
 		else
 		{
-			// 회원이 경우 적용하지 않는다.
+			// 회원이 아닌 경우 적용하지 않는다.
 			return "";
 		}
 	

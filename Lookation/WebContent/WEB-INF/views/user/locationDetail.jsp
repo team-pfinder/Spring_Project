@@ -657,7 +657,7 @@ width: 100%;
 									<c:if test="${rv.rvimgCount ne 0 }">
 										<p>
 											<img class="review-img" src="<%=cp%>/images/${rv.url}"
-												alt="리뷰사진">
+												alt="리뷰사진" style="size: 50%">
 										</p>
 									</c:if>
 									

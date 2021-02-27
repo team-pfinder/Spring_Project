@@ -439,17 +439,19 @@
          if(confirm("이 패키지 스케쥴로 저장하시겠습니까?"))
          {
             applyAjaxRequest();
-            alert("성공적으로 저장되었습니다.");
-            $("#applyForm").submit();
+           
+            // 실제DB 처리 되는 동안 
+            // 페이지 새로고침이 되면 안되기 때문에
+            // 지연을 준다.
+            setTimeout(function() { 
+            	alert("성공적으로 저장되었습니다."); 
+            	$("#applyForm").submit();}, 2000); 
          }
       });
       
       $("#LocationPacakgeAplCancel").click(function()
-      {
-         if(confirm("정말 처음으로 돌아시겠습니까?"))
-         {
-            location.href="locationlist.action?loc_code=${loc_code}";
-         }
+      {     
+      		location.href="locationlist.action?loc_code=${loc_code}";      
       });
    }); 
    
@@ -504,7 +506,7 @@ body {
    position: fixed;
    left: 20px;
    top: 20px;
-   width: 150px;
+   width: 400px;
    padding: 0 10px;
    border: 1px solid #ccc;
    background: #eee;
@@ -627,7 +629,9 @@ a.fc-event {
                               <c:if test="${form.time_end > 24}">
                                  익일 <span id="time_end" class="nextDay">${form.time_end - 24}</span>:00 
                               </c:if>
+                              <br>
                               <span id="name">${form.name }</span>
+                              <br>
                               <span id="price">₩ ${form.price }</span>
                            </div>
                         </div>
