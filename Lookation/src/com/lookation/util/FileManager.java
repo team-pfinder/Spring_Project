@@ -18,7 +18,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class FileManager
 {
-	
+	// 파일을 톰캣 리소스 폴더에 업로드한다.
 	public static MultipartRequest upload(HttpServletRequest request, String saveFolderName) 
 			throws IOException
 	{
@@ -33,6 +33,7 @@ public class FileManager
 				realFolder, maxSize, encType, new DefaultFileRenamePolicy());
 	}
 	
+	// 업로드한 파일의 이름들을 가져온다
 	public static ArrayList<String> getFileNames(MultipartRequest multi)
 	{
 		ArrayList<String> result = new ArrayList<String>();
@@ -51,9 +52,6 @@ public class FileManager
 	}
 	
 	// 파일 다운로드
-	// saveFileName : 서버에 저장된 파일 이름
-	// originalFileName : 클라이언트가 업로드한 파일 이름
-	// path : 서버에 저장된 경로
 	public static boolean doFileDownload(String saveFileName, String originalFileName, String path, HttpServletResponse response)
 	{
 		String load_dir = path + File.separator + saveFileName;
@@ -105,7 +103,7 @@ public class FileManager
 		
 		return false;
 	}
-	
+
 	// 실제 파일 삭제(제거)
 	public static void doFileDelete(HttpServletRequest request, String folderName, String fileName)
 	{
@@ -128,3 +126,5 @@ public class FileManager
 		}
 	}
 }
+
+

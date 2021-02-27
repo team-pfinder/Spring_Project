@@ -34,7 +34,8 @@ public class EmailManager
 			mailSender.setJavaMailProperties(prop);
 		}
 	}
-
+	
+	// 간단한 내용을 메일로 보내기
 	public static void sendSimple(String to, String from, String subject, String content)
 	{
 		getMailSender();
@@ -62,7 +63,7 @@ public class EmailManager
 			System.out.println(e.toString());
 		}
 	}
-
+	// 첨부파일과 함께 메일로 보내기
 	public static void sendAttach(String to, String from, String subject, String content, String filePath)
 	{
 		getMailSender();
@@ -94,7 +95,7 @@ public class EmailManager
 			System.out.println(e.toString());
 		}
 	}
-
+	// HTML을 메일로 보내기
 	public static void sendHtml(String to, String from, String subject, String html)
 	{
 		getMailSender();
