@@ -1,14 +1,14 @@
-# Lookation
+# Lookation(team-pfinder)
 
 1. 팀 프로젝트 소개
 * 파티룸과 같이 놀 공간을 공유하며 예약할 수 있는 공간 공유 사이트입니다.
-
+   
 2. 주요기능
 * 공간 등록 및 관리
 * 공간 예약 및 리뷰, Q&A
 * 회원 신고 및 처리
 * 회원 마일리지 관리 
-
+   
 3. 개발환경 및 언어
 * IDE : eclipse
 * Language : JDK 1.8, HTML5, CSS3, JavaScript
