@@ -1,0 +1,26 @@
+* MVC 패턴
+
+Model (내부 비즈니스 로직)
+=> DB JDBC(DAO) DTO
+
+View (보여주기 위한 뷰)
+=> .action .jsp
+
+Controller (화면 로직처리)
+(Model, View 사이를 중계)
+=> .action .java
+
+
+
+공부가 필요한 기술?
+
+1. Google Map API
+2. 캘린더 관리
+3. 주소록 관리 API
+
+
+
+* SQL
+1. VIEW = 조회시 여러 조인이 필요한 경우..
+2. PROCEDURE = 복잡한 혹은 여러 테이블을 필요로 하거나 자식 테이블 데이터를 다 같이 생성, 수정, 삭제 해줘야 하는 경우 
+3. TRIGGER = 사용 안할예정?

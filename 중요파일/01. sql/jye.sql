@@ -1,0 +1,1212 @@
+------------------------------------------------------------------------------------------------?뿃 DELETEMEMBER
+/*
+deleteAccount(?샇?뒪?듃, ?씠?슜?옄 ?룞?씪) 1
+
+?씠?슜?옄
+0. ?봽濡쒗븘?젙蹂댁뿉?꽌 ?쉶?썝肄붾뱶 ?솗?씤
+1. ?삁?빟?궡?뿭 ?궓?븘?엳?쑝硫? ?깉?눜 遺덇?
+2. / 留덉씪由ъ? ?궓?븘?엳?쑝硫? ?깉?눜 遺덇??뒫
+3. ?솚?쟾怨꾩쥖 ?뀒?씠釉붿뿉?꽌 ?빐?떦 怨꾩쥖踰덊샇濡? ?씠猷⑥뼱吏? 寃껊뱾 ?궘?젣
+4. 異⑹쟾?떊泥?怨꾩쥖?뿉?꽌 ?빐?떦怨꾩쥖踰덊샇濡? ?씠猷⑥뼱吏꾧쾬?뱾 
+   李얠븘?꽌 ?궘?젣
+5. 怨꾩쥖踰덊샇 ?뀒?씠釉붿뿉?꽌 怨꾩쥖 ?궘?젣
+6. ?봽濡쒗븘?젙蹂댁뿉?꽌 ?쉶?썝肄붾뱶 李얠븘 ?궘?젣
+7. ?깉?눜?쉶?썝 ?뀒?씠釉? insert
+*/
+
+--?? ?씠?슜?옄 ?궘?젣 ?닚?꽌 
+-- ?뿃 ?봽濡쒗븘?젙蹂댁뿉?꽌 ?쉶?썝肄붾뱶 ?솗?씤
+SELECT MEMBER_CODE
+FROM MEMBER_PROFILE
+WHERE MEMBER_NICKNAME='源?媛먯옄';
+-->
+SELECT MEMBER_CODE FROM MEMBER_PROFILE WHERE MEMBER_NICKNAME='源?媛먯옄'
+;
+SELECT * FROM MEMBER_BANK_INFO;
+
+--?뿃 硫ㅻ쾭?봽濡쒗븘 ?뀒?씠釉붿뿉 ?엳?뒗吏? ?솗?씤 ?넂 ?뾾?쑝硫? ?벑濡앺븯吏? ?븡?? 硫ㅻ쾭
+SELECT COUNT(*) AS COUNT
+FROM MEMBER_PROFILE
+WHERE MEMBER_CODE = 'M000009';
+-->
+SELECT COUNT(*) AS COUNT FROM MEMBER_PROFILE WHERE MEMBER_CODE = 'M000009'
+;
+
+--?뿃 ?삁?빟?궡?뿭 ?엳?뒗吏? ?솗?씤 
+SELECT B.BOOK_CODE, B.MEMBER_CODE, AP.APPLY_PACKAGE_CODE, AP.APPLY_DATE
+, P.PACKAGE_CODE, PF.LOC_CODE
+FROM BOOK_LIST B
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+JOIN PACKAGE_FORM PF
+ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+WHERE AP.APPLY_DATE > SYSDATE AND B.MEMBER_CODE='M000002';
+-->
+SELECT COUNT(*) AS COUNT FROM BOOK_LIST B JOIN APPLY_PACKAGE AP ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE JOIN PACKAGE P ON AP.PACKAGE_CODE = P.PACKAGE_CODE JOIN PACKAGE_FORM PF ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE WHERE AP.APPLY_DATE > SYSDATE AND B.MEMBER_CODE='M000002'
+;
+
+
+--------------------------------------------------------------------- 留덉씪由ъ?
+--?뿃 留덉씪由ъ? ?궡?뿭 ?솗?씤 諛⑸쾿 
+-- 異⑹쟾泥섎━?궡?뿭(泥섎━?맂寃껊쭔) 議곗씤 / 異⑹쟾泥섎━肄붾뱶 LOAD_TYPE_CODE='LT000001'
+-- - ?삁?빟寃곗젣?궡?뿭 李④컧
+-- + ?씠?슜?옄媛? 痍⑥냼?븳 ?삁?빟 ?솚遺? ?궡?뿭
+-- + ?샇?뒪?듃媛? 痍⑥냼?븳 ?삁?빟 ?솚遺? ?궡?뿭
+-- - ?씠?슜?옄 ?솚?쟾 湲덉븸
+-------------------------------------------
+
+
+-- 留덉씪由ъ? 異⑹쟾 ?궡?뿭
+SELECT NVL(SUM(LR.LOAD_AMOUNT), 0)
+FROM LOAD_PROC LP
+JOIN LOAD_REG LR
+ON LP.LOAD_REG_CODE = LR.LOAD_REG_CODE
+WHERE LP.LOAD_TYPE_CODE='LT000001' AND LR.MEMBER_CODE='M000003';
+
+-- ?삁?빟 寃곗젣 ?궡?뿭
+SELECT NVL(SUM(P.PACKAGE_PRICE), 0)
+FROM BOOK_PAY_LIST BP
+JOIN BOOK_LIST B
+ON BP.BOOK_CODE = B.BOOK_CODE
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P 
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+WHERE B.MEMBER_CODE='M000002';
+
+          
+-- ?샇?뒪?듃媛? 痍⑥냼?븳 ?삁?빟?쓽 寃쎌슦        
+SELECT NVL(SUM(P.PACKAGE_PRICE), 0) AS HOST_CANCEL
+FROM HOST_CANCEL_LIST HC
+JOIN BOOK_REFUND_LIST BR
+ON HC.BOOK_CODE = BR.BOOK_CODE
+    JOIN BOOK_LIST B
+    ON BR.BOOK_CODE = B.BOOK_CODE
+        JOIN APPLY_PACKAGE AP
+        ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+            JOIN PACKAGE P
+            ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+            WHERE B.MEMBER_CODE = 'M000002';
+
+-- ?씠?슜?옄媛? 痍⑥냼?븳 ?삁?빟?쓽 寃쎌슦
+-- ?씠?슜?옄 痍⑥냼?떆 7?씪?쟾 - 100% ?솚遺?, 6~1?씪?쟾 - 50% ?솚遺?
+SELECT NVL(SUM
+(CASE WHEN (TO_DATE(AP.APPLY_DATE, 'YYYY-MM-DD') - TO_DATE(MC.MEMBER_CANCEL_DATE, 'YYYY-MM-DD')) < 7 
+      THEN TRUNC(P.PACKAGE_PRICE * 0.5, -1) -- ?씠?슜?옄 痍⑥냼?씪?옄媛? ?뙣?궎吏? ?쟻?슜?씪 6?씪 ?쟾?씪 寃쎌슦 50?봽濡?
+      ELSE TRUNC(P.PACKAGE_PRICE * 1, -1)   -- ?븘?땺寃쎌슦 100?봽濡? ?솚遺?, ?굹癒몄? ?삁?쇅?긽?솴?? ?쎒?뿉?꽌 泥섎━
+      END), 0) AS MEMBER_CANCEL
+FROM MEMBER_CANCEL_LIST MC
+JOIN BOOK_REFUND_LIST BR
+ON MC.BOOK_CODE = BR.BOOK_CODE
+    JOIN BOOK_LIST B
+    ON BR.BOOK_CODE = B.BOOK_CODE
+        JOIN APPLY_PACKAGE AP
+        ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+            JOIN PACKAGE P
+            ON AP.PACKAGE_CODE = P.PACKAGE_CODE;
+            --WHERE B.MEMBER_CODE = 'M000002';
+
+-- ?씠?슜?옄媛? ?솚?쟾?븳 湲덉븸
+SELECT NVL(SUM(MEMBER_EXCHANGE_AMOUNT), 0)
+FROM MEMBER_EXCHANGE_LIST
+WHERE MEMBER_CODE = 'M000002';
+
+--?뿃 留덉씪由ъ? ?봽濡쒖떆??
+VARIABLE V_CHANGE NUMBER;
+
+CALL PRC_MEMBER_MILEAGE('M000005', :V_CHANGE);
+
+-- 怨꾩쥖?젙蹂? ?엳?뒗吏? ?솗?씤 (MEMBER_BANK_INFO)
+SELECT MEMBER_BANK_NUMBER
+FROM MEMBER_BANK_INFO
+WHERE MEMBER_CODE='M000003';
+--> 
+SELECT MEMBER_BANK_NUMBER, MEMBER_CODE FROM MEMBER_BANK_INFO WHERE MEMBER_CODE='M000001'
+;
+
+--?뿃 MEMBER_EXCHANGE_BANK_INFO?뿉?꽌 怨꾩쥖?젙蹂? ?궘?젣 
+DELETE MEMBER_EXCHANGE_BANK_INFO
+WHERE MEMBER_BANK_NUMBER 
+IN ( SELECT MEMBER_BANK_NUMBER
+     FROM MEMBER_BANK_INFO
+     WHERE MEMBER_CODE='M000003');
+--> 
+DELETE MEMBER_EXCHANGE_BANK_INFO WHERE MEMBER_BANK_NUMBER IN ( SELECT MEMBER_BANK_NUMBER FROM MEMBER_BANK_INFO WHERE MEMBER_CODE='M000003')
+;
+
+--?뿃 異⑹쟾?떊泥?怨꾩쥖?뿉?꽌 ?빐?떦怨꾩쥖踰덊샇濡? ?씠猷⑥뼱吏꾧쾬?뱾 李얠븘?꽌 ?궘?젣
+DELETE LOAD_REG_BANK_INFO
+WHERE MEMBER_BANK_NUMBER
+IN ( SELECT MEMBER_BANK_NUMBER
+     FROM MEMBER_BANK_INFO
+     WHERE MEMBER_CODE='M000003');
+-->
+DELETE LOAD_REG_BANK_INFO WHERE MEMBER_BANK_NUMBER IN ( SELECT MEMBER_BANK_NUMBER FROM MEMBER_BANK_INFO WHERE MEMBER_CODE='M000003')
+;
+
+--?뿃 硫ㅻ쾭怨꾩쥖?젙蹂댁뿉?꽌 ?빐?떦怨꾩쥖踰덊샇 李얠븘 ?궘?젣
+DELETE FROM MEMBER_BANK_INFO WHERE MEMBER_CODE='M000003';
+
+--?뿃 硫ㅻ쾭?봽濡쒗븘?뿉?꽌 ?빐?떦硫ㅻ쾭 ?궘?젣
+DELETE FROM MEMBER_PROFILE WHERE MEMBER_CODE='M000003';
+
+--?뿃 ?깉?눜 ?뀒?씠釉? INSERT 
+INSERT INTO MEMBER_WITHDRAW(MEMBER_WITHDRAW_CODE, MEMBER_CODE, MEMBER_WITHDRAW_DATE) 
+VALUES(F_CODE('MW', MW_SEQ.NEXTVAL), 'M000003' ,SYSDATE);
+;
+--> ?븳以?
+INSERT INTO MEMBER_WITHDRAW(MEMBER_WITHDRAW_CODE, MEMBER_CODE, MEMBER_WITHDRAW_DATE) VALUES(F_CODE('MW', MW_SEQ.NEXTVAL), 'M000003',SYSDATE)
+;
+
+----------------------------------------------------------------------------------------------
+--?뿃 DELETEHOST
+
+/*
+?샇?뒪?듃
+
+0. ?봽濡쒗븘?젙蹂댁뿉?꽌 ?쉶?썝肄붾뱶 ?솗?씤
+1. ?삁?빟?궡?뿭 ?엳?쑝硫? ?깉?눜 遺덇??뒫
+2. 留덉씪由ъ? ?궓?븘?엳?쑝硫? ?깉?눜 遺덇??뒫 
+3. LOC_CONTACT?뿉?꽌 ?뿰?씫泥? ?궘?젣
+4. BIZ_INFO?뿉?꽌 ?궗?뾽?옄?젙蹂? ?궘?젣
+5. LOC_REMOVE(LRM)?뿉 ?궘?젣?맂 怨듦컙?쑝濡? INSERT
+6. ?솚?쟾怨꾩쥖?뿉?꽌 ?빐?떦 怨꾩쥖?젙蹂? DELETE
+7. HOST_BANK_INFO?뿉?꽌 ?빐?떦 ?쉶?썝肄붾뱶?쓽 怨꾩쥖?젙蹂? DELETE
+8. HOST_PROFILE?뿉?꽌 ?빐?떦 ?쉶?썝肄붾뱶?씤 ?쉶?썝?젙蹂? DELETE
+9. HOST_WITHDRAW(HW) ?뿉 ?빐?떦 ?쉶?썝肄붾뱶 ?쉶?썝 INSERT
+
+*/
+
+--?쁾 ?샇?뒪?듃 ?궘?젣 ?닚?꽌
+
+--?뿃 ?빐?떦 怨듦컙?쓽 ?삁?빟?궡?뿭 ?솗?씤
+SELECT B.BOOK_CODE, AP.APPLY_PACKAGE_CODE, AP.APPLY_DATE
+, P.PACKAGE_CODE, PF.LOC_CODE, L.HOST_CODE
+FROM BOOK_LIST B
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+JOIN PACKAGE_FORM PF
+ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+JOIN LOC L
+ON PF.LOC_CODE = L.LOC_CODE
+WHERE AP.APPLY_DATE > SYSDATE AND L.HOST_CODE='H000003';
+-->
+SELECT COUNT(*) AS COUNT FROM BOOK_LIST B JOIN APPLY_PACKAGE AP ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE JOIN PACKAGE P ON AP.PACKAGE_CODE = P.PACKAGE_CODE JOIN PACKAGE_FORM PF ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE JOIN LOC L ON PF.LOC_CODE = L.LOC_CODE WHERE AP.APPLY_DATE > SYSDATE AND L.HOST_CODE='H000001'
+;
+
+-- 留덉씪由ъ? ?궡?뿭 ?솗?씤
+/*
+?씠?슜?옄媛? ?삁?빟?쓣 痍⑥냼?븷 寃쎌슦, ?빐?떦 ?띁?꽱?듃留뚰겮 李④컧?맂 媛?寃⑹씠
+?샇?뒪?듃?뿉寃? ?뱾?뼱?삩?떎. [?젙?궛 ?궡?뿭 ?뀒?씠釉붿? 洹? ?띁?꽱?듃瑜? ?씠誘? 李④컧?븳 湲덉븸?엫.] 
+
+------------------------------
+    ?젙?궛 ?궡?뿭(?샇?뒪?듃)           CAL ?뀒?씠釉? 
+-   留덉씪由ъ? ?솚?쟾 ?궡?뿭(?샇?뒪?듃)  HOST_EXCHANGE_LIST ?뀒?씠釉? HE
+-----------------------------------
+*/
+
+-- ?샇?뒪?듃 ?젙?궛 ?궡?뿭?뿉?꽌 媛?寃? 媛??졇?삤湲?
+SELECT NVL(SUM(P.PACKAGE_PRICE), 0) AS PACKAGE_PRICE
+FROM CAL C 
+JOIN BOOK_LIST B
+ON C.BOOK_CODE = B.BOOK_CODE
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+WHERE HOST_CODE='H000001';
+
+
+-- ?솚?쟾 ?궡?뿭 
+SELECT NVL(SUM(HOST_EXCHANGE_AMOUNT), 0) AS HOST_EXCHANGE_AMOUNT
+FROM HOST_EXCHANGE_LIST
+WHERE HOST_CODE='H000001';
+
+--?뿃 ?샇?뒪?듃 留덉씪由ъ? ?옍?븸 援ы븯湲?
+SELECT
+(SELECT NVL(SUM(P.PACKAGE_PRICE), 0)
+FROM CAL C 
+JOIN BOOK_LIST B
+ON C.BOOK_CODE = B.BOOK_CODE
+JOIN APPLY_PACKAGE AP
+ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+JOIN PACKAGE P
+ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+WHERE HOST_CODE='H000003'
+)
+-
+(SELECT NVL(SUM(HOST_EXCHANGE_AMOUNT), 0)
+FROM HOST_EXCHANGE_LIST
+WHERE HOST_CODE='H000003'
+) AS MILEAGE
+FROM DUAL;
+
+--?뿃 硫ㅻ쾭?봽濡쒗븘 ?뀒?씠釉붿뿉 ?엳?뒗吏? ?솗?씤 ?넂 ?뾾?쑝硫? ?벑濡앺븯吏? ?븡?? 硫ㅻ쾭
+SELECT COUNT(*) AS COUNT
+FROM HOST_PROFILE
+WHERE HOST_CODE = 'H000009';
+-->
+SELECT COUNT(*) AS COUNT FROM HOST_PROFILE WHERE HOST_CODE = 'H000009'
+;
+
+-- !! ?뿬?윭媛?] LOC ?뀒?씠釉붿뿉?꽌 ?빐?떦 ?쉶?썝肄붾뱶?쓽 怨듦컙肄붾뱶 李얘린
+SELECT LOC_CODE
+FROM LOC
+WHERE HOST_CODE = 'H000006';
+-->
+SELECT LOC_CODE FROM LOC WHERE HOST_CODE = 'H000004'
+;
+
+--?뿃 諛쏆븘?삩 怨듦컙肄붾뱶?뱾濡? LOC_CONTACT?뿉?꽌 ?뿰?씫泥? ?궘?젣
+DELETE LOC_CONTACT WHERE LOC_CODE IN (SELECT LOC_CODE FROM LOC WHERE HOST_CODE = 'H000004')
+;
+
+--?뿃 諛쏆븘?삩 怨듦컙肄붾뱶?뱾濡? BIZ_INFO?뿉?꽌 ?궗?뾽?옄?젙蹂? ?궘?젣
+DELETE BIZ_INFO WHERE LOC_CODE IN (SELECT LOC_CODE FROM LOC WHERE HOST_CODE = 'H000004')
+;
+
+--?뿃 LOC_REMOVE(LRM)?뿉 ?궘?젣?맂 怨듦컙?쑝濡? INSERT (?뿬?윭踰? ?빐以섏빞?븿 )
+CALL PRC_DEL_LOC_INSERT('H000006')
+;
+--INSERT INTO LOC_REMOVE(LOC_REMOVE_CODE, LOC_CODE, LOC_REMOVE_DATE)
+--VALUES(F_CODE('LRM', LRM_SEQ.NEXTVAL), 'L000001', SYSDATE);
+
+
+-- !! ?뿬?윭媛?] 怨꾩쥖?젙蹂? ?엳?뒗吏? ?솗?씤 (HOST_BANK_INFO)
+SELECT HOST_BANK_NUMBER, HOST_CODE
+FROM HOST_BANK_INFO
+WHERE HOST_CODE='H000004';
+--> 
+SELECT HOST_BANK_NUMBER FROM HOST_BANK_INFO WHERE HOST_CODE='H000004'
+;
+-- ?뿬湲곗꽌 HOST_BANK_NUMBER 諛쏆븘?샂
+
+--?뿃 ?솚?쟾怨꾩쥖?뿉?꽌 ?빐?떦 怨꾩쥖?젙蹂? DELETE
+DELETE 
+FROM HOST_EXCHANGE_BANK_INFO
+WHERE HOST_BANK_NUMBER IN (SELECT HOST_BANK_NUMBER FROM HOST_BANK_INFO WHERE HOST_CODE='H000001');
+-->
+DELETE FROM HOST_EXCHANGE_BANK_INFO WHERE HOST_BANK_NUMBER IN (SELECT HOST_BANK_NUMBER FROM HOST_BANK_INFO WHERE HOST_CODE='H000001')
+;
+
+--?뿃 HOST_BANK_INFO?뿉?꽌 怨꾩쥖踰덊샇 ?궘?젣
+DELETE FROM HOST_BANK_INFO WHERE HOST_CODE='H000004';
+
+--?뿃 HOST_PROFILE?뿉?꽌 ?샇?뒪?듃踰덊샇 ?궘?젣 
+DELETE FROM HOST_PROFILE WHERE HOST_CODE='H000004';
+
+--?뿃 ?깉?눜 ?뀒?씠釉? INSERT 
+INSERT INTO HOST_WITHDRAW(HOST_WITHDRAW_CODE, HOST_CODE, HOST_WITHDRAW_DATE) 
+VALUES(F_CODE('HW', HW_SEQ.NEXTVAL), 'H000002' ,SYSDATE);
+--> ?븳以?
+INSERT INTO HOST_WITHDRAW(HOST_WITHDRAW_CODE, HOST_CODE, HOST_WITHDRAW_DATE) VALUES(F_CODE('HW', HW_SEQ.NEXTVAL), 'H000002' ,SYSDATE)
+;
+
+----------------------------------------------------------------------------------------------
+/*
+*locationDetail 3
+?뿈
+1. 怨듦컙?뀒?씠釉붿뿉?꽌 ?삁?빟?븷 怨듦컙?쓽 ?젙蹂대?? 議고쉶?븯?뒗 荑쇰━臾?
+   1-1. 怨듦컙?냼媛? : (?씠?슜?븞?궡?뀒?씠釉?) ?쁺?뾽?떆媛?, ?젙湲고쑕臾댁씪, 吏??젙?쑕臾댁씪
+   1-2. ?떆?꽕?븞?궡 : (?떆?꽕?븞?궡?뀒?씠釉?) ?떆?꽕?븞?궡?궡?슜
+   1-3. 二쇱쓽?궗?빆 : 二쇱쓽?궗?빆.二쇱쓽?궗?빆 ?궡?슜
+   1-4. ?뙣?궎吏? : ?쁽?옱 ?쟻?슜?맂 ?뙣?궎吏? 醫낅쪟, 醫낅쪟?뿉?뵲?씪 ?쟻?슜?맂 ?궇吏?
+2. ?빐?떦 怨듦컙?쓽 由щ럭瑜? 議고쉶?븯?뒗 荑쇰━臾?
+   (?룊?젏, 由щ럭?궡?슜, 由щ럭?옉?꽦?씪?옄, ?땳?꽕?엫, [?쉶?썝肄붾뱶])
+   2-1. ?씠誘몄?媛? ?엳?뒗 寃쎌슦 ?씠誘몄??뀒?씠釉붿쓣 ?넻?빐 議고쉶
+   2-2. ?궘?젣?궡?뿭?씠 ?엳?뒗 寃쎌슦 ?궘?젣?맂 寃뚯떆臾쇰줈 ?븞?궡?븯?뒗 釉붾씪?씤?뱶 泥섎━
+3. ?빐?떦 怨듦컙?쓽 Q&A瑜? 議고쉶?븯?뒗 荑쇰━臾?
+   3-1. ?궘?젣?궡?뿭?씠 ?엳?뒗 寃쎌슦 ?궘?젣?맂 寃뚯떆臾쇰줈 ?븞?궡?븯?뒗 釉붾씪?씤?뱶 泥섎━	
+4. ?빐?떦 由щ럭?쓽 由щ럭?떟湲??쓣 議고쉶?븯?뒗 荑쇰━臾?
+   4-1. ?궘?젣?궡?뿭?씠 ?엳?뒗 寃쎌슦 ?궘?젣?맂 寃뚯떆臾쇰줈 ?븞?궡?븯?뒗 釉붾씪?씤?뱶 泥섎━
+5. ?빐?떦 Q&A?쓽 Q&A?떟湲??쓣 議고쉶?븯?뒗 荑쇰━臾? 
+   5-1. ?궘?젣?궡?뿭?씠 ?엳?뒗 寃쎌슦 ?궘?젣?맂 寃뚯떆臾쇰줈 ?븞?궡?븯?뒗 釉붾씪?씤?뱶 泥섎━
+
+?솯
+1. ?떟湲??씠 議댁옱?븯?뒗 寃쎌슦 洹? ?떟湲??씠 李몄“?븯怨? ?엳?뒗 由щ럭, Q&A 諛묒뿉 ?삱 ?닔 ?엳?룄濡? ?븳?떎.
+2. 吏??룄 API
+3. 由щ럭, Q&A 紐⑸줉 ?깮?꽦?떆 ?쁽?옱 ?꽭?뀡?쓽 ?쉶?썝 肄붾뱶媛? 媛숈쓣 寃쎌슦 ?닔?젙 諛? ?궘?젣 踰꾪듉?쓣 ?솢?꽦?솕 ?떆?궓?떎.
+4. 由щ럭?뒗 ?븳踰덈쭔 ?옉?꽦?씠 媛??뒫?븯?떎. ?쁽?옱 ?꽭?뀡怨? 媛숈? ?쉶?썝肄붾뱶?쓽 由щ럭媛? 議댁옱?븯?뒗 寃쎌슦?뒗 
+?씠誘? ?옉?꽦?븳 ?씠?젰?씠 ?엳?떎?뒗 寃껋쑝濡? ?썑湲? ?옉?꽦?씠 遺덇??뒫?븯?떎.  
+5. ?삁?빟?꽑?깮?뿉?꽌 ?궇吏쒕?? ?늻瑜대㈃(?뙣?궎吏? ?쟻?슜?맂 ?궇吏쒕쭔 ?솢?꽦?솕) ?빐?떦 ?궇吏쒖뿉 
+?엳?뒗 ?뙣?궎吏??뱾?씠 ?씪?뵒?삤 諛뺤뒪 ?삎?떇?쑝濡? 蹂댁뿬吏?怨? ?씪?뵒?삤 踰꾪듉?쓣 ?겢由??븯硫? 寃곗젣媛? 媛??뒫
+*/
+
+SELECT *
+FROM LOC_BASIC_INFO;
+
+--?뿃 湲곕낯?젙蹂? -- ?벑濡앹셿猷뚮맂 怨듦컙?뱾?씠 ?뼚?빞?븿
+SELECT LB.LOC_NAME, LT.LOC_TYPE
+, LB.LOC_SHORT_INTRO, LB.LOC_INTRO
+, LB.LOC_ADDR, LB.LOC_DETAIL_ADDR
+, LD.MIN_PEOPLE, LD.MAX_PEOPLE
+, L.LOC_REG_DATE, H.HOST_NICKNAME
+FROM LOC_BASIC_INFO LB
+JOIN LOC_TYPE LT 
+ON LB.LOC_TYPE_CODE = LT.LOC_TYPE_CODE
+    JOIN LOC_DETAIL_INFO LD
+    ON LB.LOC_CODE = LD.LOC_CODE
+        JOIN LOC L
+        ON LB.LOC_CODE = L.LOC_CODE
+            JOIN HOST_PROFILE H
+            ON L.HOST_CODE = H.HOST_CODE;
+--> 酉곕줈 ?옉?뾽
+SELECT LOC_NAME, LOC_TYPE, LOC_SHORT_INTRO, LOC_INTRO
+, LOC_ADDR, LOC_DETAIL_ADDR, MIN_PEOPLE, MAX_PEOPLE
+, LOC_REG_DATE, HOST_NICKNAME, HOST_CODE
+FROM VIEW_BASIC_INFO
+WHERE LOC_CODE = 'L000001';
+
+SELECT *
+FROM LOC;
+
+SELECT *
+FROM LOC_DETAIL_INFO;
+
+
+
+
+
+
+
+--?뿃 怨듦컙?냼媛? 
+SELECT LOC_USE_HOUR, LOC_USE_DAY_OFF, LOC_USE_APPOINT_DAY_OFF
+FROM LOC_USE_INFO
+WHERE LOC_CODE='L000001';
+--> 
+SELECT LOC_USE_HOUR, LOC_USE_DAY_OFF, LOC_USE_APPOINT_DAY_OFF, LOC_CODE
+FROM VIEW_USING_HOUR
+WHERE LOC_CODE='L000001';
+
+--?뿃 ?떆?꽕?븞?궡
+SELECT F.FACILITY_CODE, F.LOC_BASIC_INFO_CODE, F.FACILITY_CONTENT
+, L.LOC_CODE 
+FROM FACILITY_INFO F
+JOIN LOC_BASIC_INFO L
+ON F.LOC_BASIC_INFO_CODE = L.LOC_BASIC_INFO_CODE
+WHERE LOC_CODE='L000001';
+--> 酉?
+SELECT FACILITY_CONTENT FROM VIEW_FACILITY_INFO WHERE LOC_CODE='L000001'
+;
+
+
+--?뿃 二쇱쓽?궗?빆
+SELECT CAUTION_CONTENT
+FROM CAUTION C
+JOIN LOC_BASIC_INFO L
+ON C.LOC_BASIC_INFO_CODE = L.LOC_BASIC_INFO_CODE
+WHERE LOC_CODE='L000001';
+--> 酉?
+SELECT CAUTION_CONTENT FROM VIEW_CAUTION_CONTENT 
+WHERE LOC_CODE='L000001'
+;
+
+--?뿃 ?빐?떦 怨듦컙?뿉 ?쟻?슜?맂 ?뙣?궎吏? 
+--> 酉? ?깮?꽦
+SELECT LOC_CODE, PACKAGE_NAME, PACKAGE_START, PACKAGE_END
+, PACKAGE_PRICE, APPLY_DATE, APPLY_PACKAGE_CODE
+, COUNT
+FROM VIEW_APPLY_PACKAGE_INFO;
+WHERE LOC_CODE = 'L000006' AND APPLY_DATE='2021-02-02' AND COUNT=0;
+
+--?뿃 ?궗?뾽?옄?젙蹂?
+SELECT BIZ_NAME, BIZ_CEO, BIZ_CEO_TYPE,
+BIZ_MAIN_TYPE, BIZ_SUB_TYPE, BIZ_LICENSE_NUMBER
+FROM BIZ_INFO B
+WHERE LOC_CODE='L000001';
+    
+
+
+
+--?뿃 QNA 議고쉶
+SELECT Q.LOC_CODE, Q.QNA_CODE, Q.MEMBER_CODE, Q.QNA_CONTENT, Q.QNA_DATE
+, NVL(M.MEMBER_NICKNAME, '(?븣?닔?뾾?쓬)') AS MEMBER_NICKNAME
+, (SELECT COUNT(*) FROM QNA_REPLY QR WHERE Q.QNA_CODE=QR.QNA_CODE) AS REPLYCOUNT
+, (SELECT COUNT(*) FROM QNA_REMOVE QRM WHERE Q.QNA_CODE=QRM.QNA_CODE) AS QNAREMOVECOUNT
+, (SELECT COUNT(*) FROM QNA_REPLY_REMOVE QRM WHERE QR.QNA_REPLY_CODE=QRM.QNA_REPLY_CODE) AS QNAREPLYREMOVECOUNT
+, L.HOST_CODE, QR.QNA_REPLY_CONTENT, QR.QNA_REPLY_DATE, L.HOST_CODE, QR.QNA_REPLY_CODE
+FROM QNA Q
+LEFT JOIN MEMBER_PROFILE M      -- LEFT 議곗씤 ?빐?빞 ?깉?눜?쉶?썝?씠由? ?몴?떆媛??뒫
+ON Q.MEMBER_CODE = M.MEMBER_CODE
+    LEFT JOIN QNA_REPLY QR
+    ON Q.QNA_CODE = QR.QNA_CODE
+        JOIN LOC L
+        ON Q.LOC_CODE = L.LOC_CODE;
+--> 酉? 留뚮뱾湲?
+SELECT QNA_CODE, MEMBER_NICKNAME, QNA_CONTENT, QNA_DATE, MEMBER_CODE, REPLYCOUNT
+, QNAREMOVECOUNT, QNAREPLYREMOVECOUNT
+, HOST_CODE, QNA_REPLY_CONTENT, QNA_REPLY_DATE, QNA_REPLY_CODE
+FROM VIEW_QNA
+WHERE LOC_CODE='L000001';
+
+
+--?뿃 ?빐?떦 怨듦컙?쓽 q&a 媛??닔
+SELECT COUNT(*) AS COUNT FROM VIEW_QNA WHERE LOC_CODE='L000001'
+;
+
+
+--?뿃 QNA ?떟湲? 議고쉶
+SELECT QNA_REPLY_CONTENT, QNA_REPLY_DATE
+FROM QNA_REPLY QR;
+
+--?뿃 由щ럭 議고쉶
+SELECT R.REVIEW_CODE, NVL(M.MEMBER_NICKNAME, '(?븣?닔?뾾?쓬)') AS MEMBER_NICKNAME
+, R.LOC_CODE, R.REVIEW_RATE, R.REVIEW_CONTENT, R.REVIEW_DATE
+, RVIMG.REVIEW_IMG_URL
+, (SELECT COUNT(*) FROM REVIEW_IMG RVIMG
+    WHERE R.REVIEW_CODE=RVIMG.REVIEW_CODE) AS RVIMGCOUNT
+, (SELECT COUNT(*) FROM REVIEW_REMOVE RVRM 
+    WHERE R.REVIEW_CODE=RVRM.REVIEW_CODE) AS REVIEWREMOVECOUNT
+, (SELECT COUNT(*) FROM REVIEW_REPLY RR 
+    WHERE R.REVIEW_CODE=RR.REVIEW_CODE) AS REPLYCOUNT
+, (SELECT COUNT(*) FROM REVIEW_REPLY_REMOVE RRM 
+    WHERE RR.REVIEW_REPLY_CODE=RRM.REVIEW_REPLY_CODE) AS REPLYREMOVECOUNT
+, M.MEMBER_CODE, RR.REVIEW_REPLY_CONTENT, RR.REVIEW_REPLY_DATE, L.HOST_CODE
+, RR.REVIEW_REPLY_CODE
+FROM REVIEW R
+LEFT JOIN MEMBER_PROFILE M
+ON R.MEMBER_CODE = M.MEMBER_CODE
+    LEFT JOIN REVIEW_IMG RVIMG
+    ON R.REVIEW_CODE = RVIMG.REVIEW_CODE
+        LEFT JOIN REVIEW_REPLY RR
+        ON R.REVIEW_CODE = RR.REVIEW_CODE
+            JOIN LOC L
+            ON R.LOC_CODE = L.LOC_CODE
+ORDER BY R.REVIEW_DATE DESC;
+-->酉?
+SELECT REVIEW_CODE, MEMBER_NICKNAME, REVIEW_RATE, REVIEW_CONTENT, REVIEW_DATE
+, REVIEW_IMG_URL, RVIMGCOUNT, REVIEWREMOVECOUNT, REPLYCOUNT, REPLYREMOVECOUNT
+, MEMBER_CODE, REVIEW_REPLY_CONTENT, REVIEW_REPLY_DATE, HOST_CODE, REVIEW_REPLY_CODE
+FROM VIEW_REVIEW WHERE LOC_CODE='L000003'
+;
+
+
+--?뿃 ?빐?떦 怨듦컙?쓽 由щ럭 媛??닔
+SELECT * FROM VIEW_REVIEW WHERE LOC_CODE='L000001'
+;
+
+--?뿃 ?씠?슜?옄 : QnA ?옉?꽦
+INSERT INTO QNA(QNA_CODE, LOC_CODE, MEMBER_CODE, QNA_CONTENT, QNA_DATE)
+VALUES(F_CODE('Q', Q_SEQ.NEXTVAL), 'L000001' ,'M000001', '?엯?젰諛쏆? ?궡?슜 ?꽆湲곌린', SYSDATE)
+;
+
+--?뿃 ?씠?슜?옄 : QnA ?닔?젙?븷 ?궡?슜 媛??졇?삤湲?
+SELECT QNA_CODE, LOC_CODE, QNA_CONTENT
+FROM QNA
+WHERE QNA_CODE='Q000024';
+
+
+--?뿃 ?씠?슜?옄 : QnA ?닔?젙
+UPDATE QNA SET QNA_CONTENT = '?닔?젙?븳 肄섑뀗痢좎엯?땲?떎.', QNA_DATE=SYSDATE WHERE QNA_CODE = 'Q000001';
+;
+
+--?뿃 ?씠?슜?옄 : QnA ?궘?젣
+INSERT INTO QNA_REMOVE (QNA_REMOVE_CODE, QNA_CODE, QNA_REMOVE_DATE) VALUES(F_CODE('QRM', QRM_SEQ.NEXTVAL), 'Q000001', SYSDATE)
+;
+
+--?뿃 ?씠?슜?옄 ?씠?슜?궡?뿭?뿬遺? ?솗?씤(?썑湲곗옉?꽦 踰꾪듉 異쒕젰?뿬遺?)
+SELECT B.MEMBER_CODE, A.APPLY_PACKAGE_CODE, F.LOC_CODE
+, A.APPLY_DATE
+FROM BOOK_LIST B
+JOIN APPLY_PACKAGE A
+ON B.APPLY_PACKAGE_CODE = A.APPLY_PACKAGE_CODE
+    JOIN PACKAGE P
+    ON A.PACKAGE_CODE = P.PACKAGE_CODE
+        JOIN PACKAGE_FORM F
+        ON P.PACKAGE_FORM_CODE = F.PACKAGE_FORM_CODE
+WHERE NOT EXISTS (SELECT MCL.BOOK_CODE FROM MEMBER_CANCEL_LIST MCL);
+-- 酉? ?솗?씤
+SELECT COUNT(*) AS COUNT
+FROM VIEW_MEMBER_BOOK
+WHERE MEMBER_CODE='M000001';
+
+SELECT BOOK_CODE
+FROM MEMBER_CANCEL_LIST;
+
+
+-- 1. ?빐?떦 怨듦컙?뿉 ???빐 痍⑥냼?릺吏? ?븡?? ?삁?빟 ?슏?닔媛?... 1 ?씠?긽?씠怨? 
+-- 2. ?빐?떦 怨듦컙?뿉 ???빐 ?옉?꽦?븳 由щ럭媛쒖닔媛? ?삁?빟?슏?닔蹂대떎 ?옉?쑝硫?...!
+
+----------------------------------------------------------------------------------------------
+/*
+* bookApply 5
+?뿈
+1. 怨듦컙?뀒?씠釉붿뿉?꽌 ?삁?빟?븷 怨듦컙?쓽 ?젙蹂대?? 議고쉶?븯?뒗 荑쇰━臾?
+   1-1. 湲곕낯?꽕紐? : 怨듦컙?꽕紐?(怨듦컙?븳以꾩냼媛?), 怨듦컙?쑀?삎, ?삁?빟?씤?썝(理쒖냼,理쒕?)
+   1-2. ?삁?빟?젙蹂? : ?삁?빟?궇吏?(?쟻?슜?뙣?궎吏?.?쟻?슜?씪?옄), ?삁?빟?씤?썝(?쟾?럹?씠吏?濡쒕??꽣 諛쏆븘?샂)
+   1-3. ?삁?빟?옄?젙蹂? : (?뵒?뤃?듃媛믪쑝濡? ?븯?뒗寃쎌슦)?쉶?썝?젙蹂?(?씠由?, ?씠硫붿씪, ?뿰?씫泥?)
+   1-4. ?샇?뒪?듃?젙蹂? : 怨듦컙?긽?샇紐?, ???몴?옄紐?, ?냼?옱吏?, ?궗?뾽?옄踰덊샇, ?뿰?씫泥?(?씠硫붿씪, ?쑕???룿, ???몴?쟾?솕)
+   1-5. 二쇱쓽?궗?빆 : 二쇱쓽?궗?빆.二쇱쓽?궗?빆 ?궡?슜
+?솯
+1. ?삁?빟?옄?젙蹂대뒗 吏곸젒 ?엯?젰?룄 媛??뒫?븯吏?留? 泥댄겕 踰꾪듉?쓣 ?넻?빐 ?쁽?옱 濡쒓렇?씤?븳 ?쉶?썝?쓽 ?젙蹂대?? ?뵒?뤃?듃媛믪쑝濡? 諛쏆븘?삱 ?닔 ?엳?룄濡? 
+2. ?븘?닔?엯?젰?궗?빆 誘몄엯?젰, ?꽌鍮꾩뒪 ?룞?쓽瑜? ?븯吏? ?븡?쑝硫? 寃곗젣 遺덇??뒫
+*/
+
+
+--?뿃 ?삁?빟?옄?젙蹂?
+SELECT MEMBER_NAME, MEMBER_EMAIL, MEMBER_TEL, MEMBER_CODE, 
+FROM MEMBER_PROFILE;
+
+--?뿃 ?궗?뾽?옄?젙蹂?
+SELECT B.BIZ_NAME, B.BIZ_CEO, B.BIZ_CEO_TYPE,
+B.BIZ_MAIN_TYPE, B.BIZ_SUB_TYPE, B.BIZ_LICENSE_NUMBER
+, LC.LOC_EMAIL, LC.LOC_TEL, LC.LOC_MAIN_TEL
+, B.BIZ_ADDR, B.LOC_CODE
+FROM BIZ_INFO B
+    JOIN LOC_CONTACT LC
+    ON B.LOC_CODE = LC.LOC_CODE
+WHERE B.LOC_CODE='L000001';
+--
+SELECT LOC_CODE, BIZ_NAME, BIZ_CEO, BIZ_LICENSE_NUMBER
+, BIZ_ADDR, LOC_EMAIL, LOC_TEL, LOC_MAIN_TEL 
+FROM VIEW_BIZ_CONTACT
+WHERE LOC_CODE = 'L000001';
+
+--?뿃 硫ㅻ쾭 ?봽濡쒗븘 媛??졇?삤湲?
+SELECT MEMBER_CODE, MEMBER_NAME, MEMBER_TEL
+FROM MEMBER_PROFILE
+WHERE MEMBER_CODE='M000004';
+
+
+--?뿃 ?꽑?깮?븳 ?뙣?궎吏? ?젙蹂? 議고쉶(?뙣?궎吏?肄붾뱶 ?엯?젰?떆 ?솗?씤媛??뒫)
+SELECT PF.LOC_CODE, P.PACKAGE_CODE, P.PACKAGE_FORM_CODE, P.PACKAGE_NAME
+, P.PACKAGE_START, P.PACKAGE_END, P.PACKAGE_PRICE, AP.APPLY_DATE, AP.APPLY_PACKAGE_CODE
+FROM PACKAGE P
+JOIN PACKAGE_FORM PF
+ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+    JOIN APPLY_PACKAGE AP
+    ON P.PACKAGE_CODE = AP.PACKAGE_CODE;
+--> 酉곕줈 蹂닿린
+SELECT PACKAGE_NAME, APPLY_PACKAGE_CODE
+, PACKAGE_START, PACKAGE_END, PACKAGE_PRICE, APPLY_DATE
+, NVL(PACKAGE_END, 0) - NVL(PACKAGE_START, 0) AS HOURS
+FROM VIEW_APPLY_PACKAGE_INFO
+WHERE APPLY_PACKAGE_CODE = 'AP000004';
+
+
+--?뿃 留덉씪由ъ? ?엳?쑝硫? ?삁?빟 ?궡?뿭?뀒?씠釉? insert
+INSERT INTO BOOK_LIST (BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE
+, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ)
+VALUES(F_CODE('BC', BC_SEQ.NEXTVAL), 'M000001', 'AP000001', 3, SYSDATE, '?옒?빐二쇱꽭?슂');
+
+--?뿃 諛⑷툑 ?븳 ?삁?빟踰덊샇 媛??졇?샂
+SELECT BOOK_CODE
+FROM 
+(SELECT BOOK_CODE FROM BOOK_LIST WHERE MEMBER_CODE='M000001' ORDER BY BOOK_CODE DESC)
+WHERE ROWNUM=1;
+
+--?뿃 ?떎?삁?빟?옄 ?뀒?씠釉? insert
+INSERT INTO ACTUAL_BOOKER (ACTUAL_BOOKER_CODE, BOOK_CODE, ACTUAL_BOOKER
+, ACTUAL_BOOKER_TEL)
+VALUES(F_CODE('AB', AB_SEQ.NEXTVAL), 'BC000006', '吏꾩쭨?쁺??', '010-3690-7828');
+
+
+--?뿃 ?삁?빟寃곗젣?궡?뿭 ?뀒?씠釉? insert
+INSERT INTO BOOK_PAY_LIST(BOOK_PAY_CODE, BOOK_CODE, BOOK_PAY_DATE)
+VALUES(F_CODE('BP', BP_SEQ.NEXTVAL), 'BC000006', SYSDATE);
+
+
+--?뿃 留덉씪由ъ? ?뾾?쑝硫? 寃곗젣?럹?씠吏?濡? ?씠?룞
+
+insert into load_reg(load_reg_code, member_code, load_amount, load_reg_date)
+values(F_CODE('LR',LR_SEQ.NEXTVAL), 'M000002', '500000', SYSDATE);
+
+COMMIT;
+
+INSERT INTO LOAD_PROC(LOAD_PROC_CODE, LOAD_REG_CODE, LOAD_TYPE_CODE, LOAD_PROC_DATE)
+VALUES(F_CODE('LP', LP_SEQ.NEXTVAL), 'LR000008', 'LT000001', SYSDATE);
+
+update apply_package
+set 
+apply_date = to_date('2021-02-02', 'yyyy-mm-dd')
+where apply_package_code='AP000004';
+
+select *
+from book_list;
+
+EXEC PRC_BOOK_CODE_INSERT('M000002', '源??븘臾닿컻', '010-3690-7828');
+
+
+--------------------------------------------------------------------------------
+--?? BookApplyNotice.jsp
+/*
+寃곗젣?궡?뿭 ?솗?씤
+?삁?빟?옄紐?
+吏꾩쁺??
+?뿰?씫泥?
+010-1234-1234
+?씠硫붿씪
+papajon@lookation.com
+?씤?썝?닔
+3紐?
+?슂泥??궗?빆
+怨좏넻?쓣 硫덉떠二쇱꽭?슂
+寃곗젣湲덉븸
+200,000
+
+*/
+SELECT A.ACTUAL_BOOKER, A.ACTUAL_BOOKER_TEL, B.BOOK_PEOPLE, B.BOOK_DATE, B.BOOK_REQ
+, AP.APPLY_DATE, P.PACKAGE_NAME, P.PACKAGE_START, P.PACKAGE_END
+, P.PACKAGE_PRICE
+FROM BOOK_LIST B
+    JOIN ACTUAL_BOOKER A
+    ON B.BOOK_CODE = A.BOOK_CODE
+        JOIN APPLY_PACKAGE AP
+        ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+            LEFT JOIN PACKAGE P
+            ON AP.PACKAGE_CODE = P.PACKAGE_CODE;
+
+SELECT BOOK_CODE, ACTUAL_BOOKER, ACTUAL_BOOKER_TEL, BOOK_PEOPLE, BOOK_REQ
+, APPLY_DATE, PACKAGE_NAME, PACKAGE_START, PACKAGE_END
+, PACKAGE_PRICE
+FROM VIEW_BOOKAPPLYNOTICE
+WHERE BOOK_CODE = (SELECT BOOK_CODE
+                     FROM 
+                    (SELECT BOOK_CODE 
+                       FROM BOOK_LIST 
+                      WHERE MEMBER_CODE='M000005' 
+                   ORDER BY BOOK_CODE DESC)
+                   WHERE ROWNUM=1);
+                   
+                   
+/*
+* bookList 5
+?뿈
+1. ?삁?빟 ?뀒?씠釉? ?젙蹂대?? 議고쉶?븯?뒗 荑쇰━臾?
+   (?삁?빟肄붾뱶, ?삁?빟?옄紐?, 怨듦컙紐?, ?씪?옄, ?씤?썝?닔, 媛?寃?, ?슂泥??궗?빆, ?긽?깭)
+2. ?삁?빟痍⑥냼 ?겢由??떆 ?삁?빟痍⑥냼 ?뀒?씠釉붿뿉 ?뜲?씠?꽣 INSERT 荑쇰━臾? 
+?솯
+1. 寃??깋?? ?븷?븘?슂 ?뾾?쓬
+2. 理쒖떊 ?닚?쑝濡? ?젙?젹 ?븘?슂.
+3. 怨듦컙紐낆쓣 ?굹?삤寃? ?븯怨? ?긽?꽭蹂닿린 ?뙘?뾽?쑝濡?(?삁?빟?씤?썝?닔, ?슂泥??궗?빆, 媛?寃?)
+   ?굹癒몄?(?삁?빟肄붾뱶, ?삁?빟?옄紐?, ?삁?빟?쁽?솴, ?삁?빟痍⑥냼)?뒗 由ъ뒪?듃濡? 蹂댁뿬以?
+4. 痍⑥냼 ?겢由??떆 痍⑥냼?궗?쑀瑜? ?엯?젰?븯湲? ?쐞?븳 ?뙘?뾽李쎌씠 ?븘?슂
+
+
+*/
+
+-- ?삁?빟?궡?슜(?뙣?궎吏? ?궇吏?, ?떆媛? 珥? 紐뉗떆媛?) 怨듦컙紐? ?삁?빟?쁽?솴, 
+SELECT DISTINCT B.BOOK_CODE, B.MEMBER_CODE, A.APPLY_PACKAGE_CODE, F.LOC_CODE
+, TO_DATE(A.APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE, P.PACKAGE_CODE, P.PACKAGE_NAME
+, P.PACKAGE_START, P.PACKAGE_END
+, NVL(P.PACKAGE_END, 0) - NVL(P.PACKAGE_START, 0) AS BOOK_HOUR
+, (SELECT COUNT(*) FROM HOST_CANCEL_LIST HC WHERE B.BOOK_CODE = HC.BOOK_CODE) AS HOST_CANCEL
+, (SELECT COUNT(*) FROM MEMBER_CANCEL_LIST MC WHERE B.BOOK_CODE = MC.BOOK_CODE) AS MEMBER_CANCEL
+, (SELECT COUNT(*) FROM BOOK_REFUND_LIST BRF WHERE B.BOOK_CODE = BRF.BOOK_CODE) AS REFUND
+, LBIF.LOC_NAME, AB.ACTUAL_BOOKER, AB.ACTUAL_BOOKER_TEL
+, B.BOOK_PEOPLE, BOOK_DATE, BOOK_REQ, P.PACKAGE_PRICE
+, BZ.BIZ_NAME, BZ.BIZ_CEO, BIZ_LICENSE_NUMBER
+, MC.MEMBER_CANCEL_REASON, HC.HOST_CANCEL_REASON
+, MP.MEMBER_EMAIL, LBIF.LOC_ADDR, LBIF.LOC_DETAIL_ADDR
+, MP.MEMBER_NICKNAME
+FROM BOOK_LIST B
+JOIN APPLY_PACKAGE A
+ON B.APPLY_PACKAGE_CODE = A.APPLY_PACKAGE_CODE
+    JOIN PACKAGE P
+    ON A.PACKAGE_CODE = P.PACKAGE_CODE
+        JOIN PACKAGE_FORM F
+        ON P.PACKAGE_FORM_CODE = F.PACKAGE_FORM_CODE
+            JOIN REVIEW R
+            ON B.MEMBER_CODE = R.MEMBER_CODE
+                JOIN LOC_BASIC_INFO LBIF
+                ON F.LOC_CODE = LBIF.LOC_CODE
+                    JOIN ACTUAL_BOOKER AB
+                    ON B.BOOK_CODE=AB.BOOK_CODE
+                        JOIN BIZ_INFO BZ
+                        ON F.LOC_CODE = BZ.LOC_CODE
+                            LEFT JOIN HOST_CANCEL_LIST HC
+                            ON B.BOOK_CODE = HC.BOOK_CODE
+                                LEFT JOIN MEMBER_CANCEL_LIST MC
+                                ON B.BOOK_CODE = MC.BOOK_CODE
+                                    JOIN MEMBER_PROFILE MP
+                                    ON B.MEMBER_CODE = MP.MEMBER_CODE;
+--?뿃 ?궡?슜蹂닿린
+SELECT BOOK_CODE, MEMBER_CODE, APPLY_PACKAGE_CODE, LOC_CODE
+, APPLY_DATE, PACKAGE_CODE, PACKAGE_NAME
+, PACKAGE_START, PACKAGE_END
+, BOOK_HOUR, HOST_CANCEL, MEMBER_CANCEL, REFUND, LOC_NAME
+FROM VIEW_BOOKLIST
+WHERE MEMBER_CODE = 'M000001'
+ORDER BY APPLY_DATE;
+
+
+--?뿃 ?삁?빟?긽?꽭
+SELECT BOOK_CODE, MEMBER_CODE
+, APPLY_DATE, PACKAGE_NAME
+, PACKAGE_START, PACKAGE_END
+, BOOK_HOUR, HOST_CANCEL, MEMBER_CANCEL, REFUND, LOC_NAME
+, ACTUAL_BOOKER, ACTUAL_BOOKER_TEL
+, BOOK_PEOPLE, BOOK_DATE, BOOK_REQ, PACKAGE_PRICE
+, BIZ_NAME, BIZ_CEO, BIZ_LICENSE_NUMBER
+, MEMBER_CANCEL_REASON, HOST_CANCEL_REASON
+, MEMBER_EMAIL, LOC_ADDR, LOC_DETAIL_ADDR
+, MEMBER_NICKNAME
+FROM VIEW_BOOKLIST
+WHERE BOOK_CODE = 'BC000001';
+
+
+
+--?뿃 ?솚遺덇퀎?궛
+/*
+?씠?슜?떆?옉?씪?옄 4?씪 ?쟾?씠誘?濡?
+?삁?빟 媛?寃⑹쓽 50%?씤 100,000?썝?씠 留덉씪由ъ?濡? ?솚遺덈맗?땲?떎.
+*/
+--?뿃 痍⑥냼?뙘?뾽 ?솚遺? 怨꾩궛
+SELECT BOOK_CODE, BOOK_HOUR, LOC_NAME
+, APPLY_DATE, PACKAGE_START, PACKAGE_END
+, PACKAGE_PRICE
+, TO_DATE(APPLY_DATE, 'YYYY-MM-DD')- TRUNC(TO_DATE(SYSDATE, 'YYYY-MM-DD')) AS DAYS --0 ?씠硫? ?떦?씪// 痍⑥냼踰꾪듉 鍮꾪솢
+FROM VIEW_BOOKLIST;
+WHERE BOOK_CODE = 'BC000001';
+
+--?뿃 痍⑥냼踰꾪듉 ?겢由??떆 痍⑥냼?궡?뿭 異붽?
+INSERT INTO MEMBER_CANCEL_LIST (MEMBER_CANCEL_CODE, BOOK_CODE, MEMBER_CANCEL_REASON, MEMBER_CANCEL_DATE)
+VALUES(F_CODE('MC', MC_SEQ.NEXTVAL), 'BC000003', '?옒?뱾?뼱?꽌 ?븞媛덈엻?땲?떎', SYSDATE);
+
+--?뿃 ?삁?빟 ?솚遺? ?궡?뿭 異붽? 
+INSERT INTO BOOK_REFUND_LIST (BOOK_REFUND_CODE, BOOK_CODE, BOOK_REFUND_DATE)
+VALUES(F_CODE('BRF', BRF_SEQ.NEXTVAL), 'BC000003', SYSDATE);
+
+--?뿃 ?땳?꽕?엫 寃??깋
+SELECT MEMBER_NICKNAME
+FROM MEMBER_PROFILE
+WHERE MEMBER_CODE='M000002';
+
+
+--------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+--?뿃 userReviewList
+
+SELECT *
+FROM REVIEW;
+
+--?뿃 ?씠?슜?옄 : 由щ럭 ?옉?꽦
+INSERT INTO REVIEW(REVIEW_CODE, LOC_CODE, MEMBER_CODE, REVIEW_RATE, REVIEW_CONTENT, REVIEW_DATE)
+VALUES(F_CODE('RV', RV_SEQ.NEXTVAL), 'L000003', 'M000005', 3, '?뜲?씠?꽣踰좎씠?뒪濡? 由щ럭瑜? ?뜥遊낅땲?떎... ?슦?븯?븯', SYSDATE);
+
+
+--?뿃 ?씠?슜?옄 : 由щ럭 ?닔?젙?뤌 ?궡?슜 媛??졇?삤湲?
+SELECT REVIEW_CODE, LOC_CODE, REVIEW_CONTENT, REVIEW_RATE
+FROM REVIEW
+WHERE REVIEW_CODE='RV000001';
+
+--?뿃 ?씠?슜?옄 : 由щ럭 ?닔?젙
+UPDATE REVIEW
+SET REVIEW_RATE=4, REVIEW_CONTENT='?씠?젃寃?', REVIEW_DATE=SYSDATE
+WHERE REVIEW_CODE = 'RV000001';
+
+--?뿃 ?씠?슜?옄 : 由щ럭 ?궘?젣
+INSERT INTO REVIEW_REMOVE(REVIEW_REMOVE_CODE, REVIEW_CODE, REVIEW_REMOVE_DATE)
+VALUES(F_CODE('RVRM', RV_SEQ.NEXTVAL), 'RV000010', SYSDATE);
+
+
+--?뿃 ?샇?뒪?듃 : 由щ럭 ?떟湲? ?옉?꽦
+INSERT INTO REVIEW_REPLY (REVIEW_REPLY_CODE, REVIEW_CODE, REVIEW_REPLY_CONTENT, REVIEW_REPLY_DATE)
+VALUES(F_CODE('RVRE', RVRE_SEQ.NEXTVAL), 'RV000006', '而⑦뀗痢?', SYSDATE);
+
+--?뿃 ?샇?뒪?듃 : 由щ럭 ?닔?젙?뤌 遺덈윭?삤湲?
+SELECT REVIEW_REPLY_CODE, REVIEW_REPLY_CONTENT
+FROM REVIEW_REPLY
+WHERE REVIEW_REPLY_CODE='RVRE000001';
+
+--?뿃 ?샇?뒪?듃 : 由щ럭 ?떟湲? ?닔?젙
+UPDATE REVIEW_REPLY
+SET REVIEW_REPLY_CONTENT='?씠?젃寃?', REVIEW_REPLY_DATE=SYSDATE
+WHERE REVIEW_REPLY_CODE='RVRE000001';
+
+
+--?뿃 ?샇?뒪?듃 : 由щ럭?떟湲? ?궘?젣?떆
+INSERT INTO REVIEW_REPLY_REMOVE (REVIEW_REPLY_REMOVE_CODE, REVIEW_REPLY_CODE, REVIEW_REPLY_REMOVE_DATE)
+VALUES(F_CODE('RVRERM', RVRERM_SEQ.NEXTVAL), 'RVRE000004', SYSDATE);
+
+
+--?뿃 ?샇?뒪?듃 : QNA ?떟湲? ?옉?꽦
+INSERT INTO QNA_REPLY (QNA_REPLY_CODE, QNA_CODE, QNA_REPLY_CONTENT, QNA_REPLY_DATE)
+VALUES(F_CODE('QRE', QRE_SEQ.NEXTVAL), 'Q000001', '?떟湲? ?떟?땲?떎.', SYSDATE);
+
+
+--?뿃 ?샇?뒪?듃 : QNA ?닔?젙?뤌 遺덈윭?삤湲?
+SELECT QNA_REPLY_CODE, QNA_REPLY_CONTENT
+FROM QNA_REPLY
+WHERE QNA_REPLY_CODE ='QRE000001';
+
+--?뿃 ?샇?뒪?듃 : QNA ?떟湲? ?닔?젙
+UPDATE QNA_REPLY
+SET QNA_REPLY_CONTENT='?븞?뀞', QNA_REPLY_DATE=SYSDATE
+WHERE QNA_REPLY_CODE='QRE000001';
+
+
+--?뿃 ?샇?뒪?듃 : QNA ?떟湲? ?궘?젣
+INSERT INTO QNA_REPLY_REMOVE(QNA_REPLY_REMOVE_CODE, QNA_REPLY_CODE, QNA_REPLY_REMOVE_DATE)
+VALUES(F_CODE('QRERM', QRERM_SEQ.NEXTVAL), 'QRE000001', SYSDATE); 
+
+
+--?뿃 由щ럭 ?룊洹? 蹂꾩젏 援ы븯湲?
+SELECT ROUND(AVG(NVL(REVIEW_RATE, 0)), 2) AS AVGSTAR
+FROM REVIEW
+WHERE LOC_CODE='L000007';
+
+SELECT *
+FROM REVIEW;
+
+--------------------------------------------------------------------------------
+/*
+*userQnaList 6(X)
+?뿈
+1. ?씠?슜?옄媛? ?옉?꽦?븳 QnA瑜? 議고쉶?븯?뒗 荑쇰━臾?
+    (Q&A肄붾뱶, ?빐?떦怨듦컙紐?, ?궡?슜, ?옉?꽦?씪)
+   1-1. ?궘?젣?맂 QnA?? 議곗씤?븯?뿬 ?궘?젣?뿬遺?瑜? ?븣?닔 ?엳寃?
+2. ?궘?젣踰꾪듉 ?겢由??떆 ?궘?젣?궡?뿭?뿉 ?빐?떦 QnA肄붾뱶瑜? 李몄“?븯?뒗 ?뜲?씠?꽣瑜? INSERT
+?솯
+1. ?궘?젣?맂 Q&A 寃쎌슦?뿉?뒗 蹂댁뿬二쇱? ?븡?뒗?떎.
+2. ?궘?젣?떆?뿉?룄 ?븣由?
+*/
+
+--?뿃 ?씠?슜?옄媛? ?옉?꽦?븳 QnA
+SELECT Q.QNA_CODE, Q.LOC_CODE, Q.MEMBER_CODE
+, Q.QNA_CONTENT, Q.QNA_DATE, LBIF.LOC_NAME
+, (SELECT COUNT(*) FROM QNA_REMOVE QRM WHERE Q.QNA_CODE = QRM.QNA_CODE) AS REMOVECOUNT
+FROM QNA Q
+JOIN LOC L
+ON Q.LOC_CODE = L.LOC_CODE
+    JOIN LOC_BASIC_INFO LBIF
+    ON L.LOC_CODE = LBIF.LOC_CODE;
+    
+-- 酉곗뿉?꽌
+SELECT QNA_CODE, LOC_CODE, MEMBER_CODE
+, QNA_CONTENT, QNA_DATE, LOC_NAME
+, REMOVECOUNT
+FROM VIEW_USER_QNA
+WHERE MEMBER_CODE='M000002'
+ORDER BY QNA_CODE DESC;
+
+--?뿃 ?궘?젣踰꾪듉 ?겢由??떆 QNA REMOVE
+INSERT INTO QNA_REMOVE (QNA_REMOVE_CODE, QNA_CODE, QNA_REMOVE_DATE)
+VALUES(F_CODE('QRM', QRM_SEQ.NEXTVAL), 'Q000001', SYSDATE);
+
+--?뿃 ?쑀?? ?땳?꽕?엫 寃??깋
+SELECT MEMBER_NICKNAME
+FROM MEMBER_PROFILE
+WHERE MEMBER_CODE = 'M000002';
+
+
+--?뿃 ?씠?슜?옄媛? ?옉?꽦?븳 由щ럭
+SELECT R.REVIEW_CODE, R.MEMBER_CODE
+, R.REVIEW_CONTENT, R.REVIEW_RATE, R.REVIEW_DATE, LBIF.LOC_NAME
+, (SELECT COUNT(*) FROM REVIEW_REMOVE RVRM WHERE R.REVIEW_CODE = RVRM.REVIEW_CODE) AS REMOVECOUNT
+FROM REVIEW R
+JOIN LOC L
+ON R.LOC_CODE = L.LOC_CODE
+    JOIN LOC_BASIC_INFO LBIF
+    ON L.LOC_CODE = LBIF.LOC_CODE;
+-- 酉? ?옉?꽦
+SELECT REVIEW_CODE, MEMBER_CODE
+, REVIEW_CONTENT, REVIEW_RATE, REVIEW_DATE, LOC_NAME
+, REMOVECOUNT
+FROM VIEW_USER_REVIEW
+WHERE MEMBER_CODE = 'M000001';
+
+----------------------------------------------------------------------------------------------
+
+/*
+
+* hostAccountManager(?샇?뒪?듃?쉶?썝愿?由?) 7
+?뿈
+1. ?샇?뒪?듃 ?뀒?씠釉붾줈 遺??꽣 ?뜲?씠?꽣瑜? 議고쉶?븯?뒗 荑쇰━臾?
+   (?쉶?썝肄붾뱶, ?븘?씠?뵒, ?땳?꽕?엫, 釉붾옓?뿬遺?, [釉붾옓泥섎━?궗?쑀])
+   1-1. 釉붾옓由ъ뒪?듃 ?뀒?씠釉붿쓣 ?넻?빐 釉붾옓由ъ뒪?듃 ?뿬遺? ?솗?씤 ?븘?슂
+2. 釉붾옓由ъ뒪?듃 ?꽕?젙?떆 釉붾옓由ъ뒪?듃 ?뀒?씠釉붿뿉 INSERT?븯?뒗 荑쇰━臾?
+3. 釉붾옓由ъ뒪?듃 ?빐?젣?떆 釉붾옓由ъ뒪?듃 ?뀒?씠釉붿뿉?꽌 DELETE?븯?뒗 荑쇰━臾?
+4. ?떊怨좊궡?뿭(怨듦컙) ?뀒?씠釉붾줈 遺??꽣 ?뜲?씠?꽣瑜? 議고쉶?븯?뒗 荑쇰━臾?
+   (?떊怨좎씪?옄, ?떊怨좎궗?쑀, ?떊怨좎쿂由ъ긽?깭, ?떊怨좎쑀?삎) 
+
+?솯
+1. ?떊怨좊궡?뿭 踰꾪듉?늻瑜대㈃ 紐⑤뱺 ?떊怨좊궡?뿭?씠 ?뙘?뾽李쎌쑝濡? ?굹???빞?븿.
+2. 釉붾옓由ъ뒪?듃 ?꽕?젙?떆 ?뙘?뾽李쎌쑝濡? ?궗?쑀瑜? ?쟻?쓣 ?닔 ?엳寃?, ?빐?젣?떆?뿉?뒗 ?븣由쇱쑝濡? ?떎?떆?븳踰? ?솗?씤
+*/
+
+--?뿃 ?샇?뒪?듃 釉붾옓由ъ뒪?듃 ?솗?씤?븯?뒗 荑쇰━
+SELECT H.HOST_EMAIL, H.HOST_NICKNAME
+, HB.HOST_BLACKLIST_REASON
+, (SELECT COUNT(*) FROM HOST_BLACKLIST HB 
+    WHERE H.HOST_EMAIL=HB.HOST_EMAIL) AS YESBLACK
+FROM HOST_PROFILE H
+    LEFT JOIN HOST_BLACKLIST HB
+    ON H.HOST_EMAIL = HB.HOST_EMAIL;
+-- 酉?
+SELECT HOST_CODE, HOST_EMAIL, HOST_NICKNAME
+, HOST_BLACKLIST_REASON, YESBLACK
+FROM VIEW_HOSTBLACKLIST;
+
+
+--?뿃 ?샇?뒪?듃 釉붾옓由ъ뒪?듃 ?꽕?젙?떆 釉붾옓由ъ뒪?듃 ?뀒?씠釉? INSERT
+SELECT HOST_EMAIL
+FROM HOST_PROFILE
+WHERE HOST_CODE = 'H000001';
+
+INSERT INTO HOST_BLACKLIST(HOST_EMAIL, HOST_BLACKLIST_REASON, HOST_BLACKLIST_DATE)
+VALUES('good1@test.com', '?궗?쑀?씪?꽭', SYSDATE);
+
+-- ?뿃 釉붾옓由ъ뒪?듃 ?빐?젣?떆 DELETE
+DELETE 
+FROM HOST_BLACKLIST
+WHERE HOST_EMAIL = 'good1@test.com';
+
+
+--?뿃 ?샇?뒪?듃 ?떊怨좊궡?뿭 ?뙘?뾽
+-- ?떊怨좏슏?닔, ?쉶?썝肄붾뱶, ?떊怨좎퐫?뱶, ?떊怨좎쑀?삎,?떊怨좎궗?쑀,?떊怨좎씪?옄
+SELECT H.HOST_CODE, L.LOC_CODE, LR.LOC_REPORT_CODE
+, LR.MEMBER_CODE, LR.LOC_REPORT_REASON, LR.LOC_REPORT_DATE
+, LRPT.LOC_REPORT_TYPE, RPPT.REPORT_PROC_TYPE
+FROM HOST H
+LEFT JOIN LOC L
+ON H.HOST_CODE = L.HOST_CODE
+    JOIN LOC_REPORT LR
+    ON L.LOC_CODE = LR.LOC_CODE
+        JOIN LOC_REPORT_TYPE LRPT
+        ON LR.LOC_REPORT_TYPE_CODE=LRPT.LOC_REPORT_TYPE_CODE
+            LEFT JOIN LOC_REPORT_PROC LRPP
+            ON LR.LOC_REPORT_CODE=LRPP.LOC_REPORT_CODE
+                LEFT JOIN REPORT_PROC_TYPE RPPT
+                ON LRPP.REPORT_PROC_TYPE_CODE=RPPT.REPORT_PROC_TYPE_CODE;
+
+-- 酉?
+SELECT HOST_CODE, LOC_CODE, LOC_REPORT_CODE
+, LOC_REPORT_REASON, LOC_REPORT_DATE
+, LOC_REPORT_TYPE, REPORT_PROC_TYPE
+FROM VIEW_HOST_REPORTDETAILS
+WHERE HOST_CODE ='H000007';
+/*
+
+* userAccountManager(?씠?슜?옄?쉶?썝愿?由?) 7
+?뿈
+1. ?씠?슜?옄 ?뀒?씠釉붾줈 遺??꽣 ?뜲?씠?꽣瑜? 議고쉶?븯?뒗 荑쇰━臾?
+   (?쉶?썝肄붾뱶, ?븘?씠?뵒, ?땳?꽕?엫, 釉붾옓?뿬遺?, [釉붾옓泥섎━?궗?쑀])
+   1-1. 釉붾옓由ъ뒪?듃 ?뀒?씠釉붿쓣 ?넻?빐 釉붾옓由ъ뒪?듃 ?뿬遺? ?솗?씤 ?븘?슂
+2. 釉붾옓由ъ뒪?듃 ?꽕?젙?떆 釉붾옓由ъ뒪?듃 ?뀒?씠釉붿뿉 INSERT?븯?뒗 荑쇰━臾?
+3. 釉붾옓由ъ뒪?듃 ?빐?젣?떆 釉붾옓由ъ뒪?듃 ?뀒?씠釉붿뿉?꽌 DELETE?븯?뒗 荑쇰━臾?
+4. ?떊怨좊궡?뿭(?삁?빟) ?뀒?씠釉붾줈 遺??꽣 ?뜲?씠?꽣瑜? 議고쉶?븯?뒗 荑쇰━臾?
+   (?떊怨좎씪?옄, ?떊怨좎궗?쑀, ?떊怨좎쿂由ъ긽?깭, ?떊怨좎쑀?삎) 
+
+?솯
+1. ?떊怨좊궡?뿭 踰꾪듉?늻瑜대㈃ 紐⑤뱺 ?떊怨좊궡?뿭?씠 ?뙘?뾽李쎌쑝濡? ?굹???빞?븿.
+2. 釉붾옓由ъ뒪?듃 ?꽕?젙?떆 ?뙘?뾽李쎌쑝濡? ?궗?쑀瑜? ?쟻?쓣 ?닔 ?엳寃?, ?빐?젣?떆?뿉?뒗 ?븣由쇱쑝濡? ?떎?떆?븳踰? ?솗?씤
+
+* blacklistPopup.jsp 7
+
+* reportDetailPopupHost.jsp 7
+* reportDetailPopupUser.jsp 7
+
+*/
+
+--?뿃 ?씠?슜?옄 釉붾옓由ъ뒪?듃 ?뿬遺? ?솗?씤?븯?뒗 荑쇰━
+SELECT M.MEMBER_CODE, M.MEMBER_EMAIL, M.MEMBER_NICKNAME
+, MB.MEMBER_BLACKLIST_REASON
+, (SELECT COUNT(*) FROM MEMBER_BLACKLIST MB 
+    WHERE M.MEMBER_EMAIL=MB.MEMBER_EMAIL) AS YESBLACK
+FROM MEMBER_PROFILE M
+    LEFT JOIN MEMBER_BLACKLIST MB
+    ON M.MEMBER_EMAIL = MB.MEMBER_EMAIL;
+-- 酉?
+SELECT MEMBER_CODE, MEMBER_EMAIL, MEMBER_NICKNAME
+, MEMBER_BLACKLIST_REASON, YESBLACK
+FROM VIEW_MEMBERBLACKLIST;
+
+
+
+
+--?뿃 硫ㅻ쾭 釉붾옓由ъ뒪?듃 ?꽕?젙?떆 釉붾옓由ъ뒪?듃 ?뀒?씠釉? INSERT
+SELECT MEMBER_EMAIL
+FROM MEMBER_PROFILE
+WHERE MEMBER_CODE = 'M000001';
+
+INSERT INTO MEMBER_BLACKLIST(MEMBER_EMAIL, MEMBER_BLACKLIST_REASON, MEMBER_BLACKLIST_DATE)
+VALUES('test2@test.com', '?궗?쑀?씪?꽭', SYSDATE);
+
+-- ?뿃 釉붾옓由ъ뒪?듃 ?빐?젣?떆 DELETE
+DELETE 
+FROM MEMBER_BLACKLIST
+WHERE MEMBER_EMAIL = 'test2@test.com';
+
+
+--?뿃 ?씠?슜?옄 ?떊怨좊궡?뿭 ?뙘?뾽
+-- ?쉶?썝肄붾뱶, ?떊怨좎퐫?뱶, ?떊怨좎쑀?삎,?떊怨좎궗?쑀,?떊怨좎씪?옄
+SELECT B.BOOK_REPORT_CODE, B.BOOK_CODE, BR.BOOK_REPORT_TYPE
+, B.BOOK_REPORT_REASON, B.BOOK_REPORT_DATE, BL.MEMBER_CODE
+FROM BOOK_REPORT B
+JOIN BOOK_REPORT_TYPE BR
+ON B.BOOK_REPORT_TYPE_CODE = BR.BOOK_REPORT_TYPE_CODE
+    LEFT JOIN BOOK_REPORT_PROC BRP
+    ON B.BOOK_REPORT_CODE = BRP.BOOK_REPORT_CODE
+        JOIN BOOK_LIST BL
+        ON B.BOOK_CODE = BL.BOOK_CODE;
+
+-- 酉?
+SELECT BOOK_REPORT_CODE, BOOK_CODE, BOOK_REPORT_TYPE
+, BOOK_REPORT_REASON, BOOK_REPORT_DATE, MEMBER_CODE
+FROM VIEW_MEMBER_REPORTDETAILS
+WHERE MEMBER_CODE = 'M000001';
+
+
+----------------------------------------------------------------------------------------------
+SELECT *
+FROM HOST_MSG_INFO;
+
+-- ?샇?뒪?듃 硫붿떊?? 議고쉶
+SELECT DISTINCT H.HOST_MSG_INFO_CODE, H.MSG_CODE
+, H.HOST_MSG_CONTENT, H.HOST_MSG_DATE
+, M.BOOK_CODE
+, AP.APPLY_DATE
+, B.MEMBER_CODE -- ?닔?떊?옄
+, M.MEMBER_NICKNAME
+, HP.HOST_CODE
+, HP.HOST_NICKNAME -- ?넚?떊?옄
+, (SELECT COUNT(*) FROM HOST_MSG_IMG HI
+    WHERE H.HOST_MSG_INFO_CODE = HI.HOST_MSG_INFO_CODE) AS H_IMGCOUNT
+, HI.HOST_MSG_IMG_URL
+FROM MSG M
+    JOIN HOST_MSG_INFO H
+    ON M.MSG_CODE = H.MSG_CODE
+        JOIN BOOK_LIST B
+        ON M.BOOK_CODE = B.BOOK_CODE
+            JOIN APPLY_PACKAGE AP
+            ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+                JOIN PACKAGE P
+                ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+                    JOIN PACKAGE_FORM PF
+                    ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+                        JOIN LOC L
+                        ON PF.LOC_CODE = L.LOC_CODE
+                            JOIN HOST_PROFILE HP
+                            ON L.HOST_CODE = HP.HOST_CODE
+                                JOIN MEMBER_PROFILE M  -- 硫ㅻ쾭?깉?눜?떆 ?븞蹂댁엫
+                                ON B.MEMBER_CODE = M.MEMBER_CODE
+                                    LEFT JOIN HOST_MSG_IMG HI
+                                    ON H.HOST_MSG_INFO_CODE = HI.HOST_MSG_INFO_CODE;
+
+
+
+-- 酉? ?옉?꽦
+SELECT HOST_MSG_INFO_CODE, MSG_CODE
+, HOST_MSG_CONTENT, HOST_MSG_DATE
+, HOST_CODE, HOST_NICKNAME
+, BOOK_CODE, APPLY_DATE
+, MEMBER_CODE, MEMBER_NICKNAME
+, H_IMGCOUNT, HOST_MSG_IMG_URL
+FROM VIEW_HOST_MESSENGER;
+
+
+-- 硫ㅻ쾭 ?엯?옣?뿉?꽌 硫붿떆吏? 議고쉶 
+SELECT MM.MEMBER_MSG_INFO_CODE, MM.MSG_CODE
+, MM.MEMBER_MSG_CONTENT, MM.MEMBER_MSG_DATE
+, M.BOOK_CODE
+, AP.APPLY_DATE
+, B.MEMBER_CODE -- ?넚?떊?옄
+, M.MEMBER_NICKNAME
+, HP.HOST_CODE
+, HP.HOST_NICKNAME -- ?넚?떊?옄
+, (SELECT COUNT(*) FROM MEMBER_MSG_IMG MI
+    WHERE MM.MEMBER_MSG_INFO_CODE = MI.MEMBER_MSG_INFO_CODE) AS M_IMGCOUNT
+, MI.MEMBER_MSG_IMG_URL
+FROM MEMBER_MSG_INFO MM
+    JOIN MSG M
+    ON MM.MSG_CODE = M.MSG_CODE
+        JOIN BOOK_LIST B
+        ON M.BOOK_CODE = B.BOOK_CODE
+            JOIN APPLY_PACKAGE AP
+            ON B.APPLY_PACKAGE_CODE = AP.APPLY_PACKAGE_CODE
+                JOIN PACKAGE P
+                ON AP.PACKAGE_CODE = P.PACKAGE_CODE
+                    JOIN PACKAGE_FORM PF
+                    ON P.PACKAGE_FORM_CODE = PF.PACKAGE_FORM_CODE
+                        JOIN LOC L
+                        ON PF.LOC_CODE = L.LOC_CODE
+                            JOIN HOST_PROFILE HP
+                            ON L.HOST_CODE = HP.HOST_CODE
+                                JOIN MEMBER_PROFILE M  -- 硫ㅻ쾭?깉?눜?떆 ?븞蹂댁엫
+                                ON B.MEMBER_CODE = M.MEMBER_CODE
+                                    LEFT JOIN MEMBER_MSG_IMG MI
+                                    ON MM.MEMBER_MSG_INFO_CODE = MI.MEMBER_MSG_INFO_CODE;
+
+--?뿃 硫붿떆吏? ?쟾泥? ?떎 蹂대뒗 酉?
+SELECT MSG_CODE, MSG_CONTENT, MSG_DATE
+, SENDER_CODE, SENDER
+, IMGCOUNT, MSG_IMG_URL
+, BOOK_CODE, APPLY_DATE, HORM
+FROM VIEW_MESSENGER;
+
+--?뿃 ?샇?뒪?듃 ?땳?꽕?엫 李얘린
+--?삁?빟肄붾뱶濡? ?꽌濡? ?땳 李얠븘蹂닿린 
+SELECT HOST_NICKNAME
+FROM VIEW_BOOK_NICKNAME
+WHERE BOOK_CODE='BC000001';
+
+--?뿃 硫붿떊??肄붾뱶 寃??깋
+SELECT MSG_CODE FROM ( SELECT ROWNUM, MSG_CODE
+FROM VIEW_MESSENGER
+WHERE BOOK_CODE='BC000001')
+WHERE ROWNUM <= 1;
+
+--?뿃 ?씠?슜?옄媛? 硫붿떆吏? ?쟾?넚?븯?뒗 寃쎌슦
+INSERT INTO MEMBER_MSG_INFO(MEMBER_MSG_INFO_CODE, MSG_CODE, MEMBER_MSG_CONTENT, MEMBER_MSG_DATE)
+VALUES(F_CODE('MMIF', MMIF_SEQ.NEXTVAL), 'MSG000001', '?뼱吏몄꽌!!', SYSDATE);
+
+--?뿃 ?씠?슜?옄媛? ?씠誘몄? ?쟾?넚?븯?뒗 寃쎌슦
+-- ?봽濡쒖떆?? 
+CALL PRC_M_MSG_IMG('BC000001', '?븞?깷');
+
+--------------------------------------------------------------------------------
+--?뿃 ?샇?뒪?듃 
+--?뿃 ?긽??諛? ?땳?꽕?엫 李얘린
+SELECT MEMBER_NICKNAME
+FROM VIEW_BOOK_NICKNAME
+WHERE BOOK_CODE='BC000001';
+
+--?뿃 硫붿떊??肄붾뱶 寃??깋
+SELECT MSG_CODE FROM ( SELECT ROWNUM, MSG_CODE
+FROM VIEW_MESSENGER
+WHERE BOOK_CODE='BC000001')
+WHERE ROWNUM <= 1;
+
+--?뿃 ?샇?뒪?듃媛? 硫붿떆吏? ?쟾?넚?븯?뒗 寃쎌슦
+INSERT INTO HOST_MSG_INFO(HOST_MSG_INFO_CODE, MSG_CODE, HOST_MSG_CONTENT, HOST_MSG_DATE)
+VALUES(F_CODE('HMIF', HMIF_SEQ.NEXTVAL), 'MSG000001', '?뼱吏몄꽌!!', SYSDATE);
+
+
+select *
+from view_messenger
+where book_code='BC000001';
+
+--?뿃 ?샇?뒪?듃媛? ?씠誘몄? ?쟾?넚?븯?뒗 寃쎌슦
+-- ?봽濡쒖떆?? 
+CALL PRC_H_MSG_IMG('BC000001', '?씠嫄? ?씠誘몄? 二쇱냼?슂!');
+
+SELECT * FROM MSG;
+
+SELECT * FROM REVIEW_IMG;
+
+
+INSERT INTO REVIEW_IMG(REVIEW_IMG_CODE, REVIEW_CODE, REVIEW_IMG_URL)
+VALUES(F_CODE('RVIMG', RVIMG_SEQ.NEXTVAL), 'RV000085', '뭐시기');
+
+ROLLBACK;
+SELECT REVIEW_CODE
+    FROM
+    (SELECT A.REVIEW_CODE, A.MEMBER_CODE
+    FROM REVIEW A
+    ORDER BY A.REVIEW_DATE DESC)
+    WHERE ROWNUM = 1 AND MEMBER_CODE='M000001';
+
+select * from member_profile;
+
+EXEC PRC_REVIEW_IMG('L000001', 'M000002', 4, '안녕하세용', 'too.png');
+
+select * from host_profile;
+
+select * from loc;
+
+select * from host_withdraw;

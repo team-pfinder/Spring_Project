@@ -1,0 +1,15 @@
+#호스팅 URL 
+
+이용자 사이트 :
+http://sb92120.cafe24.com/actions/membermain.action
+
+호스트 사이트 :
+http://sb92120.cafe24.com/actions/hostmain.action
+
+관리자 사이트 : 
+http://sb92120.cafe24.com/actions/adminloginform.action
+
+
+#깃허브 URL
+
+https://github.com/team-pfinder/Spring_Project
