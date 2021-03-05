@@ -439,13 +439,9 @@
          if(confirm("이 패키지 스케쥴로 저장하시겠습니까?"))
          {
             applyAjaxRequest();
-           
-            // 실제DB 처리 되는 동안 
-            // 페이지 새로고침이 되면 안되기 때문에
-            // 지연을 준다.
-            setTimeout(function() { 
-            	alert("성공적으로 저장되었습니다."); 
-            	$("#applyForm").submit();}, 2000); 
+            alert("성공적으로 저장되었습니다.");
+            // 새로고침
+            $("#applyForm").submit();
          }
       });
       
@@ -458,7 +454,7 @@
    // JSON을 이용해 적용된 패키지 정보를 컨트롤러로 전송한다.
    function applyAjaxRequest()
    {
-       var arrApply_code = new Array();
+      var arrApply_code = new Array();
       var arrCode = new Array();
       var arrDate = new Array();
       var arrState = new Array();
@@ -489,6 +485,7 @@
          url : 'packageapplyajax.action?loc_code=${loc_code}',
          dataType: 'json',
          data        : formData,
+         async       : false,
          success      : function(data) {result = data;}
       }); 
    }

@@ -1,5 +1,7 @@
 package com.lookation.dto;
 
+import java.util.ArrayList;
+
 public class LocationDTO
 {
 	// LOC
@@ -9,7 +11,6 @@ public class LocationDTO
 	private String loc_basic_info_code, loc_type_code, loc_type
 				 , loc_name, loc_short_intro, loc_intro
 				 , loc_addr, loc_detail_addr;
-	
 
 	// thumbnail info
 	private String thumbnail_code, thumbnail_url;

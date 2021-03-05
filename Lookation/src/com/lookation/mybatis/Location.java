@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.ILocationDAO;
-import com.lookation.dao.IPackageDAO;
 import com.lookation.dto.LocationDTO;
+import com.lookation.dto.TempLocationDTO;
 import com.lookation.util.FileManager;
-import com.lookation.util.LocationManager;
 import com.oreilly.servlet.MultipartRequest;
 
 @Controller
@@ -133,7 +132,22 @@ public class Location
 			
 			// 새로운 공간정보를 담기 위한 준비
 			// 임시 공간정보 초기화
-			LocationManager.init();
+			TempLocationDTO tmpLoc = new TempLocationDTO();
+			
+			// dao
+			ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+			LocationDTO dto = new LocationDTO();
+			
+			// 공간 생성 시작
+			dto.setHost_code(accountCode);
+			locDao.inputLoc(dto);	// loc_code set
+			
+			tmpLoc.setLoc_code(dto.getLoc_code());;
+			
+			session.removeAttribute("TempLocation");
+			session.setAttribute("TempLocation", tmpLoc);
+			
+			
 			
 			result = "signed";
 		}
@@ -183,8 +197,12 @@ public class Location
 				tmpPrecaution.add(precaution);
 			}
 			
-			LocationManager.setArrFacility(tmpFacility);
-			LocationManager.setArrPrecaution(tmpPrecaution);
+			TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
+			
+			tmpLoc.setArrFacility(tmpFacility);
+			tmpLoc.setArrPrecaution(tmpPrecaution);
+			
+			session.setAttribute("TempLocation", tmpLoc);
 			//
 			
 		    result = "signed";                                                                                
@@ -231,14 +249,57 @@ public class Location
 					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 				}
 				
-			 	LocationManager.setName(m.getParameter("inputLocName"));
-			 	LocationManager.setType(m.getParameter("inputLocType"));
-			 	LocationManager.setShortIntro(m.getParameter("inputShortIntro"));
-			 	LocationManager.setIntro(m.getParameter("inputIntro"));
-			 	LocationManager.setThumbnail(fileNames.get(0));
-			 	LocationManager.setAddress(m.getParameter("inputAddr"));
-			 	LocationManager.setDetailAddress(m.getParameter("inputDetailAddr"));
+				// dto
+				TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
+				
+				tmpLoc.setName(m.getParameter("inputLocName"));
+				tmpLoc.setType(m.getParameter("inputLocType"));
+				tmpLoc.setShortIntro(m.getParameter("inputShortIntro"));
+				tmpLoc.setIntro(m.getParameter("inputIntro"));
+				tmpLoc.setThumbnail(fileNames.get(0));
+				tmpLoc.setAddress(m.getParameter("inputAddr"));
+				tmpLoc.setDetailAddress(m.getParameter("inputDetailAddr"));
 			 	
+				session.setAttribute("TempLocation", tmpLoc);
+				
+				// dao
+				ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+				LocationDTO dto = new LocationDTO();
+				
+				dto.setLoc_code(tmpLoc.getLoc_code());
+				
+				// 1. 기본 정보
+		        dto.setLoc_type(tmpLoc.getType());
+		        dto.setLoc_name(tmpLoc.getName());
+		        dto.setLoc_short_intro(tmpLoc.getShortIntro());
+		        dto.setLoc_intro(tmpLoc.getIntro());
+		        dto.setLoc_addr(tmpLoc.getAddress());
+		        dto.setLoc_detail_addr(tmpLoc.getDetailAddress());
+		        
+		        locDao.inputBasicInfo(dto);	// loc_basic_info_code set
+		        
+		        // 1-1. 시설안내(기본정보)
+		        if(tmpLoc.getArrFacility() != null)
+		        {
+					for (String str : tmpLoc.getArrFacility())
+					{
+						dto.setFacility_content(str);
+						locDao.inputFacilityInfo(dto);
+					}
+		        }
+		        // 1-2. 주의사항(기본정보)
+		        if(tmpLoc.getArrPrecaution() != null)
+		        {	
+					for (String str : tmpLoc.getArrPrecaution())
+					{
+						dto.setCaution_content(str);
+						locDao.inputCaution(dto);
+					} 
+		        }
+		        // 1-3. 썸네일(기본정보)
+		        dto.setThumbnail_url(tmpLoc.getThumbnail());
+		        locDao.inputThumbnail(dto);
+	
 			} catch (Exception e)
 			{
 				System.out.println(e.toString());
@@ -276,11 +337,27 @@ public class Location
 			{
 				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 			}
-	
-			LocationManager.setEmail(request.getParameter("inputEmail"));
-			LocationManager.setTel(request.getParameter("inputContact"));
-			LocationManager.setMainTel(request.getParameter("inputMainContact"));
 			
+			TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
+
+			tmpLoc.setEmail(request.getParameter("inputEmail"));
+			tmpLoc.setTel(request.getParameter("inputContact"));
+			tmpLoc.setMainTel(request.getParameter("inputMainContact"));
+			
+			session.setAttribute("TempLocation", tmpLoc);
+			
+			// dao
+			ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+			LocationDTO dto = new LocationDTO();
+			
+			dto.setLoc_code(tmpLoc.getLoc_code());
+			
+			// 2. 연락처 정보
+			dto.setLoc_email(tmpLoc.getEmail());
+			dto.setLoc_tel(tmpLoc.getTel());
+			dto.setLoc_main_tel(tmpLoc.getMainTel());
+			
+			locDao.inputContact(dto);
 			
 		    result = "signed";                                                                                
 		}                                                                                   
@@ -325,15 +402,36 @@ public class Location
 					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 				}
 
+				TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
 				
-			 	LocationManager.setBizName(m.getParameter("inputBizName"));
-			 	LocationManager.setBizCeo(m.getParameter("inputBizCeo"));
-			 	LocationManager.setBizNum(m.getParameter("inputBizNum"));
-			 	LocationManager.setBizLicense(fileNames.get(0));
-			 	LocationManager.setBizCeoType(m.getParameter("inputBizCeoType"));
-			 	LocationManager.setBizMainType(m.getParameter("inputBizMainType"));
-			 	LocationManager.setBizSubType(m.getParameter("inputBizSubType"));
-	 			LocationManager.setBizAddresss(m.getParameter("inputAddr"));
+				tmpLoc.setBizName(m.getParameter("inputBizName"));
+				tmpLoc.setBizCeo(m.getParameter("inputBizCeo"));
+				tmpLoc.setBizNum(m.getParameter("inputBizNum"));
+				tmpLoc.setBizLicense(fileNames.get(0));
+				tmpLoc.setBizCeoType(m.getParameter("inputBizCeoType"));
+				tmpLoc.setBizMainType(m.getParameter("inputBizMainType"));
+				tmpLoc.setBizSubType(m.getParameter("inputBizSubType"));
+				tmpLoc.setBizAddresss(m.getParameter("inputAddr"));
+				
+				session.setAttribute("TempLocation", tmpLoc);
+			 	
+				// dao
+				ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+				LocationDTO dto = new LocationDTO();
+				
+				dto.setLoc_code(tmpLoc.getLoc_code());
+				
+				// 3. 사업자 정보
+			    dto.setBiz_name(tmpLoc.getBizName());
+			    dto.setBiz_ceo(tmpLoc.getBizCeo());
+			    dto.setBiz_license_url(tmpLoc.getBizLicense());
+			    dto.setBiz_ceo_type(tmpLoc.getBizCeoType());
+			    dto.setBiz_main_type(tmpLoc.getBizMainType());
+			    dto.setBiz_sub_type(tmpLoc.getBizSubType());
+			    dto.setBiz_addr(tmpLoc.getBizAddresss());
+			    dto.setBiz_license_number(tmpLoc.getBizNum());
+			    
+			    locDao.inputBizInfo(dto);
 			 	
 			} catch (Exception e)
 			{
@@ -380,10 +478,42 @@ public class Location
 					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 				}
 
-			 	LocationManager.setArrDetailImage(fileNames);
-			 	LocationManager.setMinPeople(m.getParameter("inputMinPeople"));
-			 	LocationManager.setMaxPeople(m.getParameter("inputMaxPeople"));
-			 	LocationManager.setWebUrl(m.getParameter("inputWebUrl"));
+				TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
+				
+				tmpLoc.setArrDetailImage(fileNames);
+				tmpLoc.setMinPeople(m.getParameter("inputMinPeople"));
+				tmpLoc.setMaxPeople(m.getParameter("inputMaxPeople"));
+				tmpLoc.setWebUrl(m.getParameter("inputWebUrl"));
+				
+				session.setAttribute("TempLocation", tmpLoc);
+				
+				// dao
+				ILocationDAO locDao = sqlSession.getMapper(ILocationDAO.class);
+				LocationDTO dto = new LocationDTO();
+				
+				dto.setLoc_code(tmpLoc.getLoc_code());
+				
+				// 4. 상세 정보
+			    dto.setMin_people(tmpLoc.getMinPeople());
+			    dto.setMax_people(tmpLoc.getMaxPeople());
+			    
+			    locDao.inputDetailInfo(dto);	// 상세정보코드 set
+			    
+
+			    // 4-1. 상세 이미지
+			    if(tmpLoc.getArrDetailImage() != null)
+		        {
+				    for (String str : tmpLoc.getArrDetailImage())
+					{
+						dto.setLoc_detail_img_url(str);
+						locDao.inputDetailImg(dto);
+					}
+		        }
+			    
+			    // 4-2. 웹 사이트
+			    dto.setLoc_web_url(tmpLoc.getWebUrl());
+			    locDao.inputLocWeb(dto);
+				
 	 			
 			} catch (Exception e)
 			{
@@ -423,11 +553,13 @@ public class Location
 				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 			}
 
-			//
-			LocationManager.setUsingHour(request.getParameter("inputUsingHour"));
-			LocationManager.setDayOff(request.getParameter("inputDayOff"));
-			LocationManager.setAppointDayOff(request.getParameter("inputAppointDayoff"));
-			//
+			TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
+			
+			tmpLoc.setUsingHour(request.getParameter("inputUsingHour"));
+			tmpLoc.setDayOff(request.getParameter("inputDayOff"));
+			tmpLoc.setAppointDayOff(request.getParameter("inputAppointDayoff"));
+			
+			session.setAttribute("TempLocation", tmpLoc);
 			
 		    result = "signed";                                                                                
 		}                                                                                   
@@ -437,103 +569,19 @@ public class Location
 		{
 		    return "redirect:loginform.action?identify=host";
 		}
-		
-		
-		// -------------------- 최종 입력 트랜잭션 수행 --------------------
+
 		ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
-        
         LocationDTO dto = new LocationDTO();
         
         // 공간
-        dto.setHost_code(accountCode);
+        TempLocationDTO tmpLoc = (TempLocationDTO)session.getAttribute("TempLocation");
         
-        dao.inputLoc(dto);	// loc_code set
-   
-
-        // 1. 기본 정보
-        dto.setLoc_type(LocationManager.getType());
-        dto.setLoc_name(LocationManager.getName());
-        dto.setLoc_short_intro(LocationManager.getShortIntro());
-        dto.setLoc_intro(LocationManager.getIntro());
-        dto.setLoc_addr(LocationManager.getAddress());
-        dto.setLoc_detail_addr(LocationManager.getDetailAddress());
+        dto.setLoc_code(tmpLoc.getLoc_code());
         
-        dao.inputBasicInfo(dto);	// loc_basic_info_code set
-        
-        // 1-1. 시설안내(기본정보)
-        
-        if(LocationManager.getArrFacility() != null)
-        {
-			for (String str : LocationManager.getArrFacility())
-			{
-				dto.setFacility_content(str);
-				dao.inputFacilityInfo(dto);
-			}
-        }
-
-		// 1-2. 주의사항(기본정보)
-        
-        if(LocationManager.getArrPrecaution() != null)
-        {	
-			for (String str : LocationManager.getArrPrecaution())
-			{
-				dto.setCaution_content(str);
-				dao.inputCaution(dto);
-			} 
-        }
-        // 1-3. 썸네일(기본정보)
-        dto.setThumbnail_url(LocationManager.getThumbnail());
-       
-        dao.inputThumbnail(dto);
-
-        
-		// 2. 연락처 정보
-		dto.setLoc_email(LocationManager.getEmail());
-		dto.setLoc_tel(LocationManager.getTel());
-		dto.setLoc_main_tel(LocationManager.getMainTel());
-		
-		dao.inputContact(dto);
-		
- 
-		// 3. 사업자 정보
-	    dto.setBiz_name(LocationManager.getBizName());
-	    dto.setBiz_ceo(LocationManager.getBizCeo());
-	    dto.setBiz_license_url(LocationManager.getBizLicense());
-	    dto.setBiz_ceo_type(LocationManager.getBizCeoType());
-	    dto.setBiz_main_type(LocationManager.getBizMainType());
-	    dto.setBiz_sub_type(LocationManager.getBizSubType());
-	    dto.setBiz_addr(LocationManager.getBizAddresss());
-	    dto.setBiz_license_number(LocationManager.getBizNum());
-	    
-	    dao.inputBizInfo(dto);
-	    
-	    
-	    // 4. 상세 정보
-	    dto.setMin_people(LocationManager.getMinPeople());
-	    dto.setMax_people(LocationManager.getMaxPeople());
-	    
-	    dao.inputDetailInfo(dto);	// 상세정보코드 set
-	    
-
-	    // 4-1. 상세 이미지
-	    if(LocationManager.getArrDetailImage() != null)
-        {
-		    for (String str : LocationManager.getArrDetailImage())
-			{
-				dto.setLoc_detail_img_url(str);
-				dao.inputDetailImg(dto);
-			}
-        }
-	    
-	    // 4-2. 웹 사이트
-	    dto.setLoc_web_url(LocationManager.getWebUrl());
-	    dao.inputLocWeb(dto);
-	    
-	    
 	    // 5. 이용 정보  
-	    dto.setLoc_use_hour(LocationManager.getUsingHour());
-	    dto.setLoc_use_day_off(LocationManager.getDayOff());
-	    dto.setLoc_use_appoint_day_off(LocationManager.getAppointDayOff());
+	    dto.setLoc_use_hour(tmpLoc.getUsingHour());
+	    dto.setLoc_use_day_off(tmpLoc.getDayOff());
+	    dto.setLoc_use_appoint_day_off(tmpLoc.getAppointDayOff());
 	    
 	    dao.inputUsingInfo(dto);
 	    
@@ -542,7 +590,6 @@ public class Location
 	    
 	    // 7. 검수 신청
 	    dao.inputInspectRegList(dto);  // set inspect_reg_code
-		
 		
 		return "redirect:locationlist.action";
 	}
@@ -554,7 +601,6 @@ public class Location
         // 쿼리문으로 db에 저장할 코드가 들어갈 위치
 
         ILocationDAO dao = sqlSession.getMapper(ILocationDAO.class);
-        
         LocationDTO dto = new LocationDTO();
    
 	    // -------------------- 수정 --------------------
@@ -564,7 +610,6 @@ public class Location
 		
 		// 기본 정보(썸네일)
 		dao.modifyThumbnail(dto);
-
 		// 기본 정보(시설안내)
 		dao.modifyFacilityInfo(dto);
 		
@@ -573,7 +618,6 @@ public class Location
 		
 		// 연락처 정보
 		dao.modifyContact(dto);
-
 		// 상세정보
 		dao.modifyDetailInfo(dto);
 		
@@ -679,7 +723,7 @@ public class Location
 			//ArrayList<String> fileNames = FileManager.getFileNames(m);
 			
 		 	//LocationManager.setThumbnail(fileNames.get(0));
-	        dto.setThumbnail_url(LocationManager.getThumbnail());
+	        //dto.setThumbnail_url(fileNames.get(0));
 			
 	        model.addAttribute("thumbnailList", locDao.selectThumbnail(dto));
 	        
@@ -722,7 +766,6 @@ public class Location
 		
 		String loc_code = request.getParameter("loc_code");
 		dto.setLoc_code(loc_code);
-
  	    // set한 공간코드를 기반으로 기본정보 조회 dao 호출, 확인(하나만)
  	    // System.out.println(dao.selectBasicInfo(dto).getLoc_basic_info_code());
  	    //-- LBIF000001
@@ -740,7 +783,6 @@ public class Location
  	    
  	    /*
  	    // 썸네일(기본정보)
-
  	    // 이미 기본정보코드 가 set 된 상태..
  	    // 바로 썸네일 조회 dao 호출하여 각 컬럼을 dto에 set
  	    
@@ -762,7 +804,6 @@ public class Location
  	    // 연락처 정보
  	    model.addAttribute("contact", dao.selectContact(dto));
  	    
-
  	    // 사업자 정보
  	    model.addAttribute("bizInfo", dao.selectBizInfo(dto));
  	    
@@ -795,13 +836,11 @@ public class Location
     	
     	// 기본 정보(주의사항)
     	dao.selectCaution();
-
     	// 연락처 정보
     	dao.selectContact();
     	
     	// 사업자 정보
     	dao.selectBizInfo();
-
     	// 상세정보
     	dao.selectDetailInfo();
     	
@@ -852,13 +891,13 @@ public class Location
 			try
 			{
 				MultipartRequest m = FileManager.upload(request, "images");
-				ArrayList<String> fileNames = FileManager.getFileNames(m);
+				//ArrayList<String> fileNames = FileManager.getFileNames(m);
 				
 				if (m.getParameter("inputLocName") == null
 				   //|| m.getParameter("inputLocType") == null
 				   || m.getParameter("inputShortIntro") == null
 				   || m.getParameter("inputIntro") == null
-				   || fileNames.get(0) == null
+				   //|| fileNames.get(0) == null
 				   || m.getParameter("inputAddr") == null
 				   || m.getParameter("inputDetailAddr") == null)
 				{
@@ -867,23 +906,14 @@ public class Location
 
 				// getParameter로 LocationManager에 set
 				
-			 	LocationManager.setName(m.getParameter("inputLocName"));
-			 	//LocationManager.setType(m.getParameter("inputLocType"));
-			 	LocationManager.setShortIntro(m.getParameter("inputShortIntro"));
-			 	LocationManager.setIntro(m.getParameter("inputIntro"));
-			 	LocationManager.setThumbnail(fileNames.get(0));
-			 	LocationManager.setAddress(m.getParameter("inputAddr"));
-			 	LocationManager.setDetailAddress(m.getParameter("inputDetailAddr"));
-			 	
-			 	
-		        
+
 		        // 1. 기본 정보
 		        //dto.setLoc_type(LocationManager.getType());
-		        dto.setLoc_name(LocationManager.getName());
-		        dto.setLoc_short_intro(LocationManager.getShortIntro());
-		        dto.setLoc_intro(LocationManager.getIntro());
-		        dto.setLoc_addr(LocationManager.getAddress());
-		        dto.setLoc_detail_addr(LocationManager.getDetailAddress());
+		        dto.setLoc_name(m.getParameter("inputLocName"));
+		        dto.setLoc_short_intro(m.getParameter("inputShortIntro"));
+		        dto.setLoc_intro(m.getParameter("inputIntro"));
+		        dto.setLoc_addr(m.getParameter("inputAddr"));
+		        dto.setLoc_detail_addr(m.getParameter("inputDetailAddr"));
 		        
 		        locDao.modifyBasicInfo(dto);	// loc_basic_info_code set
 		        /*
@@ -905,7 +935,6 @@ public class Location
 					dto.setFacility_content(str);
 					dao.inputFacilityInfo(dto);
 				}
-
 				// 1-2. 주의사항(기본정보)
 				for (String str : LocationManager.getArrPrecaution())
 				{
@@ -914,9 +943,8 @@ public class Location
 				}
 		        */
 		        // 1-3. 썸네일(기본정보)
-		        dto.setThumbnail_url(LocationManager.getThumbnail());
-		       
-		        locDao.modifyThumbnail(dto);
+		        //dto.setThumbnail_url(fileNames.get(0));
+		        //locDao.modifyThumbnail(dto);
 				
 			 	
 			} catch (Exception e)
@@ -1002,15 +1030,11 @@ public class Location
 			{
 				return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 			}
-	
-			LocationManager.setEmail(request.getParameter("inputEmail"));
-			LocationManager.setTel(request.getParameter("inputContact"));
-			LocationManager.setMainTel(request.getParameter("inputMainContact"));
 			
 			// 2. 연락처 정보
-			dto.setLoc_email(LocationManager.getEmail());
-			dto.setLoc_tel(LocationManager.getTel());
-			dto.setLoc_main_tel(LocationManager.getMainTel());
+			dto.setLoc_email(request.getParameter("inputEmail"));
+			dto.setLoc_tel(request.getParameter("inputContact"));
+			dto.setLoc_main_tel(request.getParameter("inputMainContact"));
 						
 			locDao.modifyContact(dto); //
 			
@@ -1067,25 +1091,21 @@ public class Location
 				}
 				
 			 	//LocationManager.setArrDetailImage(fileNames);
-			 	LocationManager.setMinPeople(m.getParameter("inputMinPeople"));
-			 	LocationManager.setMaxPeople(m.getParameter("inputMaxPeople"));
-			 	LocationManager.setWebUrl(m.getParameter("inputWebUrl"));
+
+				// 5. 상세 정보
+			 	dto.setMin_people(m.getParameter("inputMinPeople"));
+				dto.setMax_people(m.getParameter("inputMaxPeople"));
+				
+				// 5-1. 웹 사이트
+				dto.setLoc_web_url(m.getParameter("inputWebUrl"));
 	 			
 			} catch (Exception e)
 			{
 				System.out.println(e.toString());
 			}
 			//
-		    // 5. 상세 정보
-		    
-		    dto.setMin_people(LocationManager.getMinPeople());
-		    dto.setMax_people(LocationManager.getMaxPeople());
-		    
+		      
 		    locDao.modifyDetailInfo(dto);	// 상세정보코드 set
-		    
-		    
-		    // 5-1. 웹 사이트
-		    dto.setLoc_web_url(LocationManager.getWebUrl());
 		    locDao.modifyLocWeb(dto);
 			
 		    result = "signed";                                                                                
@@ -1132,10 +1152,6 @@ public class Location
 				{
 					return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
 				}
-				
-			LocationManager.setUsingHour(request.getParameter("inputUsingHour"));
-			LocationManager.setDayOff(request.getParameter("inputDayOff"));
-			LocationManager.setAppointDayOff(request.getParameter("inputAppointDayoff"));
 		    
 			} catch (Exception e)
 			{
@@ -1143,9 +1159,9 @@ public class Location
 			}
 		    
 		    // 7. 이용 정보  
-		    dto.setLoc_use_hour(LocationManager.getUsingHour());
-		    dto.setLoc_use_day_off(LocationManager.getDayOff());
-		    dto.setLoc_use_appoint_day_off(LocationManager.getAppointDayOff());
+		    dto.setLoc_use_hour(request.getParameter("inputUsingHour"));
+		    dto.setLoc_use_day_off(request.getParameter("inputDayOff"));
+		    dto.setLoc_use_appoint_day_off(request.getParameter("inputAppointDayoff"));
 		    
 		    locDao.modifyUsingInfo(dto);	
 		    

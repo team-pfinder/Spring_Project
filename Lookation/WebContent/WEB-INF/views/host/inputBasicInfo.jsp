@@ -97,8 +97,8 @@ ul.precautions-list > li {
 		setSelectFilter($('#inputLocType'), '공간 유형');
 		setInputLength($('#inputShortIntro'), '공간 한줄 소개', 2, 100);
 		setInputLength($('#inputIntro'), '공간 소개', 2, 1000);
-		setInputLength($('#inputFacility'), '시설 안내', 10, 50);
-		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 10, 50);
+		setInputLength($('#inputFacility'), '시설 안내', 5, 50);
+		setInputLength($('#inputPrecaution'), '예약 시 주의사항', 5, 50);
 
 		
 		// 썸네일 이미지 등록
