@@ -28,4 +28,4 @@
 * 진영은(yyeejj) : 예약 기능 및 관리 구현, 신고처리 구현, 공간상세보기 구현, 메신저 구현
 
 5. 시연 링크
-* https://youtu.be/hfX-UERC2o0
+* https://youtu.be/v0N15BSgZGU
