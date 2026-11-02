@@ -1,20 +1,60 @@
-/.metadata/
+# ============================================================
+# PFINDER / Lookation — Eclipse Dynamic Web Project
+# 원칙: 소스·문서·배포용 jar/war는 추적, IDE/OS/빌드 산출물만 제외
+# ============================================================
 
-# 00.Lookation Ignore
+# ---------- OS ----------
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
 
-# file
-*.classpath
-*.project
+# ---------- Editors / IDE ----------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
 
-# folder
-/Lookation/.metadata/
-/Lookation/.settings/
-/Lookation/build/
+# ---------- Eclipse / JDT ----------
+.metadata/
+.classpath
+.project
+.settings/
+*.launch
+.apt_generated/
 
-# 01.Servers Ignore
-/Servers/
+# Eclipse 서버 런타임 / 컴파일 산출물
+Servers/
+bin/
+build/
+/Lookation/WebContent/WEB-INF/classes/
 
-# dispatcher-servlet
+# ---------- Java ----------
+*.class
+hs_err_pid*.log
+
+# ---------- Build tools (Maven/Gradle 도입 시) ----------
+target/
+.gradle/
+out/
+
+# ---------- Logs / temp ----------
+*.log
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# ---------- 프로젝트 예외 (제외 금지) ----------
+# WebContent/WEB-INF/lib/*.jar  : 무빌드 서블릿 프로젝트라 수동 관리
+# 중요파일/00. export/*.war     : 배포 산출물, 의도적 커밋
+# 팀원공간/**/*.zip             : 팀 공유 자료
+# => *.jar / *.war / *.zip 규칙은 추가하지 않는다.
+
+# ---------- 보안 설정 ----------
+# dispatcher-servlet 원본은 웹루트에서 제외 (중요파일/ 사본만 추적)
 /Lookation/WebContent/WEB-INF/dispatcher-servlet.xml
-
-
