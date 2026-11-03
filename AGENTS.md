@@ -88,9 +88,9 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 ### 기타
 
 - CSRF: 상태 변경은 POST이며 `_csrf` 파라미터 또는 `X-CSRF-Token` 헤더가 필수다. 폼은 `/includes/csrf.jsp`를 include하고 AJAX는 공통 헤더 스크립트가 토큰을 붙인다.
-- 설정: `LOOKATION_MAIL_USERNAME`, `LOOKATION_MAIL_PASSWORD`, `LOOKATION_DB_PASSWORD`, 선택 `LOOKATION_UPLOAD_DIR`·`LOOKATION_SITE_URL`. 없으면 기동 실패.
+- 설정: `LOOKATION_MAIL_USERNAME`, `LOOKATION_MAIL_PASSWORD`, `LOOKATION_DB_PASSWORD`, `LOOKATION_SITE_URL`(필수), 선택 `LOOKATION_UPLOAD_DIR`. 없으면 기동 실패.
 - AJAX JSON은 문자열 조립이다(`@ResponseBody` 0건). 값에 따옴표가 들어가면 깨진다.
-- 파일 업로드는 `util/FileManager`(cos.jar), 메일은 `util/EmailManager`(Gmail SMTP)다. 운영 도메인·로컬 경로가 하드코딩되어 있다.
+- 파일 업로드는 `util/FileManager`(cos.jar), 메일은 `util/EmailManager`(Gmail SMTP)다. 도메인·경로·자격증명은 환경변수에서 읽는다.
 - DTO 필드는 DB 컬럼과 같은 snake_case다(`getLoc_code()`).
 - 삭제·차단·취소 계열 GET 매핑이 32건(폼·팝업·목록 7건 포함)이고, 실제 상태 변경 후보는 25건이다(메서드명 `delete|remove|blind|black|withdraw|cancel` 기준). 새 기능은 POST를 쓴다.
 

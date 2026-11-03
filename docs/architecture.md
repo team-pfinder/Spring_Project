@@ -257,7 +257,7 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 
 | 기능 | 메서드 | 동작 |
 |---|---|---|
-| 업로드 | `upload(request, saveFolderName)` (`:22-35`) | `ServletContext.getRealPath(saveFolderName)`에 저장. 최대 100MB(`:27`), UTF-8, `DefaultFileRenamePolicy` |
+| 업로드 | `upload(request, saveFolderName)` (`:22-35`) | `ServletContext.getRealPath(saveFolderName)`에 저장. 최대 10MB(`:27`), UTF-8, `DefaultFileRenamePolicy` |
 | 파일명 추출 | `getFileNames(multi)` (`:37-52`) | `MultipartRequest`의 파일명 목록 |
 | 다운로드 | `doFileDownload(saveFileName, originalFileName, path, response)` (`:55-105`) | 4KB 스트림 복사. 파일명을 `EUC-KR→8859_1`로 재인코딩(`:65`), `Content-disposition` 직접 설정(`:80`) |
 | 삭제 | `doFileDelete(request, folderName, fileName)` (`:108-`) | `getRealPath` 기준 파일 삭제 |
@@ -353,7 +353,7 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 | 1 | **설정 파일이 저장소에 없고, 있는 사본은 기동 불가** | `.gitignore:60`; `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml:190-192`가 미존재 클래스 `ProfileFormController` 참조 | 복사 후 해당 `<bean>` 제거. 배포본(`ROOT.war`) 내용과 다르다는 점을 항상 확인 |
 | 2 | **DB 자격증명 평문 + 3개 스키마 혼재** | `dispatcher-servlet.xml:33-35`, `:44-46` (`<REDACTED>`), `lookation_sys_init.sql` | 값을 바꿀 때 세 계정을 모두 확인. 커밋에 비밀번호를 추가하지 말 것 |
 | 3 | **인증이 각 메서드에 복붙** — 새 액션에서 세션 검사를 빠뜨리면 즉시 권한 우회 | `admin_id` 54회, `hostCode` 31회, `memberCode` 17회; 필터/인터셉터 0개(`web.xml:31-46`) | 새 액션 작성 시 기존 메서드의 검사 블록을 그대로 복사 |
-| 4 | **상태 변경이 GET** — 메서드명 패턴(`delete|remove|blind|black|withdraw|cancel` + GET) 32건 중 폼·팝업·목록 7건을 제외하면 25건이 상태 변경 후보 | `mybatis/BlindManager.java:45`(`blindremove`), `mybatis/NoticeManager.java:105`(`noticedelete`), `mybatis/HelpManager.java:147`(`helpdelete`) | CSRF 방어 없음. 삭제 로직을 건드릴 때 POST 전환 여부를 별도 판단 |
+| 4 | **상태 변경이 GET** — 메서드명 패턴(`delete|remove|blind|black|withdraw|cancel` + GET) 32건 중 폼·팝업·목록 7건을 제외하면 25건이 상태 변경 후보 | `mybatis/BlindManager.java:45`(`blindremove`), `mybatis/NoticeManager.java:105`(`noticedelete`), `mybatis/HelpManager.java:147`(`helpdelete`) | CSRF 토큰 필터가 POST 상태 변경을 검증한다. GET 상태 변경은 남아 있지 않다 |
 | 5 | **같은 테이블에 SQL 두 벌** — MyBatis XML과 JDBC DAO | `mybatis/mapper/MemberAccountDAO.xml`(isLogin 등 8개) vs `dao/MemberAccountDAO.java`(add/countEmail/countNick, `:29` `{CALL CREATE_MEMBER_ACCOUNT}`) | 회원 생성은 **프로시저 경로만** 존재. 한쪽만 고치면 화면마다 동작이 달라진다 |
 | 6 | **JDBC DAO의 커넥션 누수** — `finally` 0회, 예외 시 `close()` 미실행 | `dao/*.java` 전체 `finally` 0건, `dao/BankInfoDAO.java:167-180` | 수정 시 try-with-resources로 바꾸는 것이 안전(단, 동작 변경 최소화) |
 | 7 | **SQL 문자열 결합(주입 위험)** | `dao/BankInfoDAO.java:173` `" WHERE HOST_CODE = '" + identifyCode +"'"` | 같은 파일의 다른 쿼리처럼 `?` 바인딩으로 통일 |
@@ -366,7 +366,7 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 | 14 | **God class** — 한 파일에 17개 엔드포인트 | `mybatis/Location.java` 1,180줄 / 17 매핑 / `getMapper` 31회, `mybatis/Account.java` 481줄 | 수정 범위를 좁히고, 새 기능은 별도 클래스로 |
 | 15 | **테스트 커버리지 없음** | `Lookation/test/run-tests.sh`로 JUnit4+Mockito 단위 테스트 계층을 추가했다. 현재는 계정 로그인 등 일부 경로만 덮는다 | 새 수정은 컨트롤러 경계 테스트를 함께 추가한다 |
 | 16 | **뷰 이름에 쿼리스트링** | `mybatis/Account.java:59`, `controller/BankInfoManageController.java:72` | 뷰 이름을 파싱/검증하는 도구를 붙이면 깨진다 |
-| 17 | **업로드 파일이 재배포 시 소실** | `util/FileManager.java:30` `getRealPath(saveFolderName)` — 호출측이 `"images"`를 넘겨 WAR 내부 경로에 저장(`mybatis/Location.java:238`) | 파일 저장 위치를 바꾸려면 `FileManager`만 고치면 되지만, 기존 경로 문자열(`"images"`)이 8개 컨트롤러에 흩어져 있다 |
+| 17 | **업로드 파일은 웹루트 밖에 저장되어 재배포에도 유지** | `util/FileManager.java:30` `getRealPath(saveFolderName)` — 호출측이 `"images"`를 넘겨 WAR 내부 경로에 저장(`mybatis/Location.java:238`) | 파일 저장 위치를 바꾸려면 `FileManager`만 고치면 되지만, 기존 경로 문자열(`"images"`)이 8개 컨트롤러에 흩어져 있다 |
 | 18 | **파일 다운로드 헤더 인코딩 핵** | `util/FileManager.java:65` `EUC-KR → 8859_1` 재인코딩 | 한글 파일명이 깨지면 여기다. RFC 5987(`filename*=UTF-8''`)로 바꾸는 것이 정답 |
 | 19 | **손수 조립한 JSON** | `controller/LocationDetailAjaxController.java:50-57` | 따옴표 포함 값에서 JSON이 깨진다. json-lib이 이미 lib에 있으므로 그걸 쓰는 편이 안전 |
 | 20 | **역할 prefix가 없다** — `/user`, `/host`, `/admin` URL을 가정한 문서/이슈는 틀렸다 | 전체 매핑 180개가 `/actions/*.action` | 역할은 `identify` 파라미터와 JSP 폴더로만 구분 |

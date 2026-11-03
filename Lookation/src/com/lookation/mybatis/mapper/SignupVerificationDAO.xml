@@ -8,7 +8,7 @@
 		INSERT INTO SIGNUP_VERIFICATION
 			(TOKEN_HASH, IDENTIFY, EMAIL, PW_HASH, NICK, NAME, TEL, EXPIRES_AT, CREATED_AT)
 		VALUES
-			(#{tokenHash}, #{identify}, #{email}, #{pwHash}, #{nick}, #{name}, #{tel}, #{expiresAt}, SYSDATE)
+			(#{token_hash}, #{identify}, #{email}, #{pw_hash}, #{nick}, #{name}, #{tel}, #{expires_at}, SYSDATE)
 	</insert>
 
 	<resultMap id="pendingMap" type="com.lookation.dto.SignupPendingDTO">
@@ -27,7 +27,7 @@
 	<select id="findValid" resultMap="pendingMap">
 		SELECT TOKEN_HASH, IDENTIFY, EMAIL, PW_HASH, NICK, NAME, TEL, EXPIRES_AT, USED_AT, CREATED_AT
 		FROM SIGNUP_VERIFICATION
-		WHERE TOKEN_HASH = #{tokenHash}
+		WHERE TOKEN_HASH = #{token_hash}
 		  AND USED_AT IS NULL
 		  AND EXPIRES_AT &gt; SYSDATE
 	</select>
@@ -35,7 +35,7 @@
 	<update id="markUsed">
 		UPDATE SIGNUP_VERIFICATION
 		SET USED_AT = SYSDATE
-		WHERE TOKEN_HASH = #{tokenHash}
+		WHERE TOKEN_HASH = #{token_hash}
 		  AND USED_AT IS NULL
 	</update>
 </mapper>

@@ -41,3 +41,11 @@
 | Standards | 신규 DTO camelCase | snake_case 필드·접근자로 변경 |
 
 미반영(의도적): `/uploads/*`는 공간 썸네일 공개를 위해 익명 조회를 허용한다. 비밀번호 변경은 현재 세션만 무효화하며, 전역 세션 레지스트리는 이번 범위에 없다.
+
+## 최종 2축 리뷰(2026-11-03)
+
+- P0 매퍼 파라미터 불일치(`#{}` camelCase) → snake_case로 수정, `MapperPropertyTest` 추가
+- CSRF meta 누락 페이지(`includes_home_end`) 보강
+- SameSite=Lax: `WebContent/META-INF/context.xml` CookieProcessor 추가
+- 이중 이스케이프(`fn:escapeXml(fn:escapeXml(...))`) 제거
+- 미반영: `/uploads/*` 익명 조회(공간 썸네일), 전역 세션 무효화, 업로드 사전 검증(거부 시 삭제)
