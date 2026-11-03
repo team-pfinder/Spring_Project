@@ -99,7 +99,7 @@
 									<div class="card-body div-row">
 										<div class="div-col">${rep.loc_report_code }</div>
 										<div class="div-col">${rep.loc_report_type}</div>
-										<div class="div-col">${rep.loc_report_reason}</div>
+										<div class="div-col"><c:out value="${rep.loc_report_reason}"/></div>
 										<div class="div-col">${fn:substring(rep.loc_report_date, 0, 10)}</div>	
 										<div class="div-col">${rep.report_proc_type}</div>
 									</div>

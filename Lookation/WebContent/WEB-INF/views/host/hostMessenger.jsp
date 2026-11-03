@@ -234,7 +234,7 @@ body {
 									<c:when test="${h.imgcount eq 0}">
 										<div class="message">
 											<div class="send">
-												<p class="text"><c:out value="${fn:escapeXml(h.msg_content)}"/></p>
+												<p class="text"><c:out value="${h.msg_content}"/></p>
 											</div>
 										</div>
 										<div class="message float-right">
@@ -261,7 +261,7 @@ body {
 								<c:choose>
 									<c:when test="${h.imgcount eq 0}">
 										<div class="message">
-											<p class="text"><c:out value="${fn:escapeXml(h.msg_content )}"/></p>
+											<p class="text"><c:out value="${h.msg_content }"/></p>
 										</div>
 										<div class="message">
 											<p class="response-timestamp">${fn:substring(h.msg_date,5,16)}</p>
@@ -296,7 +296,7 @@ body {
 									style="font-size: 20pt; align-self: center;" aria-hidden="true"></i>
 							</label>
 							<input type="file" id="ex_file" name="msg_img_url" onchange="javascript:document.getElementById('file').value = this.value"
-										accept=".jpg,.jpeg,.png,.gif,.bmp">
+										accept=".jpg,.jpeg,.png,.gif">
 						</div>
 						
 						<input type="text" class="write-message" placeholder="메시지를 입력하세요" name="host_msg_content" id="file"></input>

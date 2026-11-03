@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<th>작성된 리뷰</th>
-					<td><c:out value="${fn:escapeXml(detailList.review_content )}"/></td>
+					<td><c:out value="${detailList.review_content }"/></td>
 				</tr>
 			</table>
 		</form>

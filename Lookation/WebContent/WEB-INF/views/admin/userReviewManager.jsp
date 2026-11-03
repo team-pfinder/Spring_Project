@@ -252,7 +252,7 @@ String cp = request.getContextPath();
 														<td>${adminUserDTO.member_nickname }</td>
 														<td>${adminUserDTO.member_email }</td>
 														<td>${adminUserDTO.loc_code }</td>
-														<td><c:out value="${fn:escapeXml(adminUserDTO.review_content )}"/></td>
+														<td><c:out value="${adminUserDTO.review_content }"/></td>
 														<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.review_code }">상세보기</button>
@@ -269,7 +269,7 @@ String cp = request.getContextPath();
 														<td>${adminUserDTO.member_nickname }</td>
 														<td>${adminUserDTO.member_email }</td>
 														<td>${adminUserDTO.loc_code }</td>
-														<td><c:out value="${fn:escapeXml(adminUserDTO.review_content )}"/></td>
+														<td><c:out value="${adminUserDTO.review_content }"/></td>
 														<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.review_code }">상세보기</button>

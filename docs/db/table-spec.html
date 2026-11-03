@@ -79,11 +79,11 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <header>
 <p class="eyebrow">Database specification</p>
 <h1>테이블 명세서 — Lookation</h1>
-<p class="meta">Lookation · 2026-11-03T09:40:01+09:00</p>
+<p class="meta">Lookation · 2026-11-03T10:05:59+09:00</p>
 <p class="meta">원본: DDL 파일 1개 · SQL 방언: oracle</p>
 <div class="stats">
-<div class="stat"><strong>77</strong><span>테이블</span></div>
-<div class="stat"><strong>288</strong><span>컬럼</span></div>
+<div class="stat"><strong>78</strong><span>테이블</span></div>
+<div class="stat"><strong>294</strong><span>컬럼</span></div>
 <div class="stat"><strong>78</strong><span>관계</span></div>
 <div class="stat"><strong>0</strong><span>인덱스</span></div>
 </div>
@@ -92,7 +92,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <div class="controls">
 <label for="search">테이블 검색</label>
 <input id="search" type="search" placeholder="테이블·컬럼·설명" autocomplete="off" spellcheck="false">
-<p class="count" id="result-count" aria-live="polite">77 tables</p>
+<p class="count" id="result-count" aria-live="polite">78 tables</p>
 </div>
 <nav class="toc" aria-label="테이블 목차"><ul>
 <li><a href="#table-1">ACTUAL_BOOKER</a></li>
@@ -160,18 +160,19 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <li><a href="#table-63">PACKAGE</a></li>
 <li><a href="#table-64">PACKAGE_FORM</a></li>
 <li><a href="#table-65">PACKAGE_REMOVE</a></li>
-<li><a href="#table-66">QNA</a></li>
-<li><a href="#table-67">QNA_REMOVE</a></li>
-<li><a href="#table-68">QNA_REPLY</a></li>
-<li><a href="#table-69">QNA_REPLY_REMOVE</a></li>
-<li><a href="#table-70">REPORT_PROC_TYPE</a></li>
-<li><a href="#table-71">REVIEW</a></li>
-<li><a href="#table-72">REVIEW_IMG</a></li>
-<li><a href="#table-73">REVIEW_REMOVE</a></li>
-<li><a href="#table-74">REVIEW_REPLY</a></li>
-<li><a href="#table-75">REVIEW_REPLY_REMOVE</a></li>
-<li><a href="#table-76">SIGNUP_VERIFICATION</a></li>
-<li><a href="#table-77">THUMBNAIL</a></li>
+<li><a href="#table-66">PASSWORD_RESET</a></li>
+<li><a href="#table-67">QNA</a></li>
+<li><a href="#table-68">QNA_REMOVE</a></li>
+<li><a href="#table-69">QNA_REPLY</a></li>
+<li><a href="#table-70">QNA_REPLY_REMOVE</a></li>
+<li><a href="#table-71">REPORT_PROC_TYPE</a></li>
+<li><a href="#table-72">REVIEW</a></li>
+<li><a href="#table-73">REVIEW_IMG</a></li>
+<li><a href="#table-74">REVIEW_REMOVE</a></li>
+<li><a href="#table-75">REVIEW_REPLY</a></li>
+<li><a href="#table-76">REVIEW_REPLY_REMOVE</a></li>
+<li><a href="#table-77">SIGNUP_VERIFICATION</a></li>
+<li><a href="#table-78">THUMBNAIL</a></li>
 </ul></nav>
 <section class="overview"><h2>테이블 목록</h2><div class="table-wrap"><table>
 <thead><tr><th>No</th><th>스키마</th><th>테이블</th><th>설명</th><th>컬럼</th><th>PK</th><th>FK</th><th>인덱스</th></tr></thead><tbody>
@@ -240,18 +241,19 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>63</td><td>-</td><td><a href="#table-63">PACKAGE</a></td><td>패키지 P</td><td>6</td><td>PACKAGE_CODE</td><td>1</td><td>0</td></tr>
 <tr><td>64</td><td>-</td><td><a href="#table-64">PACKAGE_FORM</a></td><td>패키지 양식 PF</td><td>2</td><td>PACKAGE_FORM_CODE</td><td>1</td><td>0</td></tr>
 <tr><td>65</td><td>-</td><td><a href="#table-65">PACKAGE_REMOVE</a></td><td>폐기 패키지 PRM</td><td>3</td><td>PACKAGE_REMOVE_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>66</td><td>-</td><td><a href="#table-66">QNA</a></td><td>Q_AND_A(이용자) Q</td><td>5</td><td>QNA_CODE</td><td>2</td><td>0</td></tr>
-<tr><td>67</td><td>-</td><td><a href="#table-67">QNA_REMOVE</a></td><td>삭제내역(Q_AND_A) QRM</td><td>3</td><td>QNA_REMOVE_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>68</td><td>-</td><td><a href="#table-68">QNA_REPLY</a></td><td>Q_AND_A답글(호스트) QRE</td><td>4</td><td>QNA_REPLY_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>69</td><td>-</td><td><a href="#table-69">QNA_REPLY_REMOVE</a></td><td>삭제내역(Q_AND_A답글) QRERM</td><td>3</td><td>QNA_REPLY_REMOVE_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>70</td><td>-</td><td><a href="#table-70">REPORT_PROC_TYPE</a></td><td>신고처리분류 RPPT</td><td>2</td><td>REPORT_PROC_TYPE_CODE</td><td>0</td><td>0</td></tr>
-<tr><td>71</td><td>-</td><td><a href="#table-71">REVIEW</a></td><td>리뷰(이용자) RV</td><td>6</td><td>REVIEW_CODE</td><td>2</td><td>0</td></tr>
-<tr><td>72</td><td>-</td><td><a href="#table-72">REVIEW_IMG</a></td><td>이미지(리뷰) RVIMG</td><td>3</td><td>REVIEW_IMG_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>73</td><td>-</td><td><a href="#table-73">REVIEW_REMOVE</a></td><td>삭제내역(리뷰)  RVRM</td><td>3</td><td>REVIEW_REMOVE_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>74</td><td>-</td><td><a href="#table-74">REVIEW_REPLY</a></td><td>리뷰답글(호스트) RVRE</td><td>4</td><td>REVIEW_REPLY_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>75</td><td>-</td><td><a href="#table-75">REVIEW_REPLY_REMOVE</a></td><td>삭제내역(리뷰답글) RVRERM</td><td>3</td><td>REVIEW_REPLY_REMOVE_CODE</td><td>1</td><td>0</td></tr>
-<tr><td>76</td><td>-</td><td><a href="#table-76">SIGNUP_VERIFICATION</a></td><td>회원가입 이메일 인증 대기</td><td>10</td><td>TOKEN_HASH</td><td>0</td><td>0</td></tr>
-<tr><td>77</td><td>-</td><td><a href="#table-77">THUMBNAIL</a></td><td>썸네일(기본정보) TH</td><td>3</td><td>THUMBNAIL_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>66</td><td>-</td><td><a href="#table-66">PASSWORD_RESET</a></td><td>비밀번호 재설정 토큰</td><td>6</td><td>TOKEN_HASH</td><td>0</td><td>0</td></tr>
+<tr><td>67</td><td>-</td><td><a href="#table-67">QNA</a></td><td>Q_AND_A(이용자) Q</td><td>5</td><td>QNA_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>68</td><td>-</td><td><a href="#table-68">QNA_REMOVE</a></td><td>삭제내역(Q_AND_A) QRM</td><td>3</td><td>QNA_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>69</td><td>-</td><td><a href="#table-69">QNA_REPLY</a></td><td>Q_AND_A답글(호스트) QRE</td><td>4</td><td>QNA_REPLY_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>70</td><td>-</td><td><a href="#table-70">QNA_REPLY_REMOVE</a></td><td>삭제내역(Q_AND_A답글) QRERM</td><td>3</td><td>QNA_REPLY_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>71</td><td>-</td><td><a href="#table-71">REPORT_PROC_TYPE</a></td><td>신고처리분류 RPPT</td><td>2</td><td>REPORT_PROC_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>72</td><td>-</td><td><a href="#table-72">REVIEW</a></td><td>리뷰(이용자) RV</td><td>6</td><td>REVIEW_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>73</td><td>-</td><td><a href="#table-73">REVIEW_IMG</a></td><td>이미지(리뷰) RVIMG</td><td>3</td><td>REVIEW_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>74</td><td>-</td><td><a href="#table-74">REVIEW_REMOVE</a></td><td>삭제내역(리뷰)  RVRM</td><td>3</td><td>REVIEW_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>75</td><td>-</td><td><a href="#table-75">REVIEW_REPLY</a></td><td>리뷰답글(호스트) RVRE</td><td>4</td><td>REVIEW_REPLY_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>76</td><td>-</td><td><a href="#table-76">REVIEW_REPLY_REMOVE</a></td><td>삭제내역(리뷰답글) RVRERM</td><td>3</td><td>REVIEW_REPLY_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>77</td><td>-</td><td><a href="#table-77">SIGNUP_VERIFICATION</a></td><td>회원가입 이메일 인증 대기</td><td>10</td><td>TOKEN_HASH</td><td>0</td><td>0</td></tr>
+<tr><td>78</td><td>-</td><td><a href="#table-78">THUMBNAIL</a></td><td>썸네일(기본정보) TH</td><td>3</td><td>THUMBNAIL_CODE</td><td>1</td><td>0</td></tr>
 </tbody></table></div></section>
 <section class="table-card" id="table-1" data-search="actual_booker 실예약자 ab actual_booker_code book_code actual_booker actual_booker_tel 실예약자 코드 예약코드 예약자명 예약자 연락처">
 <h2>ACTUAL_BOOKER <span class="desc">실예약자 AB</span></h2>
@@ -1172,7 +1174,20 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_PACKAGE_REMOVE_PACKAGE_CODE</td><td>PACKAGE_CODE</td><td>PACKAGE</td><td>PACKAGE_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-66" data-search="qna q_and_a(이용자) q qna_code loc_code member_code qna_content qna_date q_and_a코드 공간코드 회원코드 내용 q_and_a 작성일자">
+<section class="table-card" id="table-66" data-search="password_reset 비밀번호 재설정 토큰 token_hash identify email expires_at used_at created_at 토큰해시 역할구분 이메일 만료시각 사용시각 생성시각">
+<h2>PASSWORD_RESET <span class="desc">비밀번호 재설정 토큰</span></h2>
+<p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>TOKEN_HASH</td><td>VARCHAR2</td><td>64</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>토큰해시</td><td>-</td></tr>
+<tr><td>2</td><td>IDENTIFY</td><td>VARCHAR2</td><td>10</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>역할구분</td><td>-</td></tr>
+<tr><td>3</td><td>EMAIL</td><td>VARCHAR2</td><td>320</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이메일</td><td>-</td></tr>
+<tr><td>4</td><td>EXPIRES_AT</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>만료시각</td><td>-</td></tr>
+<tr><td>5</td><td>USED_AT</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>사용시각</td><td>-</td></tr>
+<tr><td>6</td><td>CREATED_AT</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>생성시각</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-67" data-search="qna q_and_a(이용자) q qna_code loc_code member_code qna_content qna_date q_and_a코드 공간코드 회원코드 내용 q_and_a 작성일자">
 <h2>QNA <span class="desc">Q_AND_A(이용자) Q</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1189,7 +1204,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_QNA_LOC_CODE_LOC_LOC_CODE</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-67" data-search="qna_remove 삭제내역(q_and_a) qrm qna_remove_code qna_code qna_remove_date 삭제내역코드 q_and_a코드 삭제일자">
+<section class="table-card" id="table-68" data-search="qna_remove 삭제내역(q_and_a) qrm qna_remove_code qna_code qna_remove_date 삭제내역코드 q_and_a코드 삭제일자">
 <h2>QNA_REMOVE <span class="desc">삭제내역(Q_AND_A) QRM</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1203,7 +1218,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_QNA_REMOVE_QNA_CODE_QNA_QNA</td><td>QNA_CODE</td><td>QNA</td><td>QNA_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-68" data-search="qna_reply q_and_a답글(호스트) qre qna_reply_code qna_code qna_reply_content qna_reply_date q_and_a답글코드 q_and_a코드 q_and_a 답글내용 q_and_a작성일자">
+<section class="table-card" id="table-69" data-search="qna_reply q_and_a답글(호스트) qre qna_reply_code qna_code qna_reply_content qna_reply_date q_and_a답글코드 q_and_a코드 q_and_a 답글내용 q_and_a작성일자">
 <h2>QNA_REPLY <span class="desc">Q_AND_A답글(호스트) QRE</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1218,7 +1233,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_QNA_REPLY_QNA_CODE_QNA_QNA_</td><td>QNA_CODE</td><td>QNA</td><td>QNA_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-69" data-search="qna_reply_remove 삭제내역(q_and_a답글) qrerm qna_reply_remove_code qna_reply_code qna_reply_remove_date 삭제내역코드 q_and_a답글코드 삭제일자">
+<section class="table-card" id="table-70" data-search="qna_reply_remove 삭제내역(q_and_a답글) qrerm qna_reply_remove_code qna_reply_code qna_reply_remove_date 삭제내역코드 q_and_a답글코드 삭제일자">
 <h2>QNA_REPLY_REMOVE <span class="desc">삭제내역(Q_AND_A답글) QRERM</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1232,7 +1247,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_QNA_REPLY_REMOVE_QNA_REPLY_</td><td>QNA_REPLY_CODE</td><td>QNA_REPLY</td><td>QNA_REPLY_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-70" data-search="report_proc_type 신고처리분류 rppt report_proc_type_code report_proc_type 신고처리분류코드 처리 유형">
+<section class="table-card" id="table-71" data-search="report_proc_type 신고처리분류 rppt report_proc_type_code report_proc_type 신고처리분류코드 처리 유형">
 <h2>REPORT_PROC_TYPE <span class="desc">신고처리분류 RPPT</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1241,7 +1256,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>2</td><td>REPORT_PROC_TYPE</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>처리 유형</td><td>-</td></tr>
 </tbody></table></div>
 </section>
-<section class="table-card" id="table-71" data-search="review 리뷰(이용자) rv review_code loc_code member_code review_rate review_content review_date 리뷰코드 공간코드 회원코드 평점 리뷰내용 리뷰 작성 일자">
+<section class="table-card" id="table-72" data-search="review 리뷰(이용자) rv review_code loc_code member_code review_rate review_content review_date 리뷰코드 공간코드 회원코드 평점 리뷰내용 리뷰 작성 일자">
 <h2>REVIEW <span class="desc">리뷰(이용자) RV</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1259,7 +1274,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_REVIEW_LOC_CODE_LOC_LOC_COD</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-72" data-search="review_img 이미지(리뷰) rvimg review_img_code review_code review_img_url 이미지코드 리뷰코드 이미지 링크(url)">
+<section class="table-card" id="table-73" data-search="review_img 이미지(리뷰) rvimg review_img_code review_code review_img_url 이미지코드 리뷰코드 이미지 링크(url)">
 <h2>REVIEW_IMG <span class="desc">이미지(리뷰) RVIMG</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1273,7 +1288,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_REVIEW_IMG_REVIEW_CODE_REVI</td><td>REVIEW_CODE</td><td>REVIEW</td><td>REVIEW_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-73" data-search="review_remove 삭제내역(리뷰)  rvrm review_remove_code review_code review_remove_date 삭제내역코드 리뷰코드 삭제일자">
+<section class="table-card" id="table-74" data-search="review_remove 삭제내역(리뷰)  rvrm review_remove_code review_code review_remove_date 삭제내역코드 리뷰코드 삭제일자">
 <h2>REVIEW_REMOVE <span class="desc">삭제내역(리뷰)  RVRM</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1287,7 +1302,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_REVIEW_REMOVE_REVIEW_CODE_R</td><td>REVIEW_CODE</td><td>REVIEW</td><td>REVIEW_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-74" data-search="review_reply 리뷰답글(호스트) rvre review_reply_code review_code review_reply_content review_reply_date 리뷰답글코드 리뷰코드 리뷰답글내용 리뷰답글작성일자">
+<section class="table-card" id="table-75" data-search="review_reply 리뷰답글(호스트) rvre review_reply_code review_code review_reply_content review_reply_date 리뷰답글코드 리뷰코드 리뷰답글내용 리뷰답글작성일자">
 <h2>REVIEW_REPLY <span class="desc">리뷰답글(호스트) RVRE</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1302,7 +1317,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_REVIEW_REPLY_REVIEW_CODE_RE</td><td>REVIEW_CODE</td><td>REVIEW</td><td>REVIEW_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-75" data-search="review_reply_remove 삭제내역(리뷰답글) rvrerm review_reply_remove_code review_reply_code review_reply_remove_date 삭제내역코드 리뷰답글코드 삭제일자">
+<section class="table-card" id="table-76" data-search="review_reply_remove 삭제내역(리뷰답글) rvrerm review_reply_remove_code review_reply_code review_reply_remove_date 삭제내역코드 리뷰답글코드 삭제일자">
 <h2>REVIEW_REPLY_REMOVE <span class="desc">삭제내역(리뷰답글) RVRERM</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1316,7 +1331,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>FK_REVIEW_REPLY_REMOVE_REVIEW_</td><td>REVIEW_REPLY_CODE</td><td>REVIEW_REPLY</td><td>REVIEW_REPLY_CODE</td><td>-</td><td>-</td></tr>
 </tbody></table></div></div>
 </section>
-<section class="table-card" id="table-76" data-search="signup_verification 회원가입 이메일 인증 대기 token_hash identify email pw_hash nick name tel expires_at used_at created_at 인증토큰해시 역할구분 이메일 비밀번호해시 닉네임 이름 연락처 만료시각 사용시각 생성시각">
+<section class="table-card" id="table-77" data-search="signup_verification 회원가입 이메일 인증 대기 token_hash identify email pw_hash nick name tel expires_at used_at created_at 인증토큰해시 역할구분 이메일 비밀번호해시 닉네임 이름 연락처 만료시각 사용시각 생성시각">
 <h2>SIGNUP_VERIFICATION <span class="desc">회원가입 이메일 인증 대기</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1333,7 +1348,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <tr><td>10</td><td>CREATED_AT</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>생성시각</td><td>-</td></tr>
 </tbody></table></div>
 </section>
-<section class="table-card" id="table-77" data-search="thumbnail 썸네일(기본정보) th thumbnail_code loc_basic_info_code thumbnail_url 썸네일 코드 기존정보코드 썸네일 링크(url)">
+<section class="table-card" id="table-78" data-search="thumbnail 썸네일(기본정보) th thumbnail_code loc_basic_info_code thumbnail_url 썸네일 코드 기존정보코드 썸네일 링크(url)">
 <h2>THUMBNAIL <span class="desc">썸네일(기본정보) TH</span></h2>
 <p class="meta">스키마: - · 원본: /tmp/lookation_create_table.utf8.sql</p>
 <div class="table-wrap"><table>
@@ -1351,7 +1366,7 @@ footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-si
 <li>무시한 SQL 문입니다: SELECT COUNT(*) FROM TABS</li>
 </ul></section>
 </main>
-<footer>원본: DDL 파일 1개 · 생성: 2026-11-03T09:40:01+09:00</footer>
+<footer>원본: DDL 파일 1개 · 생성: 2026-11-03T10:05:59+09:00</footer>
 <script>(function () {
   var input = document.getElementById("search");
   if (!input) return;

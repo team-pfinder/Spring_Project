@@ -152,7 +152,7 @@ height: 200px;
 
 					<td align="left">${NoticeDTO.notice_title }</td>
 
-					<td><c:out value="${fn:escapeXml(NoticeDTO.notice_content )}"/></td>
+					<td><c:out value="${NoticeDTO.notice_content }"/></td>
 					
 					<td>${NoticeDTO.notice_date }</td>
 

@@ -27,7 +27,7 @@ public class SignupEmail
 	@Autowired
 	private SqlSession sqlSession;
 
-	@RequestMapping(value = "/actions/sendsignupemail.action", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "/actions/sendsignupemail.action", method = RequestMethod.POST)
 	public String send(HttpServletRequest request, Model model) throws Exception
 	{
 		String identify = request.getParameter("identify");
@@ -55,14 +55,14 @@ public class SignupEmail
 
 		String token = TokenGenerator.newToken();
 		SignupPendingDTO pending = new SignupPendingDTO();
-		pending.setTokenHash(TokenGenerator.sha256(token));
+		pending.set_token_hash(TokenGenerator.sha256(token));
 		pending.setIdentify(identify);
 		pending.setEmail(email);
-		pending.setPwHash(PasswordHasher.hash(pw));
+		pending.set_pw_hash(PasswordHasher.hash(pw));
 		pending.setNick(nick);
 		pending.setName(name);
 		pending.setTel(tel);
-		pending.setExpiresAt(new Date(System.currentTimeMillis() + TOKEN_VALID_MILLIS));
+		pending.set_expires_at(new Date(System.currentTimeMillis() + TOKEN_VALID_MILLIS));
 
 		ISignupVerificationDAO verificationDao = sqlSession.getMapper(ISignupVerificationDAO.class);
 		verificationDao.insertPending(pending);
@@ -84,15 +84,6 @@ public class SignupEmail
 
 	private String siteUrl()
 	{
-		String configured = System.getProperty("lookation.site.url");
-		if (configured == null || configured.isEmpty())
-		{
-			configured = System.getenv("LOOKATION_SITE_URL");
-		}
-		if (configured == null || configured.isEmpty())
-		{
-			configured = "https://sb92120.cafe24.com";
-		}
-		return configured;
+		return com.lookation.util.AppConfig.require("LOOKATION_SITE_URL");
 	}
 }

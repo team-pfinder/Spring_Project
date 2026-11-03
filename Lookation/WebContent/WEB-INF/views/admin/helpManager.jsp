@@ -175,7 +175,7 @@ height: 200px;
 
 					<td>${HelpDTO.help_title }</td>
 
-					<td><c:out value="${fn:escapeXml(HelpDTO.help_content )}"/></td>
+					<td><c:out value="${HelpDTO.help_content }"/></td>
 					
 					<td>${HelpDTO.help_date }</td>
 

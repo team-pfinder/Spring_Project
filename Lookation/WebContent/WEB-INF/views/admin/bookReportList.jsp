@@ -137,12 +137,12 @@
 		$(".bookReportOK").click(function()	//-- 신고인정
 		{
 			// alert($(this).val());
-			$(location).attr("href", "bookreportproc.action?book_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
+			postAction("bookreportproc.action?book_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
 		});
 		$(".bookReportNO").click(function()	//-- 신고반려
 		{
 			// alert($(this).val());
-			$(location).attr("href", "bookreportproc.action?book_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
+			postAction("bookreportproc.action?book_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
 		})
 		
 		// 블랙리스트 추가 버튼 클릭

@@ -82,7 +82,7 @@
 				</tr>
 				<tr>
 					<th>신고사유</th>
-					<td>${bookDetailList1.book_report_reason }</td>
+					<td><c:out value="${bookDetailList1.book_report_reason }"/></td>
 				</tr>
 				<tr>
 					<th>이미지</th>

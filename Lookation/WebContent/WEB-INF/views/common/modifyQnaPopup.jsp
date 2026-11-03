@@ -83,7 +83,7 @@
 								<input type="hidden" value="${modify.qna_code }" name="qna_code">
 								<label for="content">내용</label>
 								<textarea class="form-control" id="content" name="qna_content"
-									rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modify.qna_content )}"/></textarea>
+									rows="8" maxlength="3000"><c:out value="${modify.qna_content }"/></textarea>
 							</div>
 						</div><!-- End .body -->
 						<hr>
@@ -108,7 +108,7 @@
 								<input type="hidden" value="${modifyQnaReply.qna_reply_code }" name="qna_reply_code">
 								<label for="content">내용</label>
 								<textarea class="form-control" id="content" name="qna_reply_content"
-									rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modifyQnaReply.qna_reply_content )}"/></textarea>
+									rows="8" maxlength="3000"><c:out value="${modifyQnaReply.qna_reply_content }"/></textarea>
 							</div>
 						</div><!-- End .body -->
 						<hr>

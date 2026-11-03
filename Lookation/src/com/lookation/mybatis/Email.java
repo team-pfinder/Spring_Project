@@ -22,8 +22,8 @@ public class Email
 	private SqlSession sqlSession;
 
 
-	@RequestMapping(value="/actions/sendconfirmemail.action", method= {RequestMethod.POST, RequestMethod.GET})
-	public String sendPasswordEmail(HttpServletRequest request, Model model)
+	@RequestMapping(value="/actions/sendconfirmemail.action", method=RequestMethod.POST)
+	public String sendPasswordEmail(HttpServletRequest request, Model model) throws Exception
 	{
 		String identify = request.getParameter("identify");
 		String email = request.getParameter("email");
@@ -35,15 +35,14 @@ public class Email
 		
 		String token = TokenGenerator.newToken();
 		PasswordResetDTO reset = new PasswordResetDTO();
-		reset.setTokenHash(TokenGenerator.sha256(token));
+		reset.set_token_hash(TokenGenerator.sha256(token));
 		reset.setIdentify(identify);
 		reset.setEmail(email);
-		reset.setExpiresAt(new java.util.Date(System.currentTimeMillis() + 30L * 60 * 1000));
+		reset.set_expires_at(new java.util.Date(System.currentTimeMillis() + 30L * 60 * 1000));
 		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
 		resetDao.insert(reset);
-		String siteUrl = System.getProperty("lookation.site.url", System.getenv("LOOKATION_SITE_URL"));
-		if (siteUrl == null || siteUrl.isEmpty()) { siteUrl = "https://sb92120.cafe24.com"; }
-		String resetLink = siteUrl + "/actions/changepasswordnologinform.action?identify=" + identify + "&token=" + token;
+		String siteUrl = com.lookation.util.AppConfig.require("LOOKATION_SITE_URL");
+		String resetLink = siteUrl + "/actions/changepasswordnologinform.action?identify=" + identify + "&email=" + java.net.URLEncoder.encode(email, "UTF-8") + "&token=" + token;
 
 		String html = 
 				"<!DOCTYPE html>" + 

@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<th>작성된 Q&A</th>
-					<td><c:out value="${fn:escapeXml(detailList.qna_content )}"/></td>
+					<td><c:out value="${detailList.qna_content }"/></td>
 				</tr>
 			</table>
 		</form>

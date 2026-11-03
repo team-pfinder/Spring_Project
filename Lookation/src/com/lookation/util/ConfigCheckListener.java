@@ -12,6 +12,7 @@ public class ConfigCheckListener implements ServletContextListener
 		AppConfig.require("LOOKATION_MAIL_USERNAME");
 		AppConfig.require("LOOKATION_MAIL_PASSWORD");
 		AppConfig.require("LOOKATION_DB_PASSWORD");
+		AppConfig.require("LOOKATION_SITE_URL");
 	}
 
 	@Override

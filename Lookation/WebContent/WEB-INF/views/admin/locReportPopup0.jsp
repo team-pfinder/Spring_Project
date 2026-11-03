@@ -82,7 +82,7 @@
 				</tr>
 				<tr>
 					<th>신고사유</th>
-					<td>${locDetailList0.loc_report_reason }</td>
+					<td><c:out value="${locDetailList0.loc_report_reason }"/></td>
 				</tr>
 				<tr>
 					<th>이미지</th>

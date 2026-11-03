@@ -16,7 +16,7 @@ import java.util.Set;
 public final class UploadPolicy
 {
 	private static final Set<String> ALLOWED_EXTENSIONS = new HashSet<String>(
-			Arrays.asList("jpg", "jpeg", "png", "gif", "webp", "bmp"));
+			Arrays.asList("jpg", "jpeg", "png", "gif", "webp"));
 
 	private UploadPolicy()
 	{
@@ -68,10 +68,6 @@ public final class UploadPolicy
 		if ("gif".equals(ext))
 		{
 			return header[0] == 'G' && header[1] == 'I' && header[2] == 'F' && header[3] == '8';
-		}
-		if ("bmp".equals(ext))
-		{
-			return read >= 2 && header[0] == 'B' && header[1] == 'M';
 		}
 		if ("webp".equals(ext))
 		{

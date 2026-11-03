@@ -119,9 +119,9 @@ String cp = request.getContextPath();
 				<tr align="center">
 					<td>${AdminHostDTO.review_reply_code } </td>
 								
-								<td><c:out value="${fn:escapeXml(AdminHostDTO.review_content )}"/></td>
+								<td><c:out value="${AdminHostDTO.review_content }"/></td>
 			
-								<td><c:out value="${fn:escapeXml(AdminHostDTO.review_reply_content )}"/></td>
+								<td><c:out value="${AdminHostDTO.review_reply_content }"/></td>
 								
 								<td>${AdminHostDTO.host_nickname }</td>
 								
@@ -141,9 +141,9 @@ String cp = request.getContextPath();
 	                     		<tr style="display: none;">
 		                      		<td>${AdminHostDTO.review_reply_code } </td>
 									
-									<td><c:out value="${fn:escapeXml(AdminHostDTO.review_content )}"/></td>
+									<td><c:out value="${AdminHostDTO.review_content }"/></td>
 				
-									<td><c:out value="${fn:escapeXml(AdminHostDTO.review_reply_content )}"/></td>
+									<td><c:out value="${AdminHostDTO.review_reply_content }"/></td>
 									
 									<td>${AdminHostDTO.host_nickname }</td>
 									

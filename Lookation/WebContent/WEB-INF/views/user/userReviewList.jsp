@@ -179,7 +179,7 @@ $(function(){
 											<!-- 공간이름 클릭시 이동 -->
 											<td><a href="#">${review.loc_name }</a></td>
 											<td><span class="icon-star mr-1 text-warning"></span>${review.review_rate }점</td>
-											<td title="${fn:escapeXml(fn:escapeXml(review.review_content ))}"><c:out value="${fn:escapeXml(review.review_content )}"/></td>
+											<td title="${fn:escapeXml(fn:escapeXml(review.review_content ))}"><c:out value="${review.review_content }"/></td>
 											<!-- 날짜 YYYY-MM-DD 형태로 자름 -->
 											<td>${fn:substring(review.review_date, 0, 10)}</td>
 											<td>

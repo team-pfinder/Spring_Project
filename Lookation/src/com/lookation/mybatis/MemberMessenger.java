@@ -124,10 +124,12 @@ public class MemberMessenger
 
 		if (bookCode == null || !accountCode.equals(dao.checkInfo(bookCode)))
 		{
+			for (String uploaded : imageList) { FileManager.doFileDelete(request, "images", uploaded); }
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=member";
 		}
 		if (msgCode != null && !msgCode.isEmpty() && dao.checkMessage(bookCode, msgCode) == 0)
 		{
+			for (String uploaded : imageList) { FileManager.doFileDelete(request, "images", uploaded); }
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=member";
 		}
 

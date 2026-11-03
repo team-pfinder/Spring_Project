@@ -138,12 +138,12 @@
 		$(".locReportOK").click(function()	//-- 신고인정
 		{
 			// alert($(this).val());
-			$(location).attr("href", "locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
+			postAction("locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000001");
 		});
 		$(".locReportNO").click(function()	//-- 신고반려
 		{
 			// alert($(this).val());
-			$(location).attr("href", "locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
+			postAction("locreportproc.action?loc_report_code=" + $(this).val() + "&report_proc_type_code=RPPT000002");
 		})
 		
 		// 블랙리스트 추가 버튼 클릭

@@ -113,7 +113,7 @@ $(document).ready(function()
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
 											<textarea class="form-control" id="help_content" name="help_content" rows="8" >
-											<c:out value="${fn:escapeXml(search.help_content )}"/>
+											<c:out value="${search.help_content }"/>
 											</textarea>
 										</div>
 

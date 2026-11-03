@@ -83,7 +83,7 @@ public class HelpManager
 	}
 	
 	//인서트 같은 경우 폼 안에서 서브밋할거기때문에 post방식
-	@RequestMapping(value="/actions/helpinsert.action", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/actions/helpinsert.action", method= {RequestMethod.POST, RequestMethod.POST})
 	public String helpInsert(HelpDTO dto, HttpServletRequest request) throws IOException
 	{
 		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);
@@ -204,7 +204,7 @@ public class HelpManager
 	}
 	
 
-	@RequestMapping(value="/actions/helpupdate.action", method= {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/actions/helpupdate.action", method= {RequestMethod.POST, RequestMethod.POST})
 	public String helpUpdate(HelpDTO dto,HttpServletRequest request) throws IOException
 	{ 
 		IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);

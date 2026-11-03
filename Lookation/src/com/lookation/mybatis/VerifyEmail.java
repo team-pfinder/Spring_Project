@@ -31,6 +31,13 @@ public class VerifyEmail
 	private IAccountDAO hostDao;
 
 	@RequestMapping(value = "/actions/verifyemail.action", method = RequestMethod.GET)
+	public String confirm(HttpServletRequest request, Model model)
+	{
+		model.addAttribute("token", request.getParameter("token"));
+		return "../WEB-INF/views/common/emailVerifyConfirm.jsp";
+	}
+
+	@RequestMapping(value = "/actions/verifyemail.action", method = RequestMethod.POST)
 	public String verify(HttpServletRequest request, Model model) throws Exception
 	{
 		String token = request.getParameter("token");
@@ -40,8 +47,8 @@ public class VerifyEmail
 		}
 
 		ISignupVerificationDAO verificationDao = sqlSession.getMapper(ISignupVerificationDAO.class);
-		String tokenHash = TokenGenerator.sha256(token);
-		SignupPendingDTO pending = verificationDao.findValid(tokenHash);
+		String token_hash = TokenGenerator.sha256(token);
+		SignupPendingDTO pending = verificationDao.findValid(token_hash);
 		if (pending == null)
 		{
 			return "../WEB-INF/views/common/emailVerifyFail.jsp";
@@ -51,14 +58,14 @@ public class VerifyEmail
 		{
 			return "../WEB-INF/views/common/emailVerifyFail.jsp";
 		}
-		if (verificationDao.markUsed(tokenHash) == 0)
+		if (verificationDao.markUsed(token_hash) == 0)
 		{
 			return "../WEB-INF/views/common/emailVerifyFail.jsp";
 		}
 
 		AccountDTO account = new AccountDTO();
 		account.setEmail(pending.getEmail());
-		account.setPw(pending.getPwHash());
+		account.setPw(pending.get_pw_hash());
 		account.setNick(pending.getNick());
 		account.setName(pending.getName());
 		account.setTel(pending.getTel());

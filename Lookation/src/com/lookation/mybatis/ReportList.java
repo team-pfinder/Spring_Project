@@ -94,7 +94,7 @@ public class ReportList
 	}
 	
 	// 신고처리 버튼 클릭
-	@RequestMapping(value = "/actions/bookreportproc.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/bookreportproc.action", method = RequestMethod.POST)
 	public String bookReportProc(String book_report_code, String report_proc_type_code, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인
@@ -274,7 +274,7 @@ public class ReportList
 	}
 	
 	// 신고처리 버튼 클릭
-	@RequestMapping(value = "/actions/locreportproc.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/locreportproc.action", method = RequestMethod.POST)
 	public String locReportProc(String loc_report_code, String report_proc_type_code, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인

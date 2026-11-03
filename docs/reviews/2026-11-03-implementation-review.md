@@ -22,3 +22,22 @@
 - 단위 테스트: `./Lookation/test/run-tests.sh` → 33 tests, OK
 - 정적 검증: 자격증명 리터럴 0건, 문자열 결합 SQL 0건, 상태 변경 GET 0건(전환 대상 기준)
 - 런타임 검증은 미수행: Oracle XE·Tomcat 부재. 수동 회귀는 `docs/screens.md` 기준으로 남아 있다.
+
+## 2차 리뷰(Standards·Spec 축)
+
+| 축 | 지적 | 반영 |
+| --- | --- | --- |
+| Spec | 비밀번호 재설정 메일 링크에 `email` 누락 | 링크에 이메일 추가, 폼 검증과 일치 |
+| Spec | 관리자 신고처리·공지/도움말 등록·수정이 GET | POST 전용 매핑 + `postAction` 호출로 전환 |
+| Spec | `<c:out>`과 `fn:escapeXml` 이중 이스케이프 | `c:out` 내부 `fn:escapeXml` 제거 |
+| Spec | 메신저 업로드가 소유권 검사보다 먼저 저장 | 거부 시 업로드 파일 삭제 |
+| Spec | 신고 사유가 이스케이프되지 않음 | 관리자 팝업 6곳에 `c:out` 적용 |
+| Standards | DDL 78개 테이블 vs 문서 77 | 명세 재생성(78/294), AGENTS·architecture 수치 갱신 |
+| Standards | `sendsignupemail`/`signup` 컨트롤러가 문서에 잔존 | `screens.md`를 `SignupEmail`/`VerifyEmail`로 갱신 |
+| Standards | 필터·서블릿·리스너 미문서화 | `architecture.md` 요청 흐름 서술 갱신 |
+| Standards | 운영 도메인 기본값 하드코딩 | `LOOKATION_SITE_URL` 필수화 |
+| Standards | 이메일 인증 GET이 상태 변경 | GET은 확인 폼, POST가 계정 생성 |
+| Standards | JDBC DAO 수정부 커넥션 누수 | `hostBankInfoCount` try-with-resources |
+| Standards | 신규 DTO camelCase | snake_case 필드·접근자로 변경 |
+
+미반영(의도적): `/uploads/*`는 공간 썸네일 공개를 위해 익명 조회를 허용한다. 비밀번호 변경은 현재 세션만 무효화하며, 전역 세션 레지스트리는 이번 범위에 없다.

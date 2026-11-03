@@ -280,7 +280,7 @@
 				
 				<div class="form-inline form-group">
 					<p class="col-md-2">한줄소개</p>
-					<p class="col-md-10"><c:out value="${fn:escapeXml(basic.loc_short_intro )}"/></p>
+					<p class="col-md-10"><c:out value="${basic.loc_short_intro }"/></p>
 				</div>
 				
 			

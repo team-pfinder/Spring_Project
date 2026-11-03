@@ -222,12 +222,13 @@
 | `/actions/selectdelete.action` | POST | anno | `UserQnaManager.java: multiRemove` | — | 관리자 | — |
 | `/actions/selectremove.action` | POST | anno | `UserReviewManager.java: multiRemove` | — | 관리자 | — |
 | `/actions/sendconfirmemail.action` | GET/POST | anno | `Email.java: sendPasswordEmail` | `common/sendFindPassword.jsp`<br>`common/wrongAccess.jsp` | 이용자/호스트(identify 분기) (추론) | 인증이메일 발송 성공(JSP 제목) |
-| `/actions/sendsignupemail.action` | GET/POST | xml | `controller/SendSignUpEmailController.handleRequest` | — | 비회원 | 가입 인증 메일 발송 |
+| `/actions/sendsignupemail.action` | POST | anno | `mybatis/SignupEmail.send` | 인증 메일 링크 | 비회원 | 가입 인증 메일 발송 |
 | `/actions/setblackhost.action` | POST | anno | `HostBlackManager.java: regBlackHost` | — | 공통 (추론) | — |
 | `/actions/setblackhostform.action` | GET | anno | `HostBlackManager.java: setBlackHost` | `admin/blacklistPopupHost.jsp` | 관리자 | 블랙리스트 등록(JSP 제목) |
 | `/actions/setblackmem.action` | POST | anno | `MemberBlackManager.java: regBlackmember` | — | 공통 (추론) | — |
 | `/actions/setblackmemform.action` | GET | anno | `MemberBlackManager.java: setBlackmember` | `admin/blacklistPopupUser.jsp` | 관리자 | 블랙리스트 등록(JSP 제목) |
-| `/actions/signup.action` | GET/POST | xml | `controller/SignUpController.handleRequest` | `common/createAccountNotice.jsp`<br>`common/createAccountFailNotice.jsp`<br>`common/wrongAccess.jsp` | 비회원 | 메일 링크로 계정 생성 |
+| `/actions/verifyemail.action` | GET | anno | `mybatis/VerifyEmail.confirm` | `common/emailVerifyConfirm.jsp` | 비회원 | 인증 확인 폼 |
+| `/actions/verifyemail.action` | POST | anno | `mybatis/VerifyEmail.verify` | `common/emailVerified.jsp`<br>`common/emailVerifyFail.jsp` | 비회원 | 토큰 검증 후 계정 생성 |
 | `/actions/signupform.action` | GET/POST | xml | `controller/SignUpFormController.handleRequest` | `common/signUp.jsp` | 비회원 | 회원가입 폼(이용자/호스트) |
 | `/actions/terms.action` | GET | anno | `LoadAndExchange.java: loadAndExchangeTerms` | `common/bankAccountTerms.jsp` | 공통 (추론) | Insert title here(JSP 제목) |
 | `/actions/termsofservice.action` | GET | anno | `Service.java: termsOfService` | `common/termsOfServicePolicy.jsp` | 이용자/호스트(identify 분기) (추론) | 이용약관(JSP 제목) |
@@ -451,7 +452,7 @@ JSP/JS가 링크하지만 `@RequestMapping`도 XML 빈도 없다. 클릭하면 D
 | `/actions/downloadtest.action` | `FileTest.java: downloadTest` | 테스트/샘플 컨트롤러 |
 | `/actions/imagetest.action` | `FileTest.java: imageTest` | 테스트/샘플 컨트롤러 |
 | `/actions/insertinfotest.action` | `Location.java: insertinfotest` | — |
-| `/actions/signup.action` | `controller/SignUpController.handleRequest` | 메일 본문의 form action |
+| `/actions/verifyemail.action` | `mybatis/VerifyEmail.verify` | 인증 메일 링크 |
 | `/actions/uploaddownloadtest.action` | `FileTest.java: uploadDownloadTest` | 테스트/샘플 컨트롤러 |
 | `/actions/uploadimagetest.action` | `FileTest.java: uploadImageTest` | 테스트/샘플 컨트롤러 |
 
@@ -505,8 +506,8 @@ JSP/JS가 링크하지만 `@RequestMapping`도 XML 빈도 없다. 클릭하면 D
 | `common/changePassword.jsp` | 비밀번호 변경 | `/actions/changepasswordform.action` |
 | `common/changePasswordNoLogin.jsp` | 비밀번호 변경 | `/actions/changepasswordnologinform.action` |
 | `common/confirmPassword.jsp` | 비밀번호 확인 | `/actions/confirmpasswordform.action` |
-| `common/createAccountFailNotice.jsp` | 회원가입 실패 | `/actions/signup.action` |
-| `common/createAccountNotice.jsp` | 회원가입 성공 | `/actions/signup.action` |
+| `common/createAccountFailNotice.jsp` | 회원가입 실패 | `/actions/sendsignupemail.action` |
+| `common/createAccountNotice.jsp` | 회원가입 성공 | `/actions/sendsignupemail.action` |
 | `common/deleteAccount.jsp` | 탈퇴완료 | `/actions/deleteform.action` |
 | `common/email.jsp` | email(ex).jsp | — |
 | `common/exchangeNotice.jsp` | 환전신청 완료 | `/actions/exchange.action` |

@@ -1,11 +1,11 @@
 # 테이블 명세서
 
 - 프로젝트: Lookation
-- 생성 시각: 2026-11-03T09:40:01+09:00
+- 생성 시각: 2026-11-03T10:05:59+09:00
 - SQL 방언: oracle
 - 원본: DDL 파일 1개
-- 테이블: 77
-- 컬럼: 288
+- 테이블: 78
+- 컬럼: 294
 - 관계: 78
 - 인덱스: 0
 
@@ -80,18 +80,19 @@
 | 63 | - | PACKAGE | 패키지 P | 6 | PACKAGE_CODE | 1 | 0 |
 | 64 | - | PACKAGE_FORM | 패키지 양식 PF | 2 | PACKAGE_FORM_CODE | 1 | 0 |
 | 65 | - | PACKAGE_REMOVE | 폐기 패키지 PRM | 3 | PACKAGE_REMOVE_CODE | 1 | 0 |
-| 66 | - | QNA | Q_AND_A(이용자) Q | 5 | QNA_CODE | 2 | 0 |
-| 67 | - | QNA_REMOVE | 삭제내역(Q_AND_A) QRM | 3 | QNA_REMOVE_CODE | 1 | 0 |
-| 68 | - | QNA_REPLY | Q_AND_A답글(호스트) QRE | 4 | QNA_REPLY_CODE | 1 | 0 |
-| 69 | - | QNA_REPLY_REMOVE | 삭제내역(Q_AND_A답글) QRERM | 3 | QNA_REPLY_REMOVE_CODE | 1 | 0 |
-| 70 | - | REPORT_PROC_TYPE | 신고처리분류 RPPT | 2 | REPORT_PROC_TYPE_CODE | 0 | 0 |
-| 71 | - | REVIEW | 리뷰(이용자) RV | 6 | REVIEW_CODE | 2 | 0 |
-| 72 | - | REVIEW_IMG | 이미지(리뷰) RVIMG | 3 | REVIEW_IMG_CODE | 1 | 0 |
-| 73 | - | REVIEW_REMOVE | 삭제내역(리뷰)  RVRM | 3 | REVIEW_REMOVE_CODE | 1 | 0 |
-| 74 | - | REVIEW_REPLY | 리뷰답글(호스트) RVRE | 4 | REVIEW_REPLY_CODE | 1 | 0 |
-| 75 | - | REVIEW_REPLY_REMOVE | 삭제내역(리뷰답글) RVRERM | 3 | REVIEW_REPLY_REMOVE_CODE | 1 | 0 |
-| 76 | - | SIGNUP_VERIFICATION | 회원가입 이메일 인증 대기 | 10 | TOKEN_HASH | 0 | 0 |
-| 77 | - | THUMBNAIL | 썸네일(기본정보) TH | 3 | THUMBNAIL_CODE | 1 | 0 |
+| 66 | - | PASSWORD_RESET | 비밀번호 재설정 토큰 | 6 | TOKEN_HASH | 0 | 0 |
+| 67 | - | QNA | Q_AND_A(이용자) Q | 5 | QNA_CODE | 2 | 0 |
+| 68 | - | QNA_REMOVE | 삭제내역(Q_AND_A) QRM | 3 | QNA_REMOVE_CODE | 1 | 0 |
+| 69 | - | QNA_REPLY | Q_AND_A답글(호스트) QRE | 4 | QNA_REPLY_CODE | 1 | 0 |
+| 70 | - | QNA_REPLY_REMOVE | 삭제내역(Q_AND_A답글) QRERM | 3 | QNA_REPLY_REMOVE_CODE | 1 | 0 |
+| 71 | - | REPORT_PROC_TYPE | 신고처리분류 RPPT | 2 | REPORT_PROC_TYPE_CODE | 0 | 0 |
+| 72 | - | REVIEW | 리뷰(이용자) RV | 6 | REVIEW_CODE | 2 | 0 |
+| 73 | - | REVIEW_IMG | 이미지(리뷰) RVIMG | 3 | REVIEW_IMG_CODE | 1 | 0 |
+| 74 | - | REVIEW_REMOVE | 삭제내역(리뷰)  RVRM | 3 | REVIEW_REMOVE_CODE | 1 | 0 |
+| 75 | - | REVIEW_REPLY | 리뷰답글(호스트) RVRE | 4 | REVIEW_REPLY_CODE | 1 | 0 |
+| 76 | - | REVIEW_REPLY_REMOVE | 삭제내역(리뷰답글) RVRERM | 3 | REVIEW_REPLY_REMOVE_CODE | 1 | 0 |
+| 77 | - | SIGNUP_VERIFICATION | 회원가입 이메일 인증 대기 | 10 | TOKEN_HASH | 0 | 0 |
+| 78 | - | THUMBNAIL | 썸네일(기본정보) TH | 3 | THUMBNAIL_CODE | 1 | 0 |
 
 ## ACTUAL_BOOKER — 실예약자 AB
 
@@ -1182,6 +1183,20 @@
 | FK | 컬럼 | 참조 테이블 | 참조 컬럼 | ON DELETE | ON UPDATE |
 | --- | --- | --- | --- | --- | --- |
 | FK_PACKAGE_REMOVE_PACKAGE_CODE | PACKAGE_CODE | PACKAGE | PACKAGE_CODE | - | - |
+
+## PASSWORD_RESET — 비밀번호 재설정 토큰
+
+- 스키마: -
+- 원본: /tmp/lookation_create_table.utf8.sql
+
+| No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | TOKEN_HASH | VARCHAR2 | 64 | Y | - | - | Y | - | 토큰해시 | - |
+| 2 | IDENTIFY | VARCHAR2 | 10 | - | - | - | - | - | 역할구분 | - |
+| 3 | EMAIL | VARCHAR2 | 320 | - | - | - | - | - | 이메일 | - |
+| 4 | EXPIRES_AT | DATE | - | - | - | - | - | - | 만료시각 | - |
+| 5 | USED_AT | DATE | - | - | - | - | - | - | 사용시각 | - |
+| 6 | CREATED_AT | DATE | - | - | - | - | - | - | 생성시각 | - |
 
 ## QNA — Q_AND_A(이용자) Q
 

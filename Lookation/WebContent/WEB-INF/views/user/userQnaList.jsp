@@ -159,7 +159,7 @@ $(function(){
 										<tr>
 											<!-- 공간이름 클릭시 이동 -->
 											<td><a href="#">${qna.loc_name }</a></td>
-											<td title="${fn:escapeXml(fn:escapeXml(qna.qna_content ))}"><c:out value="${fn:escapeXml(qna.qna_content )}"/></td>
+											<td title="${fn:escapeXml(fn:escapeXml(qna.qna_content ))}"><c:out value="${qna.qna_content }"/></td>
 											<!-- 날짜 YYYY-MM-DD 형태로 자름 -->
 											<td>${fn:substring(qna.qna_date, 0, 10)}</td>
 											<td>

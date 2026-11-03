@@ -15,7 +15,7 @@
 2. **데이터 접근도 두 체계다.** MyBatis 매퍼 인터페이스(`com.lookation.dao.I*DAO` + `src/com/lookation/mybatis/mapper/*.xml`, 34개)와 손으로 쓴 JDBC DAO 8개(같은 `dao` 패키지의 클래스)가 공존한다. 서로 다른 인터페이스를 구현하므로 충돌은 없지만, 같은 테이블을 두 경로로 만진다.
 3. **`dispatcher-servlet.xml`은 저장소에 없다.** `.gitignore:60`이 의도적으로 제외한다. 기동하려면 `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `Lookation/WebContent/WEB-INF/`로 복사해야 한다. 단, 이 사본은 배포본(`중요파일/00. export/호스팅용/ROOT.war` 내부)과 내용이 다르고 **존재하지 않는 클래스를 참조**한다(§6-1).
 4. **빌드 도구가 없다.** `pom.xml`/`build.gradle` 없음. Eclipse + `WEB-INF/lib` 수동 jar + WAR export가 빌드다.
-5. **인증/인가는 필터도 인터셉터도 아니다.** 유일한 필터는 인코딩 필터(`web.xml:31-46`)이고, 로그인 검사는 각 액션 메서드 첫머리에 복붙된 세션 확인 코드다.
+5. **인증/인가는 필터도 인터셉터도 아니다.** 필터는 인코딩과 CSRF 두 개이고, 로그인 검사는 각 액션 메서드 첫머리에 복붙된 세션 확인 코드다. 업로드 파일은 `/uploads/*` 서블릿이 제공한다.
 
 ### 코드 수정 전 5가지 체크
 
@@ -183,7 +183,7 @@ JSP 레이아웃 관례: 각 JSP가 `<c:import url="${cp}/includes/...">`로 조
 │        └──────────────────┬───────────────────────────────┘              │
 │                           ▼                                              │
 │                   Oracle (LOOKATION 스키마)                              │
-│                   테이블 77 / 뷰 66 / 프로시저 12 / F_CODE 함수          │
+│                   테이블 78 / 뷰 66 / 프로시저 12 / F_CODE 함수          │
 │                           │                                              │
 │                           ▼                                              │
 │  ViewResolver = InternalResourceViewResolver (prefix="", suffix="")      │
@@ -331,7 +331,7 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 
 ## lookation (LOOKATION 계정)
 1. lookation_function.sql (F_CODE)
-2. lookation_create_table.sql      -- 테이블 77개
+2. lookation_create_table.sql      -- 테이블 78개
 3. lookation_sequence.sql
 4. lookation_static_data.sql
 5. lookation_view.sql              -- 뷰 66개

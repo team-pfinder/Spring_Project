@@ -26,7 +26,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | [`docs/screens.md`](docs/screens.md) | URL 180개 ↔ 컨트롤러 ↔ JSP ↔ 역할, AJAX, 갭 | 화면·URL을 바꿀 때 |
 | [`docs/spec/lookation/index.md`](docs/spec/lookation/index.md) | 기획서 분석 인덱스, finding 35건, **blocker 6건** | 기능 요구를 해석할 때 |
 | [`docs/spec/lookation/validation.md`](docs/spec/lookation/validation.md) | 요구사항 충돌·누락·질문 | 구현 전 결정 확인 |
-| [`docs/db/table-spec.md`](docs/db/table-spec.md) | 테이블 77개, 컬럼 288, DDL 기준 FK 78 | SQL·DTO를 만질 때 |
+| [`docs/db/table-spec.md`](docs/db/table-spec.md) | 테이블 78개, 컬럼 294, DDL 기준 FK 78 | SQL·DTO를 만질 때 |
 | [`docs/reviews/2026-11-02-cross-validation.md`](docs/reviews/2026-11-02-cross-validation.md) | 외부 에이전트 3개 교차검증 결과와 반영·기각 내역 | 문서 수치를 신뢰하기 전 |
 | `docs/adr/` (아직 없음) | 구조 결정 기록 | 설계를 바꿀 때 |
 

@@ -219,7 +219,7 @@
 										<input type="hidden" value="${modifyReview.review_code }" name="review_code">
 										<label for="content">내용</label>
 										<textarea class="form-control" id="content" name="review_content"
-											rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modifyReview.review_content )}"/></textarea>
+											rows="8" maxlength="3000"><c:out value="${modifyReview.review_content }"/></textarea>
 									</div>
 
 									<div class="form-group">
@@ -268,7 +268,7 @@
 									<input type="hidden" value="${modifyReview.review_code }" name="review_code">
 									<label for="content">내용</label>
 									<textarea class="form-control" id="content" name="review_content"
-										rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modifyReview.review_content )}"/></textarea>
+										rows="8" maxlength="3000"><c:out value="${modifyReview.review_content }"/></textarea>
 								</div>
 
 
@@ -311,7 +311,7 @@
 								<input type="hidden" value="${modifyReviewReply.review_reply_code }" name="review_reply_code">
 								<label for="content">내용</label>
 								<textarea class="form-control" id="content" required="required" name="review_reply_content"
-									rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modifyReviewReply.review_reply_content )}"/></textarea>
+									rows="8" maxlength="3000"><c:out value="${modifyReviewReply.review_reply_content }"/></textarea>
 							</div>
 	
 							<div class="text-center">

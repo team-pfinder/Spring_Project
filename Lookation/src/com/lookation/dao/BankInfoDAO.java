@@ -165,24 +165,22 @@ public class BankInfoDAO implements IBankInfoDAO
 	@Override
 	public int hostBankInfoCount(String identifyCode) throws SQLException
 	{
-		Connection conn = dataSource.getConnection();
-		
 		int result = 0;
 		String sql = "SELECT COUNT(*) AS CNT"
 				  + " FROM HOST_BANK_INFO"
 				  + " WHERE HOST_CODE = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, identifyCode);
-		ResultSet rs = pstmt.executeQuery();
-		
-		while(rs.next())
+		try (Connection conn = dataSource.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql))
 		{
-			result = rs.getInt("CNT");
+			pstmt.setString(1, identifyCode);
+			try (ResultSet rs = pstmt.executeQuery())
+			{
+				while(rs.next())
+				{
+					result = rs.getInt("CNT");
+				}
+			}
 		}
-		
-		rs.close();
-		pstmt.close();
-		conn.close();
 		
 		return result;
 	}

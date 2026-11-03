@@ -138,9 +138,9 @@
 							
 								<td>${AdminHostDTO.qna_reply_code } </td>
 								
-								<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_content )}"/></td>
+								<td><c:out value="${AdminHostDTO.qna_content }"/></td>
 			
-								<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_reply_content )}"/></td>
+								<td><c:out value="${AdminHostDTO.qna_reply_content }"/></td>
 								
 								<td>${AdminHostDTO.host_nickname }</td>
 								
@@ -160,9 +160,9 @@
 	                     		<tr style="display: none;">
 		                      		<td>${AdminHostDTO.qna_reply_code } </td>
 									
-									<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_content )}"/></td>
+									<td><c:out value="${AdminHostDTO.qna_content }"/></td>
 				
-									<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_reply_content )}"/></td>
+									<td><c:out value="${AdminHostDTO.qna_reply_content }"/></td>
 									
 									<td>${AdminHostDTO.host_nickname }</td>
 									

@@ -82,7 +82,7 @@ $(document).ready(function()
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
 											<textarea class="form-control" id="notice_content" name="notice_content" rows="8" >
-											<c:out value="${fn:escapeXml(search.notice_content )}"/>
+											<c:out value="${search.notice_content }"/>
 											</textarea>
 										</div>
 

@@ -88,7 +88,7 @@
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">이용자리뷰</div>
-                     <div class="div-col"><c:out value="${fn:escapeXml(r_secondList.review_content )}"/></div>
+                     <div class="div-col"><c:out value="${r_secondList.review_content }"/></div>
                   </div>
                   
                   <div class="div-row">
@@ -98,7 +98,7 @@
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">호스트답글</div>
-                     <div class="div-col"><c:out value="${fn:escapeXml(r_secondList.review_reply_content )}"/></div>
+                     <div class="div-col"><c:out value="${r_secondList.review_reply_content }"/></div>
                   </div>
              
                </div> 
