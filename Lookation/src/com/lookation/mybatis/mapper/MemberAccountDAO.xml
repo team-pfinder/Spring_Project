@@ -4,18 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lookation.dao.IMemberAccountDAO">
 	
-	<select id="isLogin" resultType="java.lang.String">
+	<select id="findCodeByEmail" resultType="java.lang.String">
 		SELECT MEMBER_CODE
 		FROM MEMBER_PROFILE
 		WHERE MEMBER_EMAIL = #{email}
- 	 	AND MEMBER_PW = #{pw}
 	</select>
 	
-	<select id="confirmCount" resultType="java.lang.Integer">
-		SELECT COUNT(*)
+	<select id="findPasswordByEmail" resultType="java.lang.String">
+		SELECT MEMBER_PW
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_EMAIL = #{email}
+	</select>
+	
+	<select id="findPasswordByCode" resultType="java.lang.String">
+		SELECT MEMBER_PW
 		FROM MEMBER_PROFILE
 		WHERE MEMBER_CODE = #{code}
-  		AND MEMBER_PW = #{pw}
 	</select>
 	
 	<select id="getInfo" parameterType="java.lang.String" 

@@ -4,8 +4,9 @@ import com.lookation.dto.AccountDTO;
 
 public interface IMemberAccountDAO
 {
-	public String isLogin(AccountDTO account);
-	public int confirmCount(AccountDTO account);
+	public String findCodeByEmail(String email);
+	public String findPasswordByEmail(String email);
+	public String findPasswordByCode(String code);
 	public AccountDTO getInfo(String code);
 	public int countEmail(AccountDTO account);
 	//

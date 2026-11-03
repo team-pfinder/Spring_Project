@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import com.lookation.dao.IAdminDAO;
+import com.lookation.util.PasswordHasher;
 
 public class AdminLoginController implements Controller
 {
@@ -37,9 +38,17 @@ public class AdminLoginController implements Controller
 
 		try
 		{
-			// 관리자 로그인
-			admin_nickname = dao.loginAdmin(admin_id, admin_pw);
+			String storedPassword = dao.findPassword(admin_id);
 
+			if(storedPassword != null && PasswordHasher.matches(admin_pw, storedPassword))
+			{
+				admin_nickname = dao.findNickname(admin_id);
+
+				if(admin_nickname != null && !PasswordHasher.isHashed(storedPassword))
+				{
+					dao.updatePassword(admin_id, PasswordHasher.hash(admin_pw));
+				}
+			}
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());

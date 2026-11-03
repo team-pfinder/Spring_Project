@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import com.lookation.dao.IAccountDAO;
 import com.lookation.dto.AccountDTO;
+import com.lookation.util.PasswordHasher;
 
 public class SignUpController implements Controller
 {
@@ -48,7 +49,7 @@ public class SignUpController implements Controller
 		AccountDTO account = new AccountDTO();
 		account.setEmail(email);
 		account.setNick(nick);
-		account.setPw(pw);
+		account.setPw(PasswordHasher.hash(pw));
 		account.setName(name);
 		account.setTel(tel);
 		

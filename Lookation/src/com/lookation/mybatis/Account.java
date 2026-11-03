@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dto.AccountDTO;
+import com.lookation.util.PasswordHasher;
 
 @Controller
 public class Account
@@ -70,7 +71,6 @@ public class Account
 		
 		// 로그인 검증	
 		String accountCode = null;
-		AccountDTO account = new AccountDTO();
 		
 		String email = request.getParameter("email");
 		String pw = request.getParameter("pw");
@@ -80,19 +80,45 @@ public class Account
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
 		
-		account.setEmail(email);
-		account.setPw(pw);
+		IMemberAccountDAO memberDao = null;
+		IHostAccountDAO hostDao = null;
+		String storedPassword = null;
 		
-	
 		if(identify.equals("member"))
 		{
-			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
-			accountCode = dao.isLogin(account);
+			memberDao = sqlSession.getMapper(IMemberAccountDAO.class);
+			storedPassword = memberDao.findPasswordByEmail(email);
 		}
 		else if(identify.equals("host"))
 		{
-			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
-			accountCode = dao.isLogin(account);
+			hostDao = sqlSession.getMapper(IHostAccountDAO.class);
+			storedPassword = hostDao.findPasswordByEmail(email);
+		}
+		
+		if(storedPassword != null && PasswordHasher.matches(pw, storedPassword))
+		{
+			if(identify.equals("member"))
+			{
+				accountCode = memberDao.findCodeByEmail(email);
+				if(!PasswordHasher.isHashed(storedPassword))
+				{
+					AccountDTO rehash = new AccountDTO();
+					rehash.setCode(accountCode);
+					rehash.setPw(PasswordHasher.hash(pw));
+					memberDao.modifyPassword(rehash);
+				}
+			}
+			else if(identify.equals("host"))
+			{
+				accountCode = hostDao.findCodeByEmail(email);
+				if(!PasswordHasher.isHashed(storedPassword))
+				{
+					AccountDTO rehash = new AccountDTO();
+					rehash.setCode(accountCode);
+					rehash.setPw(PasswordHasher.hash(pw));
+					hostDao.modifyPassword(rehash);
+				}
+			}
 		}
 	
 		
@@ -170,24 +196,21 @@ public class Account
 		}
 		
 		// 패스워드 검증	
-		AccountDTO account = new AccountDTO();
-		account.setCode(accountCode);
-		account.setPw(pw);
-		
-		int count = 0;
+		// 패스워드 검증	
+		String storedPassword = null;
 		if(identify.equals("member"))
 		{
 			IMemberAccountDAO dao = sqlSession.getMapper(IMemberAccountDAO.class);
-			count = dao.confirmCount(account);
+			storedPassword = dao.findPasswordByCode(accountCode);
 		}
 		else if(identify.equals("host"))
 		{
 			IHostAccountDAO dao = sqlSession.getMapper(IHostAccountDAO.class);
-			count = dao.confirmCount(account);
+			storedPassword = dao.findPasswordByCode(accountCode);
 		}
 	
 		// 검증 실패시
-		if(count == 0)
+		if(!PasswordHasher.matches(pw, storedPassword))
 		{
 			// 다시 확인창으로
 			return "redirect:confirmpasswordform.action?identify=" + identify + "&result=fail";
@@ -369,7 +392,7 @@ public class Account
 		
 		AccountDTO account = new AccountDTO();
 		account.setCode(accountCode);
-		account.setPw(newPw);
+		account.setPw(PasswordHasher.hash(newPw));
 		
 		// 세션 정보의 회원 코드를 토대로 프로필 정보를 찾는다.	
 		if(identify.equals("host"))
@@ -383,7 +406,9 @@ public class Account
 			dao.modifyPassword(account);
 		}
 		
-		return "redirect:profile.action?identify=" + identify;
+		// 비밀번호가 바뀌면 기존 세션을 무효화한다.
+		session.invalidate();
+		return "redirect:loginform.action?identify=" + identify;
 	}
 	
 	// 비밀번호 찾기 (변경)
@@ -461,7 +486,7 @@ public class Account
 		
 		AccountDTO account = new AccountDTO();
 		account.setEmail(email);
-		account.setPw(newPw);
+		account.setPw(PasswordHasher.hash(newPw));
 		
 		if(identify.equals("host"))
 		{
