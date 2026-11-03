@@ -1,13 +1,13 @@
 package com.lookation.util;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Locale;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -15,116 +15,109 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.oreilly.servlet.multipart.FileRenamePolicy;
 
 public class FileManager
 {
-	// 파일을 톰캣 리소스 폴더에 업로드한다.
-	public static MultipartRequest upload(HttpServletRequest request, String saveFolderName) 
+	private static final int MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+	/** 업로드 파일은 웹루트 밖에 저장한다. */
+	public static File getUploadDirectory()
+	{
+		String configured = System.getProperty("lookation.upload.dir");
+		if (configured == null || configured.isEmpty())
+		{
+			configured = System.getenv("LOOKATION_UPLOAD_DIR");
+		}
+		if (configured == null || configured.isEmpty())
+		{
+			configured = System.getProperty("user.home") + File.separator + "lookation-uploads";
+		}
+		File dir = new File(configured);
+		if (!dir.exists())
+		{
+			dir.mkdirs();
+		}
+		return dir;
+	}
+
+	/**
+	 * 업로드를 수행하고 저장된 파일이 이미지인지 검증한다.
+	 * 검증에 실패하면 저장 파일을 지우고 IOException을 던져 호출자가 저장을 중단하게 한다.
+	 */
+	public static MultipartRequest upload(HttpServletRequest request, String saveFolderName)
 			throws IOException
 	{
-		// 올린 파일들의 경로정보를 받아온다.(상대경로 /Lookaion 부터)
-		String realFolder = "";
-		int maxSize = 1024*1024*100;
+		File uploadDir = getUploadDirectory();
 		String encType = "utf-8";
-		ServletContext sContext = request.getServletContext();
-		realFolder = sContext.getRealPath(saveFolderName);
-		
-		return new MultipartRequest(request, 
-				realFolder, maxSize, encType, new DefaultFileRenamePolicy());
-	}
-	
-	// 업로드한 파일의 이름들을 가져온다
-	public static ArrayList<String> getFileNames(MultipartRequest multi)
-	{
-		ArrayList<String> result = new ArrayList<String>();
-		String fileName = "";
+
+		MultipartRequest multi = new MultipartRequest(request,
+				uploadDir.getAbsolutePath(), MAX_UPLOAD_BYTES, encType,
+				new UuidRenamePolicy());
 
 		Enumeration<?> files = multi.getFileNames();
 		while (files.hasMoreElements())
 		{
-			String file = (String) files.nextElement();
-			fileName = multi.getFilesystemName(file);
-			if(fileName != null)
-				result.add(fileName);
+			String field = (String) files.nextElement();
+			String storedName = multi.getFilesystemName(field);
+			if (storedName == null)
+			{
+				continue;
+			}
+			File stored = new File(uploadDir, storedName);
+			if (!UploadPolicy.isAllowedName(storedName) || !UploadPolicy.hasValidImageSignature(stored))
+			{
+				stored.delete();
+				throw new IOException("허용되지 않은 업로드 파일입니다: " + storedName);
+			}
 		}
+		return multi;
+	}
 
+	public static ArrayList<String> getFileNames(MultipartRequest multi)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		Enumeration<?> files = multi.getFileNames();
+		while (files.hasMoreElements())
+		{
+			String file = (String) files.nextElement();
+			String fileName = multi.getFilesystemName(file);
+			if (fileName != null)
+			{
+				result.add(fileName);
+			}
+		}
 		return result;
 	}
-	
-	// 파일 다운로드
-	public static boolean doFileDownload(String saveFileName, String originalFileName, String path, HttpServletResponse response)
-	{
-		String load_dir = path + File.separator + saveFileName;
-		
-		try
-		{
-			if (originalFileName == null || originalFileName.equals(""))
-			{
-				originalFileName = saveFileName;
-			}
-			originalFileName = new String(originalFileName.getBytes("EUC-KR"), "8859_1");
-			
-		} catch (UnsupportedEncodingException e)
-		{
-			System.out.println(e.toString());
-		}
-		
-		try
-		{
-			File file = new File(load_dir);
-			if(file.exists())
-			{
-				byte[] readByte = new byte[4096];
-				
-				response.setContentType("application/octet-stream");
-				response.setHeader("Content-disposition", "attachment;filename=" + originalFileName);
-				
-				BufferedInputStream fis = new BufferedInputStream(new FileInputStream(file));
-				
-				OutputStream os = response.getOutputStream();
-				
-				int read;
-				while((read = fis.read(readByte, 0, 4096)) != -1)
-				{
-					os.write(readByte, 0, read);
-				}
-				
-				os.flush();
-				os.close();
-				fis.close();
-				
-				return true;
-			}
-			
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
-		}
-		
-		return false;
-	}
 
-	// 실제 파일 삭제(제거)
 	public static void doFileDelete(HttpServletRequest request, String folderName, String fileName)
 	{
-		try
+		if (!UploadPolicy.isAllowedName(fileName))
 		{
-			ServletContext sContext = request.getServletContext();
-			String path = sContext.getRealPath(folderName);
-			
-			File file = null;
-			String fullFileName = path + File.separator + fileName;
-			file = new File(fullFileName);
-			if (file.exists())
+			return;
+		}
+		File file = new File(getUploadDirectory(), fileName);
+		if (file.isFile())
+		{
+			file.delete();
+		}
+	}
+
+	private static class UuidRenamePolicy implements FileRenamePolicy
+	{
+		private final DefaultFileRenamePolicy fallback = new DefaultFileRenamePolicy();
+
+		@Override
+		public File rename(File file)
+		{
+			String extension = UploadPolicy.extensionOf(file.getName());
+			String suffix = extension.isEmpty() ? "" : "." + extension.toLowerCase(Locale.ROOT);
+			File target = new File(file.getParentFile(), UUID.randomUUID().toString().replace("-", "") + suffix);
+			if (target.exists())
 			{
-				file.delete();
+				return fallback.rename(file);
 			}
-			
-		} catch (Exception e)
-		{
-			System.out.println(e.toString());
+			return target;
 		}
 	}
 }
-
-

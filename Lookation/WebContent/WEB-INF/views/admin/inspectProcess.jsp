@@ -169,7 +169,7 @@ $(document).ready(function()
 									<p>주종목 : ${dto1.biz_sub_type}</p>
 									<p>사업장 주소 : ${dto1.biz_addr}</p>
 									<p>사업자등록번호 : ${dto1.biz_license_number}</p>
-									<p>사업자등록증 : <img src="<%=cp %>/images/${dto6.biz_license_url }" width="300px"></p>
+									<p>사업자등록증 : <img src="<%=cp %>/uploads/${dto6.biz_license_url }" width="300px"></p>
 
 									<h2 class="mb-3 mt-5"># 이용안내</h2>
 									<hr>
@@ -202,7 +202,7 @@ $(document).ready(function()
 									<div class="owl-carousel">
 									<c:forEach var="loc_detail_img_url" items="${loc_img }">
 										<div>
-											<img src="<%=cp %>/images/${loc_detail_img_url }">
+											<img src="<%=cp %>/uploads/${loc_detail_img_url }">
 										</div>
 									</c:forEach>
 										<%-- <div>

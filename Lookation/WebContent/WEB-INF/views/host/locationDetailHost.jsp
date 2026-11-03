@@ -380,7 +380,7 @@ p
 				
 					<c:forEach var="url" items="${detailPhotoUrl }">
 						<div class="slider-item"
-							style="background-image: url(<%=cp%>/images/${url});">
+							style="background-image: url(<%=cp%>/uploads/${url});">
 						</div>
 					</c:forEach>
 				</div>
@@ -499,7 +499,7 @@ p
 								
 								<c:if test="${rv.rvimgCount ne 0 }">
 									<p>
-										<img class="review-img" src="<%=cp%>/images/${rv.url}"
+										<img class="review-img" src="<%=cp%>/uploads/${rv.url}"
 											alt="리뷰사진">
 									</p>
 								</c:if>

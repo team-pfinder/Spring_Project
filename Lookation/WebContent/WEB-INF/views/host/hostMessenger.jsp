@@ -245,7 +245,7 @@ body {
 										<div class="message">
 											<div class="send">
 												<p class="text">
-													<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
+													<img class="message-img" alt="" src="<%=cp%>/uploads/${h.msg_img_url }" onclick="popImg(this.src)">
 												</p>
 											</div>
 										</div>
@@ -270,7 +270,7 @@ body {
 									<c:when test="${h.imgcount eq 1}">
 										<div class="message">
 											<p class="text">
-												<img class="message-img" alt="" src="<%=cp%>/images/${h.msg_img_url }" onclick="popImg(this.src)">
+												<img class="message-img" alt="" src="<%=cp%>/uploads/${h.msg_img_url }" onclick="popImg(this.src)">
 											</p>
 										</div>
 										<div class="message">

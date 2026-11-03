@@ -24,6 +24,16 @@
     <servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>*.action</url-pattern>
+	</servlet-mapping>
+
+	<!-- 웹루트 밖 업로드 이미지 제공 -->
+	<servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<servlet-class>com.lookation.util.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadServlet</servlet-name>
+		<url-pattern>/uploads/*</url-pattern>
 	</servlet-mapping> 
    
    	<!-- 인코딩 필터 등록 -->

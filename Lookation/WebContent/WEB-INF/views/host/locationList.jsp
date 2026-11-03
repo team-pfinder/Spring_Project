@@ -108,7 +108,7 @@
 						<div class="col-md-4 ftco-animate">
 							<div class="blog-entry align-self-stretch">
 								<a href="locationdetailhost.action?loc_code=${location.loc_code }" class="block-20 rounded"
-									style="background-image: url('<%=cp%>/images/${location.thumbnail_url }');">
+									style="background-image: url('<%=cp%>/uploads/${location.thumbnail_url }');">
 								</a>
 								<!-- 이미지 클릭시 해당 공간상세 게시글페이지로..-->
 								<div class="text mt-3 text-center">

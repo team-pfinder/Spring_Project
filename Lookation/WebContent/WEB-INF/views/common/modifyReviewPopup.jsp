@@ -223,7 +223,7 @@
 
 									<div class="form-group">
 										<label>현재 첨부된 사진</label> <br> <img id="curImg"
-											alt="등록된 사진 없음" src="<%=cp%>/images/${modifyImg}"
+											alt="등록된 사진 없음" src="<%=cp%>/uploads/${modifyImg}"
 											width="100px">
 										<hr>
 										<label for="image">사진 수정 첨부</label> 
@@ -276,7 +276,7 @@
 									<label>현재 첨부된 사진</label> <br>
 									<input type="hidden" name="beforeImgName" value="${modifyImg}">
 									<img id="curImg"
-										alt="등록된 사진 없음" src="<%=cp%>/images/${modifyImg}"
+										alt="등록된 사진 없음" src="<%=cp%>/uploads/${modifyImg}"
 										width="100px">
 									<hr>
 									<label for="image">사진 수정 첨부</label> 

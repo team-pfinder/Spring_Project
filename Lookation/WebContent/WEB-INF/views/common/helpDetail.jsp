@@ -59,7 +59,7 @@ String cp = request.getContextPath();
        		
        		<!-- 이미지 있을 때만 이미지가 나오게 -->
        		<c:if test="${!empty Help_img.help_img_url}">
-            <p><img src="<%=cp %>/images/${Help_img.help_img_url }" width="300px"></p>
+            <p><img src="<%=cp %>/uploads/${Help_img.help_img_url }" width="300px"></p>
             </c:if>
 
             

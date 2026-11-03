@@ -85,7 +85,7 @@
 				</tr>
 				<tr>
 					<th>이미지</th>
-					<td><img src="<%=cp %>/images/${bookDetailList1.book_report_img_url }" width="350"></img></td>
+					<td><img src="<%=cp %>/uploads/${bookDetailList1.book_report_img_url }" width="350"></img></td>
 				</tr>
 				<tr>
 					<th>신고처리결과</th>

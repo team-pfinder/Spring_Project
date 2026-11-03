@@ -564,7 +564,7 @@ width: 100%;
 				<div class="home-slider owl-carousel">
 					<c:forEach var="url" items="${detailPhotoUrl }">
 						<div class="slider-item"
-							style="background-image: url(<%=cp%>/images/${url});">
+							style="background-image: url(<%=cp%>/uploads/${url});">
 						</div>
 					</c:forEach>
 				</div>
@@ -656,7 +656,7 @@ width: 100%;
 									
 									<c:if test="${rv.rvimgCount ne 0 }">
 										<p>
-											<img class="review-img" src="<%=cp%>/images/${rv.url}"
+											<img class="review-img" src="<%=cp%>/uploads/${rv.url}"
 												alt="리뷰사진" style="size: 50%">
 										</p>
 									</c:if>
