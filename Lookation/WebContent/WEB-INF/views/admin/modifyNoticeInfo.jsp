@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -80,7 +81,7 @@ $(document).ready(function()
 										<div class="form-group">
 											<label for="exampleInputPassword1">글쓰기</label>
 											<textarea class="form-control" id="notice_content" name="notice_content" rows="8" >
-											${search.notice_content }
+											<c:out value="${fn:escapeXml(search.notice_content )}"/>
 											</textarea>
 										</div>
 

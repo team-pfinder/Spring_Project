@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
    request.setCharacterEncoding("UTF-8");
@@ -87,7 +88,7 @@
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">이용자리뷰</div>
-                     <div class="div-col">${r_secondList.review_content }</div>
+                     <div class="div-col"><c:out value="${fn:escapeXml(r_secondList.review_content )}"/></div>
                   </div>
                   
                   <div class="div-row">
@@ -97,7 +98,7 @@
                   
                   <div class="div-row">
                      <div class="div-col font-weight-bold">호스트답글</div>
-                     <div class="div-col">${r_secondList.review_reply_content }</div>
+                     <div class="div-col"><c:out value="${fn:escapeXml(r_secondList.review_reply_content )}"/></div>
                   </div>
              
                </div> 

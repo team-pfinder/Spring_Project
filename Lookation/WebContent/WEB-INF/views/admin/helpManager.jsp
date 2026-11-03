@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -173,7 +174,7 @@ height: 200px;
 
 					<td>${HelpDTO.help_title }</td>
 
-					<td>${HelpDTO.help_content }</td>
+					<td><c:out value="${fn:escapeXml(HelpDTO.help_content )}"/></td>
 					
 					<td>${HelpDTO.help_date }</td>
 

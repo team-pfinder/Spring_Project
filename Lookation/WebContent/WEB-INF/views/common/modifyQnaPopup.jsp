@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -81,7 +82,7 @@
 								<input type="hidden" value="${modify.qna_code }" name="qna_code">
 								<label for="content">내용</label>
 								<textarea class="form-control" id="content" name="qna_content"
-									rows="8" maxlength="3000">${modify.qna_content }</textarea>
+									rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modify.qna_content )}"/></textarea>
 							</div>
 						</div><!-- End .body -->
 						<hr>
@@ -105,7 +106,7 @@
 								<input type="hidden" value="${modifyQnaReply.qna_reply_code }" name="qna_reply_code">
 								<label for="content">내용</label>
 								<textarea class="form-control" id="content" name="qna_reply_content"
-									rows="8" maxlength="3000">${modifyQnaReply.qna_reply_content }</textarea>
+									rows="8" maxlength="3000"><c:out value="${fn:escapeXml(modifyQnaReply.qna_reply_content )}"/></textarea>
 							</div>
 						</div><!-- End .body -->
 						<hr>

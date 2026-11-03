@@ -336,7 +336,7 @@ span.price
 							<div class="align-items-center">
 								<img alt="" src="<%=cp%>/images/star/star_rate_${todayReview.rate }.png"
 									style="width: 40%;">
-								<p style="color: #000000; margin-top: 3%;">${todayReview.content }</p>
+								<p style="color: #000000; margin-top: 3%;"><c:out value="${todayReview.content }"/></p>
 							</div>
 						</div>
 					</div>

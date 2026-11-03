@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -794,7 +795,7 @@ width: 100%;
 								<p class="">이용자가 삭제한 게시글입니다.</p>
 							</c:if>
 							<c:if test="${qna.removeCount==0}">
-								<div style="white-space:pre-line;"><c:out value="${qna.qna_content }" /></div>
+								<div style="white-space:pre-line;"><c:out value="${fn:escapeXml(qna.qna_content )}" /></div>
 								
 								<c:if test="${qna.memCode == memberCode}">
 									<button type="button" class="reply border-0 modifyQna" value="${qna.boardCode }">수정</button> 

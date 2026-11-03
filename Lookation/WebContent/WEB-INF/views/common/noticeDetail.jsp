@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -55,7 +56,7 @@ String cp = request.getContextPath();
             <div class="meta">${U_ndetailList.notice_date }</div>
             <hr>
             <br>
-            <div style="white-space:pre;"><c:out value="${U_ndetailList.notice_content }" /></div>
+            <div style="white-space:pre;"><c:out value="${fn:escapeXml(U_ndetailList.notice_content )}" /></div>
 
          
             

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -642,7 +643,7 @@ p
 							</c:if>
 							
 							<c:if test="${qna.removeCount==0}">
-								<p class="pr-5" style="white-space:pre-line;"><c:out value="${qna.qna_content }" /></p>
+								<p class="pr-5" style="white-space:pre-line;"><c:out value="${fn:escapeXml(qna.qna_content )}" /></p>
 								
 								<c:if test="${qna.hostCode == hostCode && qna.count ne 1}">
 									<button type="button" class="reply border-0 writeQna" id="qnaCode" value="${qna.boardCode }">답글</button>

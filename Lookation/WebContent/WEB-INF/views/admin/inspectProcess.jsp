@@ -132,11 +132,11 @@ $(document).ready(function()
 									<h2 class="mb-3 mt-2"># 기본정보</h2>
 									<hr>
 									<p>공간명 : ${dto1.loc_name}</p>
-									<p>공간한줄소개 : ${dto1.loc_short_intro}</p>
+									<p>공간한줄소개 : <c:out value="${dto1.loc_short_intro}"/></p>
 									<p>공간유형 : ${dto1.loc_type}</p>
 									<p>공간주소 : ${dto1.loc_addr}</p>
 									<p>공간상세주소: ${dto1.loc_detail_addr}</p>
-									<p>공간소개: ${dto1.loc_intro} </p>
+									<p>공간소개: <c:out value="${dto1.loc_intro}"/> </p>
 
 									<c:forEach var="facility" items="${facilityInfo }">
 										<p>시설안내:${facility.facility_content}</p>

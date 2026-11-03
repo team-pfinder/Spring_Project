@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
@@ -245,7 +246,7 @@ overflow: hidden;
 									<c:when test="${m.imgcount eq 0}">
 										<div class="message">
 											<div class="send">
-												<p class="text">${m.msg_content}</p>
+												<p class="text"><c:out value="${fn:escapeXml(m.msg_content)}"/></p>
 											</div>
 										</div>
 										<div class="message float-right">
@@ -272,7 +273,7 @@ overflow: hidden;
 								<c:choose>
 									<c:when test="${m.imgcount eq 0}">
 										<div class="message">
-											<p class="text">${m.msg_content }</p>
+											<p class="text"><c:out value="${fn:escapeXml(m.msg_content )}"/></p>
 										</div>
 										<div class="message">
 											<p class="response-timestamp">${fn:substring(m.msg_date,5,16)}</p>

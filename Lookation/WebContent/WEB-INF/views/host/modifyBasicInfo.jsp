@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -595,7 +596,7 @@ ul.precautions-list > li {
 			<input type="text" class="form-control"
 				   placeholder="공간을 한 문장으로 소개해주세요. [최소 2자 ~ 최대 100자]" 
 				   id="inputShortIntro" name="inputShortIntro"
-				   value="${basicInfoList.loc_short_intro}">
+				   value="${fn:escapeXml(basicInfoList.loc_short_intro)}">
 			<span style="font-weight: bold;"></span>
    		
 		</div>
@@ -612,7 +613,7 @@ ul.precautions-list > li {
 			<br><br>
 			<textarea class="form-control" 
 					  placeholder="공간을 상세하게 소개해주세요. [최소 5자 ~ 최대 1000자]"
-					  id="inputIntro" name="inputIntro" cols="40" rows="5">${basicInfoList.loc_intro}</textarea>
+					  id="inputIntro" name="inputIntro" cols="40" rows="5"><c:out value="${fn:escapeXml(basicInfoList.loc_intro)}"/></textarea>
 		  	<span style="font-weight: bold;"></span>
 		</div>
 		

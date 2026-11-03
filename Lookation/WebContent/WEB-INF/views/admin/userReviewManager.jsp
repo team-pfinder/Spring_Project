@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -250,7 +251,7 @@ String cp = request.getContextPath();
 														<td>${adminUserDTO.member_nickname }</td>
 														<td>${adminUserDTO.member_email }</td>
 														<td>${adminUserDTO.loc_code }</td>
-														<td>${adminUserDTO.review_content }</td>
+														<td><c:out value="${fn:escapeXml(adminUserDTO.review_content )}"/></td>
 														<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.review_code }">상세보기</button>
@@ -267,7 +268,7 @@ String cp = request.getContextPath();
 														<td>${adminUserDTO.member_nickname }</td>
 														<td>${adminUserDTO.member_email }</td>
 														<td>${adminUserDTO.loc_code }</td>
-														<td>${adminUserDTO.review_content }</td>
+														<td><c:out value="${fn:escapeXml(adminUserDTO.review_content )}"/></td>
 														<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.review_code }">상세보기</button>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -279,7 +280,7 @@
 				
 				<div class="form-inline form-group">
 					<p class="col-md-2">한줄소개</p>
-					<p class="col-md-10">${basic.loc_short_intro }</p>
+					<p class="col-md-10"><c:out value="${fn:escapeXml(basic.loc_short_intro )}"/></p>
 				</div>
 				
 			

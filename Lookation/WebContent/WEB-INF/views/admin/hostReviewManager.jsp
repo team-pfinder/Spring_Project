@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -118,9 +119,9 @@ String cp = request.getContextPath();
 				<tr align="center">
 					<td>${AdminHostDTO.review_reply_code } </td>
 								
-								<td>${AdminHostDTO.review_content }</td>
+								<td><c:out value="${fn:escapeXml(AdminHostDTO.review_content )}"/></td>
 			
-								<td>${AdminHostDTO.review_reply_content }</td>
+								<td><c:out value="${fn:escapeXml(AdminHostDTO.review_reply_content )}"/></td>
 								
 								<td>${AdminHostDTO.host_nickname }</td>
 								
@@ -140,9 +141,9 @@ String cp = request.getContextPath();
 	                     		<tr style="display: none;">
 		                      		<td>${AdminHostDTO.review_reply_code } </td>
 									
-									<td>${AdminHostDTO.review_content }</td>
+									<td><c:out value="${fn:escapeXml(AdminHostDTO.review_content )}"/></td>
 				
-									<td>${AdminHostDTO.review_reply_content }</td>
+									<td><c:out value="${fn:escapeXml(AdminHostDTO.review_reply_content )}"/></td>
 									
 									<td>${AdminHostDTO.host_nickname }</td>
 									

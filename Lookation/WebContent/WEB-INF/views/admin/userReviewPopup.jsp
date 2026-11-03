@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -69,7 +70,7 @@
 				</tr>
 				<tr>
 					<th>작성된 리뷰</th>
-					<td>${detailList.review_content }</td>
+					<td><c:out value="${fn:escapeXml(detailList.review_content )}"/></td>
 				</tr>
 			</table>
 		</form>

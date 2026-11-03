@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -247,7 +248,7 @@
 			                                    		<td>${adminUserDTO.member_nickname }</td>
 			                                    		<td>${adminUserDTO.member_email }</td>
 			                                    		<td>${adminUserDTO.loc_code }</td>
-			                                    		<td>${adminUserDTO.qna_content }</td>
+			                                    		<td><c:out value="${fn:escapeXml(adminUserDTO.qna_content )}"/></td>
 			                                    		<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUserDTO.qna_code }">상세보기</button>
@@ -263,7 +264,7 @@
 			                                    		<td>${adminUserDTO.member_nickname }</td>
 			                                    		<td>${adminUserDTO.member_email }</td>
 			                                    		<td>${adminUserDTO.loc_code }</td>
-			                                    		<td>${adminUserDTO.qna_content }</td>
+			                                    		<td><c:out value="${fn:escapeXml(adminUserDTO.qna_content )}"/></td>
 			                                    		<td>
 															<button type="button" class="btn btn-primary detailBtn"
 															value="${adminUsertDTO.qna_code }">상세보기</button>

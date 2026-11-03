@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -157,7 +158,7 @@ $(function(){
 										<tr>
 											<!-- 공간이름 클릭시 이동 -->
 											<td><a href="#">${qna.loc_name }</a></td>
-											<td title="${qna.qna_content }">${qna.qna_content }</td>
+											<td title="${fn:escapeXml(fn:escapeXml(qna.qna_content ))}"><c:out value="${fn:escapeXml(qna.qna_content )}"/></td>
 											<!-- 날짜 YYYY-MM-DD 형태로 자름 -->
 											<td>${fn:substring(qna.qna_date, 0, 10)}</td>
 											<td>

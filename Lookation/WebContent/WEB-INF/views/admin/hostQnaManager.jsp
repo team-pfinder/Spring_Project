@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -137,9 +138,9 @@
 							
 								<td>${AdminHostDTO.qna_reply_code } </td>
 								
-								<td>${AdminHostDTO.qna_content }</td>
+								<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_content )}"/></td>
 			
-								<td>${AdminHostDTO.qna_reply_content }</td>
+								<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_reply_content )}"/></td>
 								
 								<td>${AdminHostDTO.host_nickname }</td>
 								
@@ -159,9 +160,9 @@
 	                     		<tr style="display: none;">
 		                      		<td>${AdminHostDTO.qna_reply_code } </td>
 									
-									<td>${AdminHostDTO.qna_content }</td>
+									<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_content )}"/></td>
 				
-									<td>${AdminHostDTO.qna_reply_content }</td>
+									<td><c:out value="${fn:escapeXml(AdminHostDTO.qna_reply_content )}"/></td>
 									
 									<td>${AdminHostDTO.host_nickname }</td>
 									
