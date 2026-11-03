@@ -5,7 +5,7 @@ SELECT *
 FROM DBA_USERS;
 
 -- 계정 생성
-CREATE USER LOOKATION IDENTIFIED BY java006$;
+CREATE USER LOOKATION IDENTIFIED BY &lookation_password;
 --==>> User LOOKATION이(가) 생성되었습니다.
 
 -- 접속 DBA 권한 부여

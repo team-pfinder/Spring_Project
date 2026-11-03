@@ -4,7 +4,7 @@
 
 -- ADMIN(관리자)
 INSERT INTO ADMIN(ADMIN_ID, ADMIN_PW, ADMIN_NICKNAME)
-VALUES('admin_lookation01', 'java006$', '관리자_1');
+VALUES('admin_lookation01', '$2a$10$S2AxX9VOM.V64gUGyET2hedMgqMMiIT5OoUUI/DQcrRBCviHuuBpO', '관리자_1');
 
 --============================================================= 1. FAQ, NOTICE
 -- IMPORTANT_NOTICE(중요공지 분류, 숫자)
@@ -131,12 +131,12 @@ VALUES('test3@test.com', 'M000003', 'tbqkffjal33#'
 
 INSERT INTO MEMBER_PROFILE(MEMBER_EMAIL, MEMBER_CODE, MEMBER_PW
                          , MEMBER_NICKNAME, MEMBER_NAME, MEMBER_TEL)
-VALUES('lookation1@naver.com', 'M000004', 'java006!'
+VALUES('lookation1@naver.com', 'M000004', '$2a$10$.OWpdRb.pxNXMA9rqIpn8OGN//722gvAi1HXQ7U3P50kvcWxeV5K2'
      , '베짱이', '주재완', '010-1234-4567');
 
 INSERT INTO MEMBER_PROFILE(MEMBER_EMAIL, MEMBER_CODE, MEMBER_PW
                 , MEMBER_NICKNAME, MEMBER_NAME, MEMBER_TEL)
-VALUES('lookation2@daum.com', 'M000005', 'java006@'
+VALUES('lookation2@daum.com', 'M000005', '$2a$10$OiPp6H1HWX924BehG3ETgeAVKcLAvzoxBYfAYvRl.KQB/makO3FDm'
      , '개미', '김일웅', '010-2345-6789');
      
 -- MEMBER_BANK_INFO(계좌정보(이용자))
@@ -214,12 +214,12 @@ VALUES('good3@test.com', 'H000003', 'tbqkffjal33#'
 
 INSERT INTO HOST_PROFILE(HOST_EMAIL, HOST_CODE, HOST_PW
                          , HOST_NICKNAME, HOST_NAME, HOST_TEL)
-VALUES('lookationgood1@naver.com', 'H000004', 'java006!'
+VALUES('lookationgood1@naver.com', 'H000004', '$2a$10$.OWpdRb.pxNXMA9rqIpn8OGN//722gvAi1HXQ7U3P50kvcWxeV5K2'
      , '기타리스트', '주꾸미', '010-1234-4567');
 
 INSERT INTO HOST_PROFILE(HOST_EMAIL, HOST_CODE, HOST_PW
                          , HOST_NICKNAME, HOST_NAME, HOST_TEL)
-VALUES('lookationgood2@daum.com', 'H000005', 'java006@'
+VALUES('lookationgood2@daum.com', 'H000005', '$2a$10$OiPp6H1HWX924BehG3ETgeAVKcLAvzoxBYfAYvRl.KQB/makO3FDm'
      , '거미', '곽두팔', '010-2345-6789');
      
      

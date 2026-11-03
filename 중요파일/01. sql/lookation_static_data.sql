@@ -1,6 +1,6 @@
 -- ADMIN(관리자)
 INSERT INTO ADMIN(ADMIN_ID, ADMIN_PW, ADMIN_NICKNAME)
-VALUES('admin_lookation01', 'java006$', '관리자_1');
+VALUES('admin_lookation01', '$2a$10$S2AxX9VOM.V64gUGyET2hedMgqMMiIT5OoUUI/DQcrRBCviHuuBpO', '관리자_1');
 
 --============================================================= 1. FAQ, NOTICE
 -- IMPORTANT_NOTICE(중요공지 분류, 숫자)

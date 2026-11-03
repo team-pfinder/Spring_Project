@@ -25,8 +25,8 @@ public class EmailManager
 			mailSender = new JavaMailSenderImpl();
 			mailSender.setHost("smtp.gmail.com");
 			mailSender.setPort(587);
-			mailSender.setUsername("lookation.notice@gmail.com");
-			mailSender.setPassword("java006$");
+			mailSender.setUsername(AppConfig.require("LOOKATION_MAIL_USERNAME"));
+			mailSender.setPassword(AppConfig.require("LOOKATION_MAIL_PASSWORD"));
 			
 			Properties prop = new Properties();
 			prop.setProperty("mail.smtp.auth", "true");
