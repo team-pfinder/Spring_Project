@@ -58,25 +58,31 @@ public class VerifyEmail
 		{
 			return "../WEB-INF/views/common/emailVerifyFail.jsp";
 		}
-		if (verificationDao.markUsed(token_hash) == 0)
-		{
-			return "../WEB-INF/views/common/emailVerifyFail.jsp";
-		}
-
 		AccountDTO account = new AccountDTO();
 		account.setEmail(pending.getEmail());
-		account.setPw(pending.get_pw_hash());
+		account.setPw(pending.getPw_hash());
 		account.setNick(pending.getNick());
 		account.setName(pending.getName());
 		account.setTel(pending.getTel());
 
-		if ("host".equals(pending.getIdentify()))
+		try
 		{
-			hostDao.add(account);
+			if ("host".equals(pending.getIdentify()))
+			{
+				hostDao.add(account);
+			}
+			else
+			{
+				memberDao.add(account);
+			}
 		}
-		else
+		catch (Exception e)
 		{
-			memberDao.add(account);
+			return "../WEB-INF/views/common/emailVerifyFail.jsp";
+		}
+		if (verificationDao.markUsed(token_hash) == 0)
+		{
+			return "../WEB-INF/views/common/emailVerifyFail.jsp";
 		}
 		return "../WEB-INF/views/common/emailVerified.jsp";
 	}

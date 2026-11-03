@@ -35,10 +35,10 @@ public class Email
 		
 		String token = TokenGenerator.newToken();
 		PasswordResetDTO reset = new PasswordResetDTO();
-		reset.set_token_hash(TokenGenerator.sha256(token));
+		reset.setToken_hash(TokenGenerator.sha256(token));
 		reset.setIdentify(identify);
 		reset.setEmail(email);
-		reset.set_expires_at(new java.util.Date(System.currentTimeMillis() + 30L * 60 * 1000));
+		reset.setExpires_at(new java.util.Date(System.currentTimeMillis() + 30L * 60 * 1000));
 		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
 		resetDao.insert(reset);
 		String siteUrl = com.lookation.util.AppConfig.require("LOOKATION_SITE_URL");
@@ -74,7 +74,7 @@ public class Email
 				"</body>" + 
 				"</html>";
 		
-		String titleType = (identify.equals("host") ? "호스트" : "이용자");
+		String titleType = ("host".equals(identify) ? "호스트" : "이용자");
 		String title = "■■■■■ " + titleType + " 비밀번호 변경 인증 메일입니다.  ■■■■■";
 
 
@@ -84,6 +84,6 @@ public class Email
 		model.addAttribute("email", email);
 		model.addAttribute("result", "noSigned");
 		
-		return "../WEB-INF/views/common/sendFindPassword.jsp?identify" + identify;
+		return "../WEB-INF/views/common/sendFindPassword.jsp?identify=" + identify;
 	}
 }

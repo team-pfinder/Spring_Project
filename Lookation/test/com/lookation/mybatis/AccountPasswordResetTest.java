@@ -65,6 +65,7 @@ public class AccountPasswordResetTest
 		when(request.getParameter("token")).thenReturn("raw");
 		PasswordResetDTO reset = new PasswordResetDTO();
 		reset.setEmail("other@example.com");
+		reset.setIdentify("member");
 		when(resetDAO.findValid(TokenGenerator.sha256("raw"))).thenReturn(reset);
 
 		String view = account.changePasswordNoLogin(request, new ExtendedModelMap());
@@ -79,6 +80,7 @@ public class AccountPasswordResetTest
 		when(request.getParameter("token")).thenReturn("raw");
 		PasswordResetDTO reset = new PasswordResetDTO();
 		reset.setEmail("user@example.com");
+		reset.setIdentify("member");
 		when(resetDAO.findValid(TokenGenerator.sha256("raw"))).thenReturn(reset);
 		when(resetDAO.markUsed(TokenGenerator.sha256("raw"))).thenReturn(1);
 

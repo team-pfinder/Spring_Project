@@ -41,7 +41,7 @@ public class LoadManager
 	}
 	
 	// 충전 신청 승인 처리
-	@RequestMapping(value ="/actions/loadmgrapprove.action", method = RequestMethod.GET)
+	@RequestMapping(value ="/actions/loadmgrapprove.action", method = RequestMethod.POST)
 	public String adminLoadManagerApprove(Model model, HttpServletRequest request)
 	{
 		IUserLoadManagerDAO dao = sqlSession.getMapper(IUserLoadManagerDAO.class);
@@ -63,7 +63,7 @@ public class LoadManager
 	}
 
 	// 충전 신청 반려 처리
-	@RequestMapping(value = "/actions/loadmgrdeny.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/loadmgrdeny.action", method = RequestMethod.POST)
 	public String adminLoadManagerDeny(Model model, HttpServletRequest request)
 	{
 		IUserLoadManagerDAO dao = sqlSession.getMapper(IUserLoadManagerDAO.class);

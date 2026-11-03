@@ -7,6 +7,6 @@ import com.lookation.dto.SignupPendingDTO;
 public interface ISignupVerificationDAO
 {
 	public int insertPending(SignupPendingDTO pending);
-	public SignupPendingDTO findValid(@Param("tokenHash") String tokenHash);
-	public int markUsed(@Param("tokenHash") String tokenHash);
+	public SignupPendingDTO findValid(@Param("token_hash") String tokenHash);
+	public int markUsed(@Param("token_hash") String tokenHash);
 }

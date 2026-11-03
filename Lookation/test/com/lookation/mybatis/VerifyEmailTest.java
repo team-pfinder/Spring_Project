@@ -59,7 +59,7 @@ public class VerifyEmailTest
 		SignupPendingDTO pending = new SignupPendingDTO();
 		pending.setIdentify("member");
 		pending.setEmail("new@example.com");
-		pending.set_pw_hash("$2a$10$hash");
+		pending.setPw_hash("$2a$10$hash");
 		pending.setNick("새회원");
 		pending.setName("홍길동");
 		pending.setTel("01012345678");
@@ -93,7 +93,7 @@ public class VerifyEmailTest
 		SignupPendingDTO pending = new SignupPendingDTO();
 		pending.setIdentify("host");
 		pending.setEmail("host@example.com");
-		pending.set_pw_hash("$2a$10$hash");
+		pending.setPw_hash("$2a$10$hash");
 		when(verificationDAO.findValid(any(String.class))).thenReturn(pending);
 		when(verificationDAO.markUsed(any(String.class))).thenReturn(1);
 

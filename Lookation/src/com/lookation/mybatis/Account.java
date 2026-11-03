@@ -224,8 +224,12 @@ public class Account
 			// 세션에 저장했던 이전 요청 액션을 가지고 온다.
 			String requestUrl = (String)session.getAttribute("requestUrl");
 			session.setAttribute("requestUrl", null);
-			// 다음 요청 페이지를 요청해야 함
-			// 뭔지는 상황마다 다르다.
+			// 이전 요청이 없으면 역할별 메인으로 보낸다.
+			if(requestUrl == null || requestUrl.isEmpty())
+			{
+				requestUrl = "host".equals(identify) ? "hostmain.action" : "membermain.action";
+				return "redirect:" + requestUrl;
+			}
 			return "redirect:" + requestUrl + "?identify=" + identify;
 		}
 		
@@ -425,7 +429,7 @@ public class Account
 		return "../WEB-INF/views/common/findPassword.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/ajaxfindemail.action", method={RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/actions/ajaxfindemail.action", method=RequestMethod.POST)
 	public String ajaxFindEmail(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
@@ -476,7 +480,7 @@ public class Account
 		}
 		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
 		PasswordResetDTO reset = resetDao.findValid(TokenGenerator.sha256(token));
-		if(reset == null || !email.equals(reset.getEmail()))
+		if(reset == null || !email.equals(reset.getEmail()) || identify == null || !identify.equals(reset.getIdentify()))
 		{
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
@@ -507,12 +511,7 @@ public class Account
 		}
 		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
 		PasswordResetDTO reset = resetDao.findValid(TokenGenerator.sha256(token));
-		if(reset == null || !email.equals(reset.getEmail()))
-		{
-			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
-		}
-
-		if(resetDao.markUsed(TokenGenerator.sha256(token)) == 0)
+		if(reset == null || !email.equals(reset.getEmail()) || identify == null || !identify.equals(reset.getIdentify()))
 		{
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
@@ -533,6 +532,7 @@ public class Account
 			dao.modifyPasswordNoLogin(account);
 			requestUrl = "membermain.action";
 		}
+		resetDao.markUsed(TokenGenerator.sha256(token));
 		return "redirect:" + requestUrl;
 	}
 }

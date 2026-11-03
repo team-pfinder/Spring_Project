@@ -50,10 +50,10 @@ public class MapperPropertyTest
 		while (matcher.find())
 		{
 			String property = matcher.group(1);
-			String lower = property.toLowerCase();
-			boolean found = methods.contains("get" + lower) || methods.contains("set" + lower)
-					|| methods.contains("is" + lower) || methods.contains("get_" + lower)
-					|| methods.contains("set_" + lower);
+			String capitalized = property.substring(0, 1).toUpperCase() + property.substring(1);
+			boolean found = methods.contains(("get" + capitalized).toLowerCase())
+					|| methods.contains(("set" + capitalized).toLowerCase())
+					|| methods.contains(("is" + capitalized).toLowerCase());
 			assertTrue("DTO에 접근자가 없습니다: " + property, found);
 		}
 	}

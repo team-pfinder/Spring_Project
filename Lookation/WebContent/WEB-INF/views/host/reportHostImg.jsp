@@ -59,6 +59,7 @@
 		<p> ※ 파일명이 한글로 되어있을 경우 제대로 업로드 되지 않을 수 있습니다.
 		영문명으로 변경하시고 업로드 해주시길 바랍니다.</p>
 		<form id="reportForm" method="post" enctype="multipart/form-data">
+<jsp:include page="/includes/csrf.jsp" />
 		<input type="text" id="book_report_code" name="book_report_code" value="${list.book_report_code }" style="display: none;">
 			<input type="file" class="form-control" id="book_report_img_url" name="book_report_img_url"><br>
 			<button type="submit" class="btn btn-primary report">신고하기</button>

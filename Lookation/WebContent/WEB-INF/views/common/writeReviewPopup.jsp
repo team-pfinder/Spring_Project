@@ -174,6 +174,7 @@
 			<!-- 이용자 -->
 			<c:if test="${identify eq 'member'}"> 
 				<form id="reviewForm" method="post" enctype="multipart/form-data">
+<jsp:include page="/includes/csrf.jsp" />
 					<div class="header">
 						<h3 class="title my-2">리뷰 작성하기</h3>
 						<hr>

@@ -49,3 +49,21 @@
 - SameSite=Lax: `WebContent/META-INF/context.xml` CookieProcessor 추가
 - 이중 이스케이프(`fn:escapeXml(fn:escapeXml(...))`) 제거
 - 미반영: `/uploads/*` 익명 조회(공간 썸네일), 전역 세션 무효화, 업로드 사전 검증(거부 시 삭제)
+
+## Orca 3자 교차검증(Codex·OpenCode muse-spark-1.3·Gemini)
+
+| 지적 | 조치 |
+| --- | --- |
+| `@Param("tokenHash")` vs XML `#{token_hash}` | `@Param`·DTO 접근자를 JavaBean 규칙(`getToken_hash`)으로 통일 |
+| 팝업/가입 AJAX CSRF 토큰 누락(리뷰·신고·중복확인·검수) | `includes_home_end`·`signUp`·`inspectProcess`에 meta+ajaxSetup, 폼에 csrf include |
+| 메신저·마일리지·전화번호·메일 액션이 GET 허용 | POST 전용으로 축소 |
+| 토큰 선소모 후 계정/비밀번호 반영 | 계정 생성·비밀번호 변경 성공 후 `markUsed` |
+| `EmailManager` 예외 삼킴 | 발송 실패를 예외로 전파 |
+| 비밀번호 찾기 뷰 URL 오타·NPE | `?identify=` 수정, `"host".equals(...)` |
+| `UploadServlet` 잘못된 URL 인코딩 500 | `IllegalArgumentException` → 404 |
+| `confirmPassword` requestUrl null 시 `/actions/null` | 역할별 메인으로 폴백 |
+| `fn:escapeXml`/`c:out` 이중 이스케이프 | 중복 제거 |
+| 계정 식별자(identify) 미검증 | 재설정 토큰의 역할과 요청 역할 비교 |
+
+미반영: `/uploads/*` 익명 조회(공간 썸네일), 전역 세션 무효화, 업로드 사전 검증, SMTP 실패 시 고아 토큰 행 정리.
+검증: `./Lookation/test/run-tests.sh` → 35 tests OK.

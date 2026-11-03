@@ -55,14 +55,14 @@ public class SignupEmail
 
 		String token = TokenGenerator.newToken();
 		SignupPendingDTO pending = new SignupPendingDTO();
-		pending.set_token_hash(TokenGenerator.sha256(token));
+		pending.setToken_hash(TokenGenerator.sha256(token));
 		pending.setIdentify(identify);
 		pending.setEmail(email);
-		pending.set_pw_hash(PasswordHasher.hash(pw));
+		pending.setPw_hash(PasswordHasher.hash(pw));
 		pending.setNick(nick);
 		pending.setName(name);
 		pending.setTel(tel);
-		pending.set_expires_at(new Date(System.currentTimeMillis() + TOKEN_VALID_MILLIS));
+		pending.setExpires_at(new Date(System.currentTimeMillis() + TOKEN_VALID_MILLIS));
 
 		ISignupVerificationDAO verificationDao = sqlSession.getMapper(ISignupVerificationDAO.class);
 		verificationDao.insertPending(pending);

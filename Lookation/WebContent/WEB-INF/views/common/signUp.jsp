@@ -17,6 +17,19 @@
 <meta charset="UTF-8">
 <c:import url="${cp}/includes/includes_home.jsp"></c:import>
 <c:import url="${cp}/includes/defaults.jsp"></c:import>
+<meta name="_csrf" content="${sessionScope.csrfToken}">
+<script>
+(function(){
+  function install(){
+    var meta=document.querySelector('meta[name="_csrf"]');
+    if(!window.jQuery||!meta){return;}
+    jQuery.ajaxSetup({beforeSend:function(xhr){xhr.setRequestHeader('X-CSRF-Token',meta.getAttribute('content'));}});
+  }
+  install();
+  window.addEventListener('load',install);
+})();
+</script>
+
 <title>회원가입</title>
 
 <style type="text/css">

@@ -82,7 +82,7 @@ public class HostMessenger
 	
 	
 	// 메시지 전송
-	@RequestMapping(value="/actions/hmsgsend.action", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value="/actions/hmsgsend.action", method = RequestMethod.POST)
     public String imgSend(HttpServletRequest request, Model model, MessengerDTO dto) throws IOException
     {
 		HttpSession session = request.getSession();

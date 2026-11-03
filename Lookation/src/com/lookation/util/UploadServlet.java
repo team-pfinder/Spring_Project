@@ -29,7 +29,16 @@ public class UploadServlet extends HttpServlet
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		String fileName = URLDecoder.decode(pathInfo.substring(1), "UTF-8");
+		String fileName;
+		try
+		{
+			fileName = URLDecoder.decode(pathInfo.substring(1), "UTF-8");
+		}
+		catch (IllegalArgumentException e)
+		{
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
 		if (!UploadPolicy.isAllowedName(fileName))
 		{
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);

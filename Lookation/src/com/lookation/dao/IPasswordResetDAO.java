@@ -7,6 +7,6 @@ import com.lookation.dto.PasswordResetDTO;
 public interface IPasswordResetDAO
 {
 	public int insert(PasswordResetDTO reset);
-	public PasswordResetDTO findValid(@Param("tokenHash") String tokenHash);
-	public int markUsed(@Param("tokenHash") String tokenHash);
+	public PasswordResetDTO findValid(@Param("token_hash") String tokenHash);
+	public int markUsed(@Param("token_hash") String tokenHash);
 }
