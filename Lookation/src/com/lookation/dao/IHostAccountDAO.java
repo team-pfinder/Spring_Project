@@ -9,6 +9,7 @@ public interface IHostAccountDAO
 	public String findPasswordByCode(String code);
 	public AccountDTO getInfo(String code);
 	public int countEmail(AccountDTO account);
+	public int countNick(AccountDTO account);
 	//
 	public void modifyTel(AccountDTO account);
 	public String getBlackListDate(String host_code);

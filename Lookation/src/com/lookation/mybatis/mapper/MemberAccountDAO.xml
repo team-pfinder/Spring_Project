@@ -35,6 +35,12 @@
 		WHERE MEMBER_EMAIL = #{email}
 	</select>
 	
+	<select id="countNick" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM MEMBER_PROFILE
+		WHERE MEMBER_NICKNAME = #{nick}
+	</select>
+	
 	<update id="modifyTel">
 		UPDATE MEMBER_PROFILE
 		SET MEMBER_TEL = #{tel}

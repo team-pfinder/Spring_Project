@@ -75,9 +75,6 @@
 		class="com.lookation.controller.SignUpFormController"></bean>
 
 	<!-- SendEmail Controller -->
-	<bean name="/actions/sendsignupemail.action"
-		class="com.lookation.controller.SendSignUpEmailController">
-	</bean>
 
 	<!-- AccountDAO 등록 -->
 	<bean id="memberAccountDAO"
@@ -89,11 +86,6 @@
 	</bean>
 
 	<!-- CreateAccount Controller -->
-	<bean name="/actions/signup.action"
-		class="com.lookation.controller.SignUpController">
-		<property name="memberDao" ref="memberAccountDAO"></property>
-		<property name="hostDao" ref="hostAccountDAO"></property>
-	</bean>
 
 	<!-- AccountAjax Controller -->
 	<bean name="/actions/accountajax.action"

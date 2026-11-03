@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lookation.dao.ISignupVerificationDAO">
+
+	<insert id="insertPending" parameterType="com.lookation.dto.SignupPendingDTO">
+		INSERT INTO SIGNUP_VERIFICATION
+			(TOKEN_HASH, IDENTIFY, EMAIL, PW_HASH, NICK, NAME, TEL, EXPIRES_AT, CREATED_AT)
+		VALUES
+			(#{tokenHash}, #{identify}, #{email}, #{pwHash}, #{nick}, #{name}, #{tel}, #{expiresAt}, SYSDATE)
+	</insert>
+
+	<select id="findValid" resultType="com.lookation.dto.SignupPendingDTO">
+		SELECT TOKEN_HASH, IDENTIFY, EMAIL, PW_HASH, NICK, NAME, TEL, EXPIRES_AT, USED_AT, CREATED_AT
+		FROM SIGNUP_VERIFICATION
+		WHERE TOKEN_HASH = #{tokenHash}
+		  AND USED_AT IS NULL
+		  AND EXPIRES_AT &gt; SYSDATE
+	</select>
+
+	<update id="markUsed">
+		UPDATE SIGNUP_VERIFICATION
+		SET USED_AT = SYSDATE
+		WHERE TOKEN_HASH = #{tokenHash}
+		  AND USED_AT IS NULL
+	</update>
+</mapper>

@@ -35,6 +35,12 @@
 		WHERE HOST_EMAIL = #{email}
 	</select>
 	
+	<select id="countNick" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM HOST_PROFILE
+		WHERE HOST_NICKNAME = #{nick}
+	</select>
+	
 	<update id="modifyTel">
 		UPDATE HOST_PROFILE
 		SET HOST_TEL = #{tel}
