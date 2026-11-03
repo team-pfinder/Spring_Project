@@ -5,6 +5,13 @@
 <mapper namespace="com.lookation.dao.IMemberMessengerDAO">
 	
 	<!-- 본인확인 -->
+	<select id="checkMessage" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM MSG
+		WHERE BOOK_CODE = #{book_code}
+		  AND MSG_CODE = #{msg_code}
+	</select>
+	
 	<select id="checkInfo" resultType="java.lang.String">
 		SELECT MEMBER_CODE
 		FROM VIEW_CHECKMSG

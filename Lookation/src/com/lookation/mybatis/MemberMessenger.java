@@ -91,34 +91,60 @@ public class MemberMessenger
 	@RequestMapping(value="/actions/mmsgsend.action", method = { RequestMethod.POST, RequestMethod.GET })
     public String imgSend(HttpServletRequest request, Model model, MessengerDTO dto) throws IOException
     {
-		IMemberMessengerDAO dao = sqlSession.getMapper(IMemberMessengerDAO.class);
-		MultipartRequest m = FileManager.upload(request, "images");
-        ArrayList<String> imageList = FileManager.getFileNames(m);
-		
-        try
-        {
-            dto.setBook_code(m.getParameter("book_code"));
-            dto.setMember_msg_content(m.getParameter("member_msg_content"));
-            dto.setMsg_code(m.getParameter("msg_code"));
-            
-			if (imageList.isEmpty())
-			{
-				dao.mSendMsg(dto);
-				
-			}
-			else 
-			{
-				dto.setMsg_img_url(imageList.get(0));
-				dao.mSendImg(dto);
-				
-			}
+		HttpSession session = request.getSession();
+		String accountCode = (String) session.getAttribute("memberCode");
+		if (accountCode == null)
+		{
+			return "redirect:loginform.action?identify=member";
+		}
 
-        } catch (Exception e)
-        {
-            e.toString();
-        }
-		
-        // 원래 있던 채팅방으로 돌아가기
+		IMemberMessengerDAO dao = sqlSession.getMapper(IMemberMessengerDAO.class);
+
+		MultipartRequest m = null;
+		ArrayList<String> imageList = new ArrayList<String>();
+		String bookCode;
+		String msgCode;
+		String content;
+
+		String contentType = request.getContentType();
+		if (contentType != null && contentType.startsWith("multipart/"))
+		{
+			m = FileManager.upload(request, "images");
+			imageList = FileManager.getFileNames(m);
+			bookCode = m.getParameter("book_code");
+			msgCode = m.getParameter("msg_code");
+			content = m.getParameter("member_msg_content");
+		}
+		else
+		{
+			bookCode = request.getParameter("book_code");
+			msgCode = request.getParameter("msg_code");
+			content = request.getParameter("member_msg_content");
+		}
+
+		if (bookCode == null || !accountCode.equals(dao.checkInfo(bookCode)))
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=member";
+		}
+		if (msgCode != null && !msgCode.isEmpty() && dao.checkMessage(bookCode, msgCode) == 0)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=member";
+		}
+
+		dto.setBook_code(bookCode);
+		dto.setMsg_code(msgCode);
+		dto.setMember_msg_content(content);
+
+		if (imageList.isEmpty())
+		{
+			dao.mSendMsg(dto);
+		}
+		else
+		{
+			dto.setMsg_img_url(imageList.get(0));
+			dao.mSendImg(dto);
+		}
+
      	return "redirect:mmessenger.action?book_code=" + dto.getBook_code();
     }
 }

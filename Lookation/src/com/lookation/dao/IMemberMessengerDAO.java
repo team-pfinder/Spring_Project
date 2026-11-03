@@ -2,12 +2,15 @@ package com.lookation.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.lookation.dto.MessengerDTO;
 
 public interface IMemberMessengerDAO
 {
 	// 본인확인
 	public String checkInfo(String book_code);
+	public int checkMessage(@Param("book_code") String book_code, @Param("msg_code") String msg_code);
 	
 	// 예약일 확인
 	public String checkDate(String book_code);

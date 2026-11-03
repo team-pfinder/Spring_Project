@@ -85,34 +85,60 @@ public class HostMessenger
 	@RequestMapping(value="/actions/hmsgsend.action", method = { RequestMethod.POST, RequestMethod.GET })
     public String imgSend(HttpServletRequest request, Model model, MessengerDTO dto) throws IOException
     {
-		IHostMessengerDAO dao = sqlSession.getMapper(IHostMessengerDAO.class);
-		
-		MultipartRequest m = FileManager.upload(request, "images");
-        ArrayList<String> imageList = FileManager.getFileNames(m);
-		
-        try
-        {
-            dto.setBook_code(m.getParameter("book_code"));
-            dto.setHost_msg_content(m.getParameter("host_msg_content"));
-            dto.setMsg_code(m.getParameter("msg_code"));
-            
-			if (imageList.isEmpty())
-			{
-				dao.hSendMsg(dto);
-				
-			}
-			else 
-			{
-				dto.setMsg_img_url(imageList.get(0));
-				dao.hSendImg(dto);
-			}
+		HttpSession session = request.getSession();
+		String accountCode = (String) session.getAttribute("hostCode");
+		if (accountCode == null)
+		{
+			return "redirect:loginform.action?identify=host";
+		}
 
-        } catch (Exception e)
-        {
-            e.toString();
-        }
-		
-        // 원래 있던 채팅방으로 돌아가기
+		IHostMessengerDAO dao = sqlSession.getMapper(IHostMessengerDAO.class);
+
+		MultipartRequest m = null;
+		ArrayList<String> imageList = new ArrayList<String>();
+		String bookCode;
+		String msgCode;
+		String content;
+
+		String contentType = request.getContentType();
+		if (contentType != null && contentType.startsWith("multipart/"))
+		{
+			m = FileManager.upload(request, "images");
+			imageList = FileManager.getFileNames(m);
+			bookCode = m.getParameter("book_code");
+			msgCode = m.getParameter("msg_code");
+			content = m.getParameter("host_msg_content");
+		}
+		else
+		{
+			bookCode = request.getParameter("book_code");
+			msgCode = request.getParameter("msg_code");
+			content = request.getParameter("host_msg_content");
+		}
+
+		if (bookCode == null || !accountCode.equals(dao.checkInfo(bookCode)))
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+		}
+		if (msgCode != null && !msgCode.isEmpty() && dao.checkMessage(bookCode, msgCode) == 0)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=host";
+		}
+
+		dto.setBook_code(bookCode);
+		dto.setMsg_code(msgCode);
+		dto.setHost_msg_content(content);
+
+		if (imageList.isEmpty())
+		{
+			dao.hSendMsg(dto);
+		}
+		else
+		{
+			dto.setMsg_img_url(imageList.get(0));
+			dao.hSendImg(dto);
+		}
+
      	return "redirect:hmessenger.action?book_code=" + dto.getBook_code();
     }
 	
