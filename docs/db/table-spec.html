@@ -1,0 +1,1362 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'">
+<title>테이블 명세서 — Lookation</title>
+<style>:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #17181c;
+  --muted: #5c6270;
+  --line: #e2e5ea;
+  --panel: #f6f7f9;
+  --accent: #1f5fbf;
+  --code: #f3f4f6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111216;
+    --fg: #e8eaee;
+    --muted: #9aa1ae;
+    --line: #2a2d35;
+    --panel: #181a20;
+    --accent: #9db8e8;
+    --code: #1a1c22;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif; }
+main, header, footer { max-width: 78rem; margin: 0 auto; padding: 0 1.25rem; }
+header { padding-top: 2.5rem; padding-bottom: .5rem; }
+h1 { font-size: 1.8rem; line-height: 1.2; margin: 0 0 .4rem; letter-spacing: -.02em; }
+h2 { font-size: 1.15rem; margin: 0; }
+h3 { font-size: .95rem; margin: 0 0 .5rem; }
+p { margin: .35rem 0; }
+.eyebrow { color: var(--accent); font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.meta { color: var(--muted); font-size: .875rem; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .65rem; margin: 1.5rem 0 1rem; }
+.stat { padding: .75rem .9rem; background: var(--panel); border: 1px solid var(--line); border-radius: .6rem; }
+.stat strong { display: block; font-size: 1.25rem; line-height: 1.2; }
+.stat span { color: var(--muted); font-size: .78rem; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: 1.2rem 0 .8rem; padding: .85rem 1rem; background: var(--panel); border: 1px solid var(--line); border-radius: .7rem; }
+.controls label { font-weight: 600; font-size: .875rem; }
+.controls input { flex: 1 1 16rem; min-width: 0; padding: .55rem .75rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: .45rem; font: inherit; }
+.controls input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.count { margin: 0; color: var(--muted); font-size: .8125rem; }
+.toc { margin: .8rem 0 1.5rem; }
+.toc ul { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.toc a { display: inline-flex; padding: .28rem .6rem; color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; font-size: .8rem; text-decoration: none; }
+.toc a:hover { border-color: var(--accent); }
+.overview { margin: 1.5rem 0 2rem; }
+.table-card { padding: 1.5rem 0; border-top: 1px solid var(--line); scroll-margin-top: 1rem; }
+.table-card h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; }
+.table-card h2 .desc { color: var(--muted); font-size: .9rem; font-weight: 400; }
+.table-card .meta { margin-bottom: .75rem; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: .5rem; }
+table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+th, td { padding: .5rem .6rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--panel); color: var(--muted); font-size: .76rem; font-weight: 600; white-space: nowrap; }
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--panel) 55%, transparent); }
+.flag { color: var(--muted); }
+.flag.yes { color: var(--accent); font-weight: 700; }
+.subsection { margin-top: 1rem; }
+.warnings { margin: 1.5rem 0; padding: 1rem; border: 1px dashed var(--line); border-radius: .6rem; }
+.warnings h2 { font-size: 1rem; margin-bottom: .4rem; }
+.warnings ul { margin: .25rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: .875rem; }
+footer { padding-top: 2rem; padding-bottom: 2.5rem; color: var(--muted); font-size: .8125rem; border-top: 1px solid var(--line); }
+[hidden] { display: none !important; }
+@media print {
+  .controls, .toc, footer { display: none; }
+  .table-card { break-inside: avoid-page; }
+  body { font-size: 10.5pt; }
+}</style>
+</head>
+<body>
+<header>
+<p class="eyebrow">Database specification</p>
+<h1>테이블 명세서 — Lookation</h1>
+<p class="meta">Lookation · 2026-11-02T17:14:31+09:00</p>
+<p class="meta">원본: DDL 파일 1개 · SQL 방언: oracle</p>
+<div class="stats">
+<div class="stat"><strong>76</strong><span>테이블</span></div>
+<div class="stat"><strong>278</strong><span>컬럼</span></div>
+<div class="stat"><strong>78</strong><span>관계</span></div>
+<div class="stat"><strong>0</strong><span>인덱스</span></div>
+</div>
+</header>
+<main>
+<div class="controls">
+<label for="search">테이블 검색</label>
+<input id="search" type="search" placeholder="테이블·컬럼·설명" autocomplete="off" spellcheck="false">
+<p class="count" id="result-count" aria-live="polite">76 tables</p>
+</div>
+<nav class="toc" aria-label="테이블 목차"><ul>
+<li><a href="#table-1">ACTUAL_BOOKER</a></li>
+<li><a href="#table-2">ADMIN</a></li>
+<li><a href="#table-3">APPLY_PACKAGE</a></li>
+<li><a href="#table-4">ATTACHMENT</a></li>
+<li><a href="#table-5">BIZ_INFO</a></li>
+<li><a href="#table-6">BOARD_TYPE</a></li>
+<li><a href="#table-7">BOOK_LIST</a></li>
+<li><a href="#table-8">BOOK_REFUND_LIST</a></li>
+<li><a href="#table-9">BOOK_REPORT</a></li>
+<li><a href="#table-10">BOOK_REPORT_IMG</a></li>
+<li><a href="#table-11">BOOK_REPORT_PROC</a></li>
+<li><a href="#table-12">BOOK_REPORT_TYPE</a></li>
+<li><a href="#table-13">Book_Pay_List</a></li>
+<li><a href="#table-14">CAUTION</a></li>
+<li><a href="#table-15">FACILITY_INFO</a></li>
+<li><a href="#table-16">HELP</a></li>
+<li><a href="#table-17">HELP_IMG</a></li>
+<li><a href="#table-18">HOST</a></li>
+<li><a href="#table-19">HOST_BANK_INFO</a></li>
+<li><a href="#table-20">HOST_BLACKLIST</a></li>
+<li><a href="#table-21">HOST_CANCEL_LIST</a></li>
+<li><a href="#table-22">HOST_EXCHANGE_BANK_INFO</a></li>
+<li><a href="#table-23">HOST_EXCHANGE_LIST</a></li>
+<li><a href="#table-24">HOST_MSG_IMG</a></li>
+<li><a href="#table-25">HOST_MSG_INFO</a></li>
+<li><a href="#table-26">HOST_PROFILE</a></li>
+<li><a href="#table-27">HOST_WITHDRAW</a></li>
+<li><a href="#table-28">IMPORTANT_NOTICE</a></li>
+<li><a href="#table-29">INSPECT_PROC_LIST</a></li>
+<li><a href="#table-30">INSPECT_REG_LIST</a></li>
+<li><a href="#table-31">INSPECT_TYPE</a></li>
+<li><a href="#table-32">LOAD_PROC</a></li>
+<li><a href="#table-33">LOAD_REG</a></li>
+<li><a href="#table-34">LOAD_REG_BANK_INFO</a></li>
+<li><a href="#table-35">LOAD_TYPE</a></li>
+<li><a href="#table-36">LOC</a></li>
+<li><a href="#table-37">LOC_BASIC_INFO</a></li>
+<li><a href="#table-38">LOC_BLIND</a></li>
+<li><a href="#table-39">LOC_CONTACT</a></li>
+<li><a href="#table-40">LOC_DETAIL_IMG</a></li>
+<li><a href="#table-41">LOC_DETAIL_INFO</a></li>
+<li><a href="#table-42">LOC_REMOVE</a></li>
+<li><a href="#table-43">LOC_REPORT</a></li>
+<li><a href="#table-44">LOC_REPORT_IMG</a></li>
+<li><a href="#table-45">LOC_REPORT_PROC</a></li>
+<li><a href="#table-46">LOC_REPORT_TYPE</a></li>
+<li><a href="#table-47">LOC_TYPE</a></li>
+<li><a href="#table-48">LOC_USE_INFO</a></li>
+<li><a href="#table-49">LOC_WEB</a></li>
+<li><a href="#table-50">MEMBER</a></li>
+<li><a href="#table-51">MEMBER_BANK_INFO</a></li>
+<li><a href="#table-52">MEMBER_BLACKLIST</a></li>
+<li><a href="#table-53">MEMBER_CANCEL_LIST</a></li>
+<li><a href="#table-54">MEMBER_EXCHANGE_BANK_INFO</a></li>
+<li><a href="#table-55">MEMBER_EXCHANGE_LIST</a></li>
+<li><a href="#table-56">MEMBER_MSG_IMG</a></li>
+<li><a href="#table-57">MEMBER_MSG_INFO</a></li>
+<li><a href="#table-58">MEMBER_PROFILE</a></li>
+<li><a href="#table-59">MEMBER_WITHDRAW</a></li>
+<li><a href="#table-60">MSG</a></li>
+<li><a href="#table-61">NOTICE</a></li>
+<li><a href="#table-62">NOTICE_IMG</a></li>
+<li><a href="#table-63">PACKAGE</a></li>
+<li><a href="#table-64">PACKAGE_FORM</a></li>
+<li><a href="#table-65">PACKAGE_REMOVE</a></li>
+<li><a href="#table-66">QNA</a></li>
+<li><a href="#table-67">QNA_REMOVE</a></li>
+<li><a href="#table-68">QNA_REPLY</a></li>
+<li><a href="#table-69">QNA_REPLY_REMOVE</a></li>
+<li><a href="#table-70">REPORT_PROC_TYPE</a></li>
+<li><a href="#table-71">REVIEW</a></li>
+<li><a href="#table-72">REVIEW_IMG</a></li>
+<li><a href="#table-73">REVIEW_REMOVE</a></li>
+<li><a href="#table-74">REVIEW_REPLY</a></li>
+<li><a href="#table-75">REVIEW_REPLY_REMOVE</a></li>
+<li><a href="#table-76">THUMBNAIL</a></li>
+</ul></nav>
+<section class="overview"><h2>테이블 목록</h2><div class="table-wrap"><table>
+<thead><tr><th>No</th><th>스키마</th><th>테이블</th><th>설명</th><th>컬럼</th><th>PK</th><th>FK</th><th>인덱스</th></tr></thead><tbody>
+<tr><td>1</td><td>-</td><td><a href="#table-1">ACTUAL_BOOKER</a></td><td>실예약자 AB</td><td>4</td><td>ACTUAL_BOOKER_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>2</td><td>-</td><td><a href="#table-2">ADMIN</a></td><td>관리자</td><td>3</td><td>ADMIN_ID</td><td>0</td><td>0</td></tr>
+<tr><td>3</td><td>-</td><td><a href="#table-3">APPLY_PACKAGE</a></td><td>적용된 패키지 AP</td><td>3</td><td>APPLY_PACKAGE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>4</td><td>-</td><td><a href="#table-4">ATTACHMENT</a></td><td>첨부파일(공지사항) AT</td><td>3</td><td>ATTACHMENT_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>5</td><td>-</td><td><a href="#table-5">BIZ_INFO</a></td><td>사업자정보 BZ</td><td>10</td><td>BIZ_INFO_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>6</td><td>-</td><td><a href="#table-6">BOARD_TYPE</a></td><td>게시물 분류 BT</td><td>2</td><td>BOARD_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>7</td><td>-</td><td><a href="#table-7">BOOK_LIST</a></td><td>예약내역 BC</td><td>6</td><td>BOOK_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>8</td><td>-</td><td><a href="#table-8">BOOK_REFUND_LIST</a></td><td>예약 환불 내역(이용자) BRF</td><td>3</td><td>BOOK_REFUND_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>9</td><td>-</td><td><a href="#table-9">BOOK_REPORT</a></td><td>신고접수(이용자)(예약내역) BRP</td><td>6</td><td>BOOK_REPORT_CODE</td><td>3</td><td>0</td></tr>
+<tr><td>10</td><td>-</td><td><a href="#table-10">BOOK_REPORT_IMG</a></td><td>이미지(신고) BRPIMG</td><td>3</td><td>BOOK_REPORT_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>11</td><td>-</td><td><a href="#table-11">BOOK_REPORT_PROC</a></td><td>신고처리(이용자)(예약내역) BRPP</td><td>4</td><td>BOOK_REPORT_PROC_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>12</td><td>-</td><td><a href="#table-12">BOOK_REPORT_TYPE</a></td><td>신고유형분류(예약내역) BRPT</td><td>2</td><td>BOOK_REPORT_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>13</td><td>-</td><td><a href="#table-13">Book_Pay_List</a></td><td>예약 결제 내역(이용자) BP</td><td>3</td><td>BOOK_PAY_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>14</td><td>-</td><td><a href="#table-14">CAUTION</a></td><td>주의사항(기본정보)  CAU</td><td>3</td><td>CAUTION_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>15</td><td>-</td><td><a href="#table-15">FACILITY_INFO</a></td><td>시설안내(기본정보) FIF</td><td>3</td><td>FACILITY_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>16</td><td>-</td><td><a href="#table-16">HELP</a></td><td>도움말 HLP</td><td>5</td><td>HELP_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>17</td><td>-</td><td><a href="#table-17">HELP_IMG</a></td><td>이미지(도움말) HLPIMG</td><td>3</td><td>HELP_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>18</td><td>-</td><td><a href="#table-18">HOST</a></td><td>회원(호스트) H</td><td>2</td><td>HOST_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>19</td><td>-</td><td><a href="#table-19">HOST_BANK_INFO</a></td><td>계좌정보(호스트)</td><td>4</td><td>HOST_BANK_NUMBER</td><td>1</td><td>0</td></tr>
+<tr><td>20</td><td>-</td><td><a href="#table-20">HOST_BLACKLIST</a></td><td>블랙리스트(호스트)</td><td>3</td><td>HOST_EMAIL</td><td>0</td><td>0</td></tr>
+<tr><td>21</td><td>-</td><td><a href="#table-21">HOST_CANCEL_LIST</a></td><td>예약취소내역(호스트) HC0000</td><td>4</td><td>HOST_CANCEL_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>22</td><td>-</td><td><a href="#table-22">HOST_EXCHANGE_BANK_INFO</a></td><td>환전계좌정보(호스트) HEBI</td><td>3</td><td>HOST_EXCHANGE_BANK_INFO_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>23</td><td>-</td><td><a href="#table-23">HOST_EXCHANGE_LIST</a></td><td>마일리지 환전 내역(호스트) HE</td><td>4</td><td>HOST_EXCHANGE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>24</td><td>-</td><td><a href="#table-24">HOST_MSG_IMG</a></td><td>이미지(메신저정보(호스트)) HMIMG</td><td>3</td><td>HOST_MSG_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>25</td><td>-</td><td><a href="#table-25">HOST_MSG_INFO</a></td><td>메신저정보(호스트) HMIF</td><td>4</td><td>HOST_MSG_INFO_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>26</td><td>-</td><td><a href="#table-26">HOST_PROFILE</a></td><td>프로필정보(호스트)</td><td>6</td><td>HOST_EMAIL</td><td>1</td><td>0</td></tr>
+<tr><td>27</td><td>-</td><td><a href="#table-27">HOST_WITHDRAW</a></td><td>회원탈퇴(호스트) HW</td><td>3</td><td>HOST_WITHDRAW_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>28</td><td>-</td><td><a href="#table-28">IMPORTANT_NOTICE</a></td><td>중요공지 분류 IN</td><td>2</td><td>IMPORTANT_NOTICE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>29</td><td>-</td><td><a href="#table-29">INSPECT_PROC_LIST</a></td><td>검수처리내역 IP</td><td>5</td><td>INSPECT_PROC_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>30</td><td>-</td><td><a href="#table-30">INSPECT_REG_LIST</a></td><td>검수신청내역 IR</td><td>3</td><td>INSPECT_REG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>31</td><td>-</td><td><a href="#table-31">INSPECT_TYPE</a></td><td>검수분류 IT</td><td>2</td><td>INSPECT_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>32</td><td>-</td><td><a href="#table-32">LOAD_PROC</a></td><td>충전처리내역(이용자) LP</td><td>4</td><td>LOAD_PROC_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>33</td><td>-</td><td><a href="#table-33">LOAD_REG</a></td><td>마일리지 충전신청 내역(이용자) LR</td><td>4</td><td>LOAD_REG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>34</td><td>-</td><td><a href="#table-34">LOAD_REG_BANK_INFO</a></td><td>충전신청계좌정보 LRBI</td><td>3</td><td>LOAD_REG_BANK_INFO_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>35</td><td>-</td><td><a href="#table-35">LOAD_TYPE</a></td><td>마일리지 충전 분류 LT</td><td>2</td><td>LOAD_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>36</td><td>-</td><td><a href="#table-36">LOC</a></td><td>공간 L</td><td>3</td><td>LOC_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>37</td><td>-</td><td><a href="#table-37">LOC_BASIC_INFO</a></td><td>기본정보 LBIF</td><td>8</td><td>LOC_BASIC_INFO_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>38</td><td>-</td><td><a href="#table-38">LOC_BLIND</a></td><td>블라인드내역(공간게시물) LB</td><td>4</td><td>LOC_BLIND_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>39</td><td>-</td><td><a href="#table-39">LOC_CONTACT</a></td><td>연락처 LC</td><td>5</td><td>LOC_CONTACT_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>40</td><td>-</td><td><a href="#table-40">LOC_DETAIL_IMG</a></td><td>이미지(상세정보) LDIMG</td><td>3</td><td>LOC_DETAIL_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>41</td><td>-</td><td><a href="#table-41">LOC_DETAIL_INFO</a></td><td>상세정보 LDIF</td><td>4</td><td>LOC_DETAIL_INFO_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>42</td><td>-</td><td><a href="#table-42">LOC_REMOVE</a></td><td>삭제내역(공간) LRM</td><td>3</td><td>LOC_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>43</td><td>-</td><td><a href="#table-43">LOC_REPORT</a></td><td>신고접수(이용자)(공간게시물) LRP</td><td>6</td><td>LOC_REPORT_CODE</td><td>3</td><td>0</td></tr>
+<tr><td>44</td><td>-</td><td><a href="#table-44">LOC_REPORT_IMG</a></td><td>이미지(신고) LRPIMG</td><td>3</td><td>LOC_REPORT_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>45</td><td>-</td><td><a href="#table-45">LOC_REPORT_PROC</a></td><td>신고처리(이용자)(공간게시물) LRPP</td><td>4</td><td>LOC_REPORT_PROC_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>46</td><td>-</td><td><a href="#table-46">LOC_REPORT_TYPE</a></td><td>신고유형분류(공간) LRPT</td><td>2</td><td>LOC_REPORT_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>47</td><td>-</td><td><a href="#table-47">LOC_TYPE</a></td><td>공간분류 LOCT</td><td>2</td><td>LOC_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>48</td><td>-</td><td><a href="#table-48">LOC_USE_INFO</a></td><td>이용안내 LUI</td><td>5</td><td>LOC_USE_INFO_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>49</td><td>-</td><td><a href="#table-49">LOC_WEB</a></td><td>공간웹사이트(상세정보)  LW</td><td>3</td><td>LOC_WEB_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>50</td><td>-</td><td><a href="#table-50">MEMBER</a></td><td>회원(이용자) M</td><td>2</td><td>MEMBER_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>51</td><td>-</td><td><a href="#table-51">MEMBER_BANK_INFO</a></td><td>계좌정보(이용자)</td><td>4</td><td>MEMBER_BANK_NUMBER</td><td>1</td><td>0</td></tr>
+<tr><td>52</td><td>-</td><td><a href="#table-52">MEMBER_BLACKLIST</a></td><td>블랙리스트(이용자)</td><td>3</td><td>MEMBER_EMAIL</td><td>0</td><td>0</td></tr>
+<tr><td>53</td><td>-</td><td><a href="#table-53">MEMBER_CANCEL_LIST</a></td><td>예약취소내역(이용자) MC</td><td>4</td><td>MEMBER_CANCEL_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>54</td><td>-</td><td><a href="#table-54">MEMBER_EXCHANGE_BANK_INFO</a></td><td>환전계좌정보(이용자) MEBI</td><td>3</td><td>MEMBER_EXCHANGE_BANK_INFO_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>55</td><td>-</td><td><a href="#table-55">MEMBER_EXCHANGE_LIST</a></td><td>마일리지 환전 내역(이용자) ME</td><td>4</td><td>MEMBER_EXCHANGE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>56</td><td>-</td><td><a href="#table-56">MEMBER_MSG_IMG</a></td><td>이미지(메신저정보(이용자)) MMIMG</td><td>3</td><td>MEMBER_MSG_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>57</td><td>-</td><td><a href="#table-57">MEMBER_MSG_INFO</a></td><td>메신저정보(이용자) MMIF</td><td>4</td><td>MEMBER_MSG_INFO_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>58</td><td>-</td><td><a href="#table-58">MEMBER_PROFILE</a></td><td>프로필정보(이용자)</td><td>6</td><td>MEMBER_EMAIL</td><td>1</td><td>0</td></tr>
+<tr><td>59</td><td>-</td><td><a href="#table-59">MEMBER_WITHDRAW</a></td><td>탈퇴(이용자) MW</td><td>3</td><td>MEMBER_WITHDRAW_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>60</td><td>-</td><td><a href="#table-60">MSG</a></td><td>메신저 MSG</td><td>2</td><td>MSG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>61</td><td>-</td><td><a href="#table-61">NOTICE</a></td><td>공지사항 N</td><td>5</td><td>NOTICE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>62</td><td>-</td><td><a href="#table-62">NOTICE_IMG</a></td><td>이미지(공지사항) NIMG</td><td>3</td><td>NOTICE_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>63</td><td>-</td><td><a href="#table-63">PACKAGE</a></td><td>패키지 P</td><td>6</td><td>PACKAGE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>64</td><td>-</td><td><a href="#table-64">PACKAGE_FORM</a></td><td>패키지 양식 PF</td><td>2</td><td>PACKAGE_FORM_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>65</td><td>-</td><td><a href="#table-65">PACKAGE_REMOVE</a></td><td>폐기 패키지 PRM</td><td>3</td><td>PACKAGE_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>66</td><td>-</td><td><a href="#table-66">QNA</a></td><td>Q_AND_A(이용자) Q</td><td>5</td><td>QNA_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>67</td><td>-</td><td><a href="#table-67">QNA_REMOVE</a></td><td>삭제내역(Q_AND_A) QRM</td><td>3</td><td>QNA_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>68</td><td>-</td><td><a href="#table-68">QNA_REPLY</a></td><td>Q_AND_A답글(호스트) QRE</td><td>4</td><td>QNA_REPLY_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>69</td><td>-</td><td><a href="#table-69">QNA_REPLY_REMOVE</a></td><td>삭제내역(Q_AND_A답글) QRERM</td><td>3</td><td>QNA_REPLY_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>70</td><td>-</td><td><a href="#table-70">REPORT_PROC_TYPE</a></td><td>신고처리분류 RPPT</td><td>2</td><td>REPORT_PROC_TYPE_CODE</td><td>0</td><td>0</td></tr>
+<tr><td>71</td><td>-</td><td><a href="#table-71">REVIEW</a></td><td>리뷰(이용자) RV</td><td>6</td><td>REVIEW_CODE</td><td>2</td><td>0</td></tr>
+<tr><td>72</td><td>-</td><td><a href="#table-72">REVIEW_IMG</a></td><td>이미지(리뷰) RVIMG</td><td>3</td><td>REVIEW_IMG_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>73</td><td>-</td><td><a href="#table-73">REVIEW_REMOVE</a></td><td>삭제내역(리뷰)  RVRM</td><td>3</td><td>REVIEW_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>74</td><td>-</td><td><a href="#table-74">REVIEW_REPLY</a></td><td>리뷰답글(호스트) RVRE</td><td>4</td><td>REVIEW_REPLY_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>75</td><td>-</td><td><a href="#table-75">REVIEW_REPLY_REMOVE</a></td><td>삭제내역(리뷰답글) RVRERM</td><td>3</td><td>REVIEW_REPLY_REMOVE_CODE</td><td>1</td><td>0</td></tr>
+<tr><td>76</td><td>-</td><td><a href="#table-76">THUMBNAIL</a></td><td>썸네일(기본정보) TH</td><td>3</td><td>THUMBNAIL_CODE</td><td>1</td><td>0</td></tr>
+</tbody></table></div></section>
+<section class="table-card" id="table-1" data-search="actual_booker 실예약자 ab actual_booker_code book_code actual_booker actual_booker_tel 실예약자 코드 예약코드 예약자명 예약자 연락처">
+<h2>ACTUAL_BOOKER <span class="desc">실예약자 AB</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>ACTUAL_BOOKER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>실예약자 코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>3</td><td>ACTUAL_BOOKER</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약자명</td><td>-</td></tr>
+<tr><td>4</td><td>ACTUAL_BOOKER_TEL</td><td>VARCHAR2</td><td>13</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약자 연락처</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_ACTUAL_BOOKER_BOOK_CODE_BOO</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-2" data-search="admin 관리자 admin_id admin_pw admin_nickname 아이디 비밀번호 닉네임">
+<h2>ADMIN <span class="desc">관리자</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>ADMIN_ID</td><td>VARCHAR2</td><td>18</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>아이디</td><td>-</td></tr>
+<tr><td>2</td><td>ADMIN_PW</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>비밀번호</td><td>-</td></tr>
+<tr><td>3</td><td>ADMIN_NICKNAME</td><td>VARCHAR2</td><td>18</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>닉네임</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-3" data-search="apply_package 적용된 패키지 ap apply_package_code package_code apply_date 적용된패키지코드 패키지코드 적용일자">
+<h2>APPLY_PACKAGE <span class="desc">적용된 패키지 AP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>APPLY_PACKAGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>적용된패키지코드</td><td>-</td></tr>
+<tr><td>2</td><td>PACKAGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지코드</td><td>-</td></tr>
+<tr><td>3</td><td>APPLY_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>적용일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_APPLY_PACKAGE_PACKAGE_CODE_</td><td>PACKAGE_CODE</td><td>PACKAGE</td><td>PACKAGE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-4" data-search="attachment 첨부파일(공지사항) at attachment_code notice_code attachment_url 첨부파일코드 공지사항 코드 첨부파일 링크(url)">
+<h2>ATTACHMENT <span class="desc">첨부파일(공지사항) AT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>ATTACHMENT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>첨부파일코드</td><td>-</td></tr>
+<tr><td>2</td><td>NOTICE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공지사항 코드</td><td>-</td></tr>
+<tr><td>3</td><td>ATTACHMENT_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>첨부파일 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_ATTACHMENT_NOTICE_CODE_NOTI</td><td>NOTICE_CODE</td><td>NOTICE</td><td>NOTICE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-5" data-search="biz_info 사업자정보 bz biz_info_code loc_code biz_name biz_ceo biz_license_url biz_ceo_type biz_main_type biz_sub_type biz_addr biz_license_number 사업자정보코드 공간코드 상호명 대표자명 사업자등록증(url) 사업자유형 주업태 주종목 사업장 주소 사업자등록번호">
+<h2>BIZ_INFO <span class="desc">사업자정보 BZ</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BIZ_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>사업자정보코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>BIZ_NAME</td><td>VARCHAR2</td><td>90</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>상호명</td><td>-</td></tr>
+<tr><td>4</td><td>BIZ_CEO</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>대표자명</td><td>-</td></tr>
+<tr><td>5</td><td>BIZ_LICENSE_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>사업자등록증(url)</td><td>-</td></tr>
+<tr><td>6</td><td>BIZ_CEO_TYPE</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>사업자유형</td><td>-</td></tr>
+<tr><td>7</td><td>BIZ_MAIN_TYPE</td><td>VARCHAR2</td><td>90</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>주업태</td><td>-</td></tr>
+<tr><td>8</td><td>BIZ_SUB_TYPE</td><td>VARCHAR2</td><td>90</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>주종목</td><td>-</td></tr>
+<tr><td>9</td><td>BIZ_ADDR</td><td>VARCHAR2</td><td>200</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>사업장 주소</td><td>-</td></tr>
+<tr><td>10</td><td>BIZ_LICENSE_NUMBER</td><td>CHAR</td><td>12</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>사업자등록번호</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_BIZ_INFO_LOC_CODE_LOC_LOC_C</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-6" data-search="board_type 게시물 분류 bt board_type_code board_type 게시물분류코드 게시물 유형">
+<h2>BOARD_TYPE <span class="desc">게시물 분류 BT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOARD_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>게시물분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOARD_TYPE</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>게시물 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-7" data-search="book_list 예약내역 bc book_code member_code apply_package_code book_people book_date book_req 예약코드 회원코드(이용자) 적용된 패키지 코드 인원수 예약 신청시간 요청사항">
+<h2>BOOK_LIST <span class="desc">예약내역 BC</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(이용자)</td><td>-</td></tr>
+<tr><td>3</td><td>APPLY_PACKAGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>적용된 패키지 코드</td><td>-</td></tr>
+<tr><td>4</td><td>BOOK_PEOPLE</td><td>NUMBER</td><td>2</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>인원수</td><td>-</td></tr>
+<tr><td>5</td><td>BOOK_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약 신청시간</td><td>-</td></tr>
+<tr><td>6</td><td>BOOK_REQ</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>요청사항</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_BOOK_LIST_MEMBER_CODE_MEMBE</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_BOOK_LIST_APPLY_PACKAGE_COD</td><td>APPLY_PACKAGE_CODE</td><td>APPLY_PACKAGE</td><td>APPLY_PACKAGE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-8" data-search="book_refund_list 예약 환불 내역(이용자) brf book_refund_code book_code book_refund_date 환불코드 예약코드 환불일자">
+<h2>BOOK_REFUND_LIST <span class="desc">예약 환불 내역(이용자) BRF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_REFUND_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>환불코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>3</td><td>BOOK_REFUND_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환불일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_BOOK_REFUND_LIST_BOOK_CODE_</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-9" data-search="book_report 신고접수(이용자)(예약내역) brp book_report_code book_code book_report_type_code host_code book_report_reason book_report_date 신고접수코드 예약코드 신고유형분류코드 회원코드(신고자)(호스트) 신고사유 신고일자">
+<h2>BOOK_REPORT <span class="desc">신고접수(이용자)(예약내역) BRP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_REPORT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고접수코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>3</td><td>BOOK_REPORT_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고유형분류코드</td><td>-</td></tr>
+<tr><td>4</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(신고자)(호스트)</td><td>-</td></tr>
+<tr><td>5</td><td>BOOK_REPORT_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고사유</td><td>-</td></tr>
+<tr><td>6</td><td>BOOK_REPORT_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_BOOK_REPORT_BOOK_REPORT_TYP</td><td>BOOK_REPORT_TYPE_CODE</td><td>BOOK_REPORT_TYPE</td><td>BOOK_REPORT_TYPE_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_BOOK_REPORT_BOOK_CODE_BOOK_</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_BOOK_REPORT_HOST_CODE_HOST_</td><td>HOST_CODE</td><td>HOST</td><td>HOST_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-10" data-search="book_report_img 이미지(신고) brpimg book_report_img_code book_report_code book_report_img_url 이미지코드 신고접수코드 이미지 링크(url)">
+<h2>BOOK_REPORT_IMG <span class="desc">이미지(신고) BRPIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_REPORT_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_REPORT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고접수코드</td><td>-</td></tr>
+<tr><td>3</td><td>BOOK_REPORT_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_BOOK_REPORT_IMG_BOOK_REPORT</td><td>BOOK_REPORT_CODE</td><td>BOOK_REPORT</td><td>BOOK_REPORT_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-11" data-search="book_report_proc 신고처리(이용자)(예약내역) brpp book_report_proc_code book_report_code report_proc_type_code book_report_proc_date 신고처리코드 신고접수코드 신고처리분류코드 처리일자">
+<h2>BOOK_REPORT_PROC <span class="desc">신고처리(이용자)(예약내역) BRPP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_REPORT_PROC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고처리코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_REPORT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고접수코드</td><td>-</td></tr>
+<tr><td>3</td><td>REPORT_PROC_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고처리분류코드</td><td>-</td></tr>
+<tr><td>4</td><td>BOOK_REPORT_PROC_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>처리일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_BOOK_REPORT_PROC_BOOK_REPOR</td><td>BOOK_REPORT_CODE</td><td>BOOK_REPORT</td><td>BOOK_REPORT_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_BOOK_REPORT_PROC_REPORT_PRO</td><td>REPORT_PROC_TYPE_CODE</td><td>REPORT_PROC_TYPE</td><td>REPORT_PROC_TYPE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-12" data-search="book_report_type 신고유형분류(예약내역) brpt book_report_type_code book_report_type 신고유형분류코드 신고 유형">
+<h2>BOOK_REPORT_TYPE <span class="desc">신고유형분류(예약내역) BRPT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_REPORT_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고유형분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_REPORT_TYPE</td><td>VARCHAR2</td><td>50</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-13" data-search="book_pay_list 예약 결제 내역(이용자) bp book_pay_code book_code book_pay_date 결제코드 예약코드 결제일자">
+<h2>Book_Pay_List <span class="desc">예약 결제 내역(이용자) BP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>BOOK_PAY_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>결제코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>3</td><td>BOOK_PAY_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>결제일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_Book_Pay_List_BOOK_CODE_BOO</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-14" data-search="caution 주의사항(기본정보)  cau caution_code loc_basic_info_code caution_content 주의사항 코드 기존정보코드 주의사항 내용">
+<h2>CAUTION <span class="desc">주의사항(기본정보)  CAU</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>CAUTION_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>주의사항 코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_BASIC_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>기존정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>CAUTION_CONTENT</td><td>VARCHAR2</td><td>450</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>주의사항 내용</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_CAUTION_LOC_BASIC_INFO_CODE</td><td>LOC_BASIC_INFO_CODE</td><td>LOC_BASIC_INFO</td><td>LOC_BASIC_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-15" data-search="facility_info 시설안내(기본정보) fif facility_code loc_basic_info_code facility_content 시설안내 코드 기존정보코드 시설안내내용">
+<h2>FACILITY_INFO <span class="desc">시설안내(기본정보) FIF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>FACILITY_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>시설안내 코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_BASIC_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>기존정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>FACILITY_CONTENT</td><td>VARCHAR2</td><td>450</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>시설안내내용</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_FACILITY_INFO_LOC_BASIC_INF</td><td>LOC_BASIC_INFO_CODE</td><td>LOC_BASIC_INFO</td><td>LOC_BASIC_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-16" data-search="help 도움말 hlp help_code board_type_code help_title help_content help_date 도움말 코드 게시물분류코드 제목 내용 작성일자">
+<h2>HELP <span class="desc">도움말 HLP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HELP_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>도움말 코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOARD_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>게시물분류코드</td><td>-</td></tr>
+<tr><td>3</td><td>HELP_TITLE</td><td>VARCHAR2</td><td>60</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>제목</td><td>-</td></tr>
+<tr><td>4</td><td>HELP_CONTENT</td><td>VARCHAR2</td><td>3000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>내용</td><td>-</td></tr>
+<tr><td>5</td><td>HELP_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>작성일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HELP_BOARD_TYPE_CODE_BOARD_</td><td>BOARD_TYPE_CODE</td><td>BOARD_TYPE</td><td>BOARD_TYPE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-17" data-search="help_img 이미지(도움말) hlpimg help_img_code help_code help_img_url 이미지코드 도움말 코드 이미지 링크(url)">
+<h2>HELP_IMG <span class="desc">이미지(도움말) HLPIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HELP_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>HELP_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>도움말 코드</td><td>-</td></tr>
+<tr><td>3</td><td>HELP_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HELP_IMG_HELP_CODE_HELP_HEL</td><td>HELP_CODE</td><td>HELP</td><td>HELP_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-18" data-search="host 회원(호스트) h host_code host_sign_up_date 회원코드(호스트) 가입일자">
+<h2>HOST <span class="desc">회원(호스트) H</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>회원코드(호스트)</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_SIGN_UP_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>가입일자</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-19" data-search="host_bank_info 계좌정보(호스트) host_bank_number host_code host_bank host_bank_holder 계좌번호 회원코드(호스트) 은행명 예금주">
+<h2>HOST_BANK_INFO <span class="desc">계좌정보(호스트)</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_BANK_NUMBER</td><td>VARCHAR2</td><td>20</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>계좌번호</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(호스트)</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_BANK</td><td>VARCHAR2</td><td>40</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>은행명</td><td>-</td></tr>
+<tr><td>4</td><td>HOST_BANK_HOLDER</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예금주</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_BANK_INFO_HOST_CODE_HO</td><td>HOST_CODE</td><td>HOST</td><td>HOST_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-20" data-search="host_blacklist 블랙리스트(호스트) host_email host_blacklist_reason host_blacklist_date 가입 이메일 블랙리스트 사유 블랙리스트 전환일">
+<h2>HOST_BLACKLIST <span class="desc">블랙리스트(호스트)</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_EMAIL</td><td>VARCHAR2</td><td>320</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>가입 이메일</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_BLACKLIST_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>블랙리스트 사유</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_BLACKLIST_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>블랙리스트 전환일</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-21" data-search="host_cancel_list 예약취소내역(호스트) hc0000 host_cancel_code book_code host_cancel_reason host_cancel_date 예약취소코드 예약코드 취소사유 취소일자">
+<h2>HOST_CANCEL_LIST <span class="desc">예약취소내역(호스트) HC0000</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_CANCEL_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>예약취소코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_CANCEL_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>취소사유</td><td>-</td></tr>
+<tr><td>4</td><td>HOST_CANCEL_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>취소일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_CANCEL_LIST_BOOK_CODE_</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-22" data-search="host_exchange_bank_info 환전계좌정보(호스트) hebi host_exchange_bank_info_code host_exchange_code host_bank_number 환전계좌코드 환전내역코드 계좌번호">
+<h2>HOST_EXCHANGE_BANK_INFO <span class="desc">환전계좌정보(호스트) HEBI</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_EXCHANGE_BANK_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>환전계좌코드</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_EXCHANGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환전내역코드</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_BANK_NUMBER</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>계좌번호</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_EXCHANGE_BANK_INFO_HOS</td><td>HOST_EXCHANGE_CODE</td><td>HOST_EXCHANGE_LIST</td><td>HOST_EXCHANGE_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_HOST_EXCHANGE_BANK_NUMBER</td><td>HOST_BANK_NUMBER</td><td>HOST_BANK_INFO</td><td>HOST_BANK_NUMBER</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-23" data-search="host_exchange_list 마일리지 환전 내역(호스트) he host_exchange_code host_code host_exchange_amount host_exchange_date 환전내역코드 회원코드 환전액수 환전일자">
+<h2>HOST_EXCHANGE_LIST <span class="desc">마일리지 환전 내역(호스트) HE</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_EXCHANGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>환전내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_EXCHANGE_AMOUNT</td><td>NUMBER</td><td>18</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환전액수</td><td>-</td></tr>
+<tr><td>4</td><td>HOST_EXCHANGE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환전일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_EXCHANGE_LIST_HOST_COD</td><td>HOST_CODE</td><td>HOST</td><td>HOST_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-24" data-search="host_msg_img 이미지(메신저정보(호스트)) hmimg host_msg_img_code host_msg_info_code host_msg_img_url 이미지코드 메신저정보코드 이미지 링크(url)">
+<h2>HOST_MSG_IMG <span class="desc">이미지(메신저정보(호스트)) HMIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_MSG_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_MSG_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>메신저정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_MSG_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_MSG_IMG_HOST_MSG_INFO_</td><td>HOST_MSG_INFO_CODE</td><td>HOST_MSG_INFO</td><td>HOST_MSG_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-25" data-search="host_msg_info 메신저정보(호스트) hmif host_msg_info_code msg_code host_msg_content host_msg_date 메신저정보코드 메신저코드 내용 메신저일자">
+<h2>HOST_MSG_INFO <span class="desc">메신저정보(호스트) HMIF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_MSG_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>메신저정보코드</td><td>-</td></tr>
+<tr><td>2</td><td>MSG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>메신저코드</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_MSG_CONTENT</td><td>VARCHAR2</td><td>1500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>내용</td><td>-</td></tr>
+<tr><td>4</td><td>HOST_MSG_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>메신저일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_MSG_INFO_MSG_CODE_MSG_</td><td>MSG_CODE</td><td>MSG</td><td>MSG_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-26" data-search="host_profile 프로필정보(호스트) host_email host_code host_pw host_nickname host_name host_tel 가입 이메일 회원코드(호스트) 비밀번호 닉네임 이름 연락처">
+<h2>HOST_PROFILE <span class="desc">프로필정보(호스트)</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_EMAIL</td><td>VARCHAR2</td><td>320</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>가입 이메일</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(호스트)</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_PW</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>비밀번호</td><td>-</td></tr>
+<tr><td>4</td><td>HOST_NICKNAME</td><td>VARCHAR2</td><td>18</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>닉네임</td><td>-</td></tr>
+<tr><td>5</td><td>HOST_NAME</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이름</td><td>-</td></tr>
+<tr><td>6</td><td>HOST_TEL</td><td>VARCHAR2</td><td>13</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>연락처</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_PROFILE_HOST_CODE_HOST</td><td>HOST_CODE</td><td>HOST</td><td>HOST_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-27" data-search="host_withdraw 회원탈퇴(호스트) hw host_withdraw_code host_code host_withdraw_date 회원탈퇴코드 회원코드(호스트) 탈퇴일자">
+<h2>HOST_WITHDRAW <span class="desc">회원탈퇴(호스트) HW</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>HOST_WITHDRAW_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>회원탈퇴코드</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(호스트)</td><td>-</td></tr>
+<tr><td>3</td><td>HOST_WITHDRAW_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>탈퇴일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_HOST_WITHDRAW_HOST_CODE_HOS</td><td>HOST_CODE</td><td>HOST</td><td>HOST_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-28" data-search="important_notice 중요공지 분류 in important_notice_code important_notice 중요분류코드 공지 유형">
+<h2>IMPORTANT_NOTICE <span class="desc">중요공지 분류 IN</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>IMPORTANT_NOTICE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>중요분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>IMPORTANT_NOTICE</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공지 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-29" data-search="inspect_proc_list 검수처리내역 ip inspect_proc_code inspect_reg_code inspect_type_code inspect_proc_reason inspect_proc_date 검수처리코드 검수신청코드 검수분류코드 검수처리사유 검수처리일자">
+<h2>INSPECT_PROC_LIST <span class="desc">검수처리내역 IP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>INSPECT_PROC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>검수처리코드</td><td>-</td></tr>
+<tr><td>2</td><td>INSPECT_REG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>검수신청코드</td><td>-</td></tr>
+<tr><td>3</td><td>INSPECT_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>검수분류코드</td><td>-</td></tr>
+<tr><td>4</td><td>INSPECT_PROC_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>검수처리사유</td><td>-</td></tr>
+<tr><td>5</td><td>INSPECT_PROC_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>검수처리일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_INSPECT_PROC_LIST_INSPECT_R</td><td>INSPECT_REG_CODE</td><td>INSPECT_REG_LIST</td><td>INSPECT_REG_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_INSPECT_PROC_LIST_INSPECT_T</td><td>INSPECT_TYPE_CODE</td><td>INSPECT_TYPE</td><td>INSPECT_TYPE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-30" data-search="inspect_reg_list 검수신청내역 ir inspect_reg_code loc_code inspect_reg_date 검수신청코드 공간코드 검수신청일자">
+<h2>INSPECT_REG_LIST <span class="desc">검수신청내역 IR</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>INSPECT_REG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>검수신청코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>INSPECT_REG_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>검수신청일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_INSPECT_REG_LIST_LOC_CODE_L</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-31" data-search="inspect_type 검수분류 it inspect_type_code inspect_type 검수분류코드 검수 유형">
+<h2>INSPECT_TYPE <span class="desc">검수분류 IT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>INSPECT_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>검수분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>INSPECT_TYPE</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>검수 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-32" data-search="load_proc 충전처리내역(이용자) lp load_proc_code load_reg_code load_type_code load_proc_date 충전처리코드 충전신청코드 마일리지 충전 분류 코드 충전처리일자">
+<h2>LOAD_PROC <span class="desc">충전처리내역(이용자) LP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOAD_PROC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>충전처리코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOAD_REG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>충전신청코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOAD_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>마일리지 충전 분류 코드</td><td>-</td></tr>
+<tr><td>4</td><td>LOAD_PROC_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>충전처리일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOAD_PROC_LOAD_REG_CODE_LOA</td><td>LOAD_REG_CODE</td><td>LOAD_REG</td><td>LOAD_REG_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_LOAD_PROC_LOAD_TYPE_CODE_LO</td><td>LOAD_TYPE_CODE</td><td>LOAD_TYPE</td><td>LOAD_TYPE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-33" data-search="load_reg 마일리지 충전신청 내역(이용자) lr load_reg_code member_code load_amount load_reg_date 충전신청코드 회원코드 충전신청액수 충전신청일자">
+<h2>LOAD_REG <span class="desc">마일리지 충전신청 내역(이용자) LR</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOAD_REG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>충전신청코드</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOAD_AMOUNT</td><td>NUMBER</td><td>7</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>충전신청액수</td><td>-</td></tr>
+<tr><td>4</td><td>LOAD_REG_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>충전신청일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOAD_REG_MEMBER_CODE_MEMBER</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-34" data-search="load_reg_bank_info 충전신청계좌정보 lrbi load_reg_bank_info_code load_reg_code member_bank_number 충전신청계좌코드 충전신청코드 계좌번호">
+<h2>LOAD_REG_BANK_INFO <span class="desc">충전신청계좌정보 LRBI</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOAD_REG_BANK_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>충전신청계좌코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOAD_REG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>충전신청코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_BANK_NUMBER</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>계좌번호</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOAD_REG_BANK_INFO_LOAD_REG</td><td>LOAD_REG_CODE</td><td>LOAD_REG</td><td>LOAD_REG_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_LOAD_REG_BANK_INFO_MEMBER_B</td><td>MEMBER_BANK_NUMBER</td><td>MEMBER_BANK_INFO</td><td>MEMBER_BANK_NUMBER</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-35" data-search="load_type 마일리지 충전 분류 lt load_type_code load_type 마일리지 충전 분류 코드 유형">
+<h2>LOAD_TYPE <span class="desc">마일리지 충전 분류 LT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOAD_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>마일리지 충전 분류 코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOAD_TYPE</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-36" data-search="loc 공간 l loc_code host_code loc_reg_date 공간코드 회원코드(호스트) 공간등록일자">
+<h2>LOC <span class="desc">공간 L</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>2</td><td>HOST_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(호스트)</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_REG_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간등록일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_HOST_CODE_HOST_HOST_COD</td><td>HOST_CODE</td><td>HOST</td><td>HOST_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-37" data-search="loc_basic_info 기본정보 lbif loc_basic_info_code loc_code loc_type_code loc_name loc_short_intro loc_intro loc_addr loc_detail_addr 기본정보코드 공간코드 공간분류코드 공간명 공간한줄소개 공간소개 주소 상세주소">
+<h2>LOC_BASIC_INFO <span class="desc">기본정보 LBIF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_BASIC_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>기본정보코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간분류코드</td><td>-</td></tr>
+<tr><td>4</td><td>LOC_NAME</td><td>VARCHAR2</td><td>180</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간명</td><td>-</td></tr>
+<tr><td>5</td><td>LOC_SHORT_INTRO</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간한줄소개</td><td>-</td></tr>
+<tr><td>6</td><td>LOC_INTRO</td><td>VARCHAR2</td><td>4000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간소개</td><td>-</td></tr>
+<tr><td>7</td><td>LOC_ADDR</td><td>VARCHAR2</td><td>200</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>주소</td><td>-</td></tr>
+<tr><td>8</td><td>LOC_DETAIL_ADDR</td><td>VARCHAR2</td><td>180</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>상세주소</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_BASIC_INFO_LOC_CODE_LOC</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_LOC_BASIC_INFO_LOC_TYPE_COD</td><td>LOC_TYPE_CODE</td><td>LOC_TYPE</td><td>LOC_TYPE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-38" data-search="loc_blind 블라인드내역(공간게시물) lb loc_blind_code loc_code loc_blind_reason loc_blind_date 블라인드코드 공간 코드 처리사유 처리일자">
+<h2>LOC_BLIND <span class="desc">블라인드내역(공간게시물) LB</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_BLIND_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>블라인드코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간 코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_BLIND_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>처리사유</td><td>-</td></tr>
+<tr><td>4</td><td>LOC_BLIND_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>처리일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_BLIND_LOC_CODE_LOC_LOC_</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-39" data-search="loc_contact 연락처 lc loc_contact_code loc_code loc_email loc_tel loc_main_tel 연락처코드 공간코드 연락이메일 휴대폰 대표 전화">
+<h2>LOC_CONTACT <span class="desc">연락처 LC</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_CONTACT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>연락처코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_EMAIL</td><td>VARCHAR2</td><td>320</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>연락이메일</td><td>-</td></tr>
+<tr><td>4</td><td>LOC_TEL</td><td>VARCHAR2</td><td>13</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>휴대폰</td><td>-</td></tr>
+<tr><td>5</td><td>LOC_MAIN_TEL</td><td>VARCHAR2</td><td>13</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>대표 전화</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_CONTACT_LOC_CODE_LOC_LO</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-40" data-search="loc_detail_img 이미지(상세정보) ldimg loc_detail_img_code loc_detail_info_code loc_detail_img_url 이미지코드(상세정보) 상세정보코드 이미지 링크(url)">
+<h2>LOC_DETAIL_IMG <span class="desc">이미지(상세정보) LDIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_DETAIL_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드(상세정보)</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_DETAIL_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>상세정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_DETAIL_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_DETAIL_IMG_LOC_DETAIL_I</td><td>LOC_DETAIL_INFO_CODE</td><td>LOC_DETAIL_INFO</td><td>LOC_DETAIL_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-41" data-search="loc_detail_info 상세정보 ldif loc_detail_info_code loc_code min_people max_people 상세정보코드 공간코드 최소 수용인원 최대 수용인원">
+<h2>LOC_DETAIL_INFO <span class="desc">상세정보 LDIF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_DETAIL_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>상세정보코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>MIN_PEOPLE</td><td>NUMBER</td><td>2</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>최소 수용인원</td><td>-</td></tr>
+<tr><td>4</td><td>MAX_PEOPLE</td><td>NUMBER</td><td>2</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>최대 수용인원</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_DETAIL_INFO_LOC_CODE_LO</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-42" data-search="loc_remove 삭제내역(공간) lrm loc_remove_code loc_code loc_remove_date 삭제내역코드 공간코드 삭제일자">
+<h2>LOC_REMOVE <span class="desc">삭제내역(공간) LRM</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_REMOVE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>삭제내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_REMOVE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>삭제일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_REMOVE_LOC_CODE_LOC_LOC</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-43" data-search="loc_report 신고접수(이용자)(공간게시물) lrp loc_report_code loc_code loc_report_type_code member_code loc_report_reason loc_report_date 신고접수코드 공간코드 신고유형분류코드 회원코드(신고자)(이용자) 신고사유 신고일자">
+<h2>LOC_REPORT <span class="desc">신고접수(이용자)(공간게시물) LRP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_REPORT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고접수코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_REPORT_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고유형분류코드</td><td>-</td></tr>
+<tr><td>4</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(신고자)(이용자)</td><td>-</td></tr>
+<tr><td>5</td><td>LOC_REPORT_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고사유</td><td>-</td></tr>
+<tr><td>6</td><td>LOC_REPORT_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_REPORT_LOC_REPORT_TYPE_</td><td>LOC_REPORT_TYPE_CODE</td><td>LOC_REPORT_TYPE</td><td>LOC_REPORT_TYPE_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_LOC_REPORT_MEMBER_CODE_MEMB</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_LOC_REPORT_LOC_CODE_LOC_LOC</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-44" data-search="loc_report_img 이미지(신고) lrpimg loc_report_img_code loc_report_code loc_report_img_url 이미지코드 신고접수코드 이미지 링크(url)">
+<h2>LOC_REPORT_IMG <span class="desc">이미지(신고) LRPIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_REPORT_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_REPORT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고접수코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_REPORT_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_REPORT_IMG_LOC_REPORT_C</td><td>LOC_REPORT_CODE</td><td>LOC_REPORT</td><td>LOC_REPORT_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-45" data-search="loc_report_proc 신고처리(이용자)(공간게시물) lrpp loc_report_proc_code loc_report_code report_proc_type_code loc_report_proc_date 신고처리코드 신고접수코드 신고처리분류코드 처리일자">
+<h2>LOC_REPORT_PROC <span class="desc">신고처리(이용자)(공간게시물) LRPP</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_REPORT_PROC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고처리코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_REPORT_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고접수코드</td><td>-</td></tr>
+<tr><td>3</td><td>REPORT_PROC_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고처리분류코드</td><td>-</td></tr>
+<tr><td>4</td><td>LOC_REPORT_PROC_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>처리일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_REPORT_PROC_REPORT_PROC</td><td>REPORT_PROC_TYPE_CODE</td><td>REPORT_PROC_TYPE</td><td>REPORT_PROC_TYPE_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_LOC_REPORT_PROC_LOC_REPORT_</td><td>LOC_REPORT_CODE</td><td>LOC_REPORT</td><td>LOC_REPORT_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-46" data-search="loc_report_type 신고유형분류(공간) lrpt loc_report_type_code loc_report_type 신고유형분류코드 신고 유형">
+<h2>LOC_REPORT_TYPE <span class="desc">신고유형분류(공간) LRPT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_REPORT_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고유형분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_REPORT_TYPE</td><td>VARCHAR2</td><td>50</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>신고 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-47" data-search="loc_type 공간분류 loct loc_type_code loc_type 공간분류코드 공간 유형">
+<h2>LOC_TYPE <span class="desc">공간분류 LOCT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>공간분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_TYPE</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-48" data-search="loc_use_info 이용안내 lui loc_use_info_code loc_code loc_use_hour loc_use_day_off loc_use_appoint_day_off 이용안내코드 공간코드 이용시간 정기 휴무 지정 휴무일">
+<h2>LOC_USE_INFO <span class="desc">이용안내 LUI</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_USE_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이용안내코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_USE_HOUR</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이용시간</td><td>-</td></tr>
+<tr><td>4</td><td>LOC_USE_DAY_OFF</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>정기 휴무</td><td>-</td></tr>
+<tr><td>5</td><td>LOC_USE_APPOINT_DAY_OFF</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>지정 휴무일</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_USE_INFO_LOC_CODE_LOC_L</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-49" data-search="loc_web 공간웹사이트(상세정보)  lw loc_web_code loc_detail_info_code loc_web_url 공간웹사이트코드 상세정보코드 공간 관련 웹사이트(url)">
+<h2>LOC_WEB <span class="desc">공간웹사이트(상세정보)  LW</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>LOC_WEB_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>공간웹사이트코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_DETAIL_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>상세정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>LOC_WEB_URL</td><td>VARCHAR2</td><td>2000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간 관련 웹사이트(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_LOC_WEB_LOC_DETAIL_INFO_COD</td><td>LOC_DETAIL_INFO_CODE</td><td>LOC_DETAIL_INFO</td><td>LOC_DETAIL_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-50" data-search="member 회원(이용자) m member_code member_sign_up_date 회원코드(이용자) 가입일자">
+<h2>MEMBER <span class="desc">회원(이용자) M</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>회원코드(이용자)</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_SIGN_UP_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>가입일자</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-51" data-search="member_bank_info 계좌정보(이용자) member_bank_number member_code member_bank member_bank_holder 계좌번호 회원코드(이용자) 은행명 예금주">
+<h2>MEMBER_BANK_INFO <span class="desc">계좌정보(이용자)</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_BANK_NUMBER</td><td>VARCHAR2</td><td>20</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>계좌번호</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(이용자)</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_BANK</td><td>VARCHAR2</td><td>40</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>은행명</td><td>-</td></tr>
+<tr><td>4</td><td>MEMBER_BANK_HOLDER</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예금주</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_BANK_INFO_MEMBER_COD</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-52" data-search="member_blacklist 블랙리스트(이용자) member_email member_blacklist_reason member_blacklist_date 가입 이메일 블랙리스트 전환 사유 블랙리스트 전환일">
+<h2>MEMBER_BLACKLIST <span class="desc">블랙리스트(이용자)</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_EMAIL</td><td>VARCHAR2</td><td>320</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>가입 이메일</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_BLACKLIST_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>블랙리스트 전환 사유</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_BLACKLIST_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>블랙리스트 전환일</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-53" data-search="member_cancel_list 예약취소내역(이용자) mc member_cancel_code book_code member_cancel_reason member_cancel_date 예약취소코드 예약코드 취소사유 취소일자">
+<h2>MEMBER_CANCEL_LIST <span class="desc">예약취소내역(이용자) MC</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_CANCEL_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>예약취소코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_CANCEL_REASON</td><td>VARCHAR2</td><td>300</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>취소사유</td><td>-</td></tr>
+<tr><td>4</td><td>MEMBER_CANCEL_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>취소일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_CANCEL_LIST_BOOK_COD</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-54" data-search="member_exchange_bank_info 환전계좌정보(이용자) mebi member_exchange_bank_info_code member_exchange_code member_bank_number 환전계좌코드 환전내역코드 계좌번호">
+<h2>MEMBER_EXCHANGE_BANK_INFO <span class="desc">환전계좌정보(이용자) MEBI</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_EXCHANGE_BANK_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>환전계좌코드</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_EXCHANGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환전내역코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_BANK_NUMBER</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>계좌번호</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_EXCHANGE_BANK_INFO_M</td><td>MEMBER_EXCHANGE_CODE</td><td>MEMBER_EXCHANGE_LIST</td><td>MEMBER_EXCHANGE_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_MEMBER_EXCHANGE_BANK_NUMBER</td><td>MEMBER_BANK_NUMBER</td><td>MEMBER_BANK_INFO</td><td>MEMBER_BANK_NUMBER</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-55" data-search="member_exchange_list 마일리지 환전 내역(이용자) me member_exchange_code member_code member_exchange_amount member_exchange_date 환전내역코드 회원코드 환전액수 환전일자">
+<h2>MEMBER_EXCHANGE_LIST <span class="desc">마일리지 환전 내역(이용자) ME</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_EXCHANGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>환전내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_EXCHANGE_AMOUNT</td><td>NUMBER</td><td>18</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환전액수</td><td>-</td></tr>
+<tr><td>4</td><td>MEMBER_EXCHANGE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>환전일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_EXCHANGE_LIST_MEMBER</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-56" data-search="member_msg_img 이미지(메신저정보(이용자)) mmimg member_msg_img_code member_msg_info_code member_msg_img_url 이미지코드 메신저정보코드 이미지 링크(url)">
+<h2>MEMBER_MSG_IMG <span class="desc">이미지(메신저정보(이용자)) MMIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_MSG_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_MSG_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>메신저정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_MSG_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_MSG_IMG_MEMBER_MSG_I</td><td>MEMBER_MSG_INFO_CODE</td><td>MEMBER_MSG_INFO</td><td>MEMBER_MSG_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-57" data-search="member_msg_info 메신저정보(이용자) mmif member_msg_info_code msg_code member_msg_content member_msg_date 메신저정보코드 메신저코드 내용 메신저일자">
+<h2>MEMBER_MSG_INFO <span class="desc">메신저정보(이용자) MMIF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_MSG_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>메신저정보코드</td><td>-</td></tr>
+<tr><td>2</td><td>MSG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>메신저코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_MSG_CONTENT</td><td>VARCHAR2</td><td>1500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>내용</td><td>-</td></tr>
+<tr><td>4</td><td>MEMBER_MSG_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>메신저일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_MSG_INFO_MSG_CODE_MS</td><td>MSG_CODE</td><td>MSG</td><td>MSG_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-58" data-search="member_profile 프로필정보(이용자) member_email member_code member_pw member_nickname member_name member_tel 가입 이메일 회원코드(이용자) 비밀번호 닉네임 이름 연락처">
+<h2>MEMBER_PROFILE <span class="desc">프로필정보(이용자)</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_EMAIL</td><td>VARCHAR2</td><td>320</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>가입 이메일</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(이용자)</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_PW</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>비밀번호</td><td>-</td></tr>
+<tr><td>4</td><td>MEMBER_NICKNAME</td><td>VARCHAR2</td><td>18</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>닉네임</td><td>-</td></tr>
+<tr><td>5</td><td>MEMBER_NAME</td><td>VARCHAR2</td><td>30</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이름</td><td>-</td></tr>
+<tr><td>6</td><td>MEMBER_TEL</td><td>VARCHAR2</td><td>13</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>연락처</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_PROFILE_MEMBER_CODE_</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-59" data-search="member_withdraw 탈퇴(이용자) mw member_withdraw_code member_code member_withdraw_date 탈퇴코드 회원코드(이용자) 탈퇴일자">
+<h2>MEMBER_WITHDRAW <span class="desc">탈퇴(이용자) MW</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MEMBER_WITHDRAW_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>탈퇴코드</td><td>-</td></tr>
+<tr><td>2</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드(이용자)</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_WITHDRAW_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>탈퇴일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MEMBER_WITHDRAW_MEMBER_CODE</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-60" data-search="msg 메신저 msg msg_code book_code 메신저코드 예약코드">
+<h2>MSG <span class="desc">메신저 MSG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>MSG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>메신저코드</td><td>-</td></tr>
+<tr><td>2</td><td>BOOK_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>예약코드</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_MSG_BOOK_CODE_BOOK_LIST_BOO</td><td>BOOK_CODE</td><td>BOOK_LIST</td><td>BOOK_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-61" data-search="notice 공지사항 n notice_code important_notice_code notice_title notice_content notice_date 공지사항 코드 중요분류코드 제목 내용 작성일자">
+<h2>NOTICE <span class="desc">공지사항 N</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>NOTICE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>공지사항 코드</td><td>-</td></tr>
+<tr><td>2</td><td>IMPORTANT_NOTICE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>중요분류코드</td><td>-</td></tr>
+<tr><td>3</td><td>NOTICE_TITLE</td><td>VARCHAR2</td><td>120</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>제목</td><td>-</td></tr>
+<tr><td>4</td><td>NOTICE_CONTENT</td><td>VARCHAR2</td><td>3000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>내용</td><td>-</td></tr>
+<tr><td>5</td><td>NOTICE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>작성일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_NOTICE_IMPORTANT_NOTICE_COD</td><td>IMPORTANT_NOTICE_CODE</td><td>IMPORTANT_NOTICE</td><td>IMPORTANT_NOTICE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-62" data-search="notice_img 이미지(공지사항) nimg notice_img_code notice_code notice_img_url 이미지코드 공지사항 코드 이미지 링크(url)">
+<h2>NOTICE_IMG <span class="desc">이미지(공지사항) NIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>NOTICE_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>NOTICE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공지사항 코드</td><td>-</td></tr>
+<tr><td>3</td><td>NOTICE_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_NOTICE_IMG_NOTICE_CODE_NOTI</td><td>NOTICE_CODE</td><td>NOTICE</td><td>NOTICE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-63" data-search="package 패키지 p package_code package_form_code package_name package_start package_end package_price 패키지코드 패키지양식코드 패키지명 패키지시작시간 패키지종료시간 패키지가격">
+<h2>PACKAGE <span class="desc">패키지 P</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>PACKAGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>패키지코드</td><td>-</td></tr>
+<tr><td>2</td><td>PACKAGE_FORM_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지양식코드</td><td>-</td></tr>
+<tr><td>3</td><td>PACKAGE_NAME</td><td>VARCHAR2</td><td>180</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지명</td><td>-</td></tr>
+<tr><td>4</td><td>PACKAGE_START</td><td>NUMBER</td><td>2</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지시작시간</td><td>-</td></tr>
+<tr><td>5</td><td>PACKAGE_END</td><td>NUMBER</td><td>2</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지종료시간</td><td>-</td></tr>
+<tr><td>6</td><td>PACKAGE_PRICE</td><td>NUMBER</td><td>14</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지가격</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_PACKAGE_PACKAGE_FORM_CODE_P</td><td>PACKAGE_FORM_CODE</td><td>PACKAGE_FORM</td><td>PACKAGE_FORM_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-64" data-search="package_form 패키지 양식 pf package_form_code loc_code 패키지양식코드 공간코드">
+<h2>PACKAGE_FORM <span class="desc">패키지 양식 PF</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>PACKAGE_FORM_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>패키지양식코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_PACKAGE_FORM_LOC_CODE_LOC_L</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-65" data-search="package_remove 폐기 패키지 prm package_remove_code package_code package_remove_date 폐기 패키지 코드 패키지코드 폐기일자">
+<h2>PACKAGE_REMOVE <span class="desc">폐기 패키지 PRM</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>PACKAGE_REMOVE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>폐기 패키지 코드</td><td>-</td></tr>
+<tr><td>2</td><td>PACKAGE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>패키지코드</td><td>-</td></tr>
+<tr><td>3</td><td>PACKAGE_REMOVE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>폐기일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_PACKAGE_REMOVE_PACKAGE_CODE</td><td>PACKAGE_CODE</td><td>PACKAGE</td><td>PACKAGE_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-66" data-search="qna q_and_a(이용자) q qna_code loc_code member_code qna_content qna_date q_and_a코드 공간코드 회원코드 내용 q_and_a 작성일자">
+<h2>QNA <span class="desc">Q_AND_A(이용자) Q</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>QNA_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>Q_AND_A코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드</td><td>-</td></tr>
+<tr><td>4</td><td>QNA_CONTENT</td><td>VARCHAR2</td><td>3000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>내용</td><td>-</td></tr>
+<tr><td>5</td><td>QNA_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>Q_AND_A 작성일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_QNA_MEMBER_CODE_MEMBER_MEMB</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_QNA_LOC_CODE_LOC_LOC_CODE</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-67" data-search="qna_remove 삭제내역(q_and_a) qrm qna_remove_code qna_code qna_remove_date 삭제내역코드 q_and_a코드 삭제일자">
+<h2>QNA_REMOVE <span class="desc">삭제내역(Q_AND_A) QRM</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>QNA_REMOVE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>삭제내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>QNA_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>Q_AND_A코드</td><td>-</td></tr>
+<tr><td>3</td><td>QNA_REMOVE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>삭제일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_QNA_REMOVE_QNA_CODE_QNA_QNA</td><td>QNA_CODE</td><td>QNA</td><td>QNA_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-68" data-search="qna_reply q_and_a답글(호스트) qre qna_reply_code qna_code qna_reply_content qna_reply_date q_and_a답글코드 q_and_a코드 q_and_a 답글내용 q_and_a작성일자">
+<h2>QNA_REPLY <span class="desc">Q_AND_A답글(호스트) QRE</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>QNA_REPLY_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>Q_AND_A답글코드</td><td>-</td></tr>
+<tr><td>2</td><td>QNA_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>Q_AND_A코드</td><td>-</td></tr>
+<tr><td>3</td><td>QNA_REPLY_CONTENT</td><td>VARCHAR2</td><td>3000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>Q_AND_A 답글내용</td><td>-</td></tr>
+<tr><td>4</td><td>QNA_REPLY_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>Q_AND_A작성일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_QNA_REPLY_QNA_CODE_QNA_QNA_</td><td>QNA_CODE</td><td>QNA</td><td>QNA_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-69" data-search="qna_reply_remove 삭제내역(q_and_a답글) qrerm qna_reply_remove_code qna_reply_code qna_reply_remove_date 삭제내역코드 q_and_a답글코드 삭제일자">
+<h2>QNA_REPLY_REMOVE <span class="desc">삭제내역(Q_AND_A답글) QRERM</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>QNA_REPLY_REMOVE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>삭제내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>QNA_REPLY_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>Q_AND_A답글코드</td><td>-</td></tr>
+<tr><td>3</td><td>QNA_REPLY_REMOVE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>삭제일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_QNA_REPLY_REMOVE_QNA_REPLY_</td><td>QNA_REPLY_CODE</td><td>QNA_REPLY</td><td>QNA_REPLY_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-70" data-search="report_proc_type 신고처리분류 rppt report_proc_type_code report_proc_type 신고처리분류코드 처리 유형">
+<h2>REPORT_PROC_TYPE <span class="desc">신고처리분류 RPPT</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>REPORT_PROC_TYPE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>신고처리분류코드</td><td>-</td></tr>
+<tr><td>2</td><td>REPORT_PROC_TYPE</td><td>VARCHAR2</td><td>20</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>처리 유형</td><td>-</td></tr>
+</tbody></table></div>
+</section>
+<section class="table-card" id="table-71" data-search="review 리뷰(이용자) rv review_code loc_code member_code review_rate review_content review_date 리뷰코드 공간코드 회원코드 평점 리뷰내용 리뷰 작성 일자">
+<h2>REVIEW <span class="desc">리뷰(이용자) RV</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>REVIEW_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>리뷰코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>공간코드</td><td>-</td></tr>
+<tr><td>3</td><td>MEMBER_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>회원코드</td><td>-</td></tr>
+<tr><td>4</td><td>REVIEW_RATE</td><td>NUMBER</td><td>1</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>평점</td><td>-</td></tr>
+<tr><td>5</td><td>REVIEW_CONTENT</td><td>VARCHAR2</td><td>3000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰내용</td><td>-</td></tr>
+<tr><td>6</td><td>REVIEW_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰 작성 일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_REVIEW_MEMBER_CODE_MEMBER_M</td><td>MEMBER_CODE</td><td>MEMBER</td><td>MEMBER_CODE</td><td>-</td><td>-</td></tr>
+<tr><td>FK_REVIEW_LOC_CODE_LOC_LOC_COD</td><td>LOC_CODE</td><td>LOC</td><td>LOC_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-72" data-search="review_img 이미지(리뷰) rvimg review_img_code review_code review_img_url 이미지코드 리뷰코드 이미지 링크(url)">
+<h2>REVIEW_IMG <span class="desc">이미지(리뷰) RVIMG</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>REVIEW_IMG_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>이미지코드</td><td>-</td></tr>
+<tr><td>2</td><td>REVIEW_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰코드</td><td>-</td></tr>
+<tr><td>3</td><td>REVIEW_IMG_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>이미지 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_REVIEW_IMG_REVIEW_CODE_REVI</td><td>REVIEW_CODE</td><td>REVIEW</td><td>REVIEW_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-73" data-search="review_remove 삭제내역(리뷰)  rvrm review_remove_code review_code review_remove_date 삭제내역코드 리뷰코드 삭제일자">
+<h2>REVIEW_REMOVE <span class="desc">삭제내역(리뷰)  RVRM</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>REVIEW_REMOVE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>삭제내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>REVIEW_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰코드</td><td>-</td></tr>
+<tr><td>3</td><td>REVIEW_REMOVE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>삭제일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_REVIEW_REMOVE_REVIEW_CODE_R</td><td>REVIEW_CODE</td><td>REVIEW</td><td>REVIEW_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-74" data-search="review_reply 리뷰답글(호스트) rvre review_reply_code review_code review_reply_content review_reply_date 리뷰답글코드 리뷰코드 리뷰답글내용 리뷰답글작성일자">
+<h2>REVIEW_REPLY <span class="desc">리뷰답글(호스트) RVRE</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>REVIEW_REPLY_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>리뷰답글코드</td><td>-</td></tr>
+<tr><td>2</td><td>REVIEW_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰코드</td><td>-</td></tr>
+<tr><td>3</td><td>REVIEW_REPLY_CONTENT</td><td>VARCHAR2</td><td>3000</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰답글내용</td><td>-</td></tr>
+<tr><td>4</td><td>REVIEW_REPLY_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰답글작성일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_REVIEW_REPLY_REVIEW_CODE_RE</td><td>REVIEW_CODE</td><td>REVIEW</td><td>REVIEW_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-75" data-search="review_reply_remove 삭제내역(리뷰답글) rvrerm review_reply_remove_code review_reply_code review_reply_remove_date 삭제내역코드 리뷰답글코드 삭제일자">
+<h2>REVIEW_REPLY_REMOVE <span class="desc">삭제내역(리뷰답글) RVRERM</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>REVIEW_REPLY_REMOVE_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>삭제내역코드</td><td>-</td></tr>
+<tr><td>2</td><td>REVIEW_REPLY_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>리뷰답글코드</td><td>-</td></tr>
+<tr><td>3</td><td>REVIEW_REPLY_REMOVE_DATE</td><td>DATE</td><td>-</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>삭제일자</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_REVIEW_REPLY_REMOVE_REVIEW_</td><td>REVIEW_REPLY_CODE</td><td>REVIEW_REPLY</td><td>REVIEW_REPLY_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="table-card" id="table-76" data-search="thumbnail 썸네일(기본정보) th thumbnail_code loc_basic_info_code thumbnail_url 썸네일 코드 기존정보코드 썸네일 링크(url)">
+<h2>THUMBNAIL <span class="desc">썸네일(기본정보) TH</span></h2>
+<p class="meta">스키마: - · 원본: docs/db/source/lookation_create_table.utf8.sql</p>
+<div class="table-wrap"><table>
+<thead><tr><th>No</th><th>컬럼</th><th>타입</th><th>길이</th><th>PK</th><th>FK</th><th>UNIQUE</th><th>NOT NULL</th><th>DEFAULT</th><th>설명</th><th>비고</th></tr></thead><tbody>
+<tr><td>1</td><td>THUMBNAIL_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td>-</td><td>썸네일 코드</td><td>-</td></tr>
+<tr><td>2</td><td>LOC_BASIC_INFO_CODE</td><td>VARCHAR2</td><td>15</td><td><span class="flag">-</span></td><td><span class="flag yes">Y</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>기존정보코드</td><td>-</td></tr>
+<tr><td>3</td><td>THUMBNAIL_URL</td><td>VARCHAR2</td><td>500</td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td><span class="flag">-</span></td><td>-</td><td>썸네일 링크(url)</td><td>-</td></tr>
+</tbody></table></div>
+<div class="subsection"><h3>관계</h3><div class="table-wrap"><table>
+<thead><tr><th>FK</th><th>컬럼</th><th>참조 테이블</th><th>참조 컬럼</th><th>ON DELETE</th><th>ON UPDATE</th></tr></thead><tbody>
+<tr><td>FK_THUMBNAIL_LOC_BASIC_INFO_CO</td><td>LOC_BASIC_INFO_CODE</td><td>LOC_BASIC_INFO</td><td>LOC_BASIC_INFO_CODE</td><td>-</td><td>-</td></tr>
+</tbody></table></div></div>
+</section>
+<section class="warnings"><h2>파싱 메모</h2><ul>
+<li>무시한 SQL 문입니다: SELECT COUNT(*) FROM TABS</li>
+</ul></section>
+</main>
+<footer>원본: DDL 파일 1개 · 생성: 2026-11-02T17:14:31+09:00</footer>
+<script>(function () {
+  var input = document.getElementById("search");
+  if (!input) return;
+  var count = document.getElementById("result-count");
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".table-card"));
+  var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+  var initial = count ? count.textContent : "";
+  function apply() {
+    var query = (input.value || "").trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function (card) {
+      var match = !query || (card.getAttribute("data-search") || "").indexOf(query) !== -1;
+      card.hidden = !match;
+      if (match) shown += 1;
+    });
+    links.forEach(function (link) {
+      var target = document.querySelector(link.getAttribute("href"));
+      link.parentNode.hidden = !!(target && target.hidden);
+    });
+    if (count) {
+      count.textContent = query ? shown + " / " + cards.length + " tables" : initial;
+    }
+  }
+  input.addEventListener("input", apply);
+})();</script>
+</body>
+</html>

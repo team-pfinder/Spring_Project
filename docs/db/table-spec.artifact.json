@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skill": "gorani-table-spec",
+  "artifact": "docs/db/table-spec.xlsx",
+  "outputs": [
+    "docs/db/table-spec.md",
+    "docs/db/table-spec.html",
+    "docs/db/table-spec.xlsx"
+  ],
+  "sources": [
+    "중요파일/01. sql/*.sql"
+  ],
+  "generated_commit": "83f1d7e",
+  "generated_at": "2026-11-02T17:14:31+09:00",
+  "working_tree_dirty": true,
+  "regenerate": "python3 table_spec.py --ddl docs/db/source/lookation_create_table.utf8.sql --dialect oracle --project Lookation --outdir docs/db --name table-spec --formats md,html,xlsx --sources '중요파일/01. sql/*.sql'"
+}
