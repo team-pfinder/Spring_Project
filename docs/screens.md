@@ -27,7 +27,8 @@
 | 4 | GET/POST 구분은 애노테이션 쪽에만 있다. XML 20개는 `handleRequest` 하나라 **모든 메서드를 받는다**(표의 `GET/POST`). |
 | 5 | 역할 구분은 세션 키 `memberCode`(이용자) / `hostCode`(호스트) / `admin_id`(관리자)이고, 공통 화면은 `identify=member\|host` 파라미터로 분기한다. |
 | 6 | 뷰는 JSP forward다. `@ResponseBody` **0건** — AJAX도 `ajax/*.jsp`가 `${result}`/`${data}`를 찍는 방식(§6). |
-| 7 | 180개 매핑 중 **123개**가 JSP 뷰를 반환하고, **57개**는 리다이렉트만 하거나 본문이 없다(중복 경로 포함 매핑 기준, §4). |
+| 7 | CSRF 도입 후 상태 변경 21개 엔드포인트와 메신저 전송 2개가 POST다. 토큰은 `_csrf` 파라미터 또는 `X-CSRF-Token` 헤더로 전달한다. |
+| 8 | 180개 매핑 중 **123개**가 JSP 뷰를 반환하고, **57개**는 리다이렉트만 하거나 본문이 없다(중복 경로 포함 매핑 기준, §4). |
 
 ## 2. URL 접두사와 역할
 
@@ -76,11 +77,11 @@
 | `/actions/basicajax.action` | POST | anno | `Location.java: basicAjax` | `common/wrongAccess.jsp` | 호스트 | — |
 | `/actions/basicform.action` | GET | anno | `Location.java: basicForm` | `host/inputBasicInfo.jsp` | 호스트 | 기본정보 추가(JSP 제목) |
 | `/actions/batissample.action` | GET | anno | `BatisSample.java: sample` | `sample.jsp` | 테스트 | — |
-| `/actions/blind.action` | GET | anno | `ReportList.java: addBlind` | — | 관리자 | — |
+| `/actions/blind.action` | POST | anno | `ReportList.java: addBlind` | — | 관리자 | — |
 | `/actions/blindcontent.action` | GET | anno | `BlindContent.java: blind` | `common/blindContent.jsp` | 이용자/호스트(identify 분기) (추론) | 블라인드 알림(JSP 제목) |
 | `/actions/blindform.action` | GET | anno | `ReportList.java: blindForm` | `admin/addBlind.jsp` | 관리자 | 블랙리스트 등록(JSP 제목) |
 | `/actions/blindmanager.action` | GET | anno | `BlindManager.java: list` | `admin/blindManager.jsp` | 관리자 | 블라인드 목록(JSP 제목) |
-| `/actions/blindremove.action` | GET | anno | `BlindManager.java: remove` | — | 관리자 | — |
+| `/actions/blindremove.action` | POST | anno | `BlindManager.java: remove` | — | 관리자 | — |
 | `/actions/bookapply.action` | POST | anno | `BookApply.java: bookapplyBasic` | `user/bookApply.jsp` | 이용자 | 예약신청(JSP 제목) |
 | `/actions/bookcancel.action` | GET | anno | `BookList.java: bookCancelPop` | `user/bookCancel.jsp` | 이용자 | 예약취소(JSP 제목) |
 | `/actions/bookcancelhost.action` | GET | anno | `BookList.java: bookCancelPopHost` | `host/bookCancel.jsp` | 호스트 | 예약취소(JSP 제목) |
@@ -99,24 +100,24 @@
 | `/actions/changepasswordnologinform.action` | GET/POST | anno | `Account.java: changePasswordNoLoginForm` | `common/changePasswordNoLogin.jsp`<br>`common/wrongAccess.jsp` | 이용자/호스트(identify 분기) (추론) | 비밀번호 변경(JSP 제목) |
 | `/actions/confirmpassword.action` | GET/POST | anno | `Account.java: confirmPassword` | `common/wrongAccess.jsp` | 이용자/호스트(identify 분기) (추론) | — |
 | `/actions/confirmpasswordform.action` | GET | anno | `Account.java: confirmPasswordForm` | `common/confirmPassword.jsp` | 이용자/호스트(identify 분기) (추론) | 비밀번호 확인(JSP 제목) |
-| `/actions/delblackhost.action` | GET | anno | `HostBlackManager.java: delBlackHost` | — | 공통 (추론) | — |
-| `/actions/delblackmem.action` | GET | anno | `MemberBlackManager.java: delBlackmember` | — | 공통 (추론) | 이용자 |
+| `/actions/delblackhost.action` | POST | anno | `HostBlackManager.java: delBlackHost` | — | 공통 (추론) | — |
+| `/actions/delblackmem.action` | POST | anno | `MemberBlackManager.java: delBlackmember` | — | 공통 (추론) | 이용자 |
 | `/actions/deleteform.action` | GET/POST | xml | `controller/DeleteFormController.handleRequest` | `common/deleteAccount.jsp` | 이용자/호스트(identify 분기) | 탈퇴완료(JSP 제목) |
 | `/actions/deletehost.action` | GET/POST | xml | `controller/DeleteHostController.handleRequest` | — | 호스트 | 호스트 탈퇴 처리 |
-| `/actions/deletelocation.action` | GET | anno | `Location.java: deleteAction` | — | 호스트 | — |
+| `/actions/deletelocation.action` | POST | anno | `Location.java: deleteAction` | — | 호스트 | — |
 | `/actions/deletemember.action` | GET/POST | xml | `controller/DeleteMemberController.handleRequest` | — | 이용자 | 이용자 탈퇴 처리 |
 | `/actions/deletepackageform.action` | GET/POST | anno | `Package.java: deletePackageForm` | `common/wrongAccess.jsp` | 호스트 | — |
-| `/actions/deleteqna.action` | GET | anno | `LocationQna.java: deleteQna` | — | 공통 (추론) | — |
-| `/actions/deleteqnainlist.action` | GET | anno | `MemberQnaList.java: deleteQna` | — | 공통 (추론) | — |
-| `/actions/deleteqnareply.action` | GET | anno | `LocationQna.java: deleteQnaReply` | — | 공통 (추론) | — |
-| `/actions/deletereview.action` | GET | anno | `LocationReview.java: deleteReview` | — | 공통 (추론) | — |
-| `/actions/deletereviewinlist.action` | GET | anno | `MemberReviewList.java: deleteReview` | — | 공통 (추론) | — |
-| `/actions/deletereviewreply.action` | GET | anno | `LocationReview.java: deleteReviewReply` | — | 공통 (추론) | — |
+| `/actions/deleteqna.action` | POST | anno | `LocationQna.java: deleteQna` | — | 공통 (추론) | — |
+| `/actions/deleteqnainlist.action` | POST | anno | `MemberQnaList.java: deleteQna` | — | 공통 (추론) | — |
+| `/actions/deleteqnareply.action` | POST | anno | `LocationQna.java: deleteQnaReply` | — | 공통 (추론) | — |
+| `/actions/deletereview.action` | POST | anno | `LocationReview.java: deleteReview` | — | 공통 (추론) | — |
+| `/actions/deletereviewinlist.action` | POST | anno | `MemberReviewList.java: deleteReview` | — | 공통 (추론) | — |
+| `/actions/deletereviewreply.action` | POST | anno | `LocationReview.java: deleteReviewReply` | — | 공통 (추론) | — |
 | `/actions/downloadtest.action` | GET | anno | `FileTest.java: downloadTest` | `FormDownload.jsp` | 테스트 | — |
 | `/actions/exchange.action` | POST | anno | `LoadAndExchange.java: exchangeReg` | `common/exchangeNotice.jsp` | 이용자/호스트(identify 분기) (추론) | 환전신청 완료(JSP 제목) |
 | `/actions/findpasswordform.action` | GET | anno | `Account.java: findPasswordForm` | `common/findPassword.jsp` | 이용자/호스트(identify 분기) (추론) | 비밀번호 찾기(JSP 제목) |
 | `/actions/help.action` | GET | anno | `Help.java: helpList` | `common/help.jsp` | 이용자/호스트(identify 분기) (추론) | 도움말(JSP 제목) |
-| `/actions/helpdelete.action` | GET | anno | `HelpManager.java: helpDelete` | — | 관리자 | — |
+| `/actions/helpdelete.action` | POST | anno | `HelpManager.java: helpDelete` | — | 관리자 | — |
 | `/actions/helpdetail.action` | GET | anno | `Help.java: U_detailList` | `common/helpDetail.jsp` | 이용자/호스트(identify 분기) (추론) | 도움말(JSP 제목) |
 | `/actions/helpinsert.action` | GET/POST | anno | `HelpManager.java: helpInsert` | — | 관리자 | — |
 | `/actions/helpinsertform.action` | GET | anno | `HelpManager.java: helpInsertform` | `admin/inputHelpInfo.jsp` | 관리자 | 도움말 글쓰기(JSP 제목) |
@@ -125,7 +126,7 @@
 | `/actions/helpupdateform.action` | GET | anno | `HelpManager.java: helpUpdateForm` | `admin/modifyHelpInfo.jsp` | 관리자 | 다음 페이지로 이동 |
 | `/actions/hmessenger.action` | GET | anno | `HostMessenger.java: messageList` | `common/wrongAccess.jsp`<br>`host/hostMessenger.jsp` | 호스트 | 메신저(JSP 제목) |
 | `/actions/hmsgsend.action` | GET/POST | anno | `HostMessenger.java: imgSend` | — | 공통 (추론) | — |
-| `/actions/hostblack.action` | GET | anno | `ReportList.java: hostBlack` | — | 관리자 | — |
+| `/actions/hostblack.action` | POST | anno | `ReportList.java: hostBlack` | — | 관리자 | — |
 | `/actions/hostblackform.action` | GET | anno | `ReportList.java: hostBlackForm` | `admin/hostBlackListPopup.jsp` | 관리자 | 블랙리스트 추가(JSP 제목) |
 | `/actions/hostblackmanager.action` | GET | anno | `HostBlackManager.java: hostBlackManager` | `admin/hostAccountManager.jsp` | 관리자 | 계정관리(JSP 제목) |
 | `/actions/hostcancel.action` | POST | anno | `BookList.java: hostCancel` | — | 공통 (추론) | — |
@@ -133,8 +134,8 @@
 | `/actions/hostmain.action` | GET | anno | `Main.java: hostMain` | `host/mainHost.jsp` | 호스트 | Lookation(JSP 제목) |
 | `/actions/hostqnamanager.action` | GET | anno | `hostQnaManager.java: firstList` | `admin/hostQnaManager.jsp` | 관리자 | Q&A조회(JSP 제목) |
 | `/actions/hostqnapopup.action` | GET | anno | `hostQnaManager.java: secondList` | `admin/hostQnaPopup.jsp` | 관리자 | 답글상세(JSP 제목) |
-| `/actions/hostqnareplydelete.action` | GET | anno | `hostQnaManager.java: remove` | — | 관리자 | — |
-| `/actions/hostreviewdelete.action` | GET | anno | `hostReviewManager.java: r_remove` | — | 관리자 | — |
+| `/actions/hostqnareplydelete.action` | POST | anno | `hostQnaManager.java: remove` | — | 관리자 | — |
+| `/actions/hostreviewdelete.action` | POST | anno | `hostReviewManager.java: r_remove` | — | 관리자 | — |
 | `/actions/hostreviewmanager.action` | GET | anno | `hostReviewManager.java: r_firstList` | `admin/hostReviewManager.jsp` | 관리자 | 리뷰조회(JSP 제목) |
 | `/actions/hostreviewpopup.action` | GET | anno | `hostReviewManager.java: r_secondList` | `admin/hostReviewPopup.jsp` | 관리자 | 리뷰상세보기(JSP 제목) |
 | `/actions/imagetest.action` | GET | anno | `FileTest.java: imageTest` | `FormImage.jsp` | 테스트 | — |
@@ -186,7 +187,7 @@
 | `/actions/modifyusinginfo.action` | GET/POST | anno | `Location.java: modifyUsingInfo` | `common/wrongAccess.jsp` | 호스트 | — |
 | `/actions/mypage.action` | GET | anno | `MypageMain.java: mypage` | `host/mypageHost.jsp`<br>`user/mypageMember.jsp` | 이용자/호스트(identify 분기) (추론) | 마이페이지(JSP 제목) |
 | `/actions/notice.action` | GET | anno | `Notice.java: U_noticeList` | `common/notice.jsp` | 이용자/호스트(identify 분기) (추론) | 공지사항(JSP 제목) |
-| `/actions/noticedelete.action` | GET | anno | `NoticeManager.java: noticeDelete` | — | 관리자 | — |
+| `/actions/noticedelete.action` | POST | anno | `NoticeManager.java: noticeDelete` | — | 관리자 | — |
 | `/actions/noticedetail.action` | GET | anno | `Notice.java: U_ndetailList` | `common/noticeDetail.jsp` | 공통 (추론) | 공지사항(JSP 제목) |
 | `/actions/noticeinsert.action` | POST | anno | `NoticeManager.java: noticeInsert` | — | 관리자 | — |
 | `/actions/noticeinsertform.action` | GET | anno | `NoticeManager.java: noticeInsertform` | `admin/inputNoticeInfo.jsp` | 관리자 | 공지사항 글쓰기(JSP 제목) |
@@ -200,7 +201,7 @@
 | `/actions/privacy.action` | GET | anno | `Service.java: privacy` | `common/privacyPolicy.jsp` | 이용자/호스트(identify 분기) (추론) | 개인정보처리방침(JSP 제목) |
 | `/actions/profile.action` | GET | anno | `Account.java: profile` | `common/profile.jsp` | 이용자/호스트(identify 분기) (추론) | 프로필(JSP 제목) |
 | `/actions/profile.action` | GET/POST | xml | `controller/ProfileFormController(클래스 없음).handleRequest` | `common/profile.jsp` | 이용자/호스트(identify 분기) | 프로필(JSP 제목) |
-| `/actions/qnadelete.action` | GET | anno | `UserQnaManager.java: remove` | — | 관리자 | — |
+| `/actions/qnadelete.action` | POST | anno | `UserQnaManager.java: remove` | — | 관리자 | — |
 | `/actions/qnainsert.action` | POST | anno | `LocationQna.java: insertQna` | — | 공통 (추론) | — |
 | `/actions/qnareplyinsert.action` | POST | anno | `LocationQna.java: insertQnaReply` | — | 공통 (추론) | — |
 | `/actions/refund.action` | GET | anno | `Service.java: refund` | `common/refundPolicy.jsp` | 이용자/호스트(identify 분기) (추론) | 환불정책(JSP 제목) |
@@ -213,13 +214,13 @@
 | `/actions/reportuser.action` | GET/POST | anno | `ReportUser.java: add` | `user/reportUserImg.jsp` | 이용자 | 신고(JSP 제목) |
 | `/actions/reportuserform.action` | GET | anno | `BookList.java: addForm` | `user/reportUser.jsp` | 이용자 | 신고(JSP 제목) |
 | `/actions/reportuserimg.action` | GET/POST | anno | `ReportUser.java: addImg` | — | 이용자 | — |
-| `/actions/reviewdelete.action` | GET | anno | `UserReviewManager.java: remove` | — | 관리자 | — |
+| `/actions/reviewdelete.action` | POST | anno | `UserReviewManager.java: remove` | — | 관리자 | — |
 | `/actions/reviewinsert.action` | GET/POST | anno | `LocationReview.java: insertReview` | — | 공통 (추론) | — |
 | `/actions/reviewreplyinsert.action` | POST | anno | `LocationReview.java: insertReviewReply` | — | 공통 (추론) | — |
 | `/actions/search.action` | GET/POST | anno | `Search.java: searchKeyword` | `user/search.jsp` | 이용자 | 검색결과(JSP 제목) |
 | `/actions/searchkeyword.action` | GET/POST | anno | `Search.java: searchKeywordOther` | `user/search.jsp` | 이용자 | 검색결과(JSP 제목) |
-| `/actions/selectdelete.action` | GET | anno | `UserQnaManager.java: multiRemove` | — | 관리자 | — |
-| `/actions/selectremove.action` | GET | anno | `UserReviewManager.java: multiRemove` | — | 관리자 | — |
+| `/actions/selectdelete.action` | POST | anno | `UserQnaManager.java: multiRemove` | — | 관리자 | — |
+| `/actions/selectremove.action` | POST | anno | `UserReviewManager.java: multiRemove` | — | 관리자 | — |
 | `/actions/sendconfirmemail.action` | GET/POST | anno | `Email.java: sendPasswordEmail` | `common/sendFindPassword.jsp`<br>`common/wrongAccess.jsp` | 이용자/호스트(identify 분기) (추론) | 인증이메일 발송 성공(JSP 제목) |
 | `/actions/sendsignupemail.action` | GET/POST | xml | `controller/SendSignUpEmailController.handleRequest` | — | 비회원 | 가입 인증 메일 발송 |
 | `/actions/setblackhost.action` | POST | anno | `HostBlackManager.java: regBlackHost` | — | 공통 (추론) | — |
@@ -232,7 +233,7 @@
 | `/actions/termsofservice.action` | GET | anno | `Service.java: termsOfService` | `common/termsOfServicePolicy.jsp` | 이용자/호스트(identify 분기) (추론) | 이용약관(JSP 제목) |
 | `/actions/uploaddownloadtest.action` | POST | anno | `FileTest.java: uploadDownloadTest` | `ViewDownload.jsp` | 테스트 | — |
 | `/actions/uploadimagetest.action` | POST | anno | `FileTest.java: uploadImageTest` | `View.jsp` | 테스트 | — |
-| `/actions/userblack.action` | GET | anno | `ReportList.java: userBlack` | — | 관리자 | — |
+| `/actions/userblack.action` | POST | anno | `ReportList.java: userBlack` | — | 관리자 | — |
 | `/actions/userblackform.action` | GET | anno | `ReportList.java: userBlackForm` | `admin/userBlackListPopup.jsp` | 관리자 | 블랙리스트 추가(JSP 제목) |
 | `/actions/userqnalist.action` | GET | anno | `MemberQnaList.java: memberQnaList` | `user/userQnaList.jsp` | 이용자 | Q&A 목록(JSP 제목) |
 | `/actions/userqnamanager.action` | GET | anno | `UserQnaManager.java: basicList` | `admin/userQnaManager.jsp` | 관리자 | Q&A관리(JSP 제목) |

@@ -101,6 +101,15 @@ public class FileManager
 		{
 			file.delete();
 		}
+		String legacyPath = request.getServletContext().getRealPath("/images");
+		if (legacyPath != null)
+		{
+			File legacy = new File(legacyPath, fileName);
+			if (legacy.isFile())
+			{
+				legacy.delete();
+			}
+		}
 	}
 
 	private static class UuidRenamePolicy implements FileRenamePolicy

@@ -11,7 +11,20 @@
 			(#{tokenHash}, #{identify}, #{email}, #{pwHash}, #{nick}, #{name}, #{tel}, #{expiresAt}, SYSDATE)
 	</insert>
 
-	<select id="findValid" resultType="com.lookation.dto.SignupPendingDTO">
+	<resultMap id="pendingMap" type="com.lookation.dto.SignupPendingDTO">
+		<id property="tokenHash" column="TOKEN_HASH"/>
+		<result property="identify" column="IDENTIFY"/>
+		<result property="email" column="EMAIL"/>
+		<result property="pwHash" column="PW_HASH"/>
+		<result property="nick" column="NICK"/>
+		<result property="name" column="NAME"/>
+		<result property="tel" column="TEL"/>
+		<result property="expiresAt" column="EXPIRES_AT"/>
+		<result property="usedAt" column="USED_AT"/>
+		<result property="createdAt" column="CREATED_AT"/>
+	</resultMap>
+
+	<select id="findValid" resultMap="pendingMap">
 		SELECT TOKEN_HASH, IDENTIFY, EMAIL, PW_HASH, NICK, NAME, TEL, EXPIRES_AT, USED_AT, CREATED_AT
 		FROM SIGNUP_VERIFICATION
 		WHERE TOKEN_HASH = #{tokenHash}

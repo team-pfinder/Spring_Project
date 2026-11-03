@@ -191,6 +191,7 @@
 		<div class="container">
 			<div class="changeBox">
 				<form action="changepasswordnologin.action?identify=${identify }" method="post" id="changePasswordForm">
+				<input type="hidden" name="token" value="${token }">
 <jsp:include page="/includes/csrf.jsp" />
 					<ul class="pw_info">
 						<li>

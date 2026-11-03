@@ -183,7 +183,7 @@ JSP 레이아웃 관례: 각 JSP가 `<c:import url="${cp}/includes/...">`로 조
 │        └──────────────────┬───────────────────────────────┘              │
 │                           ▼                                              │
 │                   Oracle (LOOKATION 스키마)                              │
-│                   테이블 76 / 뷰 66 / 프로시저 12 / F_CODE 함수          │
+│                   테이블 77 / 뷰 66 / 프로시저 12 / F_CODE 함수          │
 │                           │                                              │
 │                           ▼                                              │
 │  ViewResolver = InternalResourceViewResolver (prefix="", suffix="")      │
@@ -331,7 +331,7 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 
 ## lookation (LOOKATION 계정)
 1. lookation_function.sql (F_CODE)
-2. lookation_create_table.sql      -- 테이블 76개
+2. lookation_create_table.sql      -- 테이블 77개
 3. lookation_sequence.sql
 4. lookation_static_data.sql
 5. lookation_view.sql              -- 뷰 66개

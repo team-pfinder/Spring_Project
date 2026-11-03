@@ -64,6 +64,7 @@ public class VerifyEmailTest
 		pending.setName("홍길동");
 		pending.setTel("01012345678");
 		when(verificationDAO.findValid(TokenGenerator.sha256("raw-token"))).thenReturn(pending);
+		when(verificationDAO.markUsed(TokenGenerator.sha256("raw-token"))).thenReturn(1);
 
 		String view = controller.verify(request, new ExtendedModelMap());
 
@@ -94,6 +95,7 @@ public class VerifyEmailTest
 		pending.setEmail("host@example.com");
 		pending.setPwHash("$2a$10$hash");
 		when(verificationDAO.findValid(any(String.class))).thenReturn(pending);
+		when(verificationDAO.markUsed(any(String.class))).thenReturn(1);
 
 		controller.verify(request, new ExtendedModelMap());
 

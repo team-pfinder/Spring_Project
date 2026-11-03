@@ -47,6 +47,15 @@ public class VerifyEmail
 			return "../WEB-INF/views/common/emailVerifyFail.jsp";
 		}
 
+		if (memberDao.countEmail(pending.getEmail()) > 0 || hostDao.countEmail(pending.getEmail()) > 0)
+		{
+			return "../WEB-INF/views/common/emailVerifyFail.jsp";
+		}
+		if (verificationDao.markUsed(tokenHash) == 0)
+		{
+			return "../WEB-INF/views/common/emailVerifyFail.jsp";
+		}
+
 		AccountDTO account = new AccountDTO();
 		account.setEmail(pending.getEmail());
 		account.setPw(pending.getPwHash());
@@ -62,8 +71,6 @@ public class VerifyEmail
 		{
 			memberDao.add(account);
 		}
-		verificationDao.markUsed(tokenHash);
-
 		return "../WEB-INF/views/common/emailVerified.jsp";
 	}
 }

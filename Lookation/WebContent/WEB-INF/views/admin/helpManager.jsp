@@ -185,7 +185,7 @@ height: 200px;
 						onclick="location.href='../actions/helpupdateform.action?help_code=' + this.value;">수정</button>			 											 
 						<!-- 삭제기능 -->
 						<button type="button" class="btn btn-danger " value="${HelpDTO.help_code}" 
-						onclick="postAction('../actions/helpdelete.action?help_code=' + this.value;">삭제</button>
+						onclick="postAction('../actions/helpdelete.action?help_code=' + this.value);">삭제</button>
 					</td>
 				</tr>
 

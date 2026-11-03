@@ -9,12 +9,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.lookation.dao.IPasswordResetDAO;
+import com.lookation.dto.PasswordResetDTO;
 import com.lookation.util.EmailManager;
+import com.lookation.util.TokenGenerator;
 
 
 @Controller
 public class Email
 {
+	@Autowired
+	private SqlSession sqlSession;
+
 
 	@RequestMapping(value="/actions/sendconfirmemail.action", method= {RequestMethod.POST, RequestMethod.GET})
 	public String sendPasswordEmail(HttpServletRequest request, Model model)
@@ -27,6 +33,18 @@ public class Email
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
 		
+		String token = TokenGenerator.newToken();
+		PasswordResetDTO reset = new PasswordResetDTO();
+		reset.setTokenHash(TokenGenerator.sha256(token));
+		reset.setIdentify(identify);
+		reset.setEmail(email);
+		reset.setExpiresAt(new java.util.Date(System.currentTimeMillis() + 30L * 60 * 1000));
+		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
+		resetDao.insert(reset);
+		String siteUrl = System.getProperty("lookation.site.url", System.getenv("LOOKATION_SITE_URL"));
+		if (siteUrl == null || siteUrl.isEmpty()) { siteUrl = "https://sb92120.cafe24.com"; }
+		String resetLink = siteUrl + "/actions/changepasswordnologinform.action?identify=" + identify + "&token=" + token;
+
 		String html = 
 				"<!DOCTYPE html>" + 
 				"<html>" + 
@@ -44,18 +62,8 @@ public class Email
 				"			<!-- <h1>내용이 입력될 곳</h1> -->" + 
 				"			<h1>비밀번호 변경 안내</h1>" + 
 				"			<br>" + 
-				"			<form action=\"http://sb92120.cafe24.com/actions/changepasswordnologinform.action?identify=" + identify + "\" method=\"post\">" + 
-				"				<p>변경할 계정의 이메일을 다시 한번 확인해주세요.</p>" + 
-				"				<table style=\"margin:0 auto;\">" + 
-				"					<tr>" + 
-				"						<th>이메일 : </th>" + 
-				"						<td>"+ email +"</td>" + 
-				"					</tr>		" + 
-				"				</table>" + 
-				"				<input type=\"hidden\" name=\"email\" value=\""+ email +"\">" + 
-				"				<h2>비밀번호 변경을 위해 아래 버튼을 클릭해주세요.</h2>" + 
-				"				<button type=\"submit\">변경하기</button>" + 
-				"			</form>" + 
+				"			<p>아래 링크는 30분 동안 한 번만 사용할 수 있습니다.</p>" + 
+				"			<p><a href=\"" + resetLink + "\">비밀번호 변경하기</a></p>" + 
 				"		</div>" + 
 				"		<hr>" + 
 				"		<div>" + 

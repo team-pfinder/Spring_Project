@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.lookation.dao.IHostAccountDAO;
 import com.lookation.dao.IMemberAccountDAO;
 import com.lookation.dto.AccountDTO;
+import com.lookation.dao.IPasswordResetDAO;
+import com.lookation.dto.PasswordResetDTO;
 import com.lookation.util.PasswordHasher;
+import com.lookation.util.TokenGenerator;
 
 @Controller
 public class Account
@@ -366,7 +369,7 @@ public class Account
 		return "../WEB-INF/views/common/changePassword.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/changepassword.action", method={RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/actions/changepassword.action", method=RequestMethod.POST)
 	public String changePassword(HttpServletRequest request, Model model)
 	{
 		// 공통 측면 뷰일 경우 사용자가 누구인지 알기 위해 
@@ -466,12 +469,25 @@ public class Account
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
 		
+		String token = request.getParameter("token");
+		if(token == null || token.isEmpty())
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
+		PasswordResetDTO reset = resetDao.findValid(TokenGenerator.sha256(token));
+		if(reset == null || !email.equals(reset.getEmail()))
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+
 		model.addAttribute("email", email);
+		model.addAttribute("token", token);
 		
 		return "../WEB-INF/views/common/changePasswordNoLogin.jsp?identify=" + identify;
 	}
 	
-	@RequestMapping(value="/actions/changepasswordnologin.action", method={RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(value="/actions/changepasswordnologin.action", method=RequestMethod.POST)
 	public String changePasswordNoLogin(HttpServletRequest request, Model model)
 	{
 		String identify = request.getParameter("identify");
@@ -484,6 +500,23 @@ public class Account
 			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
 		}
 		
+		String token = request.getParameter("token");
+		if(token == null || token.isEmpty())
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+		IPasswordResetDAO resetDao = sqlSession.getMapper(IPasswordResetDAO.class);
+		PasswordResetDTO reset = resetDao.findValid(TokenGenerator.sha256(token));
+		if(reset == null || !email.equals(reset.getEmail()))
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+
+		if(resetDao.markUsed(TokenGenerator.sha256(token)) == 0)
+		{
+			return "../WEB-INF/views/common/wrongAccess.jsp?identify=" + identify;
+		}
+
 		AccountDTO account = new AccountDTO();
 		account.setEmail(email);
 		account.setPw(PasswordHasher.hash(newPw));
@@ -500,7 +533,6 @@ public class Account
 			dao.modifyPasswordNoLogin(account);
 			requestUrl = "membermain.action";
 		}
-		
 		return "redirect:" + requestUrl;
 	}
 }

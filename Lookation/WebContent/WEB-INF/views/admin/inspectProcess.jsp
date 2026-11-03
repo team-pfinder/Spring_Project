@@ -56,7 +56,7 @@ $(document).ready(function()
 			 //$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000001&inspect_proc_reason=검수승인이완료되었습니다.");
 			 
 				$.ajax({
-					type : "get"
+					type : "post"
 					, url : "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000001&inspect_proc_reason=검수승인이완료되었습니다."
 					, complete : function()
 					{
@@ -73,7 +73,7 @@ $(document).ready(function()
 			 //alert($(this).val());
 			//$(location).attr("href", "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000002&inspect_proc_reason=" + $("#inspect_proc_reason").val());
 				$.ajax({
-					type : "get"
+					type : "post"
 					, url : "insepectinsert.action?inspect_reg_code=" + $(this).val() +"&inspect_type_code=IT000002&inspect_proc_reason=" + $("#inspect_proc_reason").val()
 					, complete : function()
 					{

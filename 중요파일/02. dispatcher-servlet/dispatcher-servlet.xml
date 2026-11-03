@@ -32,7 +32,7 @@
 		<property name="url"
 			value="jdbc:oracle:thin:@localhost:1521:xe"></property>
 		<property name="username" value="lookation_local"></property>
-		<property name="password" value="java006$"></property>
+		<property name="password" value="#{systemEnvironment['LOOKATION_DB_PASSWORD']}"></property>
 	</bean>
 
 	<!-- remote -->
@@ -43,7 +43,7 @@
 		<property name="url"
 			value="jdbc:oracle:thin:@34.64.215.203:1521:xe"></property>
 		<property name="username" value="lookation"></property>
-		<property name="password" value="java006$"></property>
+		<property name="password" value="#{systemEnvironment['LOOKATION_DB_PASSWORD']}"></property>
 	</bean>
 
 

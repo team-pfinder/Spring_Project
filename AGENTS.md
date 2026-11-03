@@ -26,7 +26,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | [`docs/screens.md`](docs/screens.md) | URL 180개 ↔ 컨트롤러 ↔ JSP ↔ 역할, AJAX, 갭 | 화면·URL을 바꿀 때 |
 | [`docs/spec/lookation/index.md`](docs/spec/lookation/index.md) | 기획서 분석 인덱스, finding 35건, **blocker 6건** | 기능 요구를 해석할 때 |
 | [`docs/spec/lookation/validation.md`](docs/spec/lookation/validation.md) | 요구사항 충돌·누락·질문 | 구현 전 결정 확인 |
-| [`docs/db/table-spec.md`](docs/db/table-spec.md) | 테이블 76개, 컬럼 278, DDL 기준 FK 78 | SQL·DTO를 만질 때 |
+| [`docs/db/table-spec.md`](docs/db/table-spec.md) | 테이블 77개, 컬럼 288, DDL 기준 FK 78 | SQL·DTO를 만질 때 |
 | [`docs/reviews/2026-11-02-cross-validation.md`](docs/reviews/2026-11-02-cross-validation.md) | 외부 에이전트 3개 교차검증 결과와 반영·기각 내역 | 문서 수치를 신뢰하기 전 |
 | `docs/adr/` (아직 없음) | 구조 결정 기록 | 설계를 바꿀 때 |
 
@@ -87,6 +87,8 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 
 ### 기타
 
+- CSRF: 상태 변경은 POST이며 `_csrf` 파라미터 또는 `X-CSRF-Token` 헤더가 필수다. 폼은 `/includes/csrf.jsp`를 include하고 AJAX는 공통 헤더 스크립트가 토큰을 붙인다.
+- 설정: `LOOKATION_MAIL_USERNAME`, `LOOKATION_MAIL_PASSWORD`, `LOOKATION_DB_PASSWORD`, 선택 `LOOKATION_UPLOAD_DIR`·`LOOKATION_SITE_URL`. 없으면 기동 실패.
 - AJAX JSON은 문자열 조립이다(`@ResponseBody` 0건). 값에 따옴표가 들어가면 깨진다.
 - 파일 업로드는 `util/FileManager`(cos.jar), 메일은 `util/EmailManager`(Gmail SMTP)다. 운영 도메인·로컬 경로가 하드코딩되어 있다.
 - DTO 필드는 DB 컬럼과 같은 snake_case다(`getLoc_code()`).
@@ -158,4 +160,4 @@ python3 ~/.agents/skills/gorani-table-spec/scripts/table_spec.py \
   --formats md,html --sources "중요파일/01. sql/*.sql"
 ```
 
-`xlsx`는 이 스킬 버전(3.17.0)의 저장 버그로 생성되지 않는다. 필요하면 `table-spec.md`에서 변환하거나 스킬 수정 후 `--formats md,html,xlsx`로 다시 실행한다. 기존 `docs/db/table-spec.xlsx`는 이 버그를 우회한 사본으로 만든 것이다.
+`xlsx`는 이 스킬 버전(3.17.0)의 저장 버그로 생성되지 않는다. `md`/`html`만 재생성한다.

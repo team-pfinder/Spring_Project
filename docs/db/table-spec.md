@@ -1,11 +1,11 @@
 # 테이블 명세서
 
 - 프로젝트: Lookation
-- 생성 시각: 2026-11-02T17:14:31+09:00
+- 생성 시각: 2026-11-03T09:40:01+09:00
 - SQL 방언: oracle
 - 원본: DDL 파일 1개
-- 테이블: 76
-- 컬럼: 278
+- 테이블: 77
+- 컬럼: 288
 - 관계: 78
 - 인덱스: 0
 
@@ -90,12 +90,13 @@
 | 73 | - | REVIEW_REMOVE | 삭제내역(리뷰)  RVRM | 3 | REVIEW_REMOVE_CODE | 1 | 0 |
 | 74 | - | REVIEW_REPLY | 리뷰답글(호스트) RVRE | 4 | REVIEW_REPLY_CODE | 1 | 0 |
 | 75 | - | REVIEW_REPLY_REMOVE | 삭제내역(리뷰답글) RVRERM | 3 | REVIEW_REPLY_REMOVE_CODE | 1 | 0 |
-| 76 | - | THUMBNAIL | 썸네일(기본정보) TH | 3 | THUMBNAIL_CODE | 1 | 0 |
+| 76 | - | SIGNUP_VERIFICATION | 회원가입 이메일 인증 대기 | 10 | TOKEN_HASH | 0 | 0 |
+| 77 | - | THUMBNAIL | 썸네일(기본정보) TH | 3 | THUMBNAIL_CODE | 1 | 0 |
 
 ## ACTUAL_BOOKER — 실예약자 AB
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -113,18 +114,18 @@
 ## ADMIN — 관리자
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | ADMIN_ID | VARCHAR2 | 18 | Y | - | - | Y | - | 아이디 | - |
-| 2 | ADMIN_PW | VARCHAR2 | 15 | - | - | - | - | - | 비밀번호 | - |
+| 2 | ADMIN_PW | VARCHAR2 | 100 | - | - | - | - | - | 비밀번호 | - |
 | 3 | ADMIN_NICKNAME | VARCHAR2 | 18 | - | - | - | - | - | 닉네임 | - |
 
 ## APPLY_PACKAGE — 적용된 패키지 AP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -141,7 +142,7 @@
 ## ATTACHMENT — 첨부파일(공지사항) AT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -158,7 +159,7 @@
 ## BIZ_INFO — 사업자정보 BZ
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -182,7 +183,7 @@
 ## BOARD_TYPE — 게시물 분류 BT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -192,7 +193,7 @@
 ## BOOK_LIST — 예약내역 BC
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -213,7 +214,7 @@
 ## BOOK_REFUND_LIST — 예약 환불 내역(이용자) BRF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -230,7 +231,7 @@
 ## BOOK_REPORT — 신고접수(이용자)(예약내역) BRP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -252,7 +253,7 @@
 ## BOOK_REPORT_IMG — 이미지(신고) BRPIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -269,7 +270,7 @@
 ## BOOK_REPORT_PROC — 신고처리(이용자)(예약내역) BRPP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -288,7 +289,7 @@
 ## BOOK_REPORT_TYPE — 신고유형분류(예약내역) BRPT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -298,7 +299,7 @@
 ## Book_Pay_List — 예약 결제 내역(이용자) BP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -315,7 +316,7 @@
 ## CAUTION — 주의사항(기본정보)  CAU
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -332,7 +333,7 @@
 ## FACILITY_INFO — 시설안내(기본정보) FIF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -349,7 +350,7 @@
 ## HELP — 도움말 HLP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -368,7 +369,7 @@
 ## HELP_IMG — 이미지(도움말) HLPIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -385,7 +386,7 @@
 ## HOST — 회원(호스트) H
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -395,7 +396,7 @@
 ## HOST_BANK_INFO — 계좌정보(호스트)
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -413,7 +414,7 @@
 ## HOST_BLACKLIST — 블랙리스트(호스트)
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -424,7 +425,7 @@
 ## HOST_CANCEL_LIST — 예약취소내역(호스트) HC0000
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -442,7 +443,7 @@
 ## HOST_EXCHANGE_BANK_INFO — 환전계좌정보(호스트) HEBI
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -460,7 +461,7 @@
 ## HOST_EXCHANGE_LIST — 마일리지 환전 내역(호스트) HE
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -478,7 +479,7 @@
 ## HOST_MSG_IMG — 이미지(메신저정보(호스트)) HMIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -495,7 +496,7 @@
 ## HOST_MSG_INFO — 메신저정보(호스트) HMIF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -513,13 +514,13 @@
 ## HOST_PROFILE — 프로필정보(호스트)
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | HOST_EMAIL | VARCHAR2 | 320 | Y | - | - | Y | - | 가입 이메일 | - |
 | 2 | HOST_CODE | VARCHAR2 | 15 | - | Y | - | - | - | 회원코드(호스트) | - |
-| 3 | HOST_PW | VARCHAR2 | 30 | - | - | - | - | - | 비밀번호 | - |
+| 3 | HOST_PW | VARCHAR2 | 100 | - | - | - | - | - | 비밀번호 | - |
 | 4 | HOST_NICKNAME | VARCHAR2 | 18 | - | - | - | - | - | 닉네임 | - |
 | 5 | HOST_NAME | VARCHAR2 | 30 | - | - | - | - | - | 이름 | - |
 | 6 | HOST_TEL | VARCHAR2 | 13 | - | - | - | - | - | 연락처 | - |
@@ -533,7 +534,7 @@
 ## HOST_WITHDRAW — 회원탈퇴(호스트) HW
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -550,7 +551,7 @@
 ## IMPORTANT_NOTICE — 중요공지 분류 IN
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -560,7 +561,7 @@
 ## INSPECT_PROC_LIST — 검수처리내역 IP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -580,7 +581,7 @@
 ## INSPECT_REG_LIST — 검수신청내역 IR
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -597,7 +598,7 @@
 ## INSPECT_TYPE — 검수분류 IT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -607,7 +608,7 @@
 ## LOAD_PROC — 충전처리내역(이용자) LP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -626,7 +627,7 @@
 ## LOAD_REG — 마일리지 충전신청 내역(이용자) LR
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -644,7 +645,7 @@
 ## LOAD_REG_BANK_INFO — 충전신청계좌정보 LRBI
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -662,7 +663,7 @@
 ## LOAD_TYPE — 마일리지 충전 분류 LT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -672,7 +673,7 @@
 ## LOC — 공간 L
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -689,7 +690,7 @@
 ## LOC_BASIC_INFO — 기본정보 LBIF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -712,7 +713,7 @@
 ## LOC_BLIND — 블라인드내역(공간게시물) LB
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -730,7 +731,7 @@
 ## LOC_CONTACT — 연락처 LC
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -749,7 +750,7 @@
 ## LOC_DETAIL_IMG — 이미지(상세정보) LDIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -766,7 +767,7 @@
 ## LOC_DETAIL_INFO — 상세정보 LDIF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -784,7 +785,7 @@
 ## LOC_REMOVE — 삭제내역(공간) LRM
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -801,7 +802,7 @@
 ## LOC_REPORT — 신고접수(이용자)(공간게시물) LRP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -823,7 +824,7 @@
 ## LOC_REPORT_IMG — 이미지(신고) LRPIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -840,7 +841,7 @@
 ## LOC_REPORT_PROC — 신고처리(이용자)(공간게시물) LRPP
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -859,7 +860,7 @@
 ## LOC_REPORT_TYPE — 신고유형분류(공간) LRPT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -869,7 +870,7 @@
 ## LOC_TYPE — 공간분류 LOCT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -879,7 +880,7 @@
 ## LOC_USE_INFO — 이용안내 LUI
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -898,7 +899,7 @@
 ## LOC_WEB — 공간웹사이트(상세정보)  LW
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -915,7 +916,7 @@
 ## MEMBER — 회원(이용자) M
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -925,7 +926,7 @@
 ## MEMBER_BANK_INFO — 계좌정보(이용자)
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -943,7 +944,7 @@
 ## MEMBER_BLACKLIST — 블랙리스트(이용자)
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -954,7 +955,7 @@
 ## MEMBER_CANCEL_LIST — 예약취소내역(이용자) MC
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -972,7 +973,7 @@
 ## MEMBER_EXCHANGE_BANK_INFO — 환전계좌정보(이용자) MEBI
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -990,7 +991,7 @@
 ## MEMBER_EXCHANGE_LIST — 마일리지 환전 내역(이용자) ME
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1008,7 +1009,7 @@
 ## MEMBER_MSG_IMG — 이미지(메신저정보(이용자)) MMIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1025,7 +1026,7 @@
 ## MEMBER_MSG_INFO — 메신저정보(이용자) MMIF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1043,13 +1044,13 @@
 ## MEMBER_PROFILE — 프로필정보(이용자)
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | MEMBER_EMAIL | VARCHAR2 | 320 | Y | - | - | Y | - | 가입 이메일 | - |
 | 2 | MEMBER_CODE | VARCHAR2 | 15 | - | Y | - | - | - | 회원코드(이용자) | - |
-| 3 | MEMBER_PW | VARCHAR2 | 30 | - | - | - | - | - | 비밀번호 | - |
+| 3 | MEMBER_PW | VARCHAR2 | 100 | - | - | - | - | - | 비밀번호 | - |
 | 4 | MEMBER_NICKNAME | VARCHAR2 | 18 | - | - | - | - | - | 닉네임 | - |
 | 5 | MEMBER_NAME | VARCHAR2 | 30 | - | - | - | - | - | 이름 | - |
 | 6 | MEMBER_TEL | VARCHAR2 | 13 | - | - | - | - | - | 연락처 | - |
@@ -1063,7 +1064,7 @@
 ## MEMBER_WITHDRAW — 탈퇴(이용자) MW
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1080,7 +1081,7 @@
 ## MSG — 메신저 MSG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1096,7 +1097,7 @@
 ## NOTICE — 공지사항 N
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1115,7 +1116,7 @@
 ## NOTICE_IMG — 이미지(공지사항) NIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1132,7 +1133,7 @@
 ## PACKAGE — 패키지 P
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1152,7 +1153,7 @@
 ## PACKAGE_FORM — 패키지 양식 PF
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1168,7 +1169,7 @@
 ## PACKAGE_REMOVE — 폐기 패키지 PRM
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1185,7 +1186,7 @@
 ## QNA — Q_AND_A(이용자) Q
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1205,7 +1206,7 @@
 ## QNA_REMOVE — 삭제내역(Q_AND_A) QRM
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1222,7 +1223,7 @@
 ## QNA_REPLY — Q_AND_A답글(호스트) QRE
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1240,7 +1241,7 @@
 ## QNA_REPLY_REMOVE — 삭제내역(Q_AND_A답글) QRERM
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1257,7 +1258,7 @@
 ## REPORT_PROC_TYPE — 신고처리분류 RPPT
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1267,7 +1268,7 @@
 ## REVIEW — 리뷰(이용자) RV
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1288,7 +1289,7 @@
 ## REVIEW_IMG — 이미지(리뷰) RVIMG
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1305,7 +1306,7 @@
 ## REVIEW_REMOVE — 삭제내역(리뷰)  RVRM
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1322,7 +1323,7 @@
 ## REVIEW_REPLY — 리뷰답글(호스트) RVRE
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1340,7 +1341,7 @@
 ## REVIEW_REPLY_REMOVE — 삭제내역(리뷰답글) RVRERM
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1354,10 +1355,28 @@
 | --- | --- | --- | --- | --- | --- |
 | FK_REVIEW_REPLY_REMOVE_REVIEW_ | REVIEW_REPLY_CODE | REVIEW_REPLY | REVIEW_REPLY_CODE | - | - |
 
+## SIGNUP_VERIFICATION — 회원가입 이메일 인증 대기
+
+- 스키마: -
+- 원본: /tmp/lookation_create_table.utf8.sql
+
+| No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | TOKEN_HASH | VARCHAR2 | 64 | Y | - | - | Y | - | 인증토큰해시 | - |
+| 2 | IDENTIFY | VARCHAR2 | 10 | - | - | - | - | - | 역할구분 | - |
+| 3 | EMAIL | VARCHAR2 | 320 | - | - | - | - | - | 이메일 | - |
+| 4 | PW_HASH | VARCHAR2 | 100 | - | - | - | - | - | 비밀번호해시 | - |
+| 5 | NICK | VARCHAR2 | 18 | - | - | - | - | - | 닉네임 | - |
+| 6 | NAME | VARCHAR2 | 30 | - | - | - | - | - | 이름 | - |
+| 7 | TEL | VARCHAR2 | 13 | - | - | - | - | - | 연락처 | - |
+| 8 | EXPIRES_AT | DATE | - | - | - | - | - | - | 만료시각 | - |
+| 9 | USED_AT | DATE | - | - | - | - | - | - | 사용시각 | - |
+| 10 | CREATED_AT | DATE | - | - | - | - | - | - | 생성시각 | - |
+
 ## THUMBNAIL — 썸네일(기본정보) TH
 
 - 스키마: -
-- 원본: docs/db/source/lookation_create_table.utf8.sql
+- 원본: /tmp/lookation_create_table.utf8.sql
 
 | No | 컬럼 | 데이터 타입 | 길이 | PK | FK | UNIQUE | NOT NULL | DEFAULT | 설명 | 비고 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

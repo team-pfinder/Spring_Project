@@ -1,12 +1,3 @@
-<meta name="_csrf" content="${sessionScope.csrfToken}">
-<script>
-(function(){
-  var meta = document.querySelector('meta[name="_csrf"]');
-  if (!meta || !window.jQuery) { return; }
-  var token = meta.getAttribute('content');
-  jQuery.ajaxSetup({ beforeSend: function(xhr){ xhr.setRequestHeader('X-CSRF-Token', token); } });
-})();
-</script>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -49,5 +40,19 @@
 
 <!-- Page level custom scripts -->
 <script src="${pageContext.request.contextPath}/js/demo/datatables-demo.js"></script>
-
-
+<meta name="_csrf" content="${sessionScope.csrfToken}">
+<script>
+(function(){
+  if (!window.jQuery) { return; }
+  var meta = document.querySelector('meta[name="_csrf"]');
+  if (!meta) { return; }
+  jQuery.ajaxSetup({ beforeSend: function(xhr){ xhr.setRequestHeader('X-CSRF-Token', meta.getAttribute('content')); } });
+})();
+function postAction(url){
+  var form = document.createElement('form');
+  form.method = 'POST'; form.action = url;
+  var meta = document.querySelector('meta[name="_csrf"]');
+  if (meta) { var input = document.createElement('input'); input.type='hidden'; input.name='_csrf'; input.value=meta.getAttribute('content'); form.appendChild(input); }
+  document.body.appendChild(form); form.submit();
+}
+</script>

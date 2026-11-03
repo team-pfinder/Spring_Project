@@ -13,3 +13,11 @@
 <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
+<script>
+(function(){
+  if (!window.jQuery) { return; }
+  var meta = document.querySelector('meta[name="_csrf"]');
+  if (!meta) { return; }
+  jQuery.ajaxSetup({ beforeSend: function(xhr){ xhr.setRequestHeader('X-CSRF-Token', meta.getAttribute('content')); } });
+})();
+</script>

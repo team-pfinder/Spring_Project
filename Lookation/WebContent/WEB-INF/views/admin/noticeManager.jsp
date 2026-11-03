@@ -162,7 +162,7 @@ height: 200px;
 						onclick="location.href='../actions/noticeupdateform.action?notice_code=' + this.value;">수정</button> 
 						<!-- 삭제기능 -->
 						<button type="button" class="btn btn-danger " value="${NoticeDTO.notice_code }" 
-						onclick="postAction('../actions/noticedelete.action?notice_code=' + this.value;">삭제</button>
+						onclick="postAction('../actions/noticedelete.action?notice_code=' + this.value);">삭제</button>
 						<!-- <button type="button" class="btn btn-danger " data-toggle="modal" data-target="#myModal2">삭제</button> -->
 					</td>
 				</tr>
