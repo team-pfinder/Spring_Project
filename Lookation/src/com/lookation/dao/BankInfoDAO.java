@@ -170,8 +170,9 @@ public class BankInfoDAO implements IBankInfoDAO
 		int result = 0;
 		String sql = "SELECT COUNT(*) AS CNT"
 				  + " FROM HOST_BANK_INFO"
-				  + " WHERE HOST_CODE = '" + identifyCode +"'";	// ※주의 테스트용 코드명 대입할때 따옴표 들어가야함 
+				  + " WHERE HOST_CODE = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, identifyCode);
 		ResultSet rs = pstmt.executeQuery();
 		
 		while(rs.next())
