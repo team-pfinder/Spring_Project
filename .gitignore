@@ -58,3 +58,6 @@ out/
 # ---------- 보안 설정 ----------
 # dispatcher-servlet 원본은 웹루트에서 제외 (중요파일/ 사본만 추적)
 /Lookation/WebContent/WEB-INF/dispatcher-servlet.xml
+
+# ---------- Tests ----------
+Lookation/test/build/
