@@ -309,6 +309,7 @@
 
 				<h2 class="mb-3 mt-5 font-weight-bold"># 예약자 정보</h2><hr>
 				<form class="ftco-animate" action="bookpay.action" method="post" id="bookForm">
+<jsp:include page="/includes/csrf.jsp" />
 					<!-- 체크박스 클릭시 예약자 정보 입력란에 기존 회원정보 자동으로 불러옴
 						 수정 가능 -->
 					<div class="text-right mr-3">

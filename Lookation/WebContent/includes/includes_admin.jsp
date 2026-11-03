@@ -1,3 +1,12 @@
+<meta name="_csrf" content="${sessionScope.csrfToken}">
+<script>
+(function(){
+  var meta = document.querySelector('meta[name="_csrf"]');
+  if (!meta || !window.jQuery) { return; }
+  var token = meta.getAttribute('content');
+  jQuery.ajaxSetup({ beforeSend: function(xhr){ xhr.setRequestHeader('X-CSRF-Token', token); } });
+})();
+</script>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 

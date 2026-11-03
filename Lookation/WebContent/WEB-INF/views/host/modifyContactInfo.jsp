@@ -273,6 +273,7 @@
 	
 	<form style="width: 80%; margin: 120px;" id="inputContactInfo" 
 		  action="modifycontactinfo.action?loc_code=${loc_code }" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 
 	
 		<!-- 1. 이메일 -->

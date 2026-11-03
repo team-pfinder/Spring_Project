@@ -46,7 +46,7 @@ td {
 
 			if (confirm("해당 회원을 블랙리스트 목록에서 해제하시겠습니까?"))
 			{
-				$(location).attr("href", url);
+				postAction(url);
 			}
 		});
 	});

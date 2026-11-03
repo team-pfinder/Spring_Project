@@ -140,7 +140,7 @@ public class ReportList
 	}
 	
 	// 블랙리스트 처리
-	@RequestMapping(value = "/actions/userblack.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/userblack.action", method = RequestMethod.POST)
 	public String userBlack(String member_email, String member_blacklist_reason, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인
@@ -320,7 +320,7 @@ public class ReportList
 	}
 	
 	// 블랙리스트 처리
-	@RequestMapping(value = "/actions/hostblack.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/hostblack.action", method = RequestMethod.POST)
 	public String hostBlack(String host_email, String host_blacklist_reason, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인
@@ -367,7 +367,7 @@ public class ReportList
 	}
 	
 	// 블라인드 처리
-	@RequestMapping(value = "/actions/blind.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/blind.action", method = RequestMethod.POST)
 	public String addBlind(String loc_code, String loc_blind_reason, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인

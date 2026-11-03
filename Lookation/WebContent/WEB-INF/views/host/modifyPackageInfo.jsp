@@ -69,7 +69,8 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm" 
-		  action="inputPackageInfoForm.jsp" method="POST"><!--onsubmit="handOver()" -->
+		  action="inputPackageInfoForm.jsp" method="POST">
+<jsp:include page="/includes/csrf.jsp" /><!--onsubmit="handOver()" -->
 		  <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->
 		
 		<!-- 1. 패키지명 -->

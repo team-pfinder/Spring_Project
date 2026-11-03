@@ -542,7 +542,7 @@ ul.precautions-list > li {
 	
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBasicInfo" enctype="multipart/form-data"
-		  action="modifybasicinfo.action?loc_code=${loc_code }" method="post">
+		  action="modifybasicinfo.action?loc_code=${loc_code }&_csrf=${sessionScope.csrfToken}" method="post">
 	
 	<%-- <c:forEach var="loc" items="${basicInfoList }">
 	 --%>

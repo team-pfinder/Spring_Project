@@ -65,7 +65,7 @@ public class UserReviewManager
 	}
 	
 	// review 삭제 (단일)
-	@RequestMapping(value ="/actions/reviewdelete.action", method = RequestMethod.GET)
+	@RequestMapping(value ="/actions/reviewdelete.action", method = RequestMethod.POST)
 	public String remove(String review_code, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인
@@ -88,7 +88,7 @@ public class UserReviewManager
 	}
 	
 	// review 삭제 (다중)
-	@RequestMapping(value = "/actions/selectremove.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/selectremove.action", method = RequestMethod.POST)
 	public String multiRemove(HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인

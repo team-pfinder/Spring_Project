@@ -88,7 +88,7 @@ $(function(){
 	{
 		if(confirm("삭제하시겠습니까?"))
 		{
-			$(location).attr("href", "deleteqnainlist.action?qna_code=" + $(this).val());
+			postAction("deleteqnainlist.action?qna_code=" + $(this).val());
 		}
 	}); 
 	
@@ -133,6 +133,7 @@ $(function(){
 					<div class="table-responsive align-self-center">
 						<table class="table" id="products1" style="table-layout: fixed">
 						<form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 						    <input type="hidden" name="rowPerPage1" value="10">
 						</form>
 							<colgroup>

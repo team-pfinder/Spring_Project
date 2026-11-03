@@ -34,7 +34,7 @@ String cp = request.getContextPath();
 			
 			if (confirm("해당 게시글을 삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "hostreviewdelete.action?reivew_reply_code=" + $(this).val());
+				postAction("hostreviewdelete.action?reivew_reply_code=" + $(this).val());
 			}
 		});
 	});

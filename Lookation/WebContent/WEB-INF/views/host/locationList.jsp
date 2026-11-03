@@ -39,7 +39,7 @@
 	{
 		if(confirm("삭제하면 다시 복구가 불가능합니다. 정말 이 공간을 삭제하시겠습니까? "))
 		{
-			location.href = "deletelocation.action?loc_code=" + code;
+			postAction("deletelocation.action?loc_code=" + code);
 		}
 	}
 	

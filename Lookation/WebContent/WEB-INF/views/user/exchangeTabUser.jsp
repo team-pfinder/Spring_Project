@@ -31,6 +31,7 @@
 
 			<div>
 				<form action="exchange.action?identify=member" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 					<table class="table">
 						<tr>
 							<th>

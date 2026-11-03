@@ -102,7 +102,7 @@ public class NoticeManager
 	}
 	
 	//관리자가 작성한 도움말 <<삭제>>
-	@RequestMapping(value="/actions/noticedelete.action", method=RequestMethod.GET)
+	@RequestMapping(value="/actions/noticedelete.action", method=RequestMethod.POST)
 	public String noticeDelete(NoticeDTO dto,HttpServletRequest request) 
 	{ 
 		INoticeManagerDAO dao = sqlSession.getMapper(INoticeManagerDAO.class);

@@ -128,6 +128,7 @@ th, td {
 								<div class="card-body">
 									<table id="products1" class="table table-condensed table-hover" style="text-align:center">
 										<form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 										    <input type="hidden" name="rowPerPage1" value="5">
 										</form>
 										
@@ -186,6 +187,7 @@ th, td {
 								<div class="card-body">
 									<table id="products2" class="table table-condensed table-hover" style="text-align:center">
 									<form action="" id="setRows2">
+<jsp:include page="/includes/csrf.jsp" />
 									    <input type="hidden" name="rowPerPage2" value="5">
 									</form>	
 									<thead>

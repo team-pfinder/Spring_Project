@@ -330,6 +330,7 @@
 	<div class="container" >
 		<div class="loginBox">
 			<form action="${actionUrl}" method="post" id="signUpForm">
+<jsp:include page="/includes/csrf.jsp" />
 				<ul class="login_info">
 					<li>
 						<!-- err시 빨간 textbox border 테두리 필요 -->

@@ -71,7 +71,7 @@ public class hostQnaManager
 	}
 
 	// qnareply 삭제
-	@RequestMapping(value = "/actions/hostqnareplydelete.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/hostqnareplydelete.action", method = RequestMethod.POST)
 	public String remove(String qna_reply_code,HttpServletRequest request)
 	{
 		IhostQnaManagerDAO dao = sqlSession.getMapper(IhostQnaManagerDAO.class);

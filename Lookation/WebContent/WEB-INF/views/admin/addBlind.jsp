@@ -24,7 +24,7 @@
 		{
 			<%-- if(confirm("정말로 이 계정을 블랙리스트 처리하시겠습니까?"))
 			{
-				$(location).attr("href", "hostblack.action?host_email=<%=host_email%>" + "&host_blacklist_reason=" + $("#host_blacklist_reason").val());
+				postAction("hostblack.action?host_email=<%=host_email%>" + "&host_blacklist_reason=" + $("#host_blacklist_reason").val());
 			} --%>
 			if($("#blind_reason").val() == "")
 			{
@@ -34,7 +34,7 @@
 			}
 			
 			$.ajax({
-				type : "get"
+				type : "post"
 				, url : "blind.action?loc_code=" + $("#loc_code").val() + "&loc_blind_reason=" + encodeURI($("#blind_reason").val())
 				, complete : function()
 				{
@@ -87,6 +87,7 @@
 <div class="outer">
 	<div class="inner">
 		<form method="get" name="myForm">
+<jsp:include page="/includes/csrf.jsp" />
 			<span>공간코드</span><br>
 			<input type="text" class="form-control" id="loc_code"
 			value="<%=loc_code %>" readonly="readonly"> <br>

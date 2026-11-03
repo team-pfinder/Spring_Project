@@ -143,6 +143,7 @@ height: 200px;
 				<table class="table table-bordered text-center" id="products1">
 					
 					<form action="" id="setRows1" >
+<jsp:include page="/includes/csrf.jsp" />
 					    <input type="hidden" name="rowPerPage1" value="5">
 					</form>
 						<colgroup>
@@ -184,7 +185,7 @@ height: 200px;
 						onclick="location.href='../actions/helpupdateform.action?help_code=' + this.value;">수정</button>			 											 
 						<!-- 삭제기능 -->
 						<button type="button" class="btn btn-danger " value="${HelpDTO.help_code}" 
-						onclick="location.href='../actions/helpdelete.action?help_code=' + this.value;">삭제</button>
+						onclick="postAction('../actions/helpdelete.action?help_code=' + this.value;">삭제</button>
 					</td>
 				</tr>
 

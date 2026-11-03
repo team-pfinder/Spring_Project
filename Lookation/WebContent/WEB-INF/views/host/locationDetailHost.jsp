@@ -311,7 +311,7 @@ p
 			if(confirm("삭제하시겠습니까?"))
 			{
 				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
-				$(location).attr("href", "deletereviewreply.action?review_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
+				postAction("deletereviewreply.action?review_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
 		
@@ -337,7 +337,7 @@ p
 			if(confirm("삭제하시겠습니까?"))
 			{
 				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
-				$(location).attr("href", "deleteqnareply.action?qna_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
+				postAction("deleteqnareply.action?qna_reply_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
 	

@@ -341,7 +341,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputBusinessInfo" enctype="multipart/form-data"
-	 	  action="inputbusinessinfo.action" method="POST"><!--onsubmit="handOver()" -->
+	 	  action="inputbusinessinfo.action?_csrf=${sessionScope.csrfToken}" method="POST"><!--onsubmit="handOver()" -->
 	
 		<!-- 1. 상호명 -->
 		

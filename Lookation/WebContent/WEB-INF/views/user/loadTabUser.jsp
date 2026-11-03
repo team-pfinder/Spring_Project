@@ -22,6 +22,7 @@
 			<!-- 카드바디 -->
 			<div class="card-body">
 				<form name="sub1" action="memberload.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 					<!-- 설명 -->
 					<div>
 						<p>마일리지는 최소 10,000원부터 충전이 가능합니다.</p>

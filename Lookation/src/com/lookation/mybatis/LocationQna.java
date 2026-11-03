@@ -145,7 +145,7 @@ public class LocationQna
 	}
 
 	// 이용자 : QnA 삭제
-	@RequestMapping(value = "/actions/deleteqna.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/deleteqna.action", method = RequestMethod.POST)
 	public String deleteQna(LocationQnaDTO dto, HttpServletRequest request)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);
@@ -180,7 +180,7 @@ public class LocationQna
 	}
 
 	// 호스트 : QnA 답글 삭제
-	@RequestMapping(value = "/actions/deleteqnareply.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/deleteqnareply.action", method = RequestMethod.POST)
 	public String deleteQnaReply(String qna_reply_code, HttpServletRequest request)
 	{
 		ILocationQnaDAO dao = sqlSession.getMapper(ILocationQnaDAO.class);

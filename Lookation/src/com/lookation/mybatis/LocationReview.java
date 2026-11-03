@@ -210,7 +210,7 @@ public class LocationReview
 	}
 
 	// 이용자 : 리뷰 삭제
-	@RequestMapping(value = "/actions/deletereview.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/deletereview.action", method = RequestMethod.POST)
 	public String deleteReview(LocationReviewDTO dto, HttpServletRequest request)
 	{
 		String loc_code = request.getParameter("loc_code");
@@ -241,7 +241,7 @@ public class LocationReview
 	}
 
 	// 호스트 : 리뷰 답글 삭제
-	@RequestMapping(value = "/actions/deletereviewreply.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/deletereviewreply.action", method = RequestMethod.POST)
 	public String deleteReviewReply(LocationReviewDTO dto, HttpServletRequest request)
 	{
 		String loc_code = request.getParameter("loc_code");

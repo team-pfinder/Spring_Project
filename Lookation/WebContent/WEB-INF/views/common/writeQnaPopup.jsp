@@ -54,6 +54,7 @@
 				<!-- 이용자 -->
 				<c:if test="${identify eq 'member'}"> 
 					<form action="qnainsert.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 						<div class="header">
 							<h3 class="title my-2">Q&A 작성하기</h3>
 						</div><!-- End .header -->
@@ -83,6 +84,7 @@
 				<!-- 호스트 -->
 				<c:if test="${identify eq 'host'}">
 					<form action="qnareplyinsert.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 						<div class="header">
 							<h3 class="title my-2">Q&A 답글 작성하기</h3>
 						</div><!-- End .header -->

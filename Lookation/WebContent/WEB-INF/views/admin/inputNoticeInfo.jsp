@@ -81,6 +81,7 @@ $(document).ready(function()
 
 								<!-- /.box-header -->
 								<form id='insertForm' role="form" action="noticeinsert.action" method="post" >
+<jsp:include page="/includes/csrf.jsp" />
 									<div class="box-body">
 										<label for="exampleInputEmail1">중요도</label>
 										<div class="form-group">

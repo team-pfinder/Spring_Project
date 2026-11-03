@@ -235,6 +235,7 @@ $(document).ready(function()
 								<hr>
 							</div>
 							<form action="" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 								<!-- 여기부분은 저거 inspect_reg_code 잘받아오나보려고 dto1. 일케해놧는데 상관없나? -->
 							<button id="btn_submit" type="button"
 								class="btn btn-success btn-block inspectOK"

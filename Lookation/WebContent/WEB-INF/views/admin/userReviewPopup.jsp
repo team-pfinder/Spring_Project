@@ -52,6 +52,7 @@
 <div class="outer">
 	<div class="inner">
 		<form>
+<jsp:include page="/includes/csrf.jsp" />
 		<!-- userReview.jsp에서 review_code를 받아온다. -->
 			<table>
 				<tr>

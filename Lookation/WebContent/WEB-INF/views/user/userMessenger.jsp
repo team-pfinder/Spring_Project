@@ -297,7 +297,7 @@ overflow: hidden;
 					
 					
 					
-					<form action="mmsgsend.action" method="post" enctype="multipart/form-data" id="msgForm">
+					<form action="mmsgsend.action?_csrf=${sessionScope.csrfToken}" method="post" enctype="multipart/form-data" id="msgForm">
 					<!-- .footer-chat -->
 						<div class="footer-chat" id="footer">
 								<!-- 사진첨부버튼 -->

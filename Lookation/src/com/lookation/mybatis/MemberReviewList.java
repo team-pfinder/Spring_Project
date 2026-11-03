@@ -64,7 +64,7 @@ public class MemberReviewList
 	}
 	
 	// 리뷰 리스트에서 리뷰 삭제 
-	@RequestMapping(value="/actions/deletereviewinlist.action", method = RequestMethod.GET)
+	@RequestMapping(value="/actions/deletereviewinlist.action", method = RequestMethod.POST)
 	public String deleteReview(MemberReviewListDTO dto)
 	{
 		IMemberReviewListDAO dao = sqlSession.getMapper(IMemberReviewListDAO.class);

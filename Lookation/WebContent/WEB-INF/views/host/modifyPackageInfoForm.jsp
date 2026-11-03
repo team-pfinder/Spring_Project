@@ -68,6 +68,7 @@
 
 
 <form style="width: 800px; margin: 120px;">
+<jsp:include page="/includes/csrf.jsp" />
 
 	<!-- 1. 현재 패키지 (추가된 패키지 현황) --> 
 	<div id="currentPackage">

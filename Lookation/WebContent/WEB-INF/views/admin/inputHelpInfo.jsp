@@ -81,7 +81,7 @@ $(document).ready(function()
 								<br>
 
 								<!-- /.box-header -->
-								<form id="insertForm" role="form" action="helpinsert.action" method="post"  enctype="multipart/form-data">
+								<form id="insertForm" role="form" action="helpinsert.action?_csrf=${sessionScope.csrfToken}" method="post"  enctype="multipart/form-data">
 									<div class="box-body">
 									<label for="exampleInputEmail1">카테고리</label>
 										<div class="form-group">

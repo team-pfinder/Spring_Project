@@ -130,6 +130,7 @@
 
 						<div>
 							<form action="exchange.action?identify=host" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 								<table class="table">
 									<tr>
 										<th>

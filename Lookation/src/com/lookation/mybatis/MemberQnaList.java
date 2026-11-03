@@ -67,7 +67,7 @@ public class MemberQnaList
 	}
 	
 	// QnA 리스트에서 QnA 삭제
-	@RequestMapping(value="/actions/deleteqnainlist.action", method = RequestMethod.GET)
+	@RequestMapping(value="/actions/deleteqnainlist.action", method = RequestMethod.POST)
 	public String deleteQna(MemberQnaListDTO dto)
 	{
 		IMemberQnaListDAO dao =sqlSession.getMapper(IMemberQnaListDAO.class);

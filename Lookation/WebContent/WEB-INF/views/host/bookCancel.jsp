@@ -119,6 +119,7 @@
 			</div>
 		</div><!-- . End row -->
 		<form action="hostcancel.action" method="post" id="cancelForm">
+<jsp:include page="/includes/csrf.jsp" />
 		<div class="row">
 			<div class="col-md-12 px-4 pb-3 pt-4 mx-4 cancel-box">
 				<div class="float-right">

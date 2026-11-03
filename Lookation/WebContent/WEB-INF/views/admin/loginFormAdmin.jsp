@@ -52,6 +52,7 @@ $(document).ready(function()
 										<h1 class="h4 text-gray-900 mb-4">Welcome Admin!</h1>
 									</div>
 									<form action="adminlogin.action" method="post" id="adminloginForm">
+<jsp:include page="/includes/csrf.jsp" />
 										<div class="form-group">
 											<input type="email" class="form-control form-control-user"
 												id="admin_id" name="admin_id" placeholder="ID">

@@ -150,6 +150,7 @@
 	
 	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
 		  action="modifyusinginfo.action?loc_code=${loc_code }" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 		  
 		<!-- 1. 이용시간 -->
 		

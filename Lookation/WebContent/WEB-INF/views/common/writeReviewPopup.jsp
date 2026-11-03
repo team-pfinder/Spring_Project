@@ -226,6 +226,7 @@
 			<!-- 호스트 -->
 			<c:if test="${identify eq 'host'}"> 
 				<form action="reviewreplyinsert.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 					<div class="header">
 						<h3 class="title my-2">리뷰 답글 작성하기</h3>
 						<hr>

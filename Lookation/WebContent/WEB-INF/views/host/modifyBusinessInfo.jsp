@@ -71,6 +71,7 @@
 
 
 <form style="width: 800px; margin: 120px;">
+<jsp:include page="/includes/csrf.jsp" />
 
 	<!-- 1. 상호명 --><!-- ※ 변경불가 항목 -->
 	

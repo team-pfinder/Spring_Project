@@ -109,6 +109,32 @@ a#sub
 }
 </style>
 
+<meta name="_csrf" content="${sessionScope.csrfToken}">
+<script>
+(function(){
+  var meta = document.querySelector('meta[name="_csrf"]');
+  if (!meta || !window.jQuery) { return; }
+  var token = meta.getAttribute('content');
+  jQuery.ajaxSetup({ beforeSend: function(xhr){ xhr.setRequestHeader('X-CSRF-Token', token); } });
+})();
+</script>
+<script>
+function postAction(url){
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url;
+  var meta = document.querySelector('meta[name="_csrf"]');
+  if (meta) {
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = '_csrf';
+    input.value = meta.getAttribute('content');
+    form.appendChild(input);
+  }
+  document.body.appendChild(form);
+  form.submit();
+}
+</script>
 </head>
 
 <body class="back-default">
@@ -125,6 +151,7 @@ a#sub
 				<!-- 검색(호스트는 사용X) -->
 				<!-- <div class="sidebar-box">
 					<form action="#" class="search-form">
+<jsp:include page="/includes/csrf.jsp" />
 						<div class="form-group">
 							<span class="icon icon-search"></span> 
 							<input type="text" class="form-control" placeholder="지역 또는 공간을 검색해보세요!" style="font-size: 20px;">
@@ -175,6 +202,7 @@ a#sub
 			<div class="align-self-start"
 				style="padding-top: 1.8rem; padding-right: 40px;">
 				<form action="#">
+<jsp:include page="/includes/csrf.jsp" />
 					<!-- 로그인 전 -->
 					<c:if test="${result eq 'noSigned' }">
 						<a id="menuWhite">로그인 하세요.</a>

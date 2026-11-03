@@ -104,7 +104,7 @@ public class HostBlackManager
 	}
 
 	// 호스트 블랙리스트 해제 작업
-	@RequestMapping(value = "/actions/delblackhost.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/delblackhost.action", method = RequestMethod.POST)
 	public String delBlackHost(Model model, HttpServletRequest request)
 	{
 		IHostBlackManagerDAO dao = sqlSession.getMapper(IHostBlackManagerDAO.class);

@@ -16,6 +16,7 @@
 
           <!-- Sidebar Toggle (Topbar) -->
           <form class="form-inline">
+<jsp:include page="/includes/csrf.jsp" />
             <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
               <i class="fa fa-bars"></i>
             </button>

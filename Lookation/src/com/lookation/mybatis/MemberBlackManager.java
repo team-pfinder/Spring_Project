@@ -108,7 +108,7 @@ public class MemberBlackManager
 	}
 
 	// 이용자 블랙리스트 해제 작업
-	@RequestMapping(value = "/actions/delblackmem.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/delblackmem.action", method = RequestMethod.POST)
 	public String delBlackmember(Model model, HttpServletRequest request)
 	{
 		IMemberBlackManagerDAO dao = sqlSession.getMapper(IMemberBlackManagerDAO.class);

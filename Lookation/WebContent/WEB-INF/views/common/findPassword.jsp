@@ -179,6 +179,7 @@
 		<div class="loginBox">	
 			<form action="sendconfirmemail.action?identify=${identify }" 
 			method="post" id = "sendFindPasswordForm">
+<jsp:include page="/includes/csrf.jsp" />
 				<ul class="login_info">
 					<li>
 						<!-- err시 빨간 textbox border 테두리 필요 -->

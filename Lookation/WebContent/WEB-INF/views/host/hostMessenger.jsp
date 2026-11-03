@@ -286,7 +286,7 @@ body {
 					
 					
 					
-					<form action="hmsgsend.action" enctype="multipart/form-data" method="post" id="msgForm">
+					<form action="hmsgsend.action?_csrf=${sessionScope.csrfToken}" enctype="multipart/form-data" method="post" id="msgForm">
 					<!-- .footer-chat -->
 					<div class="footer-chat">
 						<!-- 사진첨부버튼 -->

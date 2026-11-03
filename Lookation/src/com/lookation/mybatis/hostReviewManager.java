@@ -72,7 +72,7 @@ public class hostReviewManager
 	}
 
 	// reviewreply 삭제
-	@RequestMapping(value = "/actions/hostreviewdelete.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/hostreviewdelete.action", method = RequestMethod.POST)
 	public String r_remove(String review_reply_code,HttpServletRequest request)
 	{
 		IhostReviewManagerDAO dao = sqlSession.getMapper(IhostReviewManagerDAO.class);

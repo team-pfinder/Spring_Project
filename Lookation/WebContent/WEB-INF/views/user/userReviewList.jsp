@@ -99,7 +99,7 @@ $(function(){
 	{
 		if(confirm("삭제하시겠습니까?"))
 		{
-			$(location).attr("href", "deletereviewinlist.action?review_code=" + $(this).val());
+			postAction("deletereviewinlist.action?review_code=" + $(this).val());
 		}
 	}); 
 	
@@ -150,6 +150,7 @@ $(function(){
 					<div class="table-responsive align-self-center">
 						<table class="table" id="products1">
 						<form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 						    <input type="hidden" name="rowPerPage1" value="10">
 						</form>
 							<colgroup>

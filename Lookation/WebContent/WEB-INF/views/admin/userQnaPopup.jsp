@@ -52,6 +52,7 @@
 <div class="outer">
 	<div class="inner">
 		<form>
+<jsp:include page="/includes/csrf.jsp" />
 		<!-- userQnaManager.jsp에서 qna_code를 받아옴 -->
 			<table>
 				<tr>

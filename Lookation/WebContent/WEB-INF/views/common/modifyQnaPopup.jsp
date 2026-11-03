@@ -72,6 +72,7 @@
 				<c:choose>
 				<c:when test="${identify eq 'member'}"> 	
 					<form action="modifyqna.action" method="post" class="modifyForm">
+<jsp:include page="/includes/csrf.jsp" />
 						<div class="header">
 							<h3 class="title my-2">Q&A 수정하기</h3>
 						</div><!-- End .header -->
@@ -96,6 +97,7 @@
 				
 				<c:when test="${identify eq 'host'}"> 
 					<form action="modifyqnareply.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 						<div class="header">
 							<h3 class="title my-2">Q&A 답글 수정하기</h3>
 						</div><!-- End .header -->

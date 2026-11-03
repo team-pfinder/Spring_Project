@@ -270,6 +270,7 @@
 	
 	<form style="width: 80%; margin: 120px;" id="inputContactInfo" 
 		  action="inputcontactinfo.action" method="POST">
+<jsp:include page="/includes/csrf.jsp" />
 
 	
 		<!-- 1. 이메일 -->

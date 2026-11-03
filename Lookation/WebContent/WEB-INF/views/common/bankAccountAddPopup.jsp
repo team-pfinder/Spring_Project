@@ -42,6 +42,7 @@
 		id="ftco-navbar">
 		<div class="container">
 			<form action="#" class="searchform order-lg-last">
+<jsp:include page="/includes/csrf.jsp" />
 				<div class="form-group ">
 				</div>
 			</form>
@@ -55,6 +56,7 @@
 			<div class="col-10">
 				
 				<form action="bankinfoadd.action" method="post" id="bankinfoform">
+<jsp:include page="/includes/csrf.jsp" />
 					<div class="form-group has-success">
 						<!-- ------------------------------------------------------------ -->
 						<input type="hidden" name="identify" value="<%=identify%>">

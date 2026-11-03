@@ -601,6 +601,7 @@ a.fc-event {
 
          <form action="packageapplyform.action?loc_code=${loc_code }" 
             style="padding: 50px; text-align: center;" id="applyForm">
+<jsp:include page="/includes/csrf.jsp" />
 
             <input type="hidden" name="loc_code" value="${loc_code }"/>
             <!-- 0. 달력 -->

@@ -249,7 +249,7 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputDetailInfo"  enctype="multipart/form-data"
-		  action="modifydetailinfo.action?loc_code=${loc_code }" method="post">	
+		  action="modifydetailinfo.action?loc_code=${loc_code }&_csrf=${sessionScope.csrfToken}" method="post">	
 
 		<!-- 1. 이미지 --><!-- ※ 보류 -->
 		<%-- 

@@ -102,7 +102,7 @@ String cp = request.getContextPath();
 			
 			if (confirm("해당 게시글을 삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "reviewdelete.action?review_code=" + $(this).val());
+				postAction("reviewdelete.action?review_code=" + $(this).val());
 			}
 		});
 	});
@@ -167,7 +167,7 @@ String cp = request.getContextPath();
 					
 					if(confirm("선택하신 항목을 정말 삭제 하시겠습니까?") == true)
 					{
-						$(location).attr("href", "selectremove.action?sid=" + send_array);
+						postAction("selectremove.action?sid=" + send_array);
 					}
 					
 				});
@@ -218,6 +218,7 @@ String cp = request.getContextPath();
 				            <table class="table table-bordered text-center" id="products1">
 				               
 				               <form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 				                   <input type="hidden" name="rowPerPage1" value="5">
 				               </form>
 				                  <colgroup>

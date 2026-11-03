@@ -100,7 +100,7 @@
 			
 			if (confirm("해당 게시글을 삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "qnadelete.action?qna_code=" + $(this).val());
+				postAction("qnadelete.action?qna_code=" + $(this).val());
 			}
 		});
 	});
@@ -165,7 +165,7 @@
 			
 			if(confirm("선택하신 항목을 정말 삭제 하시겠습니까?") == true)
 			{
-				$(location).attr("href", "selectdelete.action?sid=" + send_array);
+				postAction("selectdelete.action?sid=" + send_array);
 			}
 			
 		});
@@ -215,6 +215,7 @@
 				            <table class="table table-bordered text-center" id="products1">
 				               
 				               <form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 				                   <input type="hidden" name="rowPerPage1" value="5">
 				               </form>
 				                  <colgroup>

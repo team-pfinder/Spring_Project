@@ -144,7 +144,7 @@ public class HelpManager
 	}
 
 	//관리자가 작성한 도움말 <<삭제>>
-		@RequestMapping(value="/actions/helpdelete.action", method=RequestMethod.GET)
+		@RequestMapping(value="/actions/helpdelete.action", method=RequestMethod.POST)
 		public String helpDelete(HelpDTO dto,HttpServletRequest request) 
 		{ 
 			IHelpManagerDAO dao = sqlSession.getMapper(IHelpManagerDAO.class);

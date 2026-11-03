@@ -24,11 +24,11 @@
 		{
 			<%-- if(confirm("정말로 이 계정을 블랙리스트 처리하시겠습니까?"))
 			{
-				$(location).attr("href", "userblack.action?member_email=<%=member_email%>" + "&member_blacklist_reason=" + $("#member_blacklist_reason").val());
+				postAction("userblack.action?member_email=<%=member_email%>" + "&member_blacklist_reason=" + $("#member_blacklist_reason").val());
 			} --%>
 			
 			$.ajax({
-				type : "get"
+				type : "post"
 				, url : "userblack.action?member_email=<%=member_email%>" + "&member_blacklist_reason=" + $("#member_blacklist_reason").val()
 				, complete : function()
 				{

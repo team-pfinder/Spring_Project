@@ -58,6 +58,7 @@ $(document).ready(function()
 
 								<!-- /.box-header -->
 								<form id='updateForm' role="form" action="noticeupdate.action" method="post" >
+<jsp:include page="/includes/csrf.jsp" />
 									<div class="box-body">
 									<input type="hidden" value="${search.notice_code }" name="notice_code">
 										<label for="exampleInputEmail1">중요도</label>

@@ -50,7 +50,7 @@
 			
 			if (confirm("해당 게시글을 삭제하시겠습니까?"))
 			{
-				$(location).attr("href", "hostqnareplydelete.action?qna_reply_code=" + $(this).val());
+				postAction("hostqnareplydelete.action?qna_reply_code=" + $(this).val());
 			}
 		});
 	});

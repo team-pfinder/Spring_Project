@@ -69,7 +69,7 @@ public class UserQnaManager
 	}
 	
 	// qna 삭제 (단일)
-	@RequestMapping(value = "/actions/qnadelete.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/qnadelete.action", method = RequestMethod.POST)
 	public String remove(String qna_code, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인
@@ -92,7 +92,7 @@ public class UserQnaManager
 	}
 	
 	// qna 삭제 (다중)
-	@RequestMapping(value = "/actions/selectdelete.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/selectdelete.action", method = RequestMethod.POST)
 	public String multiRemove(HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인

@@ -63,7 +63,7 @@ public class Location
 		return "../WEB-INF/views/host/locationList.jsp";
 	}
 	
-	@RequestMapping(value="/actions/deletelocation.action", method = RequestMethod.GET)
+	@RequestMapping(value="/actions/deletelocation.action", method = RequestMethod.POST)
 	public String deleteAction(HttpServletRequest request, Model model)
 	{
 		HttpSession session = request.getSession();       

@@ -199,6 +199,7 @@ margin-bottom: 0;
 				<div class="card-body">
 					<div class="table-flex">
 						<form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 						    <input type="hidden" name="rowPerPage1" value="10">
 						</form>
 						<table class="table" id="products1" style="word-break:break-all;">

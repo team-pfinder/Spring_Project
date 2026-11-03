@@ -81,7 +81,7 @@ $(document).ready(function()
 								<br>
 
 								<!-- /.box-header -->
-								<form id='updateForm' role="form" action="helpupdate.action" method="post" enctype="multipart/form-data">
+								<form id='updateForm' role="form" action="helpupdate.action?_csrf=${sessionScope.csrfToken}" method="post" enctype="multipart/form-data">
 									<div class="box-body">
 									<input type="hidden" value="${search.help_code }" name="help_code">
 									<label for="exampleInputEmail1">카테고리</label>

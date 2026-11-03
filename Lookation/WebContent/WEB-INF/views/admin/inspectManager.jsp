@@ -106,6 +106,7 @@ height: 200px;
             <div class="table-responsive">
                 <table class="table table-bordered" id="products1">
                 <form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 					<input type="hidden" name="rowPerPage1" value="5">
 				</form>
                   <thead>

@@ -54,4 +54,18 @@
   		<filter-name>encodingFilter</filter-name>
   		<url-pattern>/*</url-pattern> <!-- 모든 것에 대해.. -->
   	</filter-mapping>
+
+	<!-- CSRF 토큰 검증 -->
+	<filter>
+		<filter-name>csrfFilter</filter-name>
+		<filter-class>com.lookation.util.CsrfFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>csrfFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>csrfFilter</filter-name>
+		<url-pattern>/uploads/*</url-pattern>
+	</filter-mapping>
 </web-app>

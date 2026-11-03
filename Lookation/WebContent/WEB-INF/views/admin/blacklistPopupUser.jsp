@@ -97,6 +97,7 @@
 		</div><!-- . End row -->
 		
 		<form action="setblackmem.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 			<div class="row">
 				<div class="col-md-12">
 					<hr>

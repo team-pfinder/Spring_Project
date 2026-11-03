@@ -191,7 +191,7 @@
 				
 					<c:choose>
 						<c:when test="${reqpage eq 'list'}">
-							<form action="modifyreviewinlist.action" method="post" name="reviewForm" enctype="multipart/form-data">
+							<form action="modifyreviewinlist.action?_csrf=${sessionScope.csrfToken}" method="post" name="reviewForm" enctype="multipart/form-data">
 								<div class="header">
 									<h3 class="title">리뷰 수정하기</h3>
 									<hr>
@@ -240,7 +240,7 @@
 							</form>
 						</c:when>
 					<c:otherwise>
-						<form action="modifyreview.action" method="post" name="reviewForm" enctype="multipart/form-data">
+						<form action="modifyreview.action?_csrf=${sessionScope.csrfToken}" method="post" name="reviewForm" enctype="multipart/form-data">
 							<div class="header">
 								<h3 class="title">리뷰 수정하기</h3>
 								<hr>
@@ -300,6 +300,7 @@
 				
 				<c:if test="${identify eq 'host'}"> 
 					<form action="modifyreviewreply.action" method="post" name="reviewForm">
+<jsp:include page="/includes/csrf.jsp" />
 						<div class="header">
 							<h3 class="title">리뷰 답글 수정하기</h3>
 						</div>

@@ -21,7 +21,7 @@
 		{
 			if(confirm("정말로 블라인드 해제하시겠습니까?"))
 			{
-				$(location).attr("href", "blindremove.action?loc_blind_code=" + $(this).val());
+				postAction("blindremove.action?loc_blind_code=" + $(this).val());
 			}
 		});
 	});
@@ -129,6 +129,7 @@
 				            <table class="table table-bordered text-center" id="products1">
 				               
 				               <form action="" id="setRows1">
+<jsp:include page="/includes/csrf.jsp" />
 				                   <input type="hidden" name="rowPerPage1" value="5">
 				               </form>
 				                  <colgroup>

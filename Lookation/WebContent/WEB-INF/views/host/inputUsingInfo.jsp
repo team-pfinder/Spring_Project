@@ -144,7 +144,8 @@
 
 	
 	<form style="width: 80%; margin: 120px;" id="inputUsingInfo" 
-		  action="inputusinginfo.action" method="POST"><!--onsubmit="handOver()" -->
+		  action="inputusinginfo.action" method="POST">
+<jsp:include page="/includes/csrf.jsp" /><!--onsubmit="handOver()" -->
 		
 		<!-- 1. 이용시간 -->
 		

@@ -398,7 +398,7 @@ width: 100%;
 			{
 				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
 				
-				$(location).attr("href", "deleteqna.action?qna_code=" + $(this).val() + "&loc_code=" + loc_code);
+				postAction("deleteqna.action?qna_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 			//$(location).attr("href", "locationdetail.action?loc_code="+loc_code);
 		}); 
@@ -410,7 +410,7 @@ width: 100%;
 			{
 				var loc_code = '<%=(String)request.getParameter("loc_code")%>';
 				
-				$(location).attr("href", "deletereview.action?review_code=" + $(this).val() + "&loc_code=" + loc_code);
+				postAction("deletereview.action?review_code=" + $(this).val() + "&loc_code=" + loc_code);
 			}
 		}); 
 		
@@ -822,6 +822,7 @@ width: 100%;
 			<div class="sidebar-box ftco-animate p-3 mt-5">
 				
 				<form action="bookapply.action" id="reserveForm" method="POST">
+<jsp:include page="/includes/csrf.jsp" />
 					<div class="categories">
 						<h3>공간예약하기</h3>
 						<hr>

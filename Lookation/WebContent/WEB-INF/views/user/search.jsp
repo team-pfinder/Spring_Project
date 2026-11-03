@@ -190,6 +190,7 @@
 
 			<!-- 검색 폼 -->
 			<form action="search.action" method="get">
+<jsp:include page="/includes/csrf.jsp" />
 
 				<div class="row ftco-animate">
 					<div class="col-md-3">
@@ -344,6 +345,7 @@
 										</h3>
 										<!-- 맵정보 -->
 										<form name="mapInfo">
+<jsp:include page="/includes/csrf.jsp" />
 											<input type="hidden" name="loc_code" value="${item.loc_code}"/>
 											<input type="hidden" name="loc_name" value="${item.loc_name}"/>
 											<input type="hidden" name="loc_addr" value="${item.loc_addr}"/>

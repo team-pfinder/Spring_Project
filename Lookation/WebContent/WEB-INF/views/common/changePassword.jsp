@@ -185,6 +185,7 @@
 		<div class="container">
 			<div class="changeBox">
 				<form action="changepassword.action?identify=${identify }" method="post" id="changePasswordForm">
+<jsp:include page="/includes/csrf.jsp" />
 					<ul class="pw_info">
 						<li>
 							<p>새 비밀번호</p> <input type="password" class="form-control full"

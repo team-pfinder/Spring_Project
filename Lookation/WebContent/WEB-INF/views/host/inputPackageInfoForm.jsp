@@ -135,7 +135,8 @@
 
 	<!-- form start --------------------------------------------->
 	<form style="width: 80%; margin: 120px;" id="inputPackageInfoForm" 
-		  action="deletepackageform.action?loc_code=${loc_code }" method="POST"><!--onsubmit="handOver()" -->
+		  action="deletepackageform.action?loc_code=${loc_code }" method="POST">
+<jsp:include page="/includes/csrf.jsp" /><!--onsubmit="handOver()" -->
 			
 	
 		<!-- 1. 현재 패키지 (추가된 패키지 현황) --> 

@@ -209,6 +209,7 @@
          <!-- form start --------------------------------------------->
          <form style="width: 80%; margin: 120px;" id="inputPackageInfo"
               action="inputpackageform.action?loc_code=${loc_code }" method="POST">
+<jsp:include page="/includes/csrf.jsp" />
             <!-- action="inputpackageform.action?loc_code=${loc_code }" -->
             
             <!-- 컨트롤러 구성, 매핑 후 → action="inputxxxInfo.action" 로 변경 -->

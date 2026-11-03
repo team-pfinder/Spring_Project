@@ -42,7 +42,7 @@ public class BlindManager
 	}
 	
 	// 블라인드 해제
-	@RequestMapping(value = "/actions/blindremove.action", method = RequestMethod.GET)
+	@RequestMapping(value = "/actions/blindremove.action", method = RequestMethod.POST)
 	public String remove(String loc_blind_code, HttpServletRequest request)
 	{
 		// 세션을 통한 로그인 확인

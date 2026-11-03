@@ -62,6 +62,7 @@
 	<div class="inner">
 		<!-- 이용자 → 호스트 : 공간게시물 신고 폼 -->
 		<form action="reportuser.action" method="post">
+<jsp:include page="/includes/csrf.jsp" />
 			<span>신고자정보</span>
 			<input type="text" name="member_code" class="form-control" readonly="readonly"
 			value="<%=member_code %>"><br>

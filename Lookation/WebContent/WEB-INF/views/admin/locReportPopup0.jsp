@@ -51,6 +51,7 @@
 <div class="outer">
 	<div class="inner">
 		<form>
+<jsp:include page="/includes/csrf.jsp" />
 		<!-- reportList.jsp에서 loc_report_code를 받아옴 -->
 			<table>
 				<tr>
