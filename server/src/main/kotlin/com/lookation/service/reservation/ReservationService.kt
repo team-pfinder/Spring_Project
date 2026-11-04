@@ -25,10 +25,12 @@ class ReservationService(
     private val reservationRepository: ReservationRepository,
     private val spaceRepository: SpaceRepository,
     private val walletRepository: WalletRepository,
+    private val sanctionService: com.lookation.service.sanction.SanctionService,
 ) {
 
     @Transactional
     fun create(memberId: Long, form: CreateReservationForm): ReservationResponse {
+        sanctionService.checkWritable(memberId)
         val now = OffsetDateTime.now()
         if (!form.endAt.isAfter(form.startAt)) {
             throw BadRequestException("종료 시각은 시작 시각 이후여야 합니다")
@@ -145,6 +147,7 @@ class ReservationService(
 
     @Transactional
     fun pay(memberId: Long, reservationId: Long): ReservationResponse {
+        sanctionService.checkWritable(memberId)
         val reservation = reservationRepository.findById(reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
         if (reservation.memberId != memberId) {

@@ -20,10 +20,12 @@ class WalletService(
     private val chargeRepository: ChargeRepository,
     private val withdrawalRepository: WithdrawalRepository,
     private val hostProfileRepository: HostProfileRepository,
+    private val sanctionService: com.lookation.service.sanction.SanctionService,
 ) {
 
     @Transactional
     fun requestCharge(accountId: Long, form: ChargeRequestForm): ChargeResponse {
+        sanctionService.checkWritable(accountId)
         val id = chargeRepository.insert(accountId, form.amount, form.depositorName)
         return requireNotNull(chargeRepository.findById(id)).toResponse()
     }
@@ -50,6 +52,7 @@ class WalletService(
 
     @Transactional
     fun requestWithdrawal(accountId: Long, form: WithdrawalRequestForm): WithdrawalResponse {
+        sanctionService.checkWritable(accountId)
         val profile = hostProfileRepository.findByAccountId(accountId)
             ?: throw BadRequestException("호스트 프로필과 정산 계좌가 필요합니다")
         val bankName = profile.bankName ?: throw BadRequestException("정산 계좌가 등록되지 않았습니다")
