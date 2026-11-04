@@ -12,7 +12,7 @@
 ```bash
 ./gradlew build          # jOOQ 코드 생성 + 컴파일 + 테스트
 ./gradlew generateJooq   # 스키마 변경 후 코드 재생성
-./gradlew bootRun        # 로컬 실행 (아래 환경변수 필요)
+./gradlew bootRun        # 로컬 실행 (local 프로필이 기본값)
 ```
 
 ## 로컬 실행
@@ -21,7 +21,7 @@
 
 ```bash
 docker compose up -d --wait
-cd server && SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+cd server && ./gradlew bootRun
 ```
 
 | 서비스 | 호스트 포트 | 용도 |
@@ -30,9 +30,11 @@ cd server && SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
 | Mailpit | `11025` / `18025` | SMTP / 메일 확인 UI (`http://localhost:18025`) |
 | MiniStack | `14566` | Secrets Manager 에뮬레이터 (AWS API `http://localhost:14566`) |
 
-- `local` 프로필은 `src/main/resources/application-local.yml`에 있고, 민감 값은 MiniStack의 시크릿 `lookation/local`에서 기동 시 주입된다(`SecretsEnvironmentPostProcessor`). `deploy/ministack/ready.d/01-lookation-secrets.sh`가 시드한다.
+- `local` 프로필은 `src/main/resources/application-local.yml`에 있고, `application.yml`의 `spring.profiles.default: local` 덕분에 프로필을 지정하지 않으면 자동으로 적용된다. 민감 값은 MiniStack의 시크릿 `lookation/local`에서 기동 시 주입된다(`SecretsEnvironmentPostProcessor`). `deploy/ministack/ready.d/01-lookation-secrets.sh`가 시드한다.
+- 배포 환경은 `SPRING_PROFILES_ACTIVE`를 **반드시** 지정한다. 빠뜨리면 기본값 `local`이 적용되어 `localhost:14566`(MiniStack) 연결을 시도하고 기동에 실패한다.
 - 기본 관리자: `admin@lookation.local` / `lookation-admin1!` (시크릿의 `adminPassword`).
-- **`SPRING_PROFILES_ACTIVE=local`을 셸에 export하지 않는다.** 그 상태로 `./gradlew build`를 돌리면 통합 테스트가 Testcontainers 대신 `localhost:15432`를 본다. 명령 앞에 인라인으로만 붙인다.
+- **`SPRING_PROFILES_ACTIVE=local`을 셸에 export하지 않는다.** 이 프로필은 환경변수가 설정 파일보다 우선하므로 테스트에서도 `test` 프로필을 덮어쓴다. DB는 여전히 Testcontainers를 쓰지만(`@ServiceConnection`), `SecretsEnvironmentPostProcessor`가 MiniStack을 요구해 MiniStack이 없는 CI에서 테스트가 실패한다.
+- 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 기본값 `local`을 끈다.
 - 데이터 리셋: `docker compose down -v`.
 
 ## 환경변수

@@ -1,6 +1,11 @@
 spring:
   application:
     name: lookation
+  # 로컬 프로필을 기본값으로 둔다. `SPRING_PROFILES_ACTIVE`가 있으면 그쪽이 이긴다.
+  # 배포 환경은 프로필을 반드시 지정해야 한다 — 빠뜨리면 application-local.yml이 적용되어
+  # localhost:14566(MiniStack)에 접속을 시도하고 기동에 실패한다.
+  profiles:
+    default: local
   threads:
     virtual:
       enabled: true
