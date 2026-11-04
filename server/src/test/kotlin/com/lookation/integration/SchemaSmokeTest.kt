@@ -42,7 +42,7 @@ class SchemaSmokeTest {
         ).fetch(0, String::class.java)
 
         assertThat(tables).contains("accounts", "reservations", "wallet_entries", "inspections")
-        assertThat(tables).hasSize(21)
+        assertThat(tables).hasSize(27)
 
         val constraints = dsl.resultQuery(
             "select conname from pg_constraint where conname = 'reservations_no_overlap'"

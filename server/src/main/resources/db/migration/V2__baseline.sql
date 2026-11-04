@@ -237,3 +237,58 @@ create table reports (
     processed_at timestamptz,
     created_at   timestamptz  not null default now()
 );
+
+create table reviews (
+    id             bigint generated always as identity primary key,
+    reservation_id bigint        not null unique references reservations (id),
+    space_id       bigint        not null references spaces (id),
+    member_id      bigint        not null references accounts (id),
+    rating         smallint      not null,
+    content        varchar(2000) not null,
+    blinded_at     timestamptz,
+    created_at     timestamptz   not null default now()
+);
+
+create table review_replies (
+    id         bigint generated always as identity primary key,
+    review_id  bigint        not null unique references reviews (id),
+    host_id    bigint        not null references accounts (id),
+    content    varchar(2000) not null,
+    created_at timestamptz   not null default now()
+);
+
+create table qnas (
+    id         bigint generated always as identity primary key,
+    space_id   bigint        not null references spaces (id),
+    member_id  bigint        not null references accounts (id),
+    title      varchar(200)  not null,
+    content    varchar(2000) not null,
+    status     varchar(20)   not null default 'OPEN',
+    created_at timestamptz   not null default now()
+);
+
+create table qna_replies (
+    id         bigint generated always as identity primary key,
+    qna_id     bigint        not null unique references qnas (id),
+    host_id    bigint        not null references accounts (id),
+    content    varchar(2000) not null,
+    created_at timestamptz   not null default now()
+);
+
+create table notices (
+    id         bigint generated always as identity primary key,
+    title      varchar(200) not null,
+    content    text         not null,
+    important  boolean      not null default false,
+    created_at timestamptz  not null default now(),
+    updated_at timestamptz  not null default now()
+);
+
+create table helps (
+    id         bigint generated always as identity primary key,
+    category   varchar(50)  not null,
+    title      varchar(200) not null,
+    content    text         not null,
+    created_at timestamptz  not null default now(),
+    updated_at timestamptz  not null default now()
+);

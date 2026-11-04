@@ -129,3 +129,21 @@ alter table reports add constraint reports_status_check
 
 create index messages_reservation_idx on messages (reservation_id, created_at);
 create index reports_target_idx on reports (target_type, target_id);
+
+alter table reviews add constraint reviews_rating_check check (rating >= 1 and rating <= 5);
+alter table reviews add constraint reviews_content_check check (length(content) > 0);
+alter table review_replies add constraint review_replies_content_check check (length(content) > 0);
+
+alter table qnas add constraint qnas_status_check check (status in ('OPEN', 'ANSWERED'));
+alter table qnas add constraint qnas_content_check check (length(title) > 0 and length(content) > 0);
+alter table qna_replies add constraint qna_replies_content_check check (length(content) > 0);
+
+alter table notices add constraint notices_title_check check (length(title) > 0);
+alter table helps add constraint helps_title_check check (length(title) > 0);
+
+create unique index reports_unique_target on reports (reporter_id, target_type, target_id);
+create index reviews_space_idx on reviews (space_id, id desc);
+create index qnas_space_idx on qnas (space_id, id desc);
+create index qnas_member_idx on qnas (member_id, id desc);
+create index notices_created_idx on notices (important desc, id desc);
+create index helps_category_idx on helps (category, id desc);
