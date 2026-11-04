@@ -24,6 +24,7 @@
 | `LOOKATION_DB_PASSWORD` | DB 비밀번호 |
 | `LOOKATION_JWT_SECRET` | HS256 서명 키 (32바이트 이상) |
 | `LOOKATION_ENCRYPTION_KEY` | 정산 계좌 AES-GCM 키 (base64, 32바이트) |
+| `SPRING_MAIL_HOST` 등 | SMTP 설정. 없으면 인증 코드를 로그로 출력 |
 | `LOOKATION_UPLOAD_DIR` | 업로드 저장 경로 (기본 `./uploads`) |
 | `LOOKATION_ADMIN_EMAIL` / `LOOKATION_ADMIN_PASSWORD` | 초기 관리자 시드 (선택, 둘 다 있을 때만 생성) |
 
@@ -43,17 +44,22 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 
 | 메서드 | 경로 | 권한 |
 |---|---|---|
-| POST | `/api/v1/auth/signup`, `/login`, `/refresh`, `/logout` | 공개 |
+| POST | `/api/v1/auth/signup`, `/login`, `/refresh`, `/logout` | 공개 (signup은 이메일 인증 코드 필수) |
+| POST | `/api/v1/auth/email-verifications` | 공개 |
+| POST | `/api/v1/auth/password-reset/request`, `/password-reset/confirm` | 공개 |
 | GET | `/api/v1/me` | 인증 |
 | POST | `/api/v1/hosts/apply` | 인증 |
 | GET | `/api/v1/me/host-profile` | 인증 |
 | POST/PUT | `/api/v1/spaces`, `/api/v1/spaces/{id}` | HOST |
 | GET | `/api/v1/spaces/{id}` | 공개(게시된 공간) |
 | POST | `/api/v1/spaces/{id}/inspection` | HOST |
+| POST | `/api/v1/spaces/{id}/close`, `/reopen` | HOST |
+| DELETE | `/api/v1/spaces/{id}` | HOST (진행 중 예약 있으면 409, 소프트 삭제) |
 | POST | `/api/v1/spaces/{id}/images` | HOST |
 | GET | `/api/v1/admin/inspections` | ADMIN |
 | POST | `/api/v1/admin/inspections/{spaceId}/decision` | ADMIN |
 | GET/PUT | `/api/v1/spaces/{id}/prices` | 공개 조회 / HOST 수정 |
+| GET | `/api/v1/hosts/reservations` | HOST (CONFIRMED 이후 예약자 연락처 노출) |
 | GET | `/api/v1/spaces?type=&keyword=&guests=&minPrice=&maxPrice=&from=&to=&cursor=&limit=` | 공개 |
 | POST | `/api/v1/reservations` | 인증 |
 | POST | `/api/v1/reservations/{id}/approve`, `/reject`, `/pay` | HOST / HOST / 예약자 |
