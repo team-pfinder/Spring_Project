@@ -66,6 +66,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | 테스트 | Testcontainers PostgreSQL |
 
 - 빌드: `cd server && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
+- 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `15432`, Mailpit `11025`/`18025`, MiniStack `14566`(시크릿 `lookation/local`). 앱은 `cd server && SPRING_PROFILES_ACTIVE=local ./gradlew bootRun`. 프로필을 export하면 `./gradlew build`가 Testcontainers 대신 로컬 DB를 본다.
 - 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
 - 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`, `SPRING_MAIL_*`(없으면 코드 로그 출력).
 - 패키지: `com.lookation.<layer>.<feature>` — `controller`, `service`, `repository`, `domain`, `dto`, `global` (ADR 0009).

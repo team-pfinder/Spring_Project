@@ -15,7 +15,29 @@
 ./gradlew bootRun        # 로컬 실행 (아래 환경변수 필요)
 ```
 
+## 로컬 실행
+
+레포 루트에서 인프라를 띄운다(Postgres·Mailpit·MiniStack, 모두 `127.0.0.1` 바인딩).
+
+```bash
+docker compose up -d --wait
+cd server && SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+```
+
+| 서비스 | 호스트 포트 | 용도 |
+|---|---|---|
+| PostgreSQL 18 | `15432` | DB `lookation` (사용자·비밀번호 `lookation`) |
+| Mailpit | `11025` / `18025` | SMTP / 메일 확인 UI (`http://localhost:18025`) |
+| MiniStack | `14566` | Secrets Manager 에뮬레이터 (AWS API `http://localhost:14566`) |
+
+- `local` 프로필은 `src/main/resources/application-local.yml`에 있고, 민감 값은 MiniStack의 시크릿 `lookation/local`에서 기동 시 주입된다(`SecretsEnvironmentPostProcessor`). `deploy/ministack/ready.d/01-lookation-secrets.sh`가 시드한다.
+- 기본 관리자: `admin@lookation.local` / `lookation-admin1!` (시크릿의 `adminPassword`).
+- **`SPRING_PROFILES_ACTIVE=local`을 셸에 export하지 않는다.** 그 상태로 `./gradlew build`를 돌리면 통합 테스트가 Testcontainers 대신 `localhost:15432`를 본다. 명령 앞에 인라인으로만 붙인다.
+- 데이터 리셋: `docker compose down -v`.
+
 ## 환경변수
+
+아래 값은 `local` 프로필을 쓰지 않을 때 필요하다. `local` 프로필에서는 `LOOKATION_DB_PASSWORD`·`LOOKATION_JWT_SECRET`·`LOOKATION_ENCRYPTION_KEY`·`LOOKATION_ADMIN_PASSWORD`를 MiniStack에서 받으므로 지정하지 않는다.
 
 | 이름 | 용도 |
 |---|---|

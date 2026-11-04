@@ -1,0 +1,53 @@
+name: lookation
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: lookation
+      POSTGRES_DB: lookation
+      # Must equal lookation/local.dbPassword in MiniStack (deploy/ministack/ready.d/01-lookation-secrets.sh).
+      POSTGRES_PASSWORD: lookation
+    ports:
+      - "127.0.0.1:15432:5432"
+    volumes:
+      # PostgreSQL 18 keeps PGDATA at /var/lib/postgresql/18/docker inside this parent directory.
+      - lookation-pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lookation -d lookation"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  mailpit:
+    image: axllent/mailpit:v1.33.0
+    ports:
+      - "127.0.0.1:11025:1025"
+      - "127.0.0.1:18025:8025"
+
+  ministack:
+    image: ministackorg/ministack:1.5.36
+    environment:
+      SERVICES: secretsmanager
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+    ports:
+      - "127.0.0.1:14566:4566"
+    volumes:
+      - ./deploy/ministack:/docker-entrypoint-initaws.d:ro
+    healthcheck:
+      # /_ministack/ready reports 200 even when a seed script fails, so gate on the secret itself.
+      test:
+        [
+          "CMD-SHELL",
+          "aws --endpoint-url http://localhost:4566 secretsmanager describe-secret --secret-id lookation/local >/dev/null",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  lookation-pgdata:

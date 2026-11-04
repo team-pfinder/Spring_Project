@@ -69,3 +69,6 @@ Lookation/test/build/
 # test uploads
 /server/uploads/
 /server/build/test-uploads/
+
+# Kotlin build session data
+/server/.kotlin/

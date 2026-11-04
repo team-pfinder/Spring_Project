@@ -71,3 +71,49 @@
 
 - 검증자 원문: `/tmp/lookation-review-{gemini,codex,opencode}.md`
 - 이번 검증은 기동·동시성 재현을 포함하지 않는다. 동시 취소·동시 refresh는 코드 경로와 조건부 UPDATE로 방어했지만, 실제 경쟁 재현 테스트는 아직 없다.
+
+---
+
+# docker-compose 로컬 인프라 계획 교차검증
+
+대상: 로컬 개발 인프라 계획(`docker compose` + MiniStack Secrets Manager, 앱은 호스트 `bootRun`). 검증자는 저장소를 수정하지 않았다.
+
+| 검증자 | 실행 | 결과 |
+| --- | --- | --- |
+| Gemini (`gemini-3.8-flash`) | `orca agent launch --agent gemini` | must 4, should 3 |
+| Codex (`gpt-6.1-sol`, high) | `orca agent launch --agent codex --model gpt-6.1-sol --effort high` | must 5, should 5 |
+| OpenCode (`muse-spark-1.3-contributor`, xhigh) | `opencode run --auto -m opencode-go/muse-spark-1.3-contributor#xhigh` | must 6, should 5 |
+
+## 반영한 지적
+
+| 지적 | 판정 | 반영 |
+| --- | --- | --- |
+| EPP 등록은 `META-INF/spring.factories` + `org.springframework.boot.EnvironmentPostProcessor` 키 | 수용 | `server/src/main/resources/META-INF/spring.factories` |
+| EPP는 `ConfigDataEnvironmentPostProcessor.ORDER` 이후 실행 | 수용 | `getOrder() = ORDER + 1` |
+| 시크릿은 `application.yml`이 참조하는 `LOOKATION_*` 이름으로 주입 | 수용 | `SecretsEnvironmentPostProcessor.SECRET_FIELDS` |
+| `lookation.secrets.enabled` 기본 false, local에서만 true | 수용 | `application-local.yml` |
+| `put-secret-value`는 upsert가 아님 | 수용 | 시드 스크립트 `describe → create|put` |
+| 정적 자격증명·region·endpoint override·timeout 필요 | 수용 | `application-local.yml` + EPP builder |
+| AWS SDK BOM·HTTP client 미지정 시 빌드 불가 | 수용 | BOM `2.46.7` + `url-connection-client` |
+| `/ready` 200은 시드 성공을 보장하지 않음 | 수용 | healthcheck를 `describe-secret`으로 |
+| PostgreSQL 18 볼륨 경로는 `/var/lib/postgresql` | 수용 | `docker-compose.yml` (`PGDATA=/var/lib/postgresql/18/docker` 실측) |
+| 포트 loopback 바인딩 | 수용 | 전 포트 `127.0.0.1:` |
+| 이미지 태그 고정 | 수용 | `mailpit:v1.33.0`, `ministack:1.5.36` |
+| 프로필 export 시 통합 테스트가 로컬 DB를 봄 | 수용 | `server/README.md`, `AGENTS.md` 경고 |
+| 관리자 권한은 공개 공지 조회로 검증 불가 | 수용 | 스모크를 `GET /api/v1/admin/inspections`로 |
+
+## 기각한 지적
+
+| 지적 | 기각 이유 |
+| --- | --- |
+| EPP 등록에 `.imports` 파일이 필요하다(Gemini) | `spring-boot-4.1.2.jar`에 `SpringFactoriesEnvironmentPostProcessorsFactory`가 있고 상수 풀에 신·구 키가 모두 존재. `.imports` 참조 없음 |
+| `SERVICES`는 LocalStack 전용이라 무시된다(OpenCode) | 실측: `SERVICES=secretsmanager` → "1 services", 미설정 → "91 services" |
+| `init.d`(부팅 전)가 시드에 적합하다(OpenCode) | 실측: 부팅 전 스크립트는 게이트웨이 수신 전이라 `Could not connect`. `ready.d`만 성공 |
+| mailpit `v1.21` 고정(Gemini) | Docker Hub 실제 태그는 `v1.33.0` |
+| `/docker-entrypoint-initaws.d` VOLUME 선언 때문에 ro 바인드 불가(OpenCode) | 실측으로 ro 바인드 성공 |
+
+## 계획 검토에서 나오지 않았고 구현 중 발견한 결함
+
+| 결함 | 원인 | 수정 |
+| --- | --- | --- |
+| `spring.mail.host` 설정 시 기동 실패(`BeanDefinitionOverrideException: mailSender`) | 앱 `MailConfig.mailSender` 빈 이름이 Boot의 `JavaMailSender` 빈과 충돌. 테스트는 `spring.mail.host`를 설정하지 않아 드러나지 않았다 | 빈 메서드를 `lookationMailSender`로 개명 |

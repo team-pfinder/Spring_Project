@@ -1,0 +1,21 @@
+# Local development profile. Values here are NOT secrets; secrets come from MiniStack
+# (docker compose up -d --wait) through SecretsEnvironmentPostProcessor.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/lookation
+    username: lookation
+  mail:
+    host: localhost
+    port: 11025
+
+lookation:
+  secrets:
+    enabled: true
+    endpoint: http://localhost:14566
+    region: us-east-1
+    access-key: test
+    secret-key: test
+    name: lookation/local
+  upload-dir: ./uploads
+  admin:
+    email: admin@lookation.local

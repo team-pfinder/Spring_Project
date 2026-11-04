@@ -33,8 +33,9 @@ class SmtpMailSender(private val javaMailSender: JavaMailSender) : MailSender {
 @Configuration
 class MailConfig {
 
+    // Not named `mailSender`: Boot registers its JavaMailSender under that name when spring.mail.host is set.
     @Bean
-    fun mailSender(
+    fun lookationMailSender(
         environment: Environment,
         javaMailSender: ObjectProvider<JavaMailSender>,
     ): MailSender =
