@@ -1,12 +1,28 @@
 package com.lookation.reservation.infrastructure
 
 import com.lookation.jooq.tables.ReservationEvents.RESERVATION_EVENTS
+import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
+import com.lookation.jooq.tables.Spaces.SPACES
 import com.lookation.jooq.tables.Settlements.SETTLEMENTS
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
+
+data class HostReservationRow(
+    val id: Long,
+    val spaceId: Long,
+    val spaceName: String,
+    val memberNickname: String,
+    val memberName: String?,
+    val memberPhone: String?,
+    val startAt: OffsetDateTime,
+    val endAt: OffsetDateTime,
+    val guestCount: Int,
+    val price: Long,
+    val status: String,
+)
 
 data class ReservationRow(
     val id: Long,
@@ -126,6 +142,47 @@ class ReservationRepository(private val dsl: DSLContext) {
             )
             .fetch()
             .map { it.toRow() }
+
+    fun findByHost(hostId: Long, status: String?, cursor: Long?, limit: Int): List<HostReservationRow> {
+        var condition = RESERVATIONS.HOST_ID.eq(hostId)
+        if (status != null) condition = condition.and(RESERVATIONS.STATUS.eq(status))
+        if (cursor != null) condition = condition.and(RESERVATIONS.ID.lt(cursor))
+        return dsl.select(
+            RESERVATIONS.ID,
+            RESERVATIONS.SPACE_ID,
+            SPACES.NAME,
+            ACCOUNTS.NICKNAME,
+            ACCOUNTS.NAME,
+            ACCOUNTS.PHONE,
+            RESERVATIONS.START_AT,
+            RESERVATIONS.END_AT,
+            RESERVATIONS.GUEST_COUNT,
+            RESERVATIONS.PRICE,
+            RESERVATIONS.STATUS,
+        )
+            .from(RESERVATIONS)
+            .join(SPACES).on(SPACES.ID.eq(RESERVATIONS.SPACE_ID))
+            .join(ACCOUNTS).on(ACCOUNTS.ID.eq(RESERVATIONS.MEMBER_ID))
+            .where(condition)
+            .orderBy(RESERVATIONS.ID.desc())
+            .limit(limit)
+            .fetch()
+            .map {
+                HostReservationRow(
+                    id = it.value1(),
+                    spaceId = it.value2(),
+                    spaceName = it.value3(),
+                    memberNickname = it.value4(),
+                    memberName = it.value5(),
+                    memberPhone = it.value6(),
+                    startAt = it.value7(),
+                    endAt = it.value8(),
+                    guestCount = it.value9().toInt(),
+                    price = it.value10(),
+                    status = it.value11(),
+                )
+            }
+    }
 
     fun findByMember(memberId: Long): List<ReservationRow> =
         dsl.selectFrom(RESERVATIONS)

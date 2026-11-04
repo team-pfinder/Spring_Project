@@ -240,6 +240,32 @@ class ReservationService(
     }
 
     @Transactional(readOnly = true)
+    fun listForHost(
+        hostId: Long,
+        status: String?,
+        cursor: Long?,
+        limit: Int,
+    ): List<com.lookation.reservation.api.HostReservationResponse> {
+        if (limit !in 1..100) throw BadRequestException("limit은 1~100입니다")
+        return reservationRepository.findByHost(hostId, status, cursor, limit).map { row ->
+            val contactVisible = row.status == "CONFIRMED" || row.status == "COMPLETED"
+            com.lookation.reservation.api.HostReservationResponse(
+                id = row.id,
+                spaceId = row.spaceId,
+                spaceName = row.spaceName,
+                memberNickname = row.memberNickname,
+                memberName = if (contactVisible) row.memberName else null,
+                memberPhone = if (contactVisible) row.memberPhone else null,
+                startAt = row.startAt,
+                endAt = row.endAt,
+                guestCount = row.guestCount,
+                price = row.price,
+                status = row.status,
+            )
+        }
+    }
+
+    @Transactional(readOnly = true)
     fun listMine(memberId: Long): List<ReservationResponse> =
         reservationRepository.findByMember(memberId).map { it.toResponse() }
 
