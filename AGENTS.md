@@ -68,7 +68,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 - 빌드: `cd server && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
 - 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
 - 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`, `SPRING_MAIL_*`(없으면 코드 로그 출력).
-- 패키지: `com.lookation.<feature>.{api, application, domain, infrastructure}`.
+- 패키지: `com.lookation.<layer>.<feature>` — `controller`, `service`, `repository`, `domain`, `dto`, `global` (ADR 0009).
 - 요청은 `XxxForm`, 응답은 `XxxResponse`. 오류는 RFC 9457 `ProblemDetail`.
 
 ## 코드 규칙

@@ -70,4 +70,4 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 
 ## 패키지
 
-`com.lookation.<feature>.api | application | domain | infrastructure`, 공통은 `global`.
+`com.lookation.<layer>.<feature>` — `controller`, `service`, `repository`, `domain`, `dto`, 공통은 `global`. 요청 Form은 `controller/<feature>`, 응답은 `dto/<feature>`.

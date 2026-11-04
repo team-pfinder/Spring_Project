@@ -4,4 +4,4 @@
 
 - 가상 스레드: `spring.threads.virtual.enabled=true`. 블로킹 I/O 위주(JDBC) 애플리케이션이라 플랫폼 스레드 풀 크기 조정 없이 처리량을 얻는다.
 - 대안: Java 25 단독, Kotlin/Java 혼용. 혼용은 Java 8→25 문법 차이 때문에 리뷰 비용만 늘어 기각.
-- 빌드: 단일 Gradle 모듈, package-by-feature. 도메인 경계가 안정화되면 멀티모듈 분리를 재검토한다.
+- 빌드: 단일 Gradle 모듈. 패키지 규칙은 ADR 0009(레이어 우선)를 따른다.
