@@ -25,6 +25,14 @@ management:
       exposure:
         include: health,info
 
+springdoc:
+  swagger-ui:
+    # 섹션·오퍼레이션 정렬과 Authorize 값 유지(새로고침해도 토큰이 남는다).
+    tags-sorter: alpha
+    operations-sorter: method
+    persist-authorization: true
+    display-request-duration: true
+
 lookation:
   encryption:
     key: ${LOOKATION_ENCRYPTION_KEY}

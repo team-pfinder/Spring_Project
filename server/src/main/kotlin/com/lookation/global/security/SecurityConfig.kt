@@ -25,6 +25,8 @@ class SecurityConfig {
             authorizeHttpRequests {
                 authorize(HttpMethod.GET, "/actuator/health", permitAll)
                 authorize("/v3/api-docs/**", permitAll)
+                // springdoc은 /swagger-ui.html을 /swagger-ui/index.html로 리다이렉트한다.
+                authorize("/swagger-ui.html", permitAll)
                 authorize("/swagger-ui/**", permitAll)
                 authorize("/error", permitAll)
                 authorize(HttpMethod.GET, "/api/v1/spaces", permitAll)

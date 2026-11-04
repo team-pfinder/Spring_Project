@@ -37,6 +37,14 @@ cd server && ./gradlew bootRun
 - 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 기본값 `local`을 끈다.
 - 데이터 리셋: `docker compose down -v`.
 
+## API 문서 (Swagger UI)
+
+앱을 띄운 뒤 `http://localhost:8080/swagger-ui/index.html`에서 전체 API를 한국어 설명·요청/응답 예시와 함께 볼 수 있다. OpenAPI JSON은 `/v3/api-docs`다.
+
+1. `POST /api/v1/auth/login`을 실행해 `accessToken`을 복사한다(시드 관리자는 `admin@lookation.local`).
+2. 오른쪽 위 **Authorize**에 `accessToken`만 붙여넣는다(`Bearer ` 접두사 없이). 토큰은 새로고침해도 유지된다.
+3. 자물쇠가 닫힌 API는 토큰이 필요하고, 열린 API는 공개 엔드포인트다. 이 구분은 `global/config/OpenApiConfig.kt`의 목록과 `SecurityConfig`의 `permitAll` 매처를 맞춘 것이다.
+
 ## 환경변수
 
 아래 값은 `local` 프로필을 쓰지 않을 때 필요하다. `local` 프로필에서는 `LOOKATION_DB_PASSWORD`·`LOOKATION_JWT_SECRET`·`LOOKATION_ENCRYPTION_KEY`·`LOOKATION_ADMIN_PASSWORD`를 MiniStack에서 받으므로 지정하지 않는다.
