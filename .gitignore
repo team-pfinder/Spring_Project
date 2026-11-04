@@ -61,3 +61,11 @@ out/
 
 # ---------- Tests ----------
 Lookation/test/build/
+
+# ---------- 신규 백엔드 (server/) ----------
+/server/.gradle/
+/server/build/
+
+# test uploads
+/server/uploads/
+/server/build/test-uploads/

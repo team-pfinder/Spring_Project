@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <generator>
+        <database>
+            <name>org.jooq.meta.extensions.ddl.DDLDatabase</name>
+            <properties>
+                <property>
+                    <key>scripts</key>
+                    <value>src/main/resources/db/migration/V2__baseline.sql</value>
+                </property>
+                <property>
+                    <key>sort</key>
+                    <value>flyway</value>
+                </property>
+                <property>
+                    <key>defaultNameCase</key>
+                    <value>lower</value>
+                </property>
+                <property>
+                    <key>dialect</key>
+                    <value>POSTGRES</value>
+                </property>
+            </properties>
+            <inputSchema>PUBLIC</inputSchema>
+        </database>
+        <target>
+            <packageName>com.lookation.jooq</packageName>
+            <directory>build/generated-sources/jooq</directory>
+        </target>
+    </generator>
+</configuration>
