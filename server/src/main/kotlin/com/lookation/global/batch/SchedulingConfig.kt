@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled
 class SchedulingConfig
 
 @Configuration
-class ReservationScheduler(private val reservationBatchService: com.lookation.service.reservation.ReservationBatchService) {
+class ReservationScheduler(private val reservationBatchService: com.lookation.service.ReservationBatchService) {
 
     @Scheduled(cron = "0 5 0 * * *", zone = "Asia/Seoul")
     fun completeReservations() {

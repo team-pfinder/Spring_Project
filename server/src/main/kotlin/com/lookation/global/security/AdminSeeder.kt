@@ -1,6 +1,6 @@
 package com.lookation.global.security
 
-import com.lookation.repository.account.AccountRepository
+import com.lookation.repository.AccountRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.security.crypto.password.PasswordEncoder

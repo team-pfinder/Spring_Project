@@ -7,7 +7,7 @@ import com.lookation.jooq.tables.Reservations.RESERVATIONS
 import com.lookation.jooq.tables.Settlements.SETTLEMENTS
 import com.lookation.jooq.tables.Wallets.WALLETS
 import org.assertj.core.api.Assertions.assertThat
-import com.lookation.service.reservation.ReservationBatchService
+import com.lookation.service.ReservationBatchService
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
