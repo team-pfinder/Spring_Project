@@ -1,0 +1,107 @@
+package com.lookation.wallet.application
+
+import com.lookation.global.error.BadRequestException
+import com.lookation.global.error.ConflictException
+import com.lookation.global.error.NotFoundException
+import com.lookation.host.infrastructure.HostProfileRepository
+import com.lookation.wallet.api.ChargeRequestForm
+import com.lookation.wallet.api.ChargeResponse
+import com.lookation.wallet.api.WithdrawalRequestForm
+import com.lookation.wallet.api.WithdrawalResponse
+import com.lookation.wallet.infrastructure.ChargeRepository
+import com.lookation.wallet.infrastructure.WalletRepository
+import com.lookation.wallet.infrastructure.WithdrawalRepository
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+@Service
+class WalletService(
+    private val walletRepository: WalletRepository,
+    private val chargeRepository: ChargeRepository,
+    private val withdrawalRepository: WithdrawalRepository,
+    private val hostProfileRepository: HostProfileRepository,
+) {
+
+    @Transactional
+    fun requestCharge(accountId: Long, form: ChargeRequestForm): ChargeResponse {
+        val id = chargeRepository.insert(accountId, form.amount, form.depositorName)
+        return requireNotNull(chargeRepository.findById(id)).toResponse()
+    }
+
+    @Transactional(readOnly = true)
+    fun charges(accountId: Long): List<ChargeResponse> =
+        chargeRepository.findByAccount(accountId).map { it.toResponse() }
+
+    @Transactional
+    fun decideCharge(adminId: Long, chargeId: Long, approved: Boolean): ChargeResponse {
+        val charge = chargeRepository.findById(chargeId)
+            ?: throw NotFoundException("충전 신청을 찾을 수 없습니다")
+        val nextStatus = if (approved) "APPROVED" else "REJECTED"
+        if (chargeRepository.updateStatus(chargeId, "REQUESTED", nextStatus, adminId) != 1) {
+            throw ConflictException("이미 처리된 충전 신청입니다")
+        }
+        if (approved) {
+            walletRepository.ensureWallet(charge.accountId)
+            walletRepository.deposit(charge.accountId, charge.amount)
+            walletRepository.addEntry(charge.accountId, "CHARGE", charge.amount, "CHARGE", chargeId)
+        }
+        return requireNotNull(chargeRepository.findById(chargeId)).toResponse()
+    }
+
+    @Transactional
+    fun requestWithdrawal(accountId: Long, form: WithdrawalRequestForm): WithdrawalResponse {
+        val profile = hostProfileRepository.findByAccountId(accountId)
+            ?: throw BadRequestException("호스트 프로필과 정산 계좌가 필요합니다")
+        val bankName = profile.bankName ?: throw BadRequestException("정산 계좌가 등록되지 않았습니다")
+        val accountNumberEnc = profile.bankAccountNumberEnc
+            ?: throw BadRequestException("정산 계좌가 등록되지 않았습니다")
+        val accountHolderEnc = profile.bankAccountHolderEnc
+            ?: throw BadRequestException("정산 계좌가 등록되지 않았습니다")
+
+        walletRepository.ensureWallet(accountId)
+        if (!walletRepository.hold(accountId, form.amount)) {
+            throw ConflictException("출금 가능한 잔액이 부족합니다")
+        }
+        val id = withdrawalRepository.insert(accountId, form.amount, bankName, accountNumberEnc, accountHolderEnc)
+        walletRepository.addEntry(accountId, "WITHDRAWAL", -form.amount, "WITHDRAWAL", id)
+        return requireNotNull(withdrawalRepository.findById(id)).toResponse()
+    }
+
+    @Transactional(readOnly = true)
+    fun withdrawals(accountId: Long): List<WithdrawalResponse> =
+        withdrawalRepository.findByAccount(accountId).map { it.toResponse() }
+
+    @Transactional
+    fun decideWithdrawal(adminId: Long, withdrawalId: Long, approved: Boolean): WithdrawalResponse {
+        val withdrawal = withdrawalRepository.findById(withdrawalId)
+            ?: throw NotFoundException("출금 신청을 찾을 수 없습니다")
+        val nextStatus = if (approved) "PAID" else "REJECTED"
+        if (withdrawalRepository.updateStatus(withdrawalId, "REQUESTED", nextStatus, adminId) != 1) {
+            throw ConflictException("이미 처리된 출금 신청입니다")
+        }
+        if (!approved) {
+            walletRepository.deposit(withdrawal.accountId, withdrawal.amount)
+            walletRepository.addEntry(
+                withdrawal.accountId,
+                "WITHDRAWAL",
+                withdrawal.amount,
+                "WITHDRAWAL",
+                withdrawal.id,
+            )
+        }
+        return requireNotNull(withdrawalRepository.findById(withdrawalId)).toResponse()
+    }
+
+    private fun com.lookation.wallet.infrastructure.ChargeRow.toResponse() = ChargeResponse(
+        id = id,
+        amount = amount,
+        depositorName = depositorName,
+        status = status,
+    )
+
+    private fun com.lookation.wallet.infrastructure.WithdrawalRow.toResponse() = WithdrawalResponse(
+        id = id,
+        amount = amount,
+        status = status,
+    )
+}
