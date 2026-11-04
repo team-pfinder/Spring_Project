@@ -1,11 +1,15 @@
 package com.lookation
 
 import com.lookation.jooq.tables.AccountRoles.ACCOUNT_ROLES
+import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.HostProfiles.HOST_PROFILES
+import com.lookation.jooq.tables.Reservations.RESERVATIONS
+import com.lookation.jooq.tables.Spaces.SPACES
 import org.assertj.core.api.Assertions.assertThat
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -22,6 +26,7 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
+import java.time.OffsetDateTime
 import java.util.UUID
 
 @SpringBootTest(
@@ -32,6 +37,7 @@ import java.util.UUID
         "lookation.upload-dir=build/test-uploads",
     ],
 )
+@Import(TestMailConfig::class)
 @Testcontainers
 class SpaceFlowTest {
 
@@ -49,6 +55,9 @@ class SpaceFlowTest {
 
     @Autowired
     private lateinit var dsl: DSLContext
+
+    @Autowired
+    private lateinit var mailSender: CapturingMailSender
 
     private val client by lazy { RestClient.create("http://localhost:$port") }
 
@@ -176,6 +185,84 @@ class SpaceFlowTest {
             ApiResponse(exception.statusCode, null, exception.responseBodyAsString)
         }
 
+    @Test
+    fun `closing hides the space, reopening requires inspection, and deletion is blocked by active reservations`() {
+        val host = signup()
+        post("/api/v1/hosts/apply", hostForm(), host.access)
+        val hostToken = refresh(host)
+        val name = "space-${UUID.randomUUID()}"
+        val created = post("/api/v1/spaces", spaceForm() + ("name" to name), hostToken)
+        val spaceId = (created.body!!["id"] as Number).toLong()
+        upload(spaceId, hostToken)
+        putPrices(spaceId, hostToken)
+        post("/api/v1/spaces/$spaceId/inspection", emptyMap(), hostToken)
+        val adminToken = adminToken()
+        post("/api/v1/admin/inspections/$spaceId/decision", mapOf("approved" to true), adminToken)
+
+        val closed = post("/api/v1/spaces/$spaceId/close", emptyMap(), hostToken)
+        assertThat(closed.body!!["status"]).isEqualTo("CLOSED")
+        assertThat(get("/api/v1/spaces/$spaceId").status.value()).isEqualTo(HttpStatus.NOT_FOUND.value())
+        assertThat(searchNames(name)).doesNotContain(name)
+
+        val reopened = post("/api/v1/spaces/$spaceId/reopen", emptyMap(), hostToken)
+        assertThat(reopened.body!!["status"]).isEqualTo("DRAFT")
+        assertThat(post("/api/v1/spaces/$spaceId/inspection", emptyMap(), hostToken).body!!["status"])
+            .isEqualTo("PENDING_INSPECTION")
+        post("/api/v1/admin/inspections/$spaceId/decision", mapOf("approved" to true), adminToken)
+
+        val memberId = dsl.insertInto(ACCOUNTS)
+            .set(ACCOUNTS.EMAIL, "guest-${UUID.randomUUID()}@lookation.test")
+            .set(ACCOUNTS.PASSWORD_HASH, "unused")
+            .set(ACCOUNTS.NAME, "Guest")
+            .set(ACCOUNTS.NICKNAME, "guest")
+            .returningResult(ACCOUNTS.ID)
+            .fetchOne()!!
+            .value1()
+        val hostId = dsl.select(SPACES.HOST_ID).from(SPACES)
+            .where(SPACES.ID.eq(spaceId)).fetchOne(SPACES.HOST_ID)!!
+        val reservationId = dsl.insertInto(RESERVATIONS)
+            .set(RESERVATIONS.MEMBER_ID, memberId)
+            .set(RESERVATIONS.HOST_ID, hostId)
+            .set(RESERVATIONS.SPACE_ID, spaceId)
+            .set(RESERVATIONS.START_AT, OffsetDateTime.now().plusDays(5))
+            .set(RESERVATIONS.END_AT, OffsetDateTime.now().plusDays(5).plusHours(2))
+            .set(RESERVATIONS.GUEST_COUNT, 2.toShort())
+            .set(RESERVATIONS.PRICE, 100_000)
+            .set(RESERVATIONS.STATUS, "CONFIRMED")
+            .returningResult(RESERVATIONS.ID)
+            .fetchOne()!!
+            .value1()
+
+        assertThat(delete("/api/v1/spaces/$spaceId", hostToken).status.value())
+            .isEqualTo(HttpStatus.CONFLICT.value())
+
+        dsl.update(RESERVATIONS).set(RESERVATIONS.STATUS, "CANCELLED")
+            .where(RESERVATIONS.ID.eq(reservationId)).execute()
+        assertThat(delete("/api/v1/spaces/$spaceId", hostToken).status.value())
+            .isEqualTo(HttpStatus.NO_CONTENT.value())
+        assertThat(get("/api/v1/spaces/$spaceId", hostToken).status.value())
+            .isEqualTo(HttpStatus.NOT_FOUND.value())
+        assertThat(searchNames(name)).doesNotContain(name)
+    }
+
+    private fun searchNames(keyword: String): List<Any?> {
+        val result = get("/api/v1/spaces?keyword=$keyword")
+        val items = result.body!!["items"] as List<*>
+        return items.map { (it as Map<*, *>)["name"] }
+    }
+
+    private fun delete(path: String, token: String): ApiResponse =
+        try {
+            val entity = client.delete()
+                .uri(path)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+                .retrieve()
+                .toBodilessEntity()
+            ApiResponse(entity.statusCode, null)
+        } catch (exception: RestClientResponseException) {
+            ApiResponse(exception.statusCode, null, exception.responseBodyAsString)
+        }
+
     private fun hostForm() = mapOf(
         "businessName" to "테스트 주식회사",
         "businessNumber" to (1_000_000_000L + (Math.random() * 8_999_999_999L).toLong()).toString(),
@@ -203,6 +290,8 @@ class SpaceFlowTest {
 
     private fun signup(): TestUser {
         val email = "user-${UUID.randomUUID()}@lookation.test"
+        post("/api/v1/auth/email-verifications", mapOf("email" to email, "purpose" to "SIGNUP"))
+        val code = mailSender.codes.getValue(email)
         val signup = post(
             "/api/v1/auth/signup",
             mapOf(
@@ -210,6 +299,7 @@ class SpaceFlowTest {
                 "password" to "password123",
                 "name" to "User",
                 "nickname" to "user",
+                "code" to code,
             ),
         )
         val access = signup.body!!["accessToken"] as String

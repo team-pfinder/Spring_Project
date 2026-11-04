@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -31,6 +32,7 @@ import java.util.UUID
         "lookation.upload-dir=build/test-uploads",
     ],
 )
+@Import(TestMailConfig::class)
 @Testcontainers
 class WalletFlowTest {
 
@@ -48,6 +50,9 @@ class WalletFlowTest {
 
     @Autowired
     private lateinit var dsl: DSLContext
+
+    @Autowired
+    private lateinit var mailSender: CapturingMailSender
 
     private val client by lazy { RestClient.create("http://localhost:$port") }
 
@@ -116,6 +121,8 @@ class WalletFlowTest {
 
     private fun signup(): TestUser {
         val email = "wallet-${UUID.randomUUID()}@lookation.test"
+        post("/api/v1/auth/email-verifications", mapOf("email" to email, "purpose" to "SIGNUP"))
+        val code = mailSender.codes.getValue(email)
         val signup = post(
             "/api/v1/auth/signup",
             mapOf(
@@ -123,6 +130,7 @@ class WalletFlowTest {
                 "password" to "password123",
                 "name" to "Wallet",
                 "nickname" to "wallet",
+                "code" to code,
             ),
         )
         val access = signup.body!!["accessToken"] as String

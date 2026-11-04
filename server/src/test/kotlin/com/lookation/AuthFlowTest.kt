@@ -2,9 +2,11 @@ package com.lookation
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.context.annotation.Import
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -25,6 +27,7 @@ import org.testcontainers.utility.DockerImageName
         "lookation.upload-dir=build/test-uploads",
     ],
 )
+@Import(TestMailConfig::class)
 @Testcontainers
 class AuthFlowTest {
 
@@ -40,21 +43,16 @@ class AuthFlowTest {
     @Value("\${local.server.port}")
     private var port: Int = 0
 
+    @Autowired
+    private lateinit var mailSender: CapturingMailSender
+
     private val client by lazy { RestClient.create("http://localhost:$port") }
 
-    private data class ApiResponse(val status: HttpStatusCode, val body: Map<String, Any>?, val rawBody: String? = null)
+    private data class ApiResponse(val status: HttpStatusCode, val body: Map<String, Any>?, val raw: String? = null)
 
     @Test
     fun `signup issues tokens and me returns the account`() {
-        val signup = post(
-            "/api/v1/auth/signup",
-            mapOf(
-                "email" to "flow1@lookation.test",
-                "password" to "password123",
-                "name" to "Flow",
-                "nickname" to "flow1",
-            ),
-        )
+        val signup = post("/api/v1/auth/signup", signupPayload("flow1@lookation.test", nickname = "flow1"))
         assertThat(signup.status.value()).isEqualTo(HttpStatus.OK.value())
         val accessToken = signup.body!!["accessToken"] as String
         assertThat(accessToken).isNotBlank()
@@ -71,54 +69,26 @@ class AuthFlowTest {
     }
 
     @Test
-    fun `duplicate email is rejected with conflict`() {
-        val form = mapOf(
-            "email" to "flow2@lookation.test",
-            "password" to "password123",
-            "name" to "Flow",
-            "nickname" to "flow2",
-        )
-        assertThat(post("/api/v1/auth/signup", form).status.value())
-            .isEqualTo(HttpStatus.OK.value())
-        assertThat(post("/api/v1/auth/signup", form).status.value())
-            .isEqualTo(HttpStatus.CONFLICT.value())
-    }
-
-    @Test
     fun `login with the correct password issues tokens`() {
-        post(
-            "/api/v1/auth/signup",
-            mapOf(
-                "email" to "flow5@lookation.test",
-                "password" to "password123",
-                "name" to "Flow",
-                "nickname" to "flow5",
-            ),
-        )
-
+        post("/api/v1/auth/signup", signupPayload("flow5@lookation.test", nickname = "flow5"))
         val login = post(
             "/api/v1/auth/login",
             mapOf("email" to "flow5@lookation.test", "password" to "password123"),
         )
-
-        assertThat(login.status.value())
-            .withFailMessage("login status=%s body=%s", login.status, login.rawBody)
-            .isEqualTo(HttpStatus.OK.value())
+        assertThat(login.status.value()).isEqualTo(HttpStatus.OK.value())
         assertThat(login.body!!["accessToken"]).isNotNull()
     }
 
     @Test
-    fun `wrong password is rejected with unauthorized`() {
-        post(
-            "/api/v1/auth/signup",
-            mapOf(
-                "email" to "flow3@lookation.test",
-                "password" to "password123",
-                "name" to "Flow",
-                "nickname" to "flow3",
-            ),
-        )
+    fun `duplicate email is rejected with conflict`() {
+        val form = signupPayload("flow2@lookation.test", nickname = "flow2")
+        assertThat(post("/api/v1/auth/signup", form).status.value()).isEqualTo(HttpStatus.OK.value())
+        assertThat(post("/api/v1/auth/signup", form).status.value()).isEqualTo(HttpStatus.CONFLICT.value())
+    }
 
+    @Test
+    fun `wrong password is rejected with unauthorized`() {
+        post("/api/v1/auth/signup", signupPayload("flow3@lookation.test", nickname = "flow3"))
         val result = post(
             "/api/v1/auth/login",
             mapOf("email" to "flow3@lookation.test", "password" to "wrong-password"),
@@ -128,15 +98,7 @@ class AuthFlowTest {
 
     @Test
     fun `refresh rotates the token and rejects reuse`() {
-        val signup = post(
-            "/api/v1/auth/signup",
-            mapOf(
-                "email" to "flow4@lookation.test",
-                "password" to "password123",
-                "name" to "Flow",
-                "nickname" to "flow4",
-            ),
-        )
+        val signup = post("/api/v1/auth/signup", signupPayload("flow4@lookation.test", nickname = "flow4"))
         val refreshToken = signup.body!!["refreshToken"] as String
 
         val refreshed = post("/api/v1/auth/refresh", mapOf("refreshToken" to refreshToken))
@@ -148,6 +110,78 @@ class AuthFlowTest {
             .isEqualTo(HttpStatus.UNAUTHORIZED.value())
         assertThat(post("/api/v1/auth/refresh", mapOf("refreshToken" to rotated)).status.value())
             .isEqualTo(HttpStatus.UNAUTHORIZED.value())
+    }
+
+    @Test
+    fun `signup without the verification code is rejected`() {
+        val result = post(
+            "/api/v1/auth/signup",
+            mapOf(
+                "email" to "nocode@lookation.test",
+                "password" to "password123",
+                "name" to "NoCode",
+                "nickname" to "nocode",
+            ),
+        )
+        assertThat(result.status.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+    }
+
+    @Test
+    fun `wrong verification code is rejected`() {
+        val email = "wrongcode@lookation.test"
+        assertThat(post("/api/v1/auth/email-verifications", mapOf("email" to email, "purpose" to "SIGNUP")).status.value())
+            .isEqualTo(HttpStatus.NO_CONTENT.value())
+        val code = mailSender.codes.getValue(email)
+        val wrong = if (code == "000000") "111111" else "000000"
+
+        val result = post(
+            "/api/v1/auth/signup",
+            mapOf(
+                "email" to email,
+                "password" to "password123",
+                "name" to "Wrong",
+                "nickname" to "wrong",
+                "code" to wrong,
+            ),
+        )
+        assertThat(result.status.value()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+    }
+
+    @Test
+    fun `password reset changes the password`() {
+        val email = "reset@lookation.test"
+        post("/api/v1/auth/signup", signupPayload(email, nickname = "reset"))
+
+        assertThat(
+            post("/api/v1/auth/password-reset/request", mapOf("email" to email)).status.value(),
+        ).isEqualTo(HttpStatus.NO_CONTENT.value())
+        val code = mailSender.codes.getValue(email)
+
+        assertThat(
+            post(
+                "/api/v1/auth/password-reset/confirm",
+                mapOf("email" to email, "code" to code, "newPassword" to "newpassword123"),
+            ).status.value(),
+        ).isEqualTo(HttpStatus.NO_CONTENT.value())
+
+        assertThat(
+            post("/api/v1/auth/login", mapOf("email" to email, "password" to "password123")).status.value(),
+        ).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        assertThat(
+            post("/api/v1/auth/login", mapOf("email" to email, "password" to "newpassword123")).status.value(),
+        ).isEqualTo(HttpStatus.OK.value())
+    }
+
+    private fun signupPayload(email: String, nickname: String): Map<String, Any> {
+        post("/api/v1/auth/email-verifications", mapOf("email" to email, "purpose" to "SIGNUP"))
+        val code = mailSender.codes.getValue(email)
+        return mapOf(
+            "email" to email,
+            "password" to "password123",
+            "name" to "Flow",
+            "nickname" to nickname,
+            "code" to code,
+        )
     }
 
     private fun post(path: String, body: Map<String, Any>): ApiResponse =

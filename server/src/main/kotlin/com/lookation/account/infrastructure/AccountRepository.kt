@@ -6,6 +6,7 @@ import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import org.jooq.DSLContext
 import org.jooq.Record
 import org.springframework.stereotype.Repository
+import java.time.OffsetDateTime
 
 @Repository
 class AccountRepository(private val dsl: DSLContext) {
@@ -41,6 +42,14 @@ class AccountRepository(private val dsl: DSLContext) {
             .where(ACCOUNTS.ID.eq(id))
             .fetchOne()
             ?.toAccount()
+
+    fun updatePassword(accountId: Long, passwordHash: String) {
+        dsl.update(ACCOUNTS)
+            .set(ACCOUNTS.PASSWORD_HASH, passwordHash)
+            .set(ACCOUNTS.UPDATED_AT, OffsetDateTime.now())
+            .where(ACCOUNTS.ID.eq(accountId))
+            .execute()
+    }
 
     fun roles(accountId: Long): List<String> =
         dsl.select(ACCOUNT_ROLES.ROLE)

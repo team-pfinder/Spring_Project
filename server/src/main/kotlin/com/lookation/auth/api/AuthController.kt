@@ -24,6 +24,24 @@ class AuthController(private val authService: AuthService) {
     fun refresh(@Valid @RequestBody form: RefreshForm): TokenResponse =
         authService.refresh(form.refreshToken).toResponse()
 
+    @PostMapping("/email-verifications")
+    fun requestVerification(@Valid @RequestBody form: EmailVerificationForm): ResponseEntity<Void> {
+        authService.requestVerification(form.email, form.purpose)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/password-reset/request")
+    fun requestPasswordReset(@Valid @RequestBody form: PasswordResetRequestForm): ResponseEntity<Void> {
+        authService.requestVerification(form.email, "PASSWORD_RESET")
+        return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/password-reset/confirm")
+    fun confirmPasswordReset(@Valid @RequestBody form: PasswordResetConfirmForm): ResponseEntity<Void> {
+        authService.resetPassword(form)
+        return ResponseEntity.noContent().build()
+    }
+
     @PostMapping("/logout")
     fun logout(@Valid @RequestBody form: RefreshForm): ResponseEntity<Void> {
         authService.logout(form.refreshToken)

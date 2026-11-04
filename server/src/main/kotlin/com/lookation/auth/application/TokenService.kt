@@ -57,6 +57,10 @@ class TokenService(
         return create(token.accountId, accountRepository.roles(token.accountId), token.familyId)
     }
 
+    fun revokeAllForAccount(accountId: Long) {
+        refreshTokenRepository.revokeAllForAccount(accountId)
+    }
+
     fun revoke(rawRefreshToken: String) {
         refreshTokenRepository.findByHash(hash(rawRefreshToken))
             ?.let { refreshTokenRepository.revoke(it.id) }

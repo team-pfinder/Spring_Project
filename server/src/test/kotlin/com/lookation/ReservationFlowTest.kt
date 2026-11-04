@@ -11,6 +11,10 @@ import com.lookation.reservation.application.ReservationBatchService
 import org.jooq.DSLContext
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.oauth2.jwt.JwtClaimsSet
+import org.springframework.security.oauth2.jwt.JwtEncoder
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters
+import org.springframework.context.annotation.Import
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
@@ -26,6 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 import java.time.LocalDate
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.UUID
@@ -38,6 +43,7 @@ import java.util.UUID
         "lookation.upload-dir=build/test-uploads",
     ],
 )
+@Import(TestMailConfig::class)
 @Testcontainers
 class ReservationFlowTest {
 
@@ -58,7 +64,13 @@ class ReservationFlowTest {
     private lateinit var dsl: DSLContext
 
     @Autowired
+    private lateinit var mailSender: CapturingMailSender
+
+    @Autowired
     private lateinit var batch: ReservationBatchService
+
+    @Autowired
+    private lateinit var jwtEncoder: JwtEncoder
 
     private val client by lazy { RestClient.create("http://localhost:$port") }
 
@@ -312,6 +324,56 @@ class ReservationFlowTest {
         ).isEqualTo("EXPIRED")
     }
 
+    @Test
+    fun `host reservation list exposes contact only after confirmation`() {
+        val host = signup()
+        val (memberId, memberToken) = signup()
+        topUp(memberId, 200_000)
+        val slot = slot(daysFromNow = 10)
+        val spaceId = publishedSpace(
+            price = 100_000,
+            slot = slot,
+            hostId = host.first,
+            approvalRequired = true,
+        )
+        val created = post(
+            "/api/v1/reservations",
+            mapOf(
+                "spaceId" to spaceId,
+                "startAt" to slot.start.toString(),
+                "endAt" to slot.end.toString(),
+                "guestCount" to 2,
+            ),
+            memberToken,
+        )
+        val reservationId = (created.body!!["id"] as Number).toLong()
+        val hostToken = tokenFor(host.first, "HOST")
+
+        val pending = getList("/api/v1/hosts/reservations", hostToken)
+        assertThat(pending).hasSize(1)
+        assertThat((pending.first() as Map<*, *>)["memberName"]).isNull()
+
+        post("/api/v1/reservations/$reservationId/approve", emptyMap(), hostToken)
+        post("/api/v1/reservations/$reservationId/pay", emptyMap(), memberToken)
+
+        val confirmed = getList("/api/v1/hosts/reservations?status=CONFIRMED", hostToken)
+        val first = confirmed.first() as Map<*, *>
+        assertThat(first["memberName"]).isEqualTo("Member")
+        assertThat(first["status"]).isEqualTo("CONFIRMED")
+    }
+
+    private fun tokenFor(accountId: Long, vararg roles: String): String {
+        val now = Instant.now()
+        val claims = JwtClaimsSet.builder()
+            .issuer("lookation")
+            .subject(accountId.toString())
+            .issuedAt(now)
+            .expiresAt(now.plusSeconds(300))
+            .claim("roles", roles.toList())
+            .build()
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).tokenValue
+    }
+
     private data class Slot(val start: OffsetDateTime, val end: OffsetDateTime)
 
     private fun slot(daysFromNow: Long): Slot {
@@ -324,6 +386,8 @@ class ReservationFlowTest {
 
     private fun signup(): Pair<Long, String> {
         val email = "member-${UUID.randomUUID()}@lookation.test"
+        post("/api/v1/auth/email-verifications", mapOf("email" to email, "purpose" to "SIGNUP"))
+        val code = mailSender.codes.getValue(email)
         val signup = post(
             "/api/v1/auth/signup",
             mapOf(
@@ -331,6 +395,7 @@ class ReservationFlowTest {
                 "password" to "password123",
                 "name" to "Member",
                 "nickname" to "member",
+                "code" to code,
             ),
         )
         val token = signup.body!!["accessToken"] as String
@@ -448,6 +513,14 @@ class ReservationFlowTest {
         )
         return (response.body!!["id"] as Number).toLong()
     }
+
+    private fun getList(path: String, token: String): List<Any> =
+        client.get()
+            .uri(path)
+            .header("Authorization", "Bearer $token")
+            .retrieve()
+            .toEntity(object : org.springframework.core.ParameterizedTypeReference<List<Any>>() {})
+            .body ?: emptyList()
 
     private fun post(path: String, body: Map<String, Any>, token: String? = null): ApiResponse =
         try {

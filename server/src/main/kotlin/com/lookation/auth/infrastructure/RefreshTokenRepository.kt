@@ -47,6 +47,14 @@ class RefreshTokenRepository(private val dsl: DSLContext) {
             .and(REFRESH_TOKENS.REVOKED_AT.isNull)
             .execute()
 
+    fun revokeAllForAccount(accountId: Long) {
+        dsl.update(REFRESH_TOKENS)
+            .set(REFRESH_TOKENS.REVOKED_AT, OffsetDateTime.now())
+            .where(REFRESH_TOKENS.ACCOUNT_ID.eq(accountId))
+            .and(REFRESH_TOKENS.REVOKED_AT.isNull)
+            .execute()
+    }
+
     fun revokeFamily(familyId: UUID) {
         dsl.update(REFRESH_TOKENS)
             .set(REFRESH_TOKENS.REVOKED_AT, OffsetDateTime.now())

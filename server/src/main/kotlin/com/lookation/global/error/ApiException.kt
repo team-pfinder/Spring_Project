@@ -13,3 +13,5 @@ class NotFoundException(message: String) : ApiException(HttpStatus.NOT_FOUND, me
 class BadRequestException(message: String) : ApiException(HttpStatus.BAD_REQUEST, message)
 
 class ForbiddenException(message: String) : ApiException(HttpStatus.FORBIDDEN, message)
+
+class TooManyRequestsException(message: String) : ApiException(HttpStatus.TOO_MANY_REQUESTS, message)

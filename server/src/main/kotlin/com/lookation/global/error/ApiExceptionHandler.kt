@@ -2,6 +2,7 @@ package com.lookation.global.error
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -26,6 +27,10 @@ class ApiExceptionHandler {
         )
         return problem
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleUnreadable(exception: HttpMessageNotReadableException): ProblemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "요청 본문을 읽을 수 없습니다")
 
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAccessDenied(exception: AccessDeniedException): ProblemDetail =
