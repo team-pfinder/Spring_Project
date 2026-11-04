@@ -6,6 +6,9 @@ alter table accounts add constraint accounts_status_check
 alter table account_roles add constraint account_roles_role_check
     check (role in ('MEMBER', 'HOST', 'ADMIN'));
 
+alter table email_verifications add constraint email_verifications_attempts_check
+    check (attempts >= 0);
+
 alter table email_verifications add constraint email_verifications_purpose_check
     check (purpose in ('SIGNUP', 'PASSWORD_RESET'));
 

@@ -33,6 +33,7 @@ create table email_verifications (
     email      varchar(255) not null,
     code_hash  varchar(64)  not null,
     purpose    varchar(20)  not null,
+    attempts   int          not null default 0,
     expires_at timestamptz  not null,
     used_at    timestamptz,
     created_at timestamptz  not null default now()
@@ -81,6 +82,7 @@ create table spaces (
     website_url    varchar(2000),
     approval_required boolean   not null default false,
     status         varchar(30)  not null default 'DRAFT',
+    deleted_at     timestamptz,
     created_at     timestamptz  not null default now(),
     updated_at     timestamptz  not null default now()
 );
