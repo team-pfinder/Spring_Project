@@ -142,7 +142,8 @@ class SpaceRepository(private val dsl: DSLContext) {
             .execute()
     }
 
-    fun findByHost(hostId: Long): List<SpaceRow> = findAllBy(SPACES.HOST_ID.eq(hostId))
+    fun findByHost(hostId: Long): List<SpaceRow> =
+        findAllBy(SPACES.HOST_ID.eq(hostId).and(SPACES.DELETED_AT.isNull))
 
     fun search(
         type: String?,
@@ -155,7 +156,7 @@ class SpaceRepository(private val dsl: DSLContext) {
         cursor: Long?,
         limit: Int,
     ): List<SpaceSummary> {
-        var condition = SPACES.STATUS.eq("PUBLISHED")
+        var condition = SPACES.STATUS.eq("PUBLISHED").and(SPACES.DELETED_AT.isNull)
         if (type != null) {
             condition = condition.and(SPACES.SPACE_TYPE.eq(type))
         }
@@ -288,7 +289,24 @@ class SpaceRepository(private val dsl: DSLContext) {
             .fetchOne()
             ?.let { PriceLookup(it.value1(), it.value2()) }
 
-    fun findById(id: Long): SpaceRow? = findBy(SPACES.ID.eq(id))
+    fun findById(id: Long): SpaceRow? = findBy(SPACES.ID.eq(id).and(SPACES.DELETED_AT.isNull))
+
+    fun hasActiveReservations(spaceId: Long): Boolean =
+        dsl.fetchCount(
+            RESERVATIONS,
+            RESERVATIONS.SPACE_ID.eq(spaceId)
+                .and(RESERVATIONS.STATUS.`in`("PENDING_APPROVAL", "PENDING_PAYMENT", "CONFIRMED")),
+        ) > 0
+
+    fun softDelete(id: Long) {
+        dsl.update(SPACES)
+            .set(SPACES.STATUS, "CLOSED")
+            .set(SPACES.DELETED_AT, OffsetDateTime.now())
+            .set(SPACES.UPDATED_AT, OffsetDateTime.now())
+            .where(SPACES.ID.eq(id))
+            .and(SPACES.DELETED_AT.isNull)
+            .execute()
+    }
 
     fun insertInspection(spaceId: Long, status: String, reason: String?, adminId: Long?) {
         dsl.insertInto(INSPECTIONS)

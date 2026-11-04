@@ -86,6 +86,35 @@ class SpaceService(
     }
 
     @Transactional
+    fun close(accountId: Long, spaceId: Long): SpaceResponse {
+        val space = owned(accountId, spaceId)
+        if (space.status != "PUBLISHED") {
+            throw ConflictException("게시 중인 공간만 중단할 수 있습니다")
+        }
+        spaceRepository.updateStatus(spaceId, "PUBLISHED", "CLOSED")
+        return response(spaceId)
+    }
+
+    @Transactional
+    fun reopen(accountId: Long, spaceId: Long): SpaceResponse {
+        val space = owned(accountId, spaceId)
+        if (space.status != "CLOSED") {
+            throw ConflictException("중단된 공간만 재개할 수 있습니다")
+        }
+        spaceRepository.updateStatus(spaceId, "CLOSED", "DRAFT")
+        return response(spaceId)
+    }
+
+    @Transactional
+    fun delete(accountId: Long, spaceId: Long) {
+        owned(accountId, spaceId)
+        if (spaceRepository.hasActiveReservations(spaceId)) {
+            throw ConflictException("진행 중인 예약이 있어 삭제할 수 없습니다")
+        }
+        spaceRepository.softDelete(spaceId)
+    }
+
+    @Transactional
     fun submitInspection(accountId: Long, spaceId: Long): SpaceResponse {
         val space = owned(accountId, spaceId)
         if (space.status !in EDITABLE_STATUSES) {
