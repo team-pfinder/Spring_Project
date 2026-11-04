@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.ReservationResponse
+import com.lookation.dto.ReservationDto
 import com.lookation.controller.form.RejectReservationForm
 import com.lookation.controller.form.CreateReservationForm
 
@@ -23,18 +23,18 @@ class ReservationController(private val reservationService: ReservationService) 
     fun create(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody form: CreateReservationForm,
-    ): ReservationResponse = reservationService.create(jwt.accountId(), form)
+    ): ReservationDto = reservationService.create(jwt.accountId(), form)
 
     @GetMapping
-    fun listMine(@AuthenticationPrincipal jwt: Jwt): List<ReservationResponse> =
+    fun listMine(@AuthenticationPrincipal jwt: Jwt): List<ReservationDto> =
         reservationService.listMine(jwt.accountId())
 
     @GetMapping("/{id}")
-    fun get(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationResponse =
+    fun get(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationDto =
         reservationService.get(jwt.accountId(), id)
 
     @PostMapping("/{id}/approve")
-    fun approve(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationResponse =
+    fun approve(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationDto =
         reservationService.approve(jwt.accountId(), id)
 
     @PostMapping("/{id}/reject")
@@ -42,14 +42,14 @@ class ReservationController(private val reservationService: ReservationService) 
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @RequestBody(required = false) form: RejectReservationForm?,
-    ): ReservationResponse = reservationService.reject(jwt.accountId(), id, form?.reason)
+    ): ReservationDto = reservationService.reject(jwt.accountId(), id, form?.reason)
 
     @PostMapping("/{id}/pay")
-    fun pay(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationResponse =
+    fun pay(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationDto =
         reservationService.pay(jwt.accountId(), id)
 
     @PostMapping("/{id}/cancel")
-    fun cancel(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationResponse =
+    fun cancel(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ReservationDto =
         reservationService.cancel(jwt.accountId(), id)
 
     private fun Jwt.accountId(): Long =

@@ -1,7 +1,7 @@
 package com.lookation.controller
 
-import com.lookation.dto.ReportListResponse
-import com.lookation.dto.ReportResponse
+import com.lookation.dto.ReportListDto
+import com.lookation.dto.ReportDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.ReportService
 import jakarta.validation.Valid
@@ -26,7 +26,7 @@ class ReportController(private val reportService: ReportService) {
     fun create(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody form: CreateReportForm,
-    ): ReportResponse = reportService.create(jwt.accountId(), form)
+    ): ReportDto = reportService.create(jwt.accountId(), form)
 
     @GetMapping("/admin/reports")
     @PreAuthorize("hasRole('ADMIN')")
@@ -34,7 +34,7 @@ class ReportController(private val reportService: ReportService) {
         @RequestParam(required = false) status: String?,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
-    ): ReportListResponse = reportService.list(status, cursor, limit)
+    ): ReportListDto = reportService.list(status, cursor, limit)
 
     @PostMapping("/admin/reports/{id}/decision")
     @PreAuthorize("hasRole('ADMIN')")
@@ -42,7 +42,7 @@ class ReportController(private val reportService: ReportService) {
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody form: ReportDecisionForm,
-    ): ReportResponse = reportService.decide(jwt.accountId(), id, form.accepted)
+    ): ReportDto = reportService.decide(jwt.accountId(), id, form.accepted)
 
     private fun Jwt.accountId(): Long =
         subject?.toLongOrNull() ?: throw UnauthorizedException("토큰 주체가 없습니다")

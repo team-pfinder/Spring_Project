@@ -4,7 +4,7 @@ import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.controller.form.PriceRuleForm
-import com.lookation.dto.PriceRuleResponse
+import com.lookation.dto.PriceRuleDto
 import com.lookation.repository.NewPriceRule
 import com.lookation.repository.PriceRuleRepository
 import com.lookation.repository.SpaceRepository
@@ -19,7 +19,7 @@ class PriceRuleService(
 ) {
 
     @Transactional(readOnly = true)
-    fun list(accountId: Long?, spaceId: Long): List<PriceRuleResponse> {
+    fun list(accountId: Long?, spaceId: Long): List<PriceRuleDto> {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
         if (space.status != "PUBLISHED" && space.hostId != accountId) {
@@ -29,7 +29,7 @@ class PriceRuleService(
     }
 
     @Transactional
-    fun replace(accountId: Long, spaceId: Long, rules: List<PriceRuleForm>): List<PriceRuleResponse> {
+    fun replace(accountId: Long, spaceId: Long, rules: List<PriceRuleForm>): List<PriceRuleDto> {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
         if (space.hostId != accountId) {
@@ -82,7 +82,7 @@ class PriceRuleService(
             }
     }
 
-    private fun com.lookation.repository.PriceRuleRow.toResponse() = PriceRuleResponse(
+    private fun com.lookation.repository.PriceRuleRow.toResponse() = PriceRuleDto(
         id = id,
         dayOfWeek = dayOfWeek,
         unit = unit,

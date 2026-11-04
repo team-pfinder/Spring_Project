@@ -2,7 +2,7 @@ package com.lookation.dto
 
 import java.time.OffsetDateTime
 
-data class SanctionResponse(
+data class SanctionDto(
     val id: Long,
     val accountId: Long,
     val reason: String,

@@ -1,7 +1,7 @@
 package com.lookation.service
 
 import com.lookation.controller.form.ApplySanctionForm
-import com.lookation.dto.SanctionResponse
+import com.lookation.dto.SanctionDto
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
@@ -25,7 +25,7 @@ class SanctionService(private val sanctionRepository: SanctionRepository) {
     }
 
     @Transactional
-    fun apply(adminId: Long, form: ApplySanctionForm): SanctionResponse {
+    fun apply(adminId: Long, form: ApplySanctionForm): SanctionDto {
         val id = sanctionRepository.insert(
             accountId = form.accountId,
             reason = form.reason,
@@ -44,7 +44,7 @@ class SanctionService(private val sanctionRepository: SanctionRepository) {
         }
     }
 
-    private fun SanctionRow.toResponse() = SanctionResponse(
+    private fun SanctionRow.toResponse() = SanctionDto(
         id = id,
         accountId = accountId,
         reason = reason,

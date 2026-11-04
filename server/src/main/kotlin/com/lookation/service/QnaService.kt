@@ -2,8 +2,8 @@ package com.lookation.service
 
 import com.lookation.controller.form.AskQnaForm
 import com.lookation.controller.form.QnaAnswerForm
-import com.lookation.dto.QnaListResponse
-import com.lookation.dto.QnaResponse
+import com.lookation.dto.QnaListDto
+import com.lookation.dto.QnaDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
@@ -22,7 +22,7 @@ class QnaService(
 ) {
 
     @Transactional
-    fun ask(memberId: Long, spaceId: Long, form: AskQnaForm): QnaResponse {
+    fun ask(memberId: Long, spaceId: Long, form: AskQnaForm): QnaDto {
         sanctionService.checkWritable(memberId)
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
@@ -34,23 +34,23 @@ class QnaService(
     }
 
     @Transactional(readOnly = true)
-    fun list(spaceId: Long, cursor: Long?, limit: Int): QnaListResponse {
+    fun list(spaceId: Long, cursor: Long?, limit: Int): QnaListDto {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
         val rows = qnaRepository.listBySpace(spaceId, cursor, limit)
-        return QnaListResponse(
+        return QnaListDto(
             items = rows.map { it.toResponse() },
             nextCursor = if (rows.size == limit) rows.last().id else null,
         )
     }
 
     @Transactional(readOnly = true)
-    fun get(id: Long): QnaResponse {
+    fun get(id: Long): QnaDto {
         val qna = qnaRepository.findById(id) ?: throw NotFoundException("질문을 찾을 수 없습니다")
         return qna.toResponse()
     }
 
     @Transactional
-    fun answer(hostId: Long, qnaId: Long, form: QnaAnswerForm): QnaResponse {
+    fun answer(hostId: Long, qnaId: Long, form: QnaAnswerForm): QnaDto {
         val qna = qnaRepository.findById(qnaId)
             ?: throw NotFoundException("질문을 찾을 수 없습니다")
         val space = spaceRepository.findById(qna.spaceId)
@@ -80,9 +80,9 @@ class QnaService(
         }
     }
 
-    private fun response(qna: QnaRow): QnaResponse = qna.toResponse()
+    private fun response(qna: QnaRow): QnaDto = qna.toResponse()
 
-    private fun QnaRow.toResponse() = QnaResponse(
+    private fun QnaRow.toResponse() = QnaDto(
         id = id,
         spaceId = spaceId,
         nickname = nickname,

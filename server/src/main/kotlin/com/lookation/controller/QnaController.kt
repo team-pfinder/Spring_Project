@@ -1,7 +1,7 @@
 package com.lookation.controller
 
-import com.lookation.dto.QnaListResponse
-import com.lookation.dto.QnaResponse
+import com.lookation.dto.QnaListDto
+import com.lookation.dto.QnaDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.QnaService
 import jakarta.validation.Valid
@@ -29,17 +29,17 @@ class QnaController(private val qnaService: QnaService) {
         @PathVariable spaceId: Long,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
-    ): QnaListResponse = qnaService.list(spaceId, cursor, limit)
+    ): QnaListDto = qnaService.list(spaceId, cursor, limit)
 
     @PostMapping("/spaces/{spaceId}/qnas")
     fun ask(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable spaceId: Long,
         @Valid @RequestBody form: AskQnaForm,
-    ): QnaResponse = qnaService.ask(jwt.accountId(), spaceId, form)
+    ): QnaDto = qnaService.ask(jwt.accountId(), spaceId, form)
 
     @GetMapping("/qnas/{id}")
-    fun get(@PathVariable id: Long): QnaResponse = qnaService.get(id)
+    fun get(@PathVariable id: Long): QnaDto = qnaService.get(id)
 
     @PostMapping("/qnas/{id}/answer")
     @PreAuthorize("hasRole('HOST')")
@@ -47,7 +47,7 @@ class QnaController(private val qnaService: QnaService) {
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody form: QnaAnswerForm,
-    ): QnaResponse = qnaService.answer(jwt.accountId(), id, form)
+    ): QnaDto = qnaService.answer(jwt.accountId(), id, form)
 
     @DeleteMapping("/qnas/{id}")
     fun delete(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): ResponseEntity<Void> {

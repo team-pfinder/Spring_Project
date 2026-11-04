@@ -1,9 +1,9 @@
 package com.lookation.controller
 
-import com.lookation.dto.HelpListResponse
-import com.lookation.dto.HelpResponse
-import com.lookation.dto.NoticeListResponse
-import com.lookation.dto.NoticeResponse
+import com.lookation.dto.HelpListDto
+import com.lookation.dto.HelpDto
+import com.lookation.dto.NoticeListDto
+import com.lookation.dto.NoticeDto
 import com.lookation.service.ContentService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -25,29 +25,29 @@ import com.lookation.controller.form.NoticeForm
 class ContentController(private val contentService: ContentService) {
 
     @GetMapping("/notices")
-    fun notices(@RequestParam(required = false) cursor: Long?, @RequestParam(defaultValue = "20") limit: Int): NoticeListResponse =
+    fun notices(@RequestParam(required = false) cursor: Long?, @RequestParam(defaultValue = "20") limit: Int): NoticeListDto =
         contentService.notices(cursor, limit)
 
     @GetMapping("/notices/{id}")
-    fun notice(@PathVariable id: Long): NoticeResponse = contentService.notice(id)
+    fun notice(@PathVariable id: Long): NoticeDto = contentService.notice(id)
 
     @GetMapping("/helps")
     fun helps(
         @RequestParam(required = false) category: String?,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
-    ): HelpListResponse = contentService.helps(category, cursor, limit)
+    ): HelpListDto = contentService.helps(category, cursor, limit)
 
     @GetMapping("/helps/{id}")
-    fun help(@PathVariable id: Long): HelpResponse = contentService.help(id)
+    fun help(@PathVariable id: Long): HelpDto = contentService.help(id)
 
     @PostMapping("/admin/notices")
     @PreAuthorize("hasRole('ADMIN')")
-    fun createNotice(@Valid @RequestBody form: NoticeForm): NoticeResponse = contentService.createNotice(form)
+    fun createNotice(@Valid @RequestBody form: NoticeForm): NoticeDto = contentService.createNotice(form)
 
     @PutMapping("/admin/notices/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    fun updateNotice(@PathVariable id: Long, @Valid @RequestBody form: NoticeForm): NoticeResponse =
+    fun updateNotice(@PathVariable id: Long, @Valid @RequestBody form: NoticeForm): NoticeDto =
         contentService.updateNotice(id, form)
 
     @DeleteMapping("/admin/notices/{id}")
@@ -59,11 +59,11 @@ class ContentController(private val contentService: ContentService) {
 
     @PostMapping("/admin/helps")
     @PreAuthorize("hasRole('ADMIN')")
-    fun createHelp(@Valid @RequestBody form: HelpForm): HelpResponse = contentService.createHelp(form)
+    fun createHelp(@Valid @RequestBody form: HelpForm): HelpDto = contentService.createHelp(form)
 
     @PutMapping("/admin/helps/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    fun updateHelp(@PathVariable id: Long, @Valid @RequestBody form: HelpForm): HelpResponse =
+    fun updateHelp(@PathVariable id: Long, @Valid @RequestBody form: HelpForm): HelpDto =
         contentService.updateHelp(id, form)
 
     @DeleteMapping("/admin/helps/{id}")

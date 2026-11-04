@@ -2,7 +2,7 @@ package com.lookation.dto
 
 import java.time.OffsetDateTime
 
-data class HostReservationResponse(
+data class HostReservationDto(
     val id: Long,
     val spaceId: Long,
     val spaceName: String,
@@ -16,7 +16,7 @@ data class HostReservationResponse(
     val status: String,
 )
 
-data class ReservationResponse(
+data class ReservationDto(
     val id: Long,
     val spaceId: Long,
     val startAt: OffsetDateTime,

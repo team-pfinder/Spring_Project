@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.PendingInspectionResponse
-import com.lookation.dto.SpaceResponse
+import com.lookation.dto.PendingInspectionDto
+import com.lookation.dto.SpaceDto
 import com.lookation.controller.form.InspectionDecisionForm
 
 @RestController
@@ -22,14 +22,14 @@ import com.lookation.controller.form.InspectionDecisionForm
 class AdminInspectionController(private val spaceService: SpaceService) {
 
     @GetMapping
-    fun pending(): List<PendingInspectionResponse> = spaceService.pendingInspections()
+    fun pending(): List<PendingInspectionDto> = spaceService.pendingInspections()
 
     @PostMapping("/{spaceId}/decision")
     fun decide(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable spaceId: Long,
         @Valid @RequestBody form: InspectionDecisionForm,
-    ): SpaceResponse = spaceService.decide(
+    ): SpaceDto = spaceService.decide(
         adminId = jwt.accountId(),
         spaceId = spaceId,
         approved = form.approved,

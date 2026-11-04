@@ -1,7 +1,7 @@
 package com.lookation.controller
 
-import com.lookation.dto.ReviewListResponse
-import com.lookation.dto.ReviewResponse
+import com.lookation.dto.ReviewListDto
+import com.lookation.dto.ReviewDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.ReviewService
 import jakarta.validation.Valid
@@ -28,13 +28,13 @@ class ReviewController(private val reviewService: ReviewService) {
         @PathVariable spaceId: Long,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
-    ): ReviewListResponse = reviewService.list(spaceId, cursor, limit)
+    ): ReviewListDto = reviewService.list(spaceId, cursor, limit)
 
     @PostMapping("/reviews")
     fun create(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody form: CreateReviewForm,
-    ): ReviewResponse = reviewService.create(jwt.accountId(), form)
+    ): ReviewDto = reviewService.create(jwt.accountId(), form)
 
     @PostMapping("/reviews/{id}/images")
     fun uploadImage(
@@ -49,7 +49,7 @@ class ReviewController(private val reviewService: ReviewService) {
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody form: ReviewReplyForm,
-    ): ReviewResponse = reviewService.reply(jwt.accountId(), id, form)
+    ): ReviewDto = reviewService.reply(jwt.accountId(), id, form)
 
     @PostMapping("/admin/reviews/{id}/blind")
     @PreAuthorize("hasRole('ADMIN')")

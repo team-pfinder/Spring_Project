@@ -2,7 +2,7 @@ package com.lookation.dto
 
 import java.time.OffsetDateTime
 
-data class ReportResponse(
+data class ReportDto(
     val id: Long,
     val reporterId: Long,
     val targetType: String,
@@ -12,4 +12,4 @@ data class ReportResponse(
     val createdAt: OffsetDateTime,
 )
 
-data class ReportListResponse(val items: List<ReportResponse>, val nextCursor: Long?)
+data class ReportListDto(val items: List<ReportDto>, val nextCursor: Long?)

@@ -5,11 +5,11 @@ import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.HostProfileRepository
-import com.lookation.dto.PendingInspectionResponse
+import com.lookation.dto.PendingInspectionDto
 import com.lookation.controller.form.SpaceForm
-import com.lookation.dto.SpaceSearchResponse
-import com.lookation.dto.SpaceSummaryResponse
-import com.lookation.dto.SpaceResponse
+import com.lookation.dto.SpaceSearchDto
+import com.lookation.dto.SpaceSummaryDto
+import com.lookation.dto.SpaceDto
 import com.lookation.domain.SpaceType
 import com.lookation.repository.SpaceRepository
 import com.lookation.repository.SpaceRow
@@ -24,7 +24,7 @@ class SpaceService(
 ) {
 
     @Transactional
-    fun create(hostId: Long, form: SpaceForm): SpaceResponse {
+    fun create(hostId: Long, form: SpaceForm): SpaceDto {
         validate(form)
         val spaceId = spaceRepository.insert(
             hostId = hostId,
@@ -48,7 +48,7 @@ class SpaceService(
     }
 
     @Transactional
-    fun update(accountId: Long, spaceId: Long, form: SpaceForm): SpaceResponse {
+    fun update(accountId: Long, spaceId: Long, form: SpaceForm): SpaceDto {
         val space = owned(accountId, spaceId)
         if (space.status !in EDITABLE_STATUSES) {
             throw ConflictException("검수 중이거나 게시된 공간은 수정할 수 없습니다")
@@ -76,7 +76,7 @@ class SpaceService(
     }
 
     @Transactional(readOnly = true)
-    fun get(accountId: Long?, spaceId: Long): SpaceResponse {
+    fun get(accountId: Long?, spaceId: Long): SpaceDto {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
         if (space.status != "PUBLISHED" && space.hostId != accountId) {
@@ -86,7 +86,7 @@ class SpaceService(
     }
 
     @Transactional
-    fun close(accountId: Long, spaceId: Long): SpaceResponse {
+    fun close(accountId: Long, spaceId: Long): SpaceDto {
         val space = owned(accountId, spaceId)
         if (space.status != "PUBLISHED") {
             throw ConflictException("게시 중인 공간만 중단할 수 있습니다")
@@ -96,7 +96,7 @@ class SpaceService(
     }
 
     @Transactional
-    fun reopen(accountId: Long, spaceId: Long): SpaceResponse {
+    fun reopen(accountId: Long, spaceId: Long): SpaceDto {
         val space = owned(accountId, spaceId)
         if (space.status != "CLOSED") {
             throw ConflictException("중단된 공간만 재개할 수 있습니다")
@@ -115,7 +115,7 @@ class SpaceService(
     }
 
     @Transactional
-    fun submitInspection(accountId: Long, spaceId: Long): SpaceResponse {
+    fun submitInspection(accountId: Long, spaceId: Long): SpaceDto {
         val space = owned(accountId, spaceId)
         if (space.status !in EDITABLE_STATUSES) {
             throw ConflictException("검수 신청할 수 없는 상태입니다")
@@ -145,7 +145,7 @@ class SpaceService(
         to: java.time.OffsetDateTime?,
         cursor: Long?,
         limit: Int,
-    ): SpaceSearchResponse {
+    ): SpaceSearchDto {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
         if ((from == null) != (to == null)) throw BadRequestException("from과 to는 함께 지정해야 합니다")
         if (from != null && to != null && !to.isAfter(from)) {
@@ -162,9 +162,9 @@ class SpaceService(
             cursor = cursor,
             limit = limit,
         )
-        return SpaceSearchResponse(
+        return SpaceSearchDto(
             items = rows.map {
-                SpaceSummaryResponse(
+                SpaceSummaryDto(
                     id = it.id,
                     name = it.name,
                     shortIntro = it.shortIntro,
@@ -180,11 +180,11 @@ class SpaceService(
     }
 
     @Transactional(readOnly = true)
-    fun pendingInspections(): List<PendingInspectionResponse> =
+    fun pendingInspections(): List<PendingInspectionDto> =
         spaceRepository.pendingInspections().map {
             val space = spaceRepository.findById(it.spaceId)
                 ?: throw NotFoundException("공간을 찾을 수 없습니다")
-            PendingInspectionResponse(
+            PendingInspectionDto(
                 spaceId = it.spaceId,
                 spaceName = space.name,
                 hostId = space.hostId,
@@ -193,7 +193,7 @@ class SpaceService(
         }
 
     @Transactional
-    fun decide(adminId: Long, spaceId: Long, approved: Boolean, reason: String?): SpaceResponse {
+    fun decide(adminId: Long, spaceId: Long, approved: Boolean, reason: String?): SpaceDto {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
         if (space.status != "PENDING_INSPECTION") {
@@ -226,10 +226,10 @@ class SpaceService(
         }
     }
 
-    private fun response(spaceId: Long): SpaceResponse =
+    private fun response(spaceId: Long): SpaceDto =
         response(requireNotNull(spaceRepository.findById(spaceId)))
 
-    private fun response(space: SpaceRow) = SpaceResponse(
+    private fun response(space: SpaceRow) = SpaceDto(
         id = space.id,
         name = space.name,
         shortIntro = space.shortIntro,

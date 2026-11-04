@@ -5,9 +5,9 @@ import com.lookation.global.error.ConflictException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.HostProfileRepository
 import com.lookation.controller.form.ChargeRequestForm
-import com.lookation.dto.ChargeResponse
+import com.lookation.dto.ChargeDto
 import com.lookation.controller.form.WithdrawalRequestForm
-import com.lookation.dto.WithdrawalResponse
+import com.lookation.dto.WithdrawalDto
 import com.lookation.repository.ChargeRepository
 import com.lookation.repository.WalletRepository
 import com.lookation.repository.WithdrawalRepository
@@ -24,18 +24,18 @@ class WalletService(
 ) {
 
     @Transactional
-    fun requestCharge(accountId: Long, form: ChargeRequestForm): ChargeResponse {
+    fun requestCharge(accountId: Long, form: ChargeRequestForm): ChargeDto {
         sanctionService.checkWritable(accountId)
         val id = chargeRepository.insert(accountId, form.amount, form.depositorName)
         return requireNotNull(chargeRepository.findById(id)).toResponse()
     }
 
     @Transactional(readOnly = true)
-    fun charges(accountId: Long): List<ChargeResponse> =
+    fun charges(accountId: Long): List<ChargeDto> =
         chargeRepository.findByAccount(accountId).map { it.toResponse() }
 
     @Transactional
-    fun decideCharge(adminId: Long, chargeId: Long, approved: Boolean): ChargeResponse {
+    fun decideCharge(adminId: Long, chargeId: Long, approved: Boolean): ChargeDto {
         val charge = chargeRepository.findById(chargeId)
             ?: throw NotFoundException("충전 신청을 찾을 수 없습니다")
         val nextStatus = if (approved) "APPROVED" else "REJECTED"
@@ -51,7 +51,7 @@ class WalletService(
     }
 
     @Transactional
-    fun requestWithdrawal(accountId: Long, form: WithdrawalRequestForm): WithdrawalResponse {
+    fun requestWithdrawal(accountId: Long, form: WithdrawalRequestForm): WithdrawalDto {
         sanctionService.checkWritable(accountId)
         val profile = hostProfileRepository.findByAccountId(accountId)
             ?: throw BadRequestException("호스트 프로필과 정산 계좌가 필요합니다")
@@ -71,11 +71,11 @@ class WalletService(
     }
 
     @Transactional(readOnly = true)
-    fun withdrawals(accountId: Long): List<WithdrawalResponse> =
+    fun withdrawals(accountId: Long): List<WithdrawalDto> =
         withdrawalRepository.findByAccount(accountId).map { it.toResponse() }
 
     @Transactional
-    fun decideWithdrawal(adminId: Long, withdrawalId: Long, approved: Boolean): WithdrawalResponse {
+    fun decideWithdrawal(adminId: Long, withdrawalId: Long, approved: Boolean): WithdrawalDto {
         val withdrawal = withdrawalRepository.findById(withdrawalId)
             ?: throw NotFoundException("출금 신청을 찾을 수 없습니다")
         val nextStatus = if (approved) "PAID" else "REJECTED"
@@ -95,14 +95,14 @@ class WalletService(
         return requireNotNull(withdrawalRepository.findById(withdrawalId)).toResponse()
     }
 
-    private fun com.lookation.repository.ChargeRow.toResponse() = ChargeResponse(
+    private fun com.lookation.repository.ChargeRow.toResponse() = ChargeDto(
         id = id,
         amount = amount,
         depositorName = depositorName,
         status = status,
     )
 
-    private fun com.lookation.repository.WithdrawalRow.toResponse() = WithdrawalResponse(
+    private fun com.lookation.repository.WithdrawalRow.toResponse() = WithdrawalDto(
         id = id,
         amount = amount,
         status = status,

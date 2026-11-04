@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.http.ResponseEntity
 import org.springframework.web.multipart.MultipartFile
-import com.lookation.dto.PriceRuleResponse
-import com.lookation.dto.SpaceSearchResponse
-import com.lookation.dto.SpaceResponse
+import com.lookation.dto.PriceRuleDto
+import com.lookation.dto.SpaceSearchDto
+import com.lookation.dto.SpaceDto
 import com.lookation.controller.form.PriceRuleForm
 import com.lookation.controller.form.SpaceForm
 
@@ -43,7 +43,7 @@ class SpaceController(
         @RequestParam(required = false) to: java.time.OffsetDateTime?,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
-    ): SpaceSearchResponse = spaceService.search(
+    ): SpaceSearchDto = spaceService.search(
         type = type,
         keyword = keyword,
         guests = guests,
@@ -57,7 +57,7 @@ class SpaceController(
 
     @PostMapping
     @PreAuthorize("hasRole('HOST')")
-    fun create(@AuthenticationPrincipal jwt: Jwt, @Valid @RequestBody form: SpaceForm): SpaceResponse =
+    fun create(@AuthenticationPrincipal jwt: Jwt, @Valid @RequestBody form: SpaceForm): SpaceDto =
         spaceService.create(jwt.accountId(), form)
 
     @PutMapping("/{id}")
@@ -66,20 +66,20 @@ class SpaceController(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody form: SpaceForm,
-    ): SpaceResponse = spaceService.update(jwt.accountId(), id, form)
+    ): SpaceDto = spaceService.update(jwt.accountId(), id, form)
 
     @GetMapping("/{id}")
-    fun get(@AuthenticationPrincipal jwt: Jwt?, @PathVariable id: Long): SpaceResponse =
+    fun get(@AuthenticationPrincipal jwt: Jwt?, @PathVariable id: Long): SpaceDto =
         spaceService.get(jwt?.accountIdOrNull(), id)
 
     @PostMapping("/{id}/close")
     @PreAuthorize("hasRole('HOST')")
-    fun close(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): SpaceResponse =
+    fun close(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): SpaceDto =
         spaceService.close(jwt.accountId(), id)
 
     @PostMapping("/{id}/reopen")
     @PreAuthorize("hasRole('HOST')")
-    fun reopen(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): SpaceResponse =
+    fun reopen(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): SpaceDto =
         spaceService.reopen(jwt.accountId(), id)
 
     @DeleteMapping("/{id}")
@@ -91,7 +91,7 @@ class SpaceController(
 
     @PostMapping("/{id}/inspection")
     @PreAuthorize("hasRole('HOST')")
-    fun submitInspection(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): SpaceResponse =
+    fun submitInspection(@AuthenticationPrincipal jwt: Jwt, @PathVariable id: Long): SpaceDto =
         spaceService.submitInspection(jwt.accountId(), id)
 
     @PostMapping("/{id}/images")
@@ -106,7 +106,7 @@ class SpaceController(
     fun images(@PathVariable id: Long): List<String> = imageService.list(id)
 
     @GetMapping("/{id}/prices")
-    fun prices(@AuthenticationPrincipal jwt: Jwt?, @PathVariable id: Long): List<PriceRuleResponse> =
+    fun prices(@AuthenticationPrincipal jwt: Jwt?, @PathVariable id: Long): List<PriceRuleDto> =
         priceRuleService.list(jwt?.accountIdOrNull(), id)
 
     @PutMapping("/{id}/prices")
@@ -115,7 +115,7 @@ class SpaceController(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody rules: List<PriceRuleForm>,
-    ): List<PriceRuleResponse> = priceRuleService.replace(jwt.accountId(), id, rules)
+    ): List<PriceRuleDto> = priceRuleService.replace(jwt.accountId(), id, rules)
 
     private fun Jwt.accountId(): Long =
         subject?.toLongOrNull() ?: throw UnauthorizedException("토큰 주체가 없습니다")

@@ -1,6 +1,6 @@
 package com.lookation.controller
 
-import com.lookation.dto.SanctionResponse
+import com.lookation.dto.SanctionDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.SanctionService
 import jakarta.validation.Valid
@@ -25,7 +25,7 @@ class AdminSanctionController(private val sanctionService: SanctionService) {
     fun apply(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody form: ApplySanctionForm,
-    ): SanctionResponse = sanctionService.apply(jwt.accountId(), form)
+    ): SanctionDto = sanctionService.apply(jwt.accountId(), form)
 
     @DeleteMapping("/{id}")
     fun revoke(@PathVariable id: Long): ResponseEntity<Void> {

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.WithdrawalResponse
-import com.lookation.dto.ChargeResponse
+import com.lookation.dto.WithdrawalDto
+import com.lookation.dto.ChargeDto
 import com.lookation.controller.form.WalletDecisionForm
 
 @RestController
@@ -25,14 +25,14 @@ class AdminWalletController(private val walletService: WalletService) {
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody form: WalletDecisionForm,
-    ): ChargeResponse = walletService.decideCharge(jwt.accountId(), id, form.approved)
+    ): ChargeDto = walletService.decideCharge(jwt.accountId(), id, form.approved)
 
     @PostMapping("/withdrawals/{id}/decision")
     fun decideWithdrawal(
         @AuthenticationPrincipal jwt: Jwt,
         @PathVariable id: Long,
         @Valid @RequestBody form: WalletDecisionForm,
-    ): WithdrawalResponse = walletService.decideWithdrawal(jwt.accountId(), id, form.approved)
+    ): WithdrawalDto = walletService.decideWithdrawal(jwt.accountId(), id, form.approved)
 
     private fun Jwt.accountId(): Long =
         subject?.toLongOrNull() ?: throw UnauthorizedException("토큰 주체가 없습니다")

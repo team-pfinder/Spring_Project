@@ -3,7 +3,7 @@ package com.lookation.dto
 import java.time.LocalTime
 import java.time.OffsetDateTime
 
-data class SpaceResponse(
+data class SpaceDto(
     val id: Long,
     val name: String,
     val shortIntro: String?,
@@ -24,7 +24,7 @@ data class SpaceResponse(
     val approvalRequired: Boolean,
 )
 
-data class SpaceSummaryResponse(
+data class SpaceSummaryDto(
     val id: Long,
     val name: String,
     val shortIntro: String?,
@@ -35,12 +35,12 @@ data class SpaceSummaryResponse(
     val minPrice: Long?,
 )
 
-data class SpaceSearchResponse(
-    val items: List<SpaceSummaryResponse>,
+data class SpaceSearchDto(
+    val items: List<SpaceSummaryDto>,
     val nextCursor: Long?,
 )
 
-data class PriceRuleResponse(
+data class PriceRuleDto(
     val id: Long,
     val dayOfWeek: Int,
     val unit: String,
@@ -49,7 +49,7 @@ data class PriceRuleResponse(
     val price: Long,
 )
 
-data class PendingInspectionResponse(
+data class PendingInspectionDto(
     val spaceId: Long,
     val spaceName: String,
     val hostId: Long,

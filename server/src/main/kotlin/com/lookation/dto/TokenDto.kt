@@ -1,6 +1,6 @@
 package com.lookation.dto
 
-data class TokenResponse(
+data class TokenDto(
     val accessToken: String,
     val refreshToken: String,
     val expiresIn: Long,

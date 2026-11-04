@@ -2,7 +2,7 @@ package com.lookation.dto
 
 import java.time.OffsetDateTime
 
-data class NoticeResponse(
+data class NoticeDto(
     val id: Long,
     val title: String,
     val content: String,
@@ -11,9 +11,9 @@ data class NoticeResponse(
     val updatedAt: OffsetDateTime,
 )
 
-data class NoticeListResponse(val items: List<NoticeResponse>, val nextCursor: Long?)
+data class NoticeListDto(val items: List<NoticeDto>, val nextCursor: Long?)
 
-data class HelpResponse(
+data class HelpDto(
     val id: Long,
     val category: String,
     val title: String,
@@ -22,4 +22,4 @@ data class HelpResponse(
     val updatedAt: OffsetDateTime,
 )
 
-data class HelpListResponse(val items: List<HelpResponse>, val nextCursor: Long?)
+data class HelpListDto(val items: List<HelpDto>, val nextCursor: Long?)

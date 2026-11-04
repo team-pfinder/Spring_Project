@@ -2,8 +2,8 @@ package com.lookation.service
 
 import com.lookation.controller.form.CreateReviewForm
 import com.lookation.controller.form.ReviewReplyForm
-import com.lookation.dto.ReviewListResponse
-import com.lookation.dto.ReviewResponse
+import com.lookation.dto.ReviewListDto
+import com.lookation.dto.ReviewDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
@@ -29,7 +29,7 @@ class ReviewService(
 ) {
 
     @Transactional
-    fun create(memberId: Long, form: CreateReviewForm): ReviewResponse {
+    fun create(memberId: Long, form: CreateReviewForm): ReviewDto {
         sanctionService.checkWritable(memberId)
         val reservation = reservationRepository.findById(form.reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
@@ -54,18 +54,18 @@ class ReviewService(
     }
 
     @Transactional(readOnly = true)
-    fun list(spaceId: Long, cursor: Long?, limit: Int): ReviewListResponse {
+    fun list(spaceId: Long, cursor: Long?, limit: Int): ReviewListDto {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
         val rows = reviewRepository.listBySpace(spaceId, cursor, limit)
         val images = reviewRepository.imageKeys(rows.map { it.id })
-        return ReviewListResponse(
+        return ReviewListDto(
             items = rows.map { it.toResponse(images[it.id].orEmpty()) },
             nextCursor = if (rows.size == limit) rows.last().id else null,
         )
     }
 
     @Transactional
-    fun reply(hostId: Long, reviewId: Long, form: ReviewReplyForm): ReviewResponse {
+    fun reply(hostId: Long, reviewId: Long, form: ReviewReplyForm): ReviewDto {
         val review = reviewRepository.findById(reviewId)
             ?: throw NotFoundException("리뷰를 찾을 수 없습니다")
         if (review.blindedAt != null) {
@@ -113,12 +113,12 @@ class ReviewService(
         return "/uploads/${stored.key}"
     }
 
-    private fun response(review: ReviewRow): ReviewResponse =
+    private fun response(review: ReviewRow): ReviewDto =
         review.toResponse(
             reviewRepository.imageKeys(listOf(review.id))[review.id].orEmpty(),
         )
 
-    private fun ReviewRow.toResponse(images: List<String>) = ReviewResponse(
+    private fun ReviewRow.toResponse(images: List<String>) = ReviewDto(
         id = id,
         spaceId = spaceId,
         nickname = nickname,

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.WithdrawalResponse
-import com.lookation.dto.ChargeResponse
+import com.lookation.dto.WithdrawalDto
+import com.lookation.dto.ChargeDto
 import com.lookation.controller.form.WithdrawalRequestForm
 import com.lookation.controller.form.ChargeRequestForm
 
@@ -24,10 +24,10 @@ class WalletController(private val walletService: WalletService) {
     fun requestCharge(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody form: ChargeRequestForm,
-    ): ChargeResponse = walletService.requestCharge(jwt.accountId(), form)
+    ): ChargeDto = walletService.requestCharge(jwt.accountId(), form)
 
     @GetMapping("/wallet/charges")
-    fun charges(@AuthenticationPrincipal jwt: Jwt): List<ChargeResponse> =
+    fun charges(@AuthenticationPrincipal jwt: Jwt): List<ChargeDto> =
         walletService.charges(jwt.accountId())
 
     @PostMapping("/withdrawals")
@@ -35,11 +35,11 @@ class WalletController(private val walletService: WalletService) {
     fun requestWithdrawal(
         @AuthenticationPrincipal jwt: Jwt,
         @Valid @RequestBody form: WithdrawalRequestForm,
-    ): WithdrawalResponse = walletService.requestWithdrawal(jwt.accountId(), form)
+    ): WithdrawalDto = walletService.requestWithdrawal(jwt.accountId(), form)
 
     @GetMapping("/withdrawals")
     @PreAuthorize("hasRole('HOST')")
-    fun withdrawals(@AuthenticationPrincipal jwt: Jwt): List<WithdrawalResponse> =
+    fun withdrawals(@AuthenticationPrincipal jwt: Jwt): List<WithdrawalDto> =
         walletService.withdrawals(jwt.accountId())
 
     private fun Jwt.accountId(): Long =

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import com.lookation.global.error.UnauthorizedException
-import com.lookation.dto.HostProfileResponse
+import com.lookation.dto.HostProfileDto
 import com.lookation.controller.form.HostApplyForm
 
 
@@ -28,7 +28,7 @@ class HostController(
 ) {
 
     @PostMapping("/hosts/apply")
-    fun apply(@AuthenticationPrincipal jwt: Jwt, @Valid @RequestBody form: HostApplyForm): HostProfileResponse {
+    fun apply(@AuthenticationPrincipal jwt: Jwt, @Valid @RequestBody form: HostApplyForm): HostProfileDto {
         val accountId = jwt.accountId()
         if (hostProfileRepository.exists(accountId)) {
             throw com.lookation.global.error.ConflictException("이미 호스트 신청이 완료된 계정입니다")
@@ -49,7 +49,7 @@ class HostController(
     }
 
     @GetMapping("/me/host-profile")
-    fun me(@AuthenticationPrincipal jwt: Jwt): HostProfileResponse {
+    fun me(@AuthenticationPrincipal jwt: Jwt): HostProfileDto {
         val profile = hostProfileRepository.findByAccountId(jwt.accountId())
             ?: throw com.lookation.global.error.NotFoundException("호스트 프로필이 없습니다")
         return profile.toResponse()
@@ -58,7 +58,7 @@ class HostController(
     private fun Jwt.accountId(): Long =
         subject?.toLongOrNull() ?: throw UnauthorizedException("토큰 주체가 없습니다")
 
-    private fun com.lookation.repository.HostProfileRow.toResponse() = HostProfileResponse(
+    private fun com.lookation.repository.HostProfileRow.toResponse() = HostProfileDto(
         businessName = businessName,
         businessNumber = businessNumber,
         representativeName = representativeName,

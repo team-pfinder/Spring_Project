@@ -1,8 +1,8 @@
 package com.lookation.service
 
 import com.lookation.controller.form.CreateReportForm
-import com.lookation.dto.ReportListResponse
-import com.lookation.dto.ReportResponse
+import com.lookation.dto.ReportListDto
+import com.lookation.dto.ReportDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.NotFoundException
@@ -30,7 +30,7 @@ class ReportService(
 ) {
 
     @Transactional
-    fun create(reporterId: Long, form: CreateReportForm): ReportResponse {
+    fun create(reporterId: Long, form: CreateReportForm): ReportDto {
         sanctionService.checkWritable(reporterId)
         if (!targetExists(form.targetType, form.targetId)) {
             throw NotFoundException("신고 대상을 찾을 수 없습니다")
@@ -44,14 +44,14 @@ class ReportService(
     }
 
     @Transactional(readOnly = true)
-    fun list(status: String?, cursor: Long?, limit: Int): ReportListResponse {
+    fun list(status: String?, cursor: Long?, limit: Int): ReportListDto {
         if (limit !in 1..100) throw BadRequestException("limit은 1~100입니다")
         val rows = reportRepository.list(status, cursor, limit)
-        return ReportListResponse(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
+        return ReportListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
     @Transactional
-    fun decide(adminId: Long, reportId: Long, accepted: Boolean): ReportResponse {
+    fun decide(adminId: Long, reportId: Long, accepted: Boolean): ReportDto {
         reportRepository.findById(reportId) ?: throw NotFoundException("신고를 찾을 수 없습니다")
         if (reportRepository.decide(reportId, accepted, adminId) != 1) {
             throw ConflictException("이미 처리된 신고입니다")
@@ -68,7 +68,7 @@ class ReportService(
         else -> false
     }
 
-    private fun ReportRow.toResponse() = ReportResponse(
+    private fun ReportRow.toResponse() = ReportDto(
         id = id,
         reporterId = reporterId,
         targetType = targetType,

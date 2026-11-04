@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.TokenResponse
+import com.lookation.dto.TokenDto
 import com.lookation.controller.form.PasswordResetConfirmForm
 import com.lookation.controller.form.PasswordResetRequestForm
 import com.lookation.controller.form.EmailVerificationForm
@@ -20,15 +20,15 @@ import com.lookation.controller.form.SignupForm
 class AuthController(private val authService: AuthService) {
 
     @PostMapping("/signup")
-    fun signup(@Valid @RequestBody form: SignupForm): TokenResponse =
+    fun signup(@Valid @RequestBody form: SignupForm): TokenDto =
         authService.signup(form).toResponse()
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody form: LoginForm): TokenResponse =
+    fun login(@Valid @RequestBody form: LoginForm): TokenDto =
         authService.login(form).toResponse()
 
     @PostMapping("/refresh")
-    fun refresh(@Valid @RequestBody form: RefreshForm): TokenResponse =
+    fun refresh(@Valid @RequestBody form: RefreshForm): TokenDto =
         authService.refresh(form.refreshToken).toResponse()
 
     @PostMapping("/email-verifications")
@@ -56,5 +56,5 @@ class AuthController(private val authService: AuthService) {
     }
 
     private fun com.lookation.service.TokenPair.toResponse() =
-        TokenResponse(accessToken, refreshToken, expiresIn)
+        TokenDto(accessToken, refreshToken, expiresIn)
 }

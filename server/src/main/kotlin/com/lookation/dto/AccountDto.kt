@@ -1,6 +1,6 @@
 package com.lookation.dto
 
-data class AccountResponse(
+data class AccountDto(
     val id: Long,
     val email: String,
     val name: String,

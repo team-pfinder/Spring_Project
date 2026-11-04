@@ -5,7 +5,7 @@ import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.controller.form.CreateReservationForm
-import com.lookation.dto.ReservationResponse
+import com.lookation.dto.ReservationDto
 import com.lookation.domain.CancellationPolicy
 import com.lookation.repository.ReservationRepository
 import com.lookation.repository.ReservationRow
@@ -18,7 +18,7 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import com.lookation.dto.HostReservationResponse
+import com.lookation.dto.HostReservationDto
 
 @Service
 class ReservationService(
@@ -29,7 +29,7 @@ class ReservationService(
 ) {
 
     @Transactional
-    fun create(memberId: Long, form: CreateReservationForm): ReservationResponse {
+    fun create(memberId: Long, form: CreateReservationForm): ReservationDto {
         sanctionService.checkWritable(memberId)
         val now = OffsetDateTime.now()
         if (!form.endAt.isAfter(form.startAt)) {
@@ -110,7 +110,7 @@ class ReservationService(
     }
 
     @Transactional
-    fun approve(hostId: Long, reservationId: Long): ReservationResponse {
+    fun approve(hostId: Long, reservationId: Long): ReservationDto {
         val reservation = reservationRepository.findById(reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
         if (reservation.hostId != hostId) {
@@ -132,7 +132,7 @@ class ReservationService(
     }
 
     @Transactional
-    fun reject(hostId: Long, reservationId: Long, reason: String?): ReservationResponse {
+    fun reject(hostId: Long, reservationId: Long, reason: String?): ReservationDto {
         val reservation = reservationRepository.findById(reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
         if (reservation.hostId != hostId) {
@@ -146,7 +146,7 @@ class ReservationService(
     }
 
     @Transactional
-    fun pay(memberId: Long, reservationId: Long): ReservationResponse {
+    fun pay(memberId: Long, reservationId: Long): ReservationDto {
         sanctionService.checkWritable(memberId)
         val reservation = reservationRepository.findById(reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
@@ -178,7 +178,7 @@ class ReservationService(
     }
 
     @Transactional
-    fun cancel(accountId: Long, reservationId: Long): ReservationResponse {
+    fun cancel(accountId: Long, reservationId: Long): ReservationDto {
         val reservation = reservationRepository.findById(reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
         val isHost = reservation.hostId == accountId
@@ -234,7 +234,7 @@ class ReservationService(
     }
 
     @Transactional(readOnly = true)
-    fun get(accountId: Long, reservationId: Long): ReservationResponse {
+    fun get(accountId: Long, reservationId: Long): ReservationDto {
         val reservation = reservationRepository.findById(reservationId)
             ?: throw NotFoundException("예약을 찾을 수 없습니다")
         if (reservation.memberId != accountId && reservation.hostId != accountId) {
@@ -249,11 +249,11 @@ class ReservationService(
         status: String?,
         cursor: Long?,
         limit: Int,
-    ): List<com.lookation.dto.HostReservationResponse> {
+    ): List<com.lookation.dto.HostReservationDto> {
         if (limit !in 1..100) throw BadRequestException("limit은 1~100입니다")
         return reservationRepository.findByHost(hostId, status, cursor, limit).map { row ->
             val contactVisible = row.status == "CONFIRMED" || row.status == "COMPLETED"
-            com.lookation.dto.HostReservationResponse(
+            com.lookation.dto.HostReservationDto(
                 id = row.id,
                 spaceId = row.spaceId,
                 spaceName = row.spaceName,
@@ -270,10 +270,10 @@ class ReservationService(
     }
 
     @Transactional(readOnly = true)
-    fun listMine(memberId: Long): List<ReservationResponse> =
+    fun listMine(memberId: Long): List<ReservationDto> =
         reservationRepository.findByMember(memberId).map { it.toResponse() }
 
-    private fun ReservationRow.toResponse(refundedAmount: Long? = null) = ReservationResponse(
+    private fun ReservationRow.toResponse(refundedAmount: Long? = null) = ReservationDto(
         id = id,
         spaceId = spaceId,
         startAt = startAt,

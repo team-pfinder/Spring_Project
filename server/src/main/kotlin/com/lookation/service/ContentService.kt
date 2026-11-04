@@ -2,10 +2,10 @@ package com.lookation.service
 
 import com.lookation.controller.form.HelpForm
 import com.lookation.controller.form.NoticeForm
-import com.lookation.dto.HelpListResponse
-import com.lookation.dto.HelpResponse
-import com.lookation.dto.NoticeListResponse
-import com.lookation.dto.NoticeResponse
+import com.lookation.dto.HelpListDto
+import com.lookation.dto.HelpDto
+import com.lookation.dto.NoticeListDto
+import com.lookation.dto.NoticeDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.ContentRepository
@@ -18,23 +18,23 @@ import org.springframework.transaction.annotation.Transactional
 class ContentService(private val contentRepository: ContentRepository) {
 
     @Transactional(readOnly = true)
-    fun notices(cursor: Long?, limit: Int): NoticeListResponse {
+    fun notices(cursor: Long?, limit: Int): NoticeListDto {
         validateLimit(limit)
         val rows = contentRepository.listNotices(cursor, limit)
-        return NoticeListResponse(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
+        return NoticeListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
     @Transactional(readOnly = true)
-    fun notice(id: Long): NoticeResponse =
+    fun notice(id: Long): NoticeDto =
         (contentRepository.findNotice(id) ?: throw NotFoundException("공지사항을 찾을 수 없습니다")).toResponse()
 
     @Transactional
-    fun createNotice(form: NoticeForm): NoticeResponse =
+    fun createNotice(form: NoticeForm): NoticeDto =
         contentRepository.insertNotice(form.title, form.content, form.important)
             .let { requireNotNull(contentRepository.findNotice(it)).toResponse() }
 
     @Transactional
-    fun updateNotice(id: Long, form: NoticeForm): NoticeResponse {
+    fun updateNotice(id: Long, form: NoticeForm): NoticeDto {
         contentRepository.findNotice(id) ?: throw NotFoundException("공지사항을 찾을 수 없습니다")
         contentRepository.updateNotice(id, form.title, form.content, form.important)
         return requireNotNull(contentRepository.findNotice(id)).toResponse()
@@ -46,23 +46,23 @@ class ContentService(private val contentRepository: ContentRepository) {
     }
 
     @Transactional(readOnly = true)
-    fun helps(category: String?, cursor: Long?, limit: Int): HelpListResponse {
+    fun helps(category: String?, cursor: Long?, limit: Int): HelpListDto {
         validateLimit(limit)
         val rows = contentRepository.listHelps(category, cursor, limit)
-        return HelpListResponse(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
+        return HelpListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
     @Transactional(readOnly = true)
-    fun help(id: Long): HelpResponse =
+    fun help(id: Long): HelpDto =
         (contentRepository.findHelp(id) ?: throw NotFoundException("도움말을 찾을 수 없습니다")).toResponse()
 
     @Transactional
-    fun createHelp(form: HelpForm): HelpResponse =
+    fun createHelp(form: HelpForm): HelpDto =
         contentRepository.insertHelp(form.category, form.title, form.content)
             .let { requireNotNull(contentRepository.findHelp(it)).toResponse() }
 
     @Transactional
-    fun updateHelp(id: Long, form: HelpForm): HelpResponse {
+    fun updateHelp(id: Long, form: HelpForm): HelpDto {
         contentRepository.findHelp(id) ?: throw NotFoundException("도움말을 찾을 수 없습니다")
         contentRepository.updateHelp(id, form.category, form.title, form.content)
         return requireNotNull(contentRepository.findHelp(id)).toResponse()
@@ -77,6 +77,6 @@ class ContentService(private val contentRepository: ContentRepository) {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
     }
 
-    private fun NoticeRow.toResponse() = NoticeResponse(id, title, content, important, createdAt, updatedAt)
-    private fun HelpRow.toResponse() = HelpResponse(id, category, title, content, createdAt, updatedAt)
+    private fun NoticeRow.toResponse() = NoticeDto(id, title, content, important, createdAt, updatedAt)
+    private fun HelpRow.toResponse() = HelpDto(id, category, title, content, createdAt, updatedAt)
 }

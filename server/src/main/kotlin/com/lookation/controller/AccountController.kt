@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.AccountResponse
+import com.lookation.dto.AccountDto
 
 
 @RestController
@@ -16,11 +16,11 @@ import com.lookation.dto.AccountResponse
 class AccountController(private val accountRepository: AccountRepository) {
 
     @GetMapping("/me")
-    fun me(@AuthenticationPrincipal jwt: Jwt): AccountResponse {
+    fun me(@AuthenticationPrincipal jwt: Jwt): AccountDto {
         val accountId = jwt.subject?.toLongOrNull() ?: throw UnauthorizedException("토큰 주체가 없습니다")
         val account = accountRepository.findById(accountId)
             ?: throw NotFoundException("계정을 찾을 수 없습니다")
-        return AccountResponse(
+        return AccountDto(
             id = account.id,
             email = account.email,
             name = account.name,

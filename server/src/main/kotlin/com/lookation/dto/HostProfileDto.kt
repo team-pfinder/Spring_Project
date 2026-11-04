@@ -1,6 +1,6 @@
 package com.lookation.dto
 
-data class HostProfileResponse(
+data class HostProfileDto(
     val businessName: String,
     val businessNumber: String,
     val representativeName: String,

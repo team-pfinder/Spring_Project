@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import com.lookation.dto.HostReservationResponse
+import com.lookation.dto.HostReservationDto
 
 @RestController
 @RequestMapping("/api/v1/hosts/reservations")
@@ -22,7 +22,7 @@ class HostReservationController(private val reservationService: ReservationServi
         @RequestParam(required = false) status: String?,
         @RequestParam(required = false) cursor: Long?,
         @RequestParam(defaultValue = "20") limit: Int,
-    ): List<HostReservationResponse> =
+    ): List<HostReservationDto> =
         reservationService.listForHost(jwt.accountId(), status, cursor, limit)
 
     private fun Jwt.accountId(): Long =
