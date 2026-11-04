@@ -69,7 +69,8 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 - 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `15432`, Mailpit `11025`/`18025`, MiniStack `14566`(시크릿 `lookation/local`). 앱은 `cd server && SPRING_PROFILES_ACTIVE=local ./gradlew bootRun`. 프로필을 export하면 `./gradlew build`가 Testcontainers 대신 로컬 DB를 본다.
 - 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
 - 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`, `SPRING_MAIL_*`(없으면 코드 로그 출력).
-- 패키지: `com.lookation.<layer>.<feature>` — `controller`, `service`, `repository`, `domain`, `dto`, `global` (ADR 0009).
+- 패키지: `com.lookation.<layer>` — `controller`, `service`, `repository`, `domain`, `dto`, `global`. 기능별 하위 패키지는 두지 않는다 (ADR 0009).
+- 요청 Form은 `controller/form`, 상태·구분 enum은 `domain/Enums.kt`에 모은다. DB에는 enum 이름을 저장한다.
 - 요청은 `XxxForm`, 응답은 `XxxResponse`. 오류는 RFC 9457 `ProblemDetail`.
 
 ## 코드 규칙

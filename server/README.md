@@ -108,4 +108,4 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 
 ## 패키지
 
-`com.lookation.<layer>.<feature>` — `controller`, `service`, `repository`, `domain`, `dto`, 공통은 `global`. 요청 Form은 `controller/<feature>`, 응답은 `dto/<feature>`.
+`com.lookation.<layer>` — `controller`, `service`, `repository`, `domain`, `dto`, 공통은 `global`. 기능별 하위 패키지는 두지 않는다. 요청 Form은 `controller/form`, 응답은 `dto`, 상태 enum은 `domain/Enums.kt`.
