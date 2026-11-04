@@ -52,6 +52,25 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 
 배포본은 `중요파일/00. export/호스팅용/ROOT.war`(컨텍스트 `/`), 소스 배포본은 `소스용/Lookation.war`다. 두 WAR의 `dispatcher-servlet.xml`은 저장소 사본과 내용이 다르다.
 
+## 신규 백엔드 (server/)
+
+레거시 `Lookation/`은 동결했고, 재작성은 `server/`에서 진행한다. 결정 근거는 `docs/adr/0001`~`0008`, 레거시→신규 대응표는 `docs/rewrite/parity-checklist.md`(184행)다.
+
+| 항목 | 값 |
+|---|---|
+| 언어 | Kotlin 2.3 |
+| 런타임 | JDK 25 LTS, 가상 스레드 활성 |
+| 프레임워크 | Spring Boot 4.1.2 (Spring Security 7, JWT) |
+| DB | PostgreSQL + Flyway |
+| SQL | jOOQ 3.21 (Flyway DDL에서 코드 생성) |
+| 테스트 | Testcontainers PostgreSQL |
+
+- 빌드: `cd server && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
+- 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
+- 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`.
+- 패키지: `com.lookation.<feature>.{api, application, domain, infrastructure}`.
+- 요청은 `XxxForm`, 응답은 `XxxResponse`. 오류는 RFC 9457 `ProblemDetail`.
+
 ## 코드 규칙
 
 ### 라우팅 — 두 체계
@@ -110,9 +129,12 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | 검증자 | 실행 |
 | --- | --- |
 | Gemini | `orca agent launch --agent gemini --worktree path:<repo> --prompt "<brief>"` |
-| Codex | `orca agent launch --agent codex --worktree path:<repo> --prompt "<brief>"` |
-| OpenCode | `opencode run --auto --model opencode-go/muse-spark-1.3-contributor "<brief>"` |
+| Codex | `orca agent launch --agent codex --worktree path:<repo> --model gpt-6.1-sol --effort high --prompt "<brief>"` |
+| OpenCode | `opencode run --auto -m opencode-go/muse-spark-1.3-contributor#xhigh "<brief>"` |
 
+- 기본 모델: Gemini `gemini-3.8-flash`(무료 티어, `~/.gemini/settings.json`의 `model.name`에 고정), Codex `gpt-6.1-sol` + `--effort high`, OpenCode `muse-spark-1.3-contributor` + `#xhigh`.
+- Orca는 gemini 런치에 `--model`/`--effort`를 지원하지 않는다(`does not support launch-time model selection`). Gemini 모델은 CLI 설정으로만 바꾼다.
+- OpenCode `#max`는 제공되지 않는다. 최대는 `#xhigh`.
 - OpenCode는 `orca agent launch --agent opencode`가 `agent_session_operation_unknown`으로 실패하므로 Orca 터미널에서 `opencode run`을 직접 실행한다.
 - 검증자는 읽기 전용으로 두고, 결과 파일은 `/tmp/lookation-review-<agent>.md`에 쓰게 한다.
 - 수치 지적은 반영 전에 직접 재계산한다.
@@ -125,9 +147,9 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 - 역할별 URL 접두사를 가정한 문서·이슈를 만들지 않는다.
 - 테스트 없이 대규모 리팩터링을 하지 않는다. 먼저 회귀 시나리오를 적는다.
 
-## 미해결 결정 (구현 전)
+## 확정된 결정 (2026-11-03)
 
-기획서 분석에서 blocker 6건이 나왔다. 결정 전에는 해당 기능을 구현하지 않는다.
+기획서 분석 blocker 6건은 2026-11-03 모두 확정했다. 결정 내용은 `GLOSSARY.md`와 `docs/adr/0005`~`0007`에 있다. 아래 표는 이력용이다.
 
 | ID | 쟁점 |
 | --- | --- |

@@ -32,7 +32,7 @@
 | 근거·출처 | `[p.3]`, `[p.13]`, `[정책 §관리자 3-2]` |
 | 권장 조치 | 영구/기간제 중 하나를 제품이 결정하고, 기간제라면 차수별 기간표와 자동 해제 배치 여부를 명시한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 기간제 누적(1차 7일, 2차 30일, 3차 영구), 자동 해제 배치. [ADR 0005](../../adr/0005-unified-account-model.md) |
 | 관련 | [P-ACCOUNT-BLACKLIST-01](processes.md#p-account-blacklist-01), [F-ACCOUNT-BLACKLIST-01](flows.md#f-account-blacklist-01) |
 
 #### V-PERM-BLACKLIST-01
@@ -45,7 +45,7 @@
 | 근거·출처 | `[p.3]`, `[p.11]`, `[정책 §관리자 3-2]` |
 | 권장 조치 | 허용 기능 목록을 표로 확정하고, 로그인·조회·충전·환전·탈퇴 각각의 허용/차단을 명시한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 로그인·예약 조회·환전·탈퇴만 허용, 쓰기 차단. [ADR 0005](../../adr/0005-unified-account-model.md) |
 | 관련 | [P-ACCOUNT-BLACKLIST-01](processes.md#p-account-blacklist-01), [P-AUTH-LOGIN-01](processes.md#p-auth-login-01) |
 
 #### V-STATUS-RESERVATION-01
@@ -58,7 +58,7 @@
 | 근거·출처 | `[p.9]`, `[p.17]`, `[정책 §이용자 5-3]` |
 | 권장 조치 | 상태 집합을 확정하고, 이용완료 전이를 배치/실시간 중 무엇으로 판정하는지 명시한다. |
 | 담당 | 제품·개발 |
-| 상태 | open |
+| 상태 | resolved — 8상태(PENDING_APPROVAL/PENDING_PAYMENT/CONFIRMED/COMPLETED/CANCELLED/REFUNDED/REJECTED/EXPIRED), 이용완료는 00:05 배치. [ADR 0006](../../adr/0006-reservation-state-machine.md) |
 | 관련 | [P-DOMAIN-RESERVATION-01](processes.md#p-domain-reservation-01), [P-DOMAIN-RESERVATION-CANCEL-01](processes.md#p-domain-reservation-cancel-01) |
 
 #### V-STATUS-INSPECT-01
@@ -71,7 +71,7 @@
 | 근거·출처 | `[p.3]`, `[p.14]`, `[p.15]`, `[최종 §4-1]`, `[정책 §호스트 3-2]` |
 | 권장 조치 | 상태 코드표(코드·표시명·전이 조건)를 하나로 확정하고 화면 문구를 코드에서 파생시킨다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — DRAFT/PENDING_INSPECTION/INSPECTION_REJECTED/PUBLISHED/SUSPENDED/CLOSED. 반려 후 재신청은 V-STATUS-INSPECT-02에서 계속 |
 | 관련 | [P-PROC-INSPECT-01](processes.md#p-proc-inspect-01), [F-PROC-INSPECT-01](flows.md#f-proc-inspect-01) |
 
 #### V-PROC-SETTLE-01
@@ -84,7 +84,7 @@
 | 근거·출처 | `[p.18]`, `[p.19]`, `[최종 §5-1]`, `[정책 §호스트 8]` |
 | 권장 조치 | 자동/수동 중 하나를 정하고, 정산 후 취소·환불 시 회수 또는 차감 규칙을 정의한다. |
 | 담당 | 제품·개발 |
-| 상태 | open |
+| 상태 | resolved — 정산 자동(T+1), 출금만 호스트 신청, 정산 후 취소는 음수 원장. [ADR 0007](../../adr/0007-wallet-ledger-settlement.md) |
 | 관련 | [P-DOMAIN-MILEAGE-SETTLE-01](processes.md#p-domain-mileage-settle-01), [F-DOMAIN-MILEAGE-SETTLE-01](flows.md#f-domain-mileage-settle-01) |
 
 #### V-INT-PAYMENT-01
@@ -97,7 +97,7 @@
 | 근거·출처 | `[p.9]`, `[p.16]`, `[정책 §이용자 3-3]`, `[기술 p.76]` |
 | 권장 조치 | 승인예약을 요구 범위에 포함할지 결정한다. 포함하면 승인 대기 상태와 시한·거절 처리를 정의한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 승인예약 포함. 승인 24시간, 결제 1시간 시한, 초과 시 EXPIRED. [ADR 0006](../../adr/0006-reservation-state-machine.md) |
 | 관련 | [P-DOMAIN-RESERVATION-01](processes.md#p-domain-reservation-01), [F-DOMAIN-RESERVATION-01](flows.md#f-domain-reservation-01) |
 
 ### Major
@@ -138,7 +138,7 @@
 | 근거·출처 | `[p.12]`, `[p.13]` |
 | 권장 조치 | 탈퇴 이메일 재사용 규칙과 재가입 시 데이터 연결 정책을 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 탈퇴 후 30일 유예 동안 재가입 차단, 이후 같은 이메일로 새 계정 생성. 기존 게시물·예약은 익명 유지, 연결 없음 |
 | 관련 | [P-ACCOUNT-SIGNUP-01](processes.md#p-account-signup-01), [F-ACCOUNT-SIGNUP-01](flows.md#f-account-signup-01) |
 
 #### V-ACCOUNT-WITHDRAW-01
@@ -164,7 +164,7 @@
 | 근거·출처 | `[p.13]`, `[기술 p.69]` |
 | 권장 조치 | 항목별 삭제/보존/보존 기간을 표로 확정하고 분리보관 스키마를 정의한다. |
 | 담당 | 제품·개발 |
-| 상태 | open |
+| 상태 | resolved — 탈퇴 즉시 로그인 차단, 30일 유예 후 개인정보 익명화, 예약·결제·정산 기록 5년 보존, 리뷰는 작성자만 익명화 |
 | 관련 | [P-ACCOUNT-WITHDRAW-01](processes.md#p-account-withdraw-01) |
 
 #### V-DOMAIN-MILEAGE-REFUND-01
@@ -229,7 +229,7 @@
 | 근거·출처 | `[p.18]`, `[정책 §호스트 8]`, `[최종 §5-1]` |
 | 권장 조치 | 수수료율과 계산·반올림 규칙을 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 10%, 원 단위 내림, 부가세는 수수료에 포함. `fee = floor(price × 0.10)`, `net = price - fee` |
 | 관련 | [P-DOMAIN-MILEAGE-SETTLE-01](processes.md#p-domain-mileage-settle-01) |
 
 #### V-DOMAIN-SPACE-01
@@ -242,7 +242,7 @@
 | 근거·출처 | `[p.15]`, `[p.3]` |
 | 권장 조치 | 예약 보유 공간의 삭제 차단과 대안(비노출·예약 종료 후 삭제)을 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 미종료 예약이 있으면 삭제 불가. `CLOSED`로 전환해 신규 예약만 차단하고 마지막 예약 종료 후 삭제. 블라인드 공간도 동일 |
 | 관련 | [P-DOMAIN-SPACE-MANAGE-01](processes.md#p-domain-space-manage-01), [F-DOMAIN-SPACE-MANAGE-01](flows.md#f-domain-space-manage-01) |
 
 #### V-STATUS-INSPECT-02
@@ -255,7 +255,7 @@
 | 근거·출처 | `[p.15]`, `[정책 §호스트 3-2]`, `[기술 p.58]` |
 | 권장 조치 | 재신청 허용 여부와 재신청 시 수정 가능 범위를 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 재신청 허용. 반려 사유 확인 후 공간 정보 전체 수정 가능, 재신청마다 `inspections` 새 행, 횟수 제한 없음 |
 | 관련 | [P-PROC-INSPECT-01](processes.md#p-proc-inspect-01), [F-PROC-INSPECT-01](flows.md#f-proc-inspect-01) |
 
 #### V-DOMAIN-PACKAGE-01
@@ -268,7 +268,7 @@
 | 근거·출처 | `[p.16]`, `[기술 p.47]`, `[기술 p.49]` |
 | 권장 조치 | 겹침 판정 기준과 적용 가능 날짜 범위를 확정한다. |
 | 담당 | 제품·개발 |
-| 상태 | open |
+| 상태 | resolved — 겹침은 시간 구간으로 판정(DB exclusion constraint). 가격은 요일 + 시간대 규칙, 예약 가능 범위는 오늘~90일. 날짜별 예외 가격 없음 |
 | 관련 | [P-DOMAIN-PACKAGE-01](processes.md#p-domain-package-01), [F-DOMAIN-PACKAGE-01](flows.md#f-domain-package-01) |
 
 #### V-DOMAIN-RESERVATION-01
@@ -281,7 +281,7 @@
 | 근거·출처 | `[p.9]`, `[p.18]`, `[정책 §호스트 5-1]` |
 | 권장 조치 | 취소 주체별 시한과 환불 비율표를 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 이용자: 7일 전 100%, 3일 전 70%, 1일 전 50%, 당일 0%. 호스트: 시한 없이 100% 환불, 취소 3회 누적 시 관리자 검토 |
 | 관련 | [P-DOMAIN-RESERVATION-CANCEL-01](processes.md#p-domain-reservation-cancel-01), [F-DOMAIN-RESERVATION-CANCEL-01](flows.md#f-domain-reservation-cancel-01) |
 
 #### V-DOMAIN-RESERVATION-02
@@ -294,7 +294,7 @@
 | 근거·출처 | `[p.9]`, `[기술 p.76]` |
 | 권장 조치 | 동시성 제어 방식과 결제·예약 트랜잭션 경계를 확정한다. |
 | 담당 | 개발 |
-| 상태 | open |
+| 상태 | resolved — 단일 트랜잭션: 잔액 조건부 UPDATE → `HOLD` 원장 → 예약 INSERT. 겹침은 exclusion constraint가 최종 방어, 패배 요청 409 |
 | 관련 | [P-DOMAIN-RESERVATION-01](processes.md#p-domain-reservation-01), [F-DOMAIN-RESERVATION-01](flows.md#f-domain-reservation-01) |
 
 #### V-DOMAIN-PAYMENT-01
@@ -307,7 +307,7 @@
 | 근거·출처 | `[p.16]`, `[p.18]`, `[p.19]` |
 | 권장 조치 | 에스크로 상태(보관·해제·반환)와 환불 계산식을 확정한다. |
 | 담당 | 제품·개발 |
-| 상태 | open |
+| 상태 | resolved — 결제 시 `HOLD`, 이용완료 시 `RELEASE`+`SETTLE`, 취소 시 계산된 금액만 `REFUND`. PG 승인은 트랜잭션 밖, 실패 시 보상 |
 | 관련 | [P-DOMAIN-RESERVATION-CANCEL-01](processes.md#p-domain-reservation-cancel-01), [F-DOMAIN-RESERVATION-CANCEL-01](flows.md#f-domain-reservation-cancel-01) |
 
 #### V-DOMAIN-REVIEW-01
@@ -333,7 +333,7 @@
 | 근거·출처 | `[p.8]`, `[p.17]` |
 | 권장 조치 | 작성 자격과 예약당 리뷰 수 제한을 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — COMPLETED 예약 1건당 1리뷰, 이용완료 후 30일 이내, 수정 불가, 삭제는 관리자 블라인드만 |
 | 관련 | [P-DOMAIN-REVIEW-01](processes.md#p-domain-review-01) |
 
 #### V-DOMAIN-QNA-01
@@ -372,7 +372,7 @@
 | 근거·출처 | `[p.2]`, `[p.11]`, `[정책 §이용자 4-3]`, `[정책 §관리자 2-1]` |
 | 권장 조치 | 자동 블라인드 임계값·카운트 단위·기간·반려 제외 여부를 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 자동 블라인드 없음. 신고는 관리자 판단으로만 처리하고, 관리자 화면에 대상별 신고 누적 수를 표시한다 |
 | 관련 | [P-PROC-REPORT-01](processes.md#p-proc-report-01), [F-PROC-REPORT-01](flows.md#f-proc-report-01) |
 
 #### V-INT-EMAIL-01
@@ -426,7 +426,7 @@
 | 근거·출처 | `[p.10]`, `[p.19]` |
 | 권장 조치 | 표시명은 PIRI, 코드명은 message로 고정한다. |
 | 담당 | 제품·문서 |
-| 상태 | open |
+| 상태 | resolved — 표시명 PIRI, 코드·테이블·API는 `message`/`messages` |
 | 관련 | [P-DOMAIN-MESSAGE-01](processes.md#p-domain-message-01) |
 
 #### V-UI-SEARCH-01
@@ -467,7 +467,7 @@
 | 근거·출처 | `[p.7]`, `[p.16]`, `[정책 §이용자 3-2]` |
 | 권장 조치 | 유형 전체 목록과 추가·변경 권한을 확정한다. |
 | 담당 | 제품 |
-| 상태 | open |
+| 상태 | resolved — 6종 고정(PARTY_ROOM·EMPTY_SPACE·ROOFTOP·BRIDAL_SHOWER·CLUB·WORKSHOP), 추가는 마이그레이션으로만 |
 | 관련 | [P-DOMAIN-SPACE-REGISTER-01](processes.md#p-domain-space-register-01), [F-DOMAIN-SPACE-REGISTER-01](flows.md#f-domain-space-register-01) |
 
 #### V-REPORT-OPERATION-01
