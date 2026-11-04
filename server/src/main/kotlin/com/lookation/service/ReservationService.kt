@@ -7,6 +7,7 @@ import com.lookation.global.error.NotFoundException
 import com.lookation.controller.form.CreateReservationForm
 import com.lookation.dto.ReservationDto
 import com.lookation.domain.CancellationPolicy
+import com.lookation.domain.ReservationStatus
 import com.lookation.repository.ReservationRepository
 import com.lookation.repository.ReservationRow
 import com.lookation.repository.SpaceRepository
@@ -44,7 +45,7 @@ class ReservationService(
 
         val space = spaceRepository.findById(form.spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != "PUBLISHED") {
+        if (space.status != com.lookation.domain.SpaceStatus.PUBLISHED) {
             throw ConflictException("예약할 수 없는 공간입니다")
         }
         if (form.guestCount < space.minCapacity || form.guestCount > space.maxCapacity) {
@@ -85,7 +86,7 @@ class ReservationService(
             }
         }
 
-        val initialStatus = if (requiresApproval) "PENDING_APPROVAL" else "CONFIRMED"
+        val initialStatus = if (requiresApproval) ReservationStatus.PENDING_APPROVAL else ReservationStatus.CONFIRMED
         val reservationId = try {
             reservationRepository.insert(
                 memberId = memberId,
@@ -119,15 +120,15 @@ class ReservationService(
         val now = OffsetDateTime.now()
         if (reservationRepository.updateStatus(
                 id = reservationId,
-                expectedStatus = "PENDING_APPROVAL",
-                status = "PENDING_PAYMENT",
+                expectedStatus = ReservationStatus.PENDING_APPROVAL,
+                status = ReservationStatus.PENDING_PAYMENT,
                 approvedAt = now,
                 paymentDueAt = now.plusHours(PAYMENT_WINDOW_HOURS),
             ) != 1
         ) {
             throw ConflictException("승인할 수 없는 상태입니다")
         }
-        reservationRepository.addEvent(reservationId, "PENDING_APPROVAL", "PENDING_PAYMENT", "HOST", hostId)
+        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.PENDING_PAYMENT, "HOST", hostId)
         return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
     }
 
@@ -138,10 +139,10 @@ class ReservationService(
         if (reservation.hostId != hostId) {
             throw ForbiddenException("호스트만 거절할 수 있습니다")
         }
-        if (reservationRepository.updateStatus(reservationId, "PENDING_APPROVAL", "REJECTED") != 1) {
+        if (reservationRepository.updateStatus(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.REJECTED) != 1) {
             throw ConflictException("거절할 수 없는 상태입니다")
         }
-        reservationRepository.addEvent(reservationId, "PENDING_APPROVAL", "REJECTED", "HOST", hostId, reason)
+        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.REJECTED, "HOST", hostId, reason)
         return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
     }
 
@@ -153,7 +154,7 @@ class ReservationService(
         if (reservation.memberId != memberId) {
             throw ForbiddenException("예약자만 결제할 수 있습니다")
         }
-        if (reservation.status != "PENDING_PAYMENT") {
+        if (reservation.status != ReservationStatus.PENDING_PAYMENT) {
             throw ConflictException("결제할 수 없는 상태입니다")
         }
         if (reservation.paymentDueAt?.isBefore(OffsetDateTime.now()) == true) {
@@ -165,15 +166,15 @@ class ReservationService(
         }
         if (reservationRepository.updateStatus(
                 id = reservationId,
-                expectedStatus = "PENDING_PAYMENT",
-                status = "CONFIRMED",
+                expectedStatus = ReservationStatus.PENDING_PAYMENT,
+                status = ReservationStatus.CONFIRMED,
                 confirmedAt = OffsetDateTime.now(),
             ) != 1
         ) {
             throw ConflictException("이미 처리된 예약입니다")
         }
         walletRepository.addEntry(memberId, "HOLD", -reservation.price, "RESERVATION", reservationId)
-        reservationRepository.addEvent(reservationId, "PENDING_PAYMENT", "CONFIRMED", "MEMBER", memberId)
+        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_PAYMENT, ReservationStatus.CONFIRMED, "MEMBER", memberId)
         return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
     }
 
@@ -192,14 +193,14 @@ class ReservationService(
         if (!OffsetDateTime.now().isBefore(reservation.startAt)) {
             throw BadRequestException("이용 시작 후에는 취소할 수 없습니다")
         }
-        if (reservation.status != "CONFIRMED") {
-            if (reservationRepository.updateStatus(reservationId, reservation.status, "CANCELLED", cancelledAt = OffsetDateTime.now()) != 1) {
+        if (reservation.status != ReservationStatus.CONFIRMED) {
+            if (reservationRepository.updateStatus(reservationId, reservation.status, ReservationStatus.CANCELLED, cancelledAt = OffsetDateTime.now()) != 1) {
                 throw ConflictException("이미 처리된 예약입니다")
             }
             reservationRepository.addEvent(
                 reservationId,
                 reservation.status,
-                "CANCELLED",
+                ReservationStatus.CANCELLED,
                 if (reservation.hostId == accountId) "HOST" else "MEMBER",
                 accountId,
             )
@@ -213,7 +214,7 @@ class ReservationService(
         }
         val refund = CancellationPolicy.refundAmount(reservation.price, rate)
 
-        if (reservationRepository.updateStatus(reservation.id, "CONFIRMED", "CANCELLED", OffsetDateTime.now()) != 1) {
+        if (reservationRepository.updateStatus(reservation.id, ReservationStatus.CONFIRMED, ReservationStatus.CANCELLED, OffsetDateTime.now()) != 1) {
             throw ConflictException("이미 처리된 예약입니다")
         }
         if (refund > 0) {
@@ -223,8 +224,8 @@ class ReservationService(
         }
         reservationRepository.addEvent(
             reservationId = reservation.id,
-            fromStatus = "CONFIRMED",
-            toStatus = "CANCELLED",
+            fromStatus = ReservationStatus.CONFIRMED,
+            toStatus = ReservationStatus.CANCELLED,
             actorType = if (isHost) "HOST" else "MEMBER",
             actorId = accountId,
         )
@@ -251,8 +252,15 @@ class ReservationService(
         limit: Int,
     ): List<com.lookation.dto.HostReservationDto> {
         if (limit !in 1..100) throw BadRequestException("limit은 1~100입니다")
-        return reservationRepository.findByHost(hostId, status, cursor, limit).map { row ->
-            val contactVisible = row.status == "CONFIRMED" || row.status == "COMPLETED"
+        val statusFilter = status?.let {
+            try {
+                ReservationStatus.valueOf(it)
+            } catch (_: IllegalArgumentException) {
+                throw BadRequestException("알 수 없는 예약 상태입니다")
+            }
+        }
+        return reservationRepository.findByHost(hostId, statusFilter, cursor, limit).map { row ->
+            val contactVisible = row.status == ReservationStatus.CONFIRMED || row.status == ReservationStatus.COMPLETED
             com.lookation.dto.HostReservationDto(
                 id = row.id,
                 spaceId = row.spaceId,
@@ -264,7 +272,7 @@ class ReservationService(
                 endAt = row.endAt,
                 guestCount = row.guestCount,
                 price = row.price,
-                status = row.status,
+                status = row.status.name,
             )
         }
     }
@@ -279,14 +287,18 @@ class ReservationService(
         startAt = startAt,
         endAt = endAt,
         price = price,
-        status = status,
+        status = status.name,
         refundedAmount = refundedAmount,
     )
 
     companion object {
         private const val MAX_ADVANCE_DAYS = 90L
         private const val PAYMENT_WINDOW_HOURS = 1L
-        private val CANCELLABLE_STATUSES = setOf("PENDING_APPROVAL", "PENDING_PAYMENT", "CONFIRMED")
+        private val CANCELLABLE_STATUSES = setOf(
+            ReservationStatus.PENDING_APPROVAL,
+            ReservationStatus.PENDING_PAYMENT,
+            ReservationStatus.CONFIRMED,
+        )
         private val KST = ZoneId.of("Asia/Seoul")
     }
 }

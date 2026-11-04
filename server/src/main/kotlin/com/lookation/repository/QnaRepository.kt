@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.QnaStatus
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.QnaReplies.QNA_REPLIES
 import com.lookation.jooq.tables.Qnas.QNAS
@@ -14,7 +15,7 @@ data class QnaRow(
     val nickname: String,
     val title: String,
     val content: String,
-    val status: String,
+    val status: QnaStatus,
     val createdAt: OffsetDateTime,
     val reply: String?,
 )
@@ -47,9 +48,9 @@ class QnaRepository(private val dsl: DSLContext) {
 
     fun markAnswered(id: Long): Int =
         dsl.update(QNAS)
-            .set(QNAS.STATUS, "ANSWERED")
+            .set(QNAS.STATUS, QnaStatus.ANSWERED.name)
             .where(QNAS.ID.eq(id))
-            .and(QNAS.STATUS.eq("OPEN"))
+            .and(QNAS.STATUS.eq(QnaStatus.OPEN.name))
             .execute()
 
     fun insertReply(qnaId: Long, hostId: Long, content: String) {
@@ -64,7 +65,7 @@ class QnaRepository(private val dsl: DSLContext) {
         dsl.deleteFrom(QNAS)
             .where(QNAS.ID.eq(id))
             .and(QNAS.MEMBER_ID.eq(memberId))
-            .and(QNAS.STATUS.eq("OPEN"))
+            .and(QNAS.STATUS.eq(QnaStatus.OPEN.name))
             .execute()
 
     private fun baseQuery() =
@@ -91,7 +92,7 @@ class QnaRepository(private val dsl: DSLContext) {
             nickname = value4(),
             title = value5(),
             content = value6(),
-            status = value7(),
+            status = QnaStatus.valueOf(value7()),
             createdAt = value8(),
             reply = value9(),
         )

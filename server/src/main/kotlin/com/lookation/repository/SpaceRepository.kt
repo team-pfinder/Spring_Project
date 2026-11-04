@@ -5,6 +5,9 @@ import com.lookation.jooq.tables.Inspections.INSPECTIONS
 import com.lookation.jooq.tables.PriceRules.PRICE_RULES
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
 import com.lookation.jooq.tables.SpaceFacilities.SPACE_FACILITIES
+import com.lookation.domain.InspectionStatus
+import com.lookation.domain.ReservationStatus
+import com.lookation.domain.SpaceStatus
 import com.lookation.jooq.tables.Spaces.SPACES
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
@@ -29,7 +32,7 @@ data class SpaceRow(
     val contactPhone: String?,
     val websiteUrl: String?,
     val approvalRequired: Boolean,
-    val status: String,
+    val status: SpaceStatus,
 )
 
 data class PriceLookup(
@@ -51,7 +54,7 @@ data class SpaceSummary(
 data class InspectionRow(
     val id: Long,
     val spaceId: Long,
-    val status: String,
+    val status: InspectionStatus,
     val reason: String?,
     val requestedAt: OffsetDateTime,
 )
@@ -133,12 +136,12 @@ class SpaceRepository(private val dsl: DSLContext) {
             .execute()
     }
 
-    fun updateStatus(id: Long, expected: String, status: String) {
+    fun updateStatus(id: Long, expected: SpaceStatus, status: SpaceStatus) {
         dsl.update(SPACES)
-            .set(SPACES.STATUS, status)
+            .set(SPACES.STATUS, status.name)
             .set(SPACES.UPDATED_AT, OffsetDateTime.now())
             .where(SPACES.ID.eq(id))
-            .and(SPACES.STATUS.eq(expected))
+            .and(SPACES.STATUS.eq(expected.name))
             .execute()
     }
 
@@ -156,7 +159,7 @@ class SpaceRepository(private val dsl: DSLContext) {
         cursor: Long?,
         limit: Int,
     ): List<SpaceSummary> {
-        var condition = SPACES.STATUS.eq("PUBLISHED").and(SPACES.DELETED_AT.isNull)
+        var condition = SPACES.STATUS.eq(SpaceStatus.PUBLISHED.name).and(SPACES.DELETED_AT.isNull)
         if (type != null) {
             condition = condition.and(SPACES.SPACE_TYPE.eq(type))
         }
@@ -187,7 +190,11 @@ class SpaceRepository(private val dsl: DSLContext) {
                 DSL.selectOne()
                     .from(RESERVATIONS)
                     .where(RESERVATIONS.SPACE_ID.eq(SPACES.ID))
-                    .and(RESERVATIONS.STATUS.`in`("PENDING_APPROVAL", "PENDING_PAYMENT", "CONFIRMED"))
+                    .and(RESERVATIONS.STATUS.`in`(
+                        ReservationStatus.PENDING_APPROVAL.name,
+                        ReservationStatus.PENDING_PAYMENT.name,
+                        ReservationStatus.CONFIRMED.name,
+                    ))
                     .and(
                         DSL.condition(
                             "tstzrange(reservations.start_at, reservations.end_at, '[)') && tstzrange({0}, {1}, '[)')",
@@ -295,12 +302,16 @@ class SpaceRepository(private val dsl: DSLContext) {
         dsl.fetchCount(
             RESERVATIONS,
             RESERVATIONS.SPACE_ID.eq(spaceId)
-                .and(RESERVATIONS.STATUS.`in`("PENDING_APPROVAL", "PENDING_PAYMENT", "CONFIRMED")),
+                .and(RESERVATIONS.STATUS.`in`(
+                    ReservationStatus.PENDING_APPROVAL.name,
+                    ReservationStatus.PENDING_PAYMENT.name,
+                    ReservationStatus.CONFIRMED.name,
+                )),
         ) > 0
 
     fun softDelete(id: Long) {
         dsl.update(SPACES)
-            .set(SPACES.STATUS, "CLOSED")
+            .set(SPACES.STATUS, SpaceStatus.CLOSED.name)
             .set(SPACES.DELETED_AT, OffsetDateTime.now())
             .set(SPACES.UPDATED_AT, OffsetDateTime.now())
             .where(SPACES.ID.eq(id))
@@ -308,10 +319,10 @@ class SpaceRepository(private val dsl: DSLContext) {
             .execute()
     }
 
-    fun insertInspection(spaceId: Long, status: String, reason: String?, adminId: Long?) {
+    fun insertInspection(spaceId: Long, status: InspectionStatus, reason: String?, adminId: Long?) {
         dsl.insertInto(INSPECTIONS)
             .set(INSPECTIONS.SPACE_ID, spaceId)
-            .set(INSPECTIONS.STATUS, status)
+            .set(INSPECTIONS.STATUS, status.name)
             .set(INSPECTIONS.REASON, reason)
             .set(INSPECTIONS.ADMIN_ID, adminId)
             .set(INSPECTIONS.PROCESSED_AT, if (adminId == null) null else OffsetDateTime.now())
@@ -320,14 +331,14 @@ class SpaceRepository(private val dsl: DSLContext) {
 
     fun pendingInspections(): List<InspectionRow> =
         dsl.selectFrom(INSPECTIONS)
-            .where(INSPECTIONS.STATUS.eq("PENDING_INSPECTION"))
+            .where(INSPECTIONS.STATUS.eq(InspectionStatus.PENDING_INSPECTION.name))
             .orderBy(INSPECTIONS.REQUESTED_AT)
             .fetch()
             .map {
                 InspectionRow(
                     id = it.get(INSPECTIONS.ID),
                     spaceId = it.get(INSPECTIONS.SPACE_ID),
-                    status = it.get(INSPECTIONS.STATUS),
+                    status = InspectionStatus.valueOf(it.get(INSPECTIONS.STATUS)),
                     reason = it.get(INSPECTIONS.REASON),
                     requestedAt = it.get(INSPECTIONS.REQUESTED_AT),
                 )
@@ -356,7 +367,7 @@ class SpaceRepository(private val dsl: DSLContext) {
         contactPhone = get(SPACES.CONTACT_PHONE),
         websiteUrl = get(SPACES.WEBSITE_URL),
         approvalRequired = get(SPACES.APPROVAL_REQUIRED),
-        status = get(SPACES.STATUS),
+        status = SpaceStatus.valueOf(get(SPACES.STATUS)),
     )
 }
 

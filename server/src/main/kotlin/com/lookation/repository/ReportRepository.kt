@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.ReportStatus
 import com.lookation.jooq.tables.Reports.REPORTS
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -11,7 +12,7 @@ data class ReportRow(
     val targetType: String,
     val targetId: Long,
     val reason: String,
-    val status: String,
+    val status: ReportStatus,
     val createdAt: OffsetDateTime,
 )
 
@@ -32,13 +33,13 @@ class ReportRepository(private val dsl: DSLContext) {
         dsl.selectFrom(REPORTS).where(REPORTS.ID.eq(id)).fetchOne()?.let {
             ReportRow(
                 it.get(REPORTS.ID), it.get(REPORTS.REPORTER_ID), it.get(REPORTS.TARGET_TYPE),
-                it.get(REPORTS.TARGET_ID), it.get(REPORTS.REASON), it.get(REPORTS.STATUS), it.get(REPORTS.CREATED_AT),
+                it.get(REPORTS.TARGET_ID), it.get(REPORTS.REASON), ReportStatus.valueOf(it.get(REPORTS.STATUS)), it.get(REPORTS.CREATED_AT),
             )
         }
 
-    fun list(status: String?, cursor: Long?, limit: Int): List<ReportRow> {
+    fun list(status: ReportStatus?, cursor: Long?, limit: Int): List<ReportRow> {
         var condition: org.jooq.Condition = org.jooq.impl.DSL.trueCondition()
-        if (status != null) condition = condition.and(REPORTS.STATUS.eq(status))
+        if (status != null) condition = condition.and(REPORTS.STATUS.eq(status.name))
         if (cursor != null) condition = condition.and(REPORTS.ID.lt(cursor))
         return dsl.selectFrom(REPORTS)
             .where(condition)
@@ -48,17 +49,17 @@ class ReportRepository(private val dsl: DSLContext) {
             .map {
                 ReportRow(
                     it.get(REPORTS.ID), it.get(REPORTS.REPORTER_ID), it.get(REPORTS.TARGET_TYPE),
-                    it.get(REPORTS.TARGET_ID), it.get(REPORTS.REASON), it.get(REPORTS.STATUS), it.get(REPORTS.CREATED_AT),
+                    it.get(REPORTS.TARGET_ID), it.get(REPORTS.REASON), ReportStatus.valueOf(it.get(REPORTS.STATUS)), it.get(REPORTS.CREATED_AT),
                 )
             }
     }
 
     fun decide(id: Long, accepted: Boolean, adminId: Long): Int =
         dsl.update(REPORTS)
-            .set(REPORTS.STATUS, if (accepted) "ACCEPTED" else "REJECTED")
+            .set(REPORTS.STATUS, (if (accepted) ReportStatus.ACCEPTED else ReportStatus.REJECTED).name)
             .set(REPORTS.ADMIN_ID, adminId)
             .set(REPORTS.PROCESSED_AT, OffsetDateTime.now())
             .where(REPORTS.ID.eq(id))
-            .and(REPORTS.STATUS.eq("RECEIVED"))
+            .and(REPORTS.STATUS.eq(ReportStatus.RECEIVED.name))
             .execute()
 }

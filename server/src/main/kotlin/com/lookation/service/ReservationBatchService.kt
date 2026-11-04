@@ -1,6 +1,8 @@
 package com.lookation.service
 
 import com.lookation.repository.JobRunRepository
+import com.lookation.domain.JobStatus
+import com.lookation.domain.ReservationStatus
 import com.lookation.repository.ReservationRepository
 import com.lookation.repository.SettlementRepository
 import com.lookation.repository.WalletRepository
@@ -23,24 +25,24 @@ class ReservationBatchService(
     fun completeReservations(now: OffsetDateTime = OffsetDateTime.now()): Int {
         val runId = jobRunRepository.start("COMPLETE_RESERVATIONS")
         return try {
-            val processed = reservationRepository.findPastEnd(now, "CONFIRMED").count { reservation ->
+            val processed = reservationRepository.findPastEnd(now, ReservationStatus.CONFIRMED).count { reservation ->
                 if (reservationRepository.updateStatus(
                         reservation.id,
-                        "CONFIRMED",
-                        "COMPLETED",
+                        ReservationStatus.CONFIRMED,
+                        ReservationStatus.COMPLETED,
                         completedAt = now,
                     ) == 1
                 ) {
-                    reservationRepository.addEvent(reservation.id, "CONFIRMED", "COMPLETED", "SYSTEM", null)
+                    reservationRepository.addEvent(reservation.id, ReservationStatus.CONFIRMED, ReservationStatus.COMPLETED, "SYSTEM", null)
                     true
                 } else {
                     false
                 }
             }
-            jobRunRepository.finish(runId, "SUCCESS", processed)
+            jobRunRepository.finish(runId, JobStatus.SUCCESS, processed)
             processed
         } catch (exception: Exception) {
-            jobRunRepository.finish(runId, "FAILED", 0, exception.message)
+            jobRunRepository.finish(runId, JobStatus.FAILED, 0, exception.message)
             throw exception
         }
     }
@@ -52,21 +54,21 @@ class ReservationBatchService(
             var processed = 0
             reservationRepository.findPendingApprovalCreatedBefore(now.minusHours(APPROVAL_WINDOW_HOURS))
                 .forEach { reservation ->
-                    if (reservationRepository.updateStatus(reservation.id, "PENDING_APPROVAL", "EXPIRED") == 1) {
-                        reservationRepository.addEvent(reservation.id, "PENDING_APPROVAL", "EXPIRED", "SYSTEM", null)
+                    if (reservationRepository.updateStatus(reservation.id, ReservationStatus.PENDING_APPROVAL, ReservationStatus.EXPIRED) == 1) {
+                        reservationRepository.addEvent(reservation.id, ReservationStatus.PENDING_APPROVAL, ReservationStatus.EXPIRED, "SYSTEM", null)
                         processed++
                     }
                 }
             reservationRepository.findPaymentOverdue(now).forEach { reservation ->
-                if (reservationRepository.updateStatus(reservation.id, "PENDING_PAYMENT", "EXPIRED") == 1) {
-                    reservationRepository.addEvent(reservation.id, "PENDING_PAYMENT", "EXPIRED", "SYSTEM", null)
+                if (reservationRepository.updateStatus(reservation.id, ReservationStatus.PENDING_PAYMENT, ReservationStatus.EXPIRED) == 1) {
+                    reservationRepository.addEvent(reservation.id, ReservationStatus.PENDING_PAYMENT, ReservationStatus.EXPIRED, "SYSTEM", null)
                     processed++
                 }
             }
-            jobRunRepository.finish(runId, "SUCCESS", processed)
+            jobRunRepository.finish(runId, JobStatus.SUCCESS, processed)
             processed
         } catch (exception: Exception) {
-            jobRunRepository.finish(runId, "FAILED", 0, exception.message)
+            jobRunRepository.finish(runId, JobStatus.FAILED, 0, exception.message)
             throw exception
         }
     }
@@ -90,10 +92,10 @@ class ReservationBatchService(
                 walletRepository.addEntry(reservation.hostId, "SETTLE", net, "RESERVATION", reservation.id)
                 processed++
             }
-            jobRunRepository.finish(runId, "SUCCESS", processed)
+            jobRunRepository.finish(runId, JobStatus.SUCCESS, processed)
             processed
         } catch (exception: Exception) {
-            jobRunRepository.finish(runId, "FAILED", 0, exception.message)
+            jobRunRepository.finish(runId, JobStatus.FAILED, 0, exception.message)
             throw exception
         }
     }

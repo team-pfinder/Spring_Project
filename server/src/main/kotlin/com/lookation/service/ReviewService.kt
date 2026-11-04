@@ -36,7 +36,7 @@ class ReviewService(
         if (reservation.memberId != memberId) {
             throw ForbiddenException("본인 예약에만 리뷰를 작성할 수 있습니다")
         }
-        if (reservation.status != "COMPLETED") {
+        if (reservation.status != com.lookation.domain.ReservationStatus.COMPLETED) {
             throw ConflictException("이용완료된 예약만 리뷰를 작성할 수 있습니다")
         }
         if (reservation.endAt.plusDays(REVIEW_WINDOW_DAYS).isBefore(OffsetDateTime.now())) {

@@ -1,6 +1,7 @@
 package com.lookation.repository
 
 import com.lookation.domain.Account
+import com.lookation.domain.AccountStatus
 import com.lookation.jooq.tables.AccountRoles.ACCOUNT_ROLES
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import org.jooq.DSLContext
@@ -63,6 +64,6 @@ class AccountRepository(private val dsl: DSLContext) {
         passwordHash = get(ACCOUNTS.PASSWORD_HASH),
         name = get(ACCOUNTS.NAME),
         nickname = get(ACCOUNTS.NICKNAME),
-        status = get(ACCOUNTS.STATUS),
+        status = AccountStatus.valueOf(get(ACCOUNTS.STATUS)),
     )
 }

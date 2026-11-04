@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.JobStatus
 import com.lookation.jooq.tables.JobRuns.JOB_RUNS
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -15,9 +16,9 @@ class JobRunRepository(private val dsl: DSLContext) {
             .fetchOne()!!
             .value1()
 
-    fun finish(id: Long, status: String, processed: Int, message: String? = null) {
+    fun finish(id: Long, status: JobStatus, processed: Int, message: String? = null) {
         dsl.update(JOB_RUNS)
-            .set(JOB_RUNS.STATUS, status)
+            .set(JOB_RUNS.STATUS, status.name)
             .set(JOB_RUNS.PROCESSED_COUNT, processed)
             .set(JOB_RUNS.MESSAGE, message?.take(500))
             .set(JOB_RUNS.FINISHED_AT, OffsetDateTime.now())

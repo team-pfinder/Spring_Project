@@ -22,7 +22,7 @@ class PriceRuleService(
     fun list(accountId: Long?, spaceId: Long): List<PriceRuleDto> {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != "PUBLISHED" && space.hostId != accountId) {
+        if (space.status != com.lookation.domain.SpaceStatus.PUBLISHED && space.hostId != accountId) {
             throw NotFoundException("공간을 찾을 수 없습니다")
         }
         return priceRuleRepository.list(spaceId).map { it.toResponse() }

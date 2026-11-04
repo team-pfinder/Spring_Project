@@ -1,6 +1,7 @@
 package com.lookation.repository
 
 import com.lookation.jooq.tables.ReservationEvents.RESERVATION_EVENTS
+import com.lookation.domain.ReservationStatus
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
 import com.lookation.jooq.tables.Spaces.SPACES
@@ -21,7 +22,7 @@ data class HostReservationRow(
     val endAt: OffsetDateTime,
     val guestCount: Int,
     val price: Long,
-    val status: String,
+    val status: ReservationStatus,
 )
 
 data class ReservationRow(
@@ -32,7 +33,7 @@ data class ReservationRow(
     val startAt: OffsetDateTime,
     val endAt: OffsetDateTime,
     val price: Long,
-    val status: String,
+    val status: ReservationStatus,
     val paymentDueAt: OffsetDateTime?,
 )
 
@@ -47,7 +48,7 @@ class ReservationRepository(private val dsl: DSLContext) {
         endAt: OffsetDateTime,
         guestCount: Int,
         price: Long,
-        status: String,
+        status: ReservationStatus,
         requestMessage: String?,
     ): Long =
         dsl.insertInto(RESERVATIONS)
@@ -58,7 +59,7 @@ class ReservationRepository(private val dsl: DSLContext) {
             .set(RESERVATIONS.END_AT, endAt)
             .set(RESERVATIONS.GUEST_COUNT, guestCount.toShort())
             .set(RESERVATIONS.PRICE, price)
-            .set(RESERVATIONS.STATUS, status)
+            .set(RESERVATIONS.STATUS, status.name)
             .set(RESERVATIONS.REQUEST_MESSAGE, requestMessage)
             .returningResult(RESERVATIONS.ID)
             .fetchOne()!!
@@ -72,8 +73,8 @@ class ReservationRepository(private val dsl: DSLContext) {
 
     fun updateStatus(
         id: Long,
-        expectedStatus: String,
-        status: String,
+        expectedStatus: ReservationStatus,
+        status: ReservationStatus,
         cancelledAt: OffsetDateTime? = null,
         approvedAt: OffsetDateTime? = null,
         paymentDueAt: OffsetDateTime? = null,
@@ -81,7 +82,7 @@ class ReservationRepository(private val dsl: DSLContext) {
         completedAt: OffsetDateTime? = null,
     ): Int {
         var update = dsl.update(RESERVATIONS)
-            .set(RESERVATIONS.STATUS, status)
+            .set(RESERVATIONS.STATUS, status.name)
             .set(RESERVATIONS.UPDATED_AT, OffsetDateTime.now())
         if (cancelledAt != null) update = update.set(RESERVATIONS.CANCELLED_AT, cancelledAt)
         if (approvedAt != null) update = update.set(RESERVATIONS.APPROVED_AT, approvedAt)
@@ -90,52 +91,52 @@ class ReservationRepository(private val dsl: DSLContext) {
         if (completedAt != null) update = update.set(RESERVATIONS.COMPLETED_AT, completedAt)
         return update
             .where(RESERVATIONS.ID.eq(id))
-            .and(RESERVATIONS.STATUS.eq(expectedStatus))
+            .and(RESERVATIONS.STATUS.eq(expectedStatus.name))
             .execute()
     }
 
     fun addEvent(
         reservationId: Long,
-        fromStatus: String?,
-        toStatus: String,
+        fromStatus: ReservationStatus?,
+        toStatus: ReservationStatus,
         actorType: String,
         actorId: Long?,
         reason: String? = null,
     ) {
         dsl.insertInto(RESERVATION_EVENTS)
             .set(RESERVATION_EVENTS.RESERVATION_ID, reservationId)
-            .set(RESERVATION_EVENTS.FROM_STATUS, fromStatus)
-            .set(RESERVATION_EVENTS.TO_STATUS, toStatus)
+            .set(RESERVATION_EVENTS.FROM_STATUS, fromStatus?.name)
+            .set(RESERVATION_EVENTS.TO_STATUS, toStatus.name)
             .set(RESERVATION_EVENTS.ACTOR_TYPE, actorType)
             .set(RESERVATION_EVENTS.ACTOR_ID, actorId)
             .set(RESERVATION_EVENTS.REASON, reason)
             .execute()
     }
 
-    fun findPastEnd(startedBefore: OffsetDateTime, status: String): List<ReservationRow> =
+    fun findPastEnd(startedBefore: OffsetDateTime, status: ReservationStatus): List<ReservationRow> =
         dsl.selectFrom(RESERVATIONS)
-            .where(RESERVATIONS.STATUS.eq(status))
+            .where(RESERVATIONS.STATUS.eq(status.name))
             .and(RESERVATIONS.END_AT.le(startedBefore))
             .fetch()
             .map { it.toRow() }
 
     fun findPendingApprovalCreatedBefore(threshold: OffsetDateTime): List<ReservationRow> =
         dsl.selectFrom(RESERVATIONS)
-            .where(RESERVATIONS.STATUS.eq("PENDING_APPROVAL"))
+            .where(RESERVATIONS.STATUS.eq(ReservationStatus.PENDING_APPROVAL.name))
             .and(RESERVATIONS.CREATED_AT.le(threshold))
             .fetch()
             .map { it.toRow() }
 
     fun findPaymentOverdue(now: OffsetDateTime): List<ReservationRow> =
         dsl.selectFrom(RESERVATIONS)
-            .where(RESERVATIONS.STATUS.eq("PENDING_PAYMENT"))
+            .where(RESERVATIONS.STATUS.eq(ReservationStatus.PENDING_PAYMENT.name))
             .and(RESERVATIONS.PAYMENT_DUE_AT.le(now))
             .fetch()
             .map { it.toRow() }
 
     fun findSettleable(endBefore: OffsetDateTime): List<ReservationRow> =
         dsl.selectFrom(RESERVATIONS)
-            .where(RESERVATIONS.STATUS.eq("COMPLETED"))
+            .where(RESERVATIONS.STATUS.eq(ReservationStatus.COMPLETED.name))
             .and(RESERVATIONS.END_AT.lt(endBefore))
             .andNotExists(
                 DSL.selectOne().from(SETTLEMENTS).where(SETTLEMENTS.RESERVATION_ID.eq(RESERVATIONS.ID)),
@@ -143,9 +144,9 @@ class ReservationRepository(private val dsl: DSLContext) {
             .fetch()
             .map { it.toRow() }
 
-    fun findByHost(hostId: Long, status: String?, cursor: Long?, limit: Int): List<HostReservationRow> {
+    fun findByHost(hostId: Long, status: ReservationStatus?, cursor: Long?, limit: Int): List<HostReservationRow> {
         var condition = RESERVATIONS.HOST_ID.eq(hostId)
-        if (status != null) condition = condition.and(RESERVATIONS.STATUS.eq(status))
+        if (status != null) condition = condition.and(RESERVATIONS.STATUS.eq(status.name))
         if (cursor != null) condition = condition.and(RESERVATIONS.ID.lt(cursor))
         return dsl.select(
             RESERVATIONS.ID,
@@ -179,7 +180,7 @@ class ReservationRepository(private val dsl: DSLContext) {
                     endAt = it.value8(),
                     guestCount = it.value9().toInt(),
                     price = it.value10(),
-                    status = it.value11(),
+                    status = ReservationStatus.valueOf(it.value11()),
                 )
             }
     }
@@ -199,7 +200,7 @@ class ReservationRepository(private val dsl: DSLContext) {
         startAt = get(RESERVATIONS.START_AT),
         endAt = get(RESERVATIONS.END_AT),
         price = get(RESERVATIONS.PRICE),
-        status = get(RESERVATIONS.STATUS),
+        status = ReservationStatus.valueOf(get(RESERVATIONS.STATUS)),
         paymentDueAt = get(RESERVATIONS.PAYMENT_DUE_AT),
     )
 }

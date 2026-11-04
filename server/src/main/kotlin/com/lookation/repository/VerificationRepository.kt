@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.VerificationPurpose
 import com.lookation.jooq.tables.EmailVerifications.EMAIL_VERIFICATIONS
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -9,7 +10,7 @@ data class VerificationRow(
     val id: Long,
     val email: String,
     val codeHash: String,
-    val purpose: String,
+    val purpose: VerificationPurpose,
     val attempts: Int,
     val expiresAt: OffsetDateTime,
     val usedAt: OffsetDateTime?,
@@ -19,19 +20,19 @@ data class VerificationRow(
 @Repository
 class VerificationRepository(private val dsl: DSLContext) {
 
-    fun insert(email: String, codeHash: String, purpose: String, expiresAt: OffsetDateTime) {
+    fun insert(email: String, codeHash: String, purpose: VerificationPurpose, expiresAt: OffsetDateTime) {
         dsl.insertInto(EMAIL_VERIFICATIONS)
             .set(EMAIL_VERIFICATIONS.EMAIL, email)
             .set(EMAIL_VERIFICATIONS.CODE_HASH, codeHash)
-            .set(EMAIL_VERIFICATIONS.PURPOSE, purpose)
+            .set(EMAIL_VERIFICATIONS.PURPOSE, purpose.name)
             .set(EMAIL_VERIFICATIONS.EXPIRES_AT, expiresAt)
             .execute()
     }
 
-    fun findLatest(email: String, purpose: String): VerificationRow? =
+    fun findLatest(email: String, purpose: VerificationPurpose): VerificationRow? =
         dsl.selectFrom(EMAIL_VERIFICATIONS)
             .where(EMAIL_VERIFICATIONS.EMAIL.equalIgnoreCase(email))
-            .and(EMAIL_VERIFICATIONS.PURPOSE.eq(purpose))
+            .and(EMAIL_VERIFICATIONS.PURPOSE.eq(purpose.name))
             .orderBy(EMAIL_VERIFICATIONS.ID.desc())
             .limit(1)
             .fetchOne()
@@ -40,7 +41,7 @@ class VerificationRepository(private val dsl: DSLContext) {
                     id = it.get(EMAIL_VERIFICATIONS.ID),
                     email = it.get(EMAIL_VERIFICATIONS.EMAIL),
                     codeHash = it.get(EMAIL_VERIFICATIONS.CODE_HASH),
-                    purpose = it.get(EMAIL_VERIFICATIONS.PURPOSE),
+                    purpose = VerificationPurpose.valueOf(it.get(EMAIL_VERIFICATIONS.PURPOSE)),
                     attempts = it.get(EMAIL_VERIFICATIONS.ATTEMPTS),
                     expiresAt = it.get(EMAIL_VERIFICATIONS.EXPIRES_AT),
                     usedAt = it.get(EMAIL_VERIFICATIONS.USED_AT),

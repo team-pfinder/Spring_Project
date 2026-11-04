@@ -10,6 +10,8 @@ import com.lookation.controller.form.SpaceForm
 import com.lookation.dto.SpaceSearchDto
 import com.lookation.dto.SpaceSummaryDto
 import com.lookation.dto.SpaceDto
+import com.lookation.domain.InspectionStatus
+import com.lookation.domain.SpaceStatus
 import com.lookation.domain.SpaceType
 import com.lookation.repository.SpaceRepository
 import com.lookation.repository.SpaceRow
@@ -79,7 +81,7 @@ class SpaceService(
     fun get(accountId: Long?, spaceId: Long): SpaceDto {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != "PUBLISHED" && space.hostId != accountId) {
+        if (space.status != SpaceStatus.PUBLISHED && space.hostId != accountId) {
             throw NotFoundException("공간을 찾을 수 없습니다")
         }
         return response(space)
@@ -88,20 +90,20 @@ class SpaceService(
     @Transactional
     fun close(accountId: Long, spaceId: Long): SpaceDto {
         val space = owned(accountId, spaceId)
-        if (space.status != "PUBLISHED") {
+        if (space.status != SpaceStatus.PUBLISHED) {
             throw ConflictException("게시 중인 공간만 중단할 수 있습니다")
         }
-        spaceRepository.updateStatus(spaceId, "PUBLISHED", "CLOSED")
+        spaceRepository.updateStatus(spaceId, SpaceStatus.PUBLISHED, SpaceStatus.CLOSED)
         return response(spaceId)
     }
 
     @Transactional
     fun reopen(accountId: Long, spaceId: Long): SpaceDto {
         val space = owned(accountId, spaceId)
-        if (space.status != "CLOSED") {
+        if (space.status != SpaceStatus.CLOSED) {
             throw ConflictException("중단된 공간만 재개할 수 있습니다")
         }
-        spaceRepository.updateStatus(spaceId, "CLOSED", "DRAFT")
+        spaceRepository.updateStatus(spaceId, SpaceStatus.CLOSED, SpaceStatus.DRAFT)
         return response(spaceId)
     }
 
@@ -129,8 +131,8 @@ class SpaceService(
         if (priceRuleRepository.count(spaceId) < 1) {
             throw ConflictException("검수 신청에는 가격 규칙이 최소 1개 필요합니다")
         }
-        spaceRepository.updateStatus(spaceId, space.status, "PENDING_INSPECTION")
-        spaceRepository.insertInspection(spaceId, "PENDING_INSPECTION", null, null)
+        spaceRepository.updateStatus(spaceId, space.status, SpaceStatus.PENDING_INSPECTION)
+        spaceRepository.insertInspection(spaceId, InspectionStatus.PENDING_INSPECTION, null, null)
         return response(spaceId)
     }
 
@@ -196,15 +198,20 @@ class SpaceService(
     fun decide(adminId: Long, spaceId: Long, approved: Boolean, reason: String?): SpaceDto {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != "PENDING_INSPECTION") {
+        if (space.status != SpaceStatus.PENDING_INSPECTION) {
             throw ConflictException("검수 대기 상태가 아닙니다")
         }
         if (!approved && reason.isNullOrBlank()) {
             throw BadRequestException("반려 사유가 필요합니다")
         }
-        val nextStatus = if (approved) "PUBLISHED" else "INSPECTION_REJECTED"
-        spaceRepository.updateStatus(spaceId, "PENDING_INSPECTION", nextStatus)
-        spaceRepository.insertInspection(spaceId, nextStatus, reason, adminId)
+        val nextStatus = if (approved) SpaceStatus.PUBLISHED else SpaceStatus.INSPECTION_REJECTED
+        spaceRepository.updateStatus(spaceId, SpaceStatus.PENDING_INSPECTION, nextStatus)
+        spaceRepository.insertInspection(
+            spaceId,
+            if (approved) InspectionStatus.PUBLISHED else InspectionStatus.INSPECTION_REJECTED,
+            reason,
+            adminId,
+        )
         return response(spaceId)
     }
 
@@ -244,13 +251,13 @@ class SpaceService(
         contactEmail = space.contactEmail,
         contactPhone = space.contactPhone,
         websiteUrl = space.websiteUrl,
-        status = space.status,
+        status = space.status.name,
         facilities = spaceRepository.facilities(space.id),
         images = spaceRepository.imageKeys(space.id).map { "/uploads/$it" },
         approvalRequired = space.approvalRequired,
     )
 
     companion object {
-        private val EDITABLE_STATUSES = setOf("DRAFT", "INSPECTION_REJECTED")
+        private val EDITABLE_STATUSES = setOf(SpaceStatus.DRAFT, SpaceStatus.INSPECTION_REJECTED)
     }
 }

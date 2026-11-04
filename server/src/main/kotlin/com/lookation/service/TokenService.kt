@@ -46,7 +46,7 @@ class TokenService(
             throw UnauthorizedException("만료된 refresh token입니다")
         }
         val account = accountRepository.findById(token.accountId)
-        if (account == null || account.status != "ACTIVE") {
+        if (account == null || account.status != com.lookation.domain.AccountStatus.ACTIVE) {
             revocations.revokeFamily(token.familyId)
             throw UnauthorizedException("사용할 수 없는 계정입니다")
         }

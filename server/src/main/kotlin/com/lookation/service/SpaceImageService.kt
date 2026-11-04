@@ -3,6 +3,7 @@ package com.lookation.service
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
+import com.lookation.domain.SpaceStatus
 import com.lookation.global.file.FileStorage
 import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.repository.SpaceRepository
@@ -52,6 +53,6 @@ class SpaceImageService(
 
     companion object {
         private const val MAX_IMAGES = 10
-        private val EDITABLE_STATUSES = setOf("DRAFT", "INSPECTION_REJECTED")
+        private val EDITABLE_STATUSES = setOf(SpaceStatus.DRAFT, SpaceStatus.INSPECTION_REJECTED)
     }
 }

@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.WithdrawalStatus
 import com.lookation.jooq.tables.Withdrawals.WITHDRAWALS
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -9,7 +10,7 @@ data class WithdrawalRow(
     val id: Long,
     val accountId: Long,
     val amount: Long,
-    val status: String,
+    val status: WithdrawalStatus,
 )
 
 @Repository
@@ -38,7 +39,7 @@ class WithdrawalRepository(private val dsl: DSLContext) {
                 id = it.get(WITHDRAWALS.ID),
                 accountId = it.get(WITHDRAWALS.ACCOUNT_ID),
                 amount = it.get(WITHDRAWALS.AMOUNT),
-                status = it.get(WITHDRAWALS.STATUS),
+                status = WithdrawalStatus.valueOf(it.get(WITHDRAWALS.STATUS)),
             )
         }
 
@@ -52,16 +53,16 @@ class WithdrawalRepository(private val dsl: DSLContext) {
                     id = it.get(WITHDRAWALS.ID),
                     accountId = it.get(WITHDRAWALS.ACCOUNT_ID),
                     amount = it.get(WITHDRAWALS.AMOUNT),
-                    status = it.get(WITHDRAWALS.STATUS),
+                    status = WithdrawalStatus.valueOf(it.get(WITHDRAWALS.STATUS)),
                 )
             }
 
-    fun updateStatus(id: Long, expected: String, status: String, adminId: Long): Int =
+    fun updateStatus(id: Long, expected: WithdrawalStatus, status: WithdrawalStatus, adminId: Long): Int =
         dsl.update(WITHDRAWALS)
-            .set(WITHDRAWALS.STATUS, status)
+            .set(WITHDRAWALS.STATUS, status.name)
             .set(WITHDRAWALS.ADMIN_ID, adminId)
             .set(WITHDRAWALS.PROCESSED_AT, OffsetDateTime.now())
             .where(WITHDRAWALS.ID.eq(id))
-            .and(WITHDRAWALS.STATUS.eq(expected))
+            .and(WITHDRAWALS.STATUS.eq(expected.name))
             .execute()
 }

@@ -8,6 +8,7 @@ import com.lookation.global.error.ConflictException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.AccountRepository
 import com.lookation.repository.QnaRepository
+import com.lookation.domain.ReportStatus
 import com.lookation.repository.ReportRepository
 import com.lookation.repository.ReportRow
 import com.lookation.repository.ReservationRepository
@@ -46,7 +47,14 @@ class ReportService(
     @Transactional(readOnly = true)
     fun list(status: String?, cursor: Long?, limit: Int): ReportListDto {
         if (limit !in 1..100) throw BadRequestException("limit은 1~100입니다")
-        val rows = reportRepository.list(status, cursor, limit)
+        val statusFilter = status?.let {
+            try {
+                ReportStatus.valueOf(it)
+            } catch (_: IllegalArgumentException) {
+                throw BadRequestException("알 수 없는 신고 상태입니다")
+            }
+        }
+        val rows = reportRepository.list(statusFilter, cursor, limit)
         return ReportListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
@@ -74,7 +82,7 @@ class ReportService(
         targetType = targetType,
         targetId = targetId,
         reason = reason,
-        status = status,
+        status = status.name,
         createdAt = createdAt,
     )
 }

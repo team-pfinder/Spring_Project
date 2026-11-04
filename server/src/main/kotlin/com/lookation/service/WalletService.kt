@@ -8,6 +8,8 @@ import com.lookation.controller.form.ChargeRequestForm
 import com.lookation.dto.ChargeDto
 import com.lookation.controller.form.WithdrawalRequestForm
 import com.lookation.dto.WithdrawalDto
+import com.lookation.domain.ChargeStatus
+import com.lookation.domain.WithdrawalStatus
 import com.lookation.repository.ChargeRepository
 import com.lookation.repository.WalletRepository
 import com.lookation.repository.WithdrawalRepository
@@ -38,8 +40,8 @@ class WalletService(
     fun decideCharge(adminId: Long, chargeId: Long, approved: Boolean): ChargeDto {
         val charge = chargeRepository.findById(chargeId)
             ?: throw NotFoundException("충전 신청을 찾을 수 없습니다")
-        val nextStatus = if (approved) "APPROVED" else "REJECTED"
-        if (chargeRepository.updateStatus(chargeId, "REQUESTED", nextStatus, adminId) != 1) {
+        val nextStatus = if (approved) ChargeStatus.APPROVED else ChargeStatus.REJECTED
+        if (chargeRepository.updateStatus(chargeId, ChargeStatus.REQUESTED, nextStatus, adminId) != 1) {
             throw ConflictException("이미 처리된 충전 신청입니다")
         }
         if (approved) {
@@ -78,8 +80,8 @@ class WalletService(
     fun decideWithdrawal(adminId: Long, withdrawalId: Long, approved: Boolean): WithdrawalDto {
         val withdrawal = withdrawalRepository.findById(withdrawalId)
             ?: throw NotFoundException("출금 신청을 찾을 수 없습니다")
-        val nextStatus = if (approved) "PAID" else "REJECTED"
-        if (withdrawalRepository.updateStatus(withdrawalId, "REQUESTED", nextStatus, adminId) != 1) {
+        val nextStatus = if (approved) WithdrawalStatus.PAID else WithdrawalStatus.REJECTED
+        if (withdrawalRepository.updateStatus(withdrawalId, WithdrawalStatus.REQUESTED, nextStatus, adminId) != 1) {
             throw ConflictException("이미 처리된 출금 신청입니다")
         }
         if (!approved) {
@@ -99,12 +101,12 @@ class WalletService(
         id = id,
         amount = amount,
         depositorName = depositorName,
-        status = status,
+        status = status.name,
     )
 
     private fun com.lookation.repository.WithdrawalRow.toResponse() = WithdrawalDto(
         id = id,
         amount = amount,
-        status = status,
+        status = status.name,
     )
 }
