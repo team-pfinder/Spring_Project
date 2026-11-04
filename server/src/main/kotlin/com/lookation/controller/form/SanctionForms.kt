@@ -1,4 +1,4 @@
-package com.lookation.controller
+package com.lookation.controller.form
 
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min

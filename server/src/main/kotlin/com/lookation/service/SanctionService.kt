@@ -1,6 +1,6 @@
 package com.lookation.service
 
-import com.lookation.controller.ApplySanctionForm
+import com.lookation.controller.form.ApplySanctionForm
 import com.lookation.dto.SanctionResponse
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException

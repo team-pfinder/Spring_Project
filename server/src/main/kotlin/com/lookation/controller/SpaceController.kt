@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile
 import com.lookation.dto.PriceRuleResponse
 import com.lookation.dto.SpaceSearchResponse
 import com.lookation.dto.SpaceResponse
+import com.lookation.controller.form.PriceRuleForm
+import com.lookation.controller.form.SpaceForm
 
 @RestController
 @RequestMapping("/api/v1/spaces")

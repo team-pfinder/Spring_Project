@@ -1,9 +1,9 @@
 package com.lookation.service
 
 import com.lookation.repository.AccountRepository
-import com.lookation.controller.LoginForm
-import com.lookation.controller.PasswordResetConfirmForm
-import com.lookation.controller.SignupForm
+import com.lookation.controller.form.LoginForm
+import com.lookation.controller.form.PasswordResetConfirmForm
+import com.lookation.controller.form.SignupForm
 import com.lookation.repository.VerificationRepository
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException

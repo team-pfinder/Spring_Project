@@ -1,7 +1,7 @@
 package com.lookation.service
 
-import com.lookation.controller.AskQnaForm
-import com.lookation.controller.QnaAnswerForm
+import com.lookation.controller.form.AskQnaForm
+import com.lookation.controller.form.QnaAnswerForm
 import com.lookation.dto.QnaListResponse
 import com.lookation.dto.QnaResponse
 import com.lookation.global.error.BadRequestException

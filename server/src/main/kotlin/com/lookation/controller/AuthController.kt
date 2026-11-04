@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import com.lookation.dto.TokenResponse
+import com.lookation.controller.form.PasswordResetConfirmForm
+import com.lookation.controller.form.PasswordResetRequestForm
+import com.lookation.controller.form.EmailVerificationForm
+import com.lookation.controller.form.RefreshForm
+import com.lookation.controller.form.LoginForm
+import com.lookation.controller.form.SignupForm
 
 @RestController
 @RequestMapping("/api/v1/auth")

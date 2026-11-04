@@ -4,7 +4,7 @@ import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
-import com.lookation.controller.CreateReservationForm
+import com.lookation.controller.form.CreateReservationForm
 import com.lookation.dto.ReservationResponse
 import com.lookation.domain.CancellationPolicy
 import com.lookation.repository.ReservationRepository

@@ -6,7 +6,7 @@ import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.HostProfileRepository
 import com.lookation.dto.PendingInspectionResponse
-import com.lookation.controller.SpaceForm
+import com.lookation.controller.form.SpaceForm
 import com.lookation.dto.SpaceSearchResponse
 import com.lookation.dto.SpaceSummaryResponse
 import com.lookation.dto.SpaceResponse

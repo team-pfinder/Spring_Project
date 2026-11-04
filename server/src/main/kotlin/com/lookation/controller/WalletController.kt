@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import com.lookation.dto.WithdrawalResponse
 import com.lookation.dto.ChargeResponse
+import com.lookation.controller.form.WithdrawalRequestForm
+import com.lookation.controller.form.ChargeRequestForm
 
 @RestController
 @RequestMapping("/api/v1")

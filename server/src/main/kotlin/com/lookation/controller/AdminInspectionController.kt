@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import com.lookation.dto.PendingInspectionResponse
 import com.lookation.dto.SpaceResponse
+import com.lookation.controller.form.InspectionDecisionForm
 
 @RestController
 @RequestMapping("/api/v1/admin/inspections")

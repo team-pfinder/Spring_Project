@@ -3,7 +3,7 @@ package com.lookation.service
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
-import com.lookation.controller.PriceRuleForm
+import com.lookation.controller.form.PriceRuleForm
 import com.lookation.dto.PriceRuleResponse
 import com.lookation.repository.NewPriceRule
 import com.lookation.repository.PriceRuleRepository

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import com.lookation.dto.ReservationResponse
+import com.lookation.controller.form.RejectReservationForm
+import com.lookation.controller.form.CreateReservationForm
 
 @RestController
 @RequestMapping("/api/v1/reservations")

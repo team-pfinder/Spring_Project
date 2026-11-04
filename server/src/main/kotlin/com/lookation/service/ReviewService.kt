@@ -1,7 +1,7 @@
 package com.lookation.service
 
-import com.lookation.controller.CreateReviewForm
-import com.lookation.controller.ReviewReplyForm
+import com.lookation.controller.form.CreateReviewForm
+import com.lookation.controller.form.ReviewReplyForm
 import com.lookation.dto.ReviewListResponse
 import com.lookation.dto.ReviewResponse
 import com.lookation.global.error.BadRequestException

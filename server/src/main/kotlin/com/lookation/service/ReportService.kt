@@ -1,6 +1,6 @@
 package com.lookation.service
 
-import com.lookation.controller.CreateReportForm
+import com.lookation.controller.form.CreateReportForm
 import com.lookation.dto.ReportListResponse
 import com.lookation.dto.ReportResponse
 import com.lookation.global.error.BadRequestException

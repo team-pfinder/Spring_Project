@@ -4,9 +4,9 @@ import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.HostProfileRepository
-import com.lookation.controller.ChargeRequestForm
+import com.lookation.controller.form.ChargeRequestForm
 import com.lookation.dto.ChargeResponse
-import com.lookation.controller.WithdrawalRequestForm
+import com.lookation.controller.form.WithdrawalRequestForm
 import com.lookation.dto.WithdrawalResponse
 import com.lookation.repository.ChargeRepository
 import com.lookation.repository.WalletRepository

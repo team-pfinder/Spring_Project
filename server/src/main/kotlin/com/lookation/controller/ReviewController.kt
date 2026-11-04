@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import com.lookation.controller.form.ReviewReplyForm
+import com.lookation.controller.form.CreateReviewForm
 
 @RestController
 @RequestMapping("/api/v1")

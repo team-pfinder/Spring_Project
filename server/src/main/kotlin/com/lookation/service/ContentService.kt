@@ -1,7 +1,7 @@
 package com.lookation.service
 
-import com.lookation.controller.HelpForm
-import com.lookation.controller.NoticeForm
+import com.lookation.controller.form.HelpForm
+import com.lookation.controller.form.NoticeForm
 import com.lookation.dto.HelpListResponse
 import com.lookation.dto.HelpResponse
 import com.lookation.dto.NoticeListResponse
