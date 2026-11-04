@@ -67,6 +67,22 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 | POST/GET | `/api/v1/wallet/charges` | 인증 |
 | POST/GET | `/api/v1/withdrawals` | HOST |
 | POST | `/api/v1/admin/charges/{id}/decision`, `/api/v1/admin/withdrawals/{id}/decision` | ADMIN |
+| GET | `/api/v1/spaces/{id}/reviews` | 공개 |
+| POST | `/api/v1/reviews`, `/api/v1/reviews/{id}/images` | 인증 (COMPLETED 예약 1건당 1개, 이미지 5장) |
+| POST | `/api/v1/reviews/{id}/reply` | HOST |
+| POST | `/api/v1/admin/reviews/{id}/blind` | ADMIN |
+| GET/POST | `/api/v1/spaces/{id}/qnas`, `/api/v1/qnas/{id}` | 공개 조회 / 인증 질문 |
+| POST | `/api/v1/qnas/{id}/answer` | HOST |
+| DELETE | `/api/v1/qnas/{id}` | 작성자 (답변 전만) |
+| GET | `/api/v1/notices`, `/api/v1/helps` | 공개 |
+| POST/PUT/DELETE | `/api/v1/admin/notices`, `/api/v1/admin/helps` | ADMIN |
+| POST | `/api/v1/reports` | 인증 |
+| GET/POST | `/api/v1/admin/reports`, `/api/v1/admin/reports/{id}/decision` | ADMIN |
+| POST/DELETE | `/api/v1/admin/sanctions`, `/api/v1/admin/sanctions/{id}` | ADMIN |
+
+## 제재
+
+활성 제재가 있는 계정은 로그인·조회·예약 취소·출금은 가능하지만, 예약 생성·결제·리뷰·질문·신고·충전·출금 신청은 403으로 차단된다. 제재는 관리자 API로 부여·해제한다.
 
 ## 패키지
 
