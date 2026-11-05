@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.jooq.tables.Inspections.INSPECTIONS
 import com.lookation.jooq.tables.PriceRules.PRICE_RULES
@@ -280,7 +281,7 @@ class SpaceRepository(private val dsl: DSLContext) {
     fun imageKeys(spaceId: Long): List<String> =
         dsl.select(ATTACHMENTS.STORAGE_KEY)
             .from(ATTACHMENTS)
-            .where(ATTACHMENTS.OWNER_TYPE.eq("SPACE"))
+            .where(ATTACHMENTS.OWNER_TYPE.eq(AttachmentOwnerType.SPACE.name))
             .and(ATTACHMENTS.OWNER_ID.eq(spaceId))
             .and(ATTACHMENTS.CONTENT_TYPE.startsWith("image/"))
             .orderBy(ATTACHMENTS.SORT_ORDER, ATTACHMENTS.ID)
@@ -289,7 +290,7 @@ class SpaceRepository(private val dsl: DSLContext) {
     fun countImages(spaceId: Long): Int =
         dsl.fetchCount(
             ATTACHMENTS,
-            ATTACHMENTS.OWNER_TYPE.eq("SPACE")
+            ATTACHMENTS.OWNER_TYPE.eq(AttachmentOwnerType.SPACE.name)
                 .and(ATTACHMENTS.OWNER_ID.eq(spaceId))
                 .and(ATTACHMENTS.CONTENT_TYPE.startsWith("image/")),
         )

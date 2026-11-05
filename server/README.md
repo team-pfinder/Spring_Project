@@ -66,9 +66,9 @@ Flyway 마이그레이션은 `src/main/resources/db/migration`에 있다.
 
 | 파일 | 내용 |
 |---|---|
-| `V1__extensions.sql` | `btree_gist` 확장 |
+| `V1__extensions.sql` | `btree_gist`, `pg_trgm` 확장 |
 | `V2__baseline.sql` | 테이블 구조. **jOOQ 코드 생성 입력** |
-| `V3__constraints.sql` | CHECK·부분 유니크 인덱스·중복 예약 배제 제약 |
+| `V3__constraints.sql` | CHECK·부분 유니크 인덱스·중복 예약 배제 제약·조회 인덱스 |
 
 jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)을 분리했다. **최초 배포 전에는** 테이블 추가 시 V2에 구조를, V3에 제약을 넣는다. 배포 후에는 기존 파일을 수정하지 않고 V4 이상으로 추가해야 하며, jOOQ 코드 생성 입력을 DB 기반으로 전환해야 한다(현재 미구현).
 
