@@ -26,12 +26,12 @@ cd server && ./gradlew bootRun
 
 | 서비스 | 호스트 포트 | 용도 |
 |---|---|---|
-| PostgreSQL 18 | `15432` | DB `lookation` (사용자·비밀번호 `lookation`) |
-| Mailpit | `11025` / `18025` | SMTP / 메일 확인 UI (`http://localhost:18025`) |
-| MiniStack | `14566` | Secrets Manager 에뮬레이터 (AWS API `http://localhost:14566`) |
+| PostgreSQL 18 | `25432` | DB `lookation` (사용자·비밀번호 `lookation`) |
+| Mailpit | `21025` / `28025` | SMTP / 메일 확인 UI (`http://localhost:28025`) |
+| MiniStack | `24566` | Secrets Manager 에뮬레이터 (AWS API `http://localhost:24566`) |
 
 - `local` 프로필은 `src/main/resources/application-local.yml`에 있고, `application.yml`의 `spring.profiles.default: local` 덕분에 프로필을 지정하지 않으면 자동으로 적용된다. 민감 값은 MiniStack의 시크릿 `lookation/local`에서 기동 시 주입된다(`SecretsEnvironmentPostProcessor`). `deploy/ministack/ready.d/01-lookation-secrets.sh`가 시드한다.
-- 배포 환경은 `SPRING_PROFILES_ACTIVE`를 **반드시** 지정한다. 빠뜨리면 기본값 `local`이 적용되어 `localhost:14566`(MiniStack) 연결을 시도하고 기동에 실패한다.
+- 배포 환경은 `SPRING_PROFILES_ACTIVE`를 **반드시** 지정한다. 빠뜨리면 기본값 `local`이 적용되어 `localhost:24566`(MiniStack) 연결을 시도하고 기동에 실패한다.
 - 기본 관리자: `admin@lookation.local` / `lookation-admin1!` (시크릿의 `adminPassword`).
 - 시드 데이터: `local` 프로필에서 `lookation.seed.enabled=true`(`application-local.yml` 기본값)면 기동 시 `InitializeService`가 계정을 insert-if-absent로 넣는다. 재기동해도 중복·갱신이 없다. 고정 비밀번호는 `lookation1234!`다.
   - 이용자: `seed-member-1@lookation.local` (`MEMBER`)

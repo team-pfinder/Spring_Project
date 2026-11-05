@@ -2,16 +2,16 @@
 # (docker compose up -d --wait) through SecretsEnvironmentPostProcessor.
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:15432/lookation
+    url: jdbc:postgresql://localhost:25432/lookation
     username: lookation
   mail:
     host: localhost
-    port: 11025
+    port: 21025
 
 lookation:
   secrets:
     enabled: true
-    endpoint: http://localhost:14566
+    endpoint: http://localhost:24566
     region: us-east-1
     access-key: test
     secret-key: test
