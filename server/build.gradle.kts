@@ -44,7 +44,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0")
     implementation("tools.jackson.module:jackson-module-kotlin")
-    implementation(platform("software.amazon.awssdk:bom:2.46.7"))
+    implementation(platform("software.amazon.awssdk:bom:2.57.8"))
     implementation("software.amazon.awssdk:secretsmanager")
     implementation("software.amazon.awssdk:url-connection-client")
     runtimeOnly("org.postgresql:postgresql")
