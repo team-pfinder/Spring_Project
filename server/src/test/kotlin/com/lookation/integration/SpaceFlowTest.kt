@@ -287,6 +287,30 @@ class SpaceFlowTest {
     }
 
     @Test
+    fun `space created with a region is returned by the region filter`() {
+        val host = signup()
+        post("/api/v1/hosts/apply", hostForm(), host.access)
+        val hostToken = refresh(host)
+        val name = "region-api-${UUID.randomUUID()}"
+        val created = post(
+            "/api/v1/spaces",
+            spaceForm() + mapOf("name" to name, "sido" to "제주", "sigungu" to "서귀포시"),
+            hostToken,
+        )
+        assertThat(created.body!!["sido"]).isEqualTo("제주")
+        val spaceId = (created.body["id"] as Number).toLong()
+
+        upload(spaceId, hostToken)
+        putPrices(spaceId, hostToken)
+        post("/api/v1/spaces/$spaceId/inspection", emptyMap(), hostToken)
+        post("/api/v1/admin/inspections/$spaceId/decision", mapOf("approved" to true), adminToken())
+
+        assertThat(searchNames(mapOf("keyword" to name, "sido" to "제주", "sigungu" to "서귀포시")))
+            .containsExactly(name)
+        assertThat(searchNames(mapOf("keyword" to name, "sido" to "부산"))).isEmpty()
+    }
+
+    @Test
     fun `space images keep upload order`() {
         val host = signup()
         post("/api/v1/hosts/apply", hostForm(), host.access)

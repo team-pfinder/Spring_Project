@@ -20,6 +20,10 @@ data class SpaceForm(
     @field:NotBlank @field:Size(max = 200) val address: String,
     @field:Schema(description = "상세 주소. 선택 항목이며 최대 200자입니다.", example = "3층")
     @field:Size(max = 200) val addressDetail: String? = null,
+    @field:Schema(description = "시/도 지역. 선택 항목이며 최대 20자입니다. 검색의 `sido` 필터와 같은 값을 씁니다.", example = "서울")
+    @field:Size(max = 20) val sido: String? = null,
+    @field:Schema(description = "시/군/구 지역. 선택 항목이며 최대 30자입니다. 검색의 `sigungu` 필터와 같은 값을 씁니다.", example = "마포구")
+    @field:Size(max = 30) val sigungu: String? = null,
     @field:Schema(
         description = "공간 유형. `PARTY_ROOM`, `EMPTY_SPACE`, `ROOFTOP`, `BRIDAL_SHOWER`, `CLUB`, `WORKSHOP` 중 하나입니다.",
         example = "PARTY_ROOM",

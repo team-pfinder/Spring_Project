@@ -23,6 +23,8 @@ data class SpaceRow(
     val description: String?,
     val address: String,
     val addressDetail: String?,
+    val sido: String?,
+    val sigungu: String?,
     val spaceType: String,
     val minCapacity: Int,
     val maxCapacity: Int,
@@ -69,6 +71,8 @@ class SpaceRepository(private val dsl: DSLContext) {
         description: String?,
         address: String,
         addressDetail: String?,
+        sido: String?,
+        sigungu: String?,
         spaceType: String,
         minCapacity: Int,
         maxCapacity: Int,
@@ -86,6 +90,8 @@ class SpaceRepository(private val dsl: DSLContext) {
             .set(SPACES.DESCRIPTION, description)
             .set(SPACES.ADDRESS, address)
             .set(SPACES.ADDRESS_DETAIL, addressDetail)
+            .set(SPACES.SIDO, sido)
+            .set(SPACES.SIGUNGU, sigungu)
             .set(SPACES.SPACE_TYPE, spaceType)
             .set(SPACES.MIN_CAPACITY, minCapacity.toShort())
             .set(SPACES.MAX_CAPACITY, maxCapacity.toShort())
@@ -106,6 +112,8 @@ class SpaceRepository(private val dsl: DSLContext) {
         description: String?,
         address: String,
         addressDetail: String?,
+        sido: String?,
+        sigungu: String?,
         spaceType: String,
         minCapacity: Int,
         maxCapacity: Int,
@@ -122,6 +130,8 @@ class SpaceRepository(private val dsl: DSLContext) {
             .set(SPACES.DESCRIPTION, description)
             .set(SPACES.ADDRESS, address)
             .set(SPACES.ADDRESS_DETAIL, addressDetail)
+            .set(SPACES.SIDO, sido)
+            .set(SPACES.SIGUNGU, sigungu)
             .set(SPACES.SPACE_TYPE, spaceType)
             .set(SPACES.MIN_CAPACITY, minCapacity.toShort())
             .set(SPACES.MAX_CAPACITY, maxCapacity.toShort())
@@ -366,6 +376,8 @@ class SpaceRepository(private val dsl: DSLContext) {
         description = get(SPACES.DESCRIPTION),
         address = get(SPACES.ADDRESS),
         addressDetail = get(SPACES.ADDRESS_DETAIL),
+        sido = get(SPACES.SIDO),
+        sigungu = get(SPACES.SIGUNGU),
         spaceType = get(SPACES.SPACE_TYPE),
         minCapacity = get(SPACES.MIN_CAPACITY).toInt(),
         maxCapacity = get(SPACES.MAX_CAPACITY).toInt(),
