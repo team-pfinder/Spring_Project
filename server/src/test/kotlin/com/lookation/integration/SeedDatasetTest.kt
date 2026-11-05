@@ -1,6 +1,7 @@
 package com.lookation.integration
 
 import com.lookation.domain.AccountStatus
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.domain.ChargeStatus
 import com.lookation.domain.InspectionStatus
 import com.lookation.domain.JobStatus
@@ -11,8 +12,10 @@ import com.lookation.domain.SpaceStatus
 import com.lookation.domain.SpaceType
 import com.lookation.domain.VerificationPurpose
 import com.lookation.domain.WithdrawalStatus
+import com.lookation.global.seed.AttachmentSeed
 import com.lookation.global.seed.InitializeService
 import com.lookation.global.seed.SeedStep
+import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import org.assertj.core.api.Assertions.assertThat
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
@@ -31,6 +34,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.nio.file.Files
+import java.nio.file.Paths
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -57,10 +62,11 @@ class SeedDatasetTest {
         private const val ADMIN_PASSWORD = "lookation-admin1!"
         private val mapType = object : ParameterizedTypeReference<Map<String, Any>>() {}
         private val listType = object : ParameterizedTypeReference<List<Map<String, Any>>>() {}
+        private val stringListType = object : ParameterizedTypeReference<List<String>>() {}
 
         private val TABLES = listOf(
             "accounts", "account_roles", "host_profiles", "sanctions", "spaces", "space_facilities",
-            "price_rules", "reservations", "reservation_events", "wallets", "wallet_entries",
+            "attachments", "price_rules", "reservations", "reservation_events", "wallets", "wallet_entries",
             "charges", "settlements", "withdrawals", "inspections", "job_runs", "messages",
             "reports", "reviews", "review_replies", "qnas", "qna_replies", "notices", "helps",
             "email_verifications",
@@ -76,19 +82,24 @@ class SeedDatasetTest {
     @Value("\${local.server.port}")
     private var port: Int = 0
 
+    @Value("\${lookation.upload-dir}")
+    private lateinit var uploadDir: String
+
     private val client by lazy { RestClient.create("http://localhost:$port") }
 
     @Test
     fun `seed inserts the dataset once and a second run changes nothing`() {
         val service = InitializeService(steps)
+        service.seed()
 
-        val first = service.seed()
-        val snapshot = tableCounts()
-        val second = service.seed()
+        val counts = tableCounts()
+        assertThat(counts["accounts"]).isEqualTo(6)
+        assertThat(counts["spaces"]).isEqualTo(6)
+        assertThat(counts["reservations"]).isEqualTo(10)
+        assertThat(counts["attachments"]).isEqualTo(8)
 
-        assertThat(first.inserted).isGreaterThan(0)
-        assertThat(second.inserted).isZero()
-        assertThat(tableCounts()).isEqualTo(snapshot)
+        assertThat(service.seed().inserted).isZero()
+        assertThat(tableCounts()).isEqualTo(counts)
     }
 
     @Test
@@ -119,6 +130,58 @@ class SeedDatasetTest {
             .containsExactlyInAnyOrderElementsOf(VerificationPurpose.entries.map { it.name })
         assertThat(distinct("reservation_events", "actor_type"))
             .containsExactlyInAnyOrder("MEMBER", "HOST", "ADMIN", "SYSTEM")
+        assertThat(distinct("attachments", "owner_type"))
+            .containsExactlyInAnyOrderElementsOf(AttachmentOwnerType.entries.map { it.name })
+    }
+
+    @Test
+    fun `attachment rows point at files that exist on disk`() {
+        InitializeService(steps).seed()
+
+        val rows = dsl.selectFrom(ATTACHMENTS).fetch()
+        assertThat(rows).isNotEmpty
+
+        val root = Paths.get(uploadDir).toAbsolutePath().normalize()
+        rows.forEach { row ->
+            val path = root.resolve(row.get(ATTACHMENTS.STORAGE_KEY))
+            assertThat(path).describedAs(row.get(ATTACHMENTS.STORAGE_KEY)).exists()
+            assertThat(Files.size(path)).isEqualTo(row.get(ATTACHMENTS.SIZE_BYTES))
+            assertThat(row.get(ATTACHMENTS.CONTENT_TYPE)).startsWith("image/")
+        }
+
+        val spaceOwners = rows.filter { it.get(ATTACHMENTS.OWNER_TYPE) == "SPACE" }
+            .map { it.get(ATTACHMENTS.OWNER_ID) }
+            .toSet()
+        assertThat(spaceOwners).hasSize(6)
+
+        rows.groupBy { it.get(ATTACHMENTS.OWNER_TYPE) to it.get(ATTACHMENTS.OWNER_ID) }
+            .forEach { (owner, ownerRows) ->
+                assertThat(ownerRows.map { it.get(ATTACHMENTS.SORT_ORDER).toInt() }.sorted())
+                    .describedAs("sort order for $owner")
+                    .containsExactlyElementsOf((0 until ownerRows.size).toList())
+            }
+
+        val filesUnderSeed = Files.list(root.resolve("seed")).use { paths ->
+            paths.filter { Files.isRegularFile(it) }.map { root.relativize(it).toString() }.toList()
+        }
+        assertThat(filesUnderSeed)
+            .containsExactlyInAnyOrderElementsOf(rows.map { it.get(ATTACHMENTS.STORAGE_KEY) })
+    }
+
+    @Test
+    fun `missing legacy image source skips attachments without failing`() {
+        InitializeService(steps).seed()
+        dsl.deleteFrom(ATTACHMENTS).execute()
+
+        val missing = AttachmentSeed(dsl, uploadDir, "build/no-such-legacy-images")
+        val result = InitializeService(listOf(missing)).seed()
+
+        assertThat(result.inserted).isZero()
+        assertThat(result.skipped).isEqualTo(8)
+        assertThat(dsl.fetchCount(ATTACHMENTS)).isZero()
+
+        InitializeService(steps).seed()
+        assertThat(dsl.fetchCount(ATTACHMENTS)).isEqualTo(8)
     }
 
     @Test
@@ -167,6 +230,13 @@ class SeedDatasetTest {
         assertThat(detail["name"]).isNotNull
         assertThat(detail["status"]).isEqualTo("PUBLISHED")
 
+        val images = getStrings("/api/v1/spaces/$spaceId/images", null)
+        assertThat(images).isNotEmpty
+        val image = client.get().uri(images.first()).retrieve().toEntity(ByteArray::class.java)
+        assertThat(image.statusCode.value()).isEqualTo(200)
+        assertThat(image.headers.contentType.toString()).startsWith("image/")
+        assertThat(image.body!!.size).isGreaterThan(0)
+
         // 2. 회원 예약 목록
         val memberReservations = getList("/api/v1/reservations", memberToken)
         assertThat(memberReservations.map { it["status"] })
@@ -184,7 +254,13 @@ class SeedDatasetTest {
 
         // 5. 공지·리뷰·문의
         assertThat(get("/api/v1/notices", null)["items"] as List<*>).isNotEmpty
-        assertThat(get("/api/v1/spaces/$spaceId/reviews", null)["items"] as List<*>).isNotEmpty
+        val reviews = get("/api/v1/spaces/$spaceId/reviews", null)["items"] as List<*>
+        assertThat(reviews).isNotEmpty
+        val reviewImages = (reviews.first() as Map<*, *>)["images"] as List<*>
+        assertThat(reviewImages).isNotEmpty
+        val reviewImage = client.get().uri(reviewImages.first() as String).retrieve().toEntity(ByteArray::class.java)
+        assertThat(reviewImage.statusCode.value()).isEqualTo(200)
+        assertThat(reviewImage.body!!.size).isGreaterThan(0)
         assertThat(get("/api/v1/spaces/$spaceId/qnas", null)["items"] as List<*>).isNotEmpty
     }
 
@@ -212,6 +288,14 @@ class SeedDatasetTest {
             .apply { if (token != null) header(HttpHeaders.AUTHORIZATION, "Bearer $token") }
             .retrieve()
             .toEntity(listType)
+            .body!!
+
+    private fun getStrings(path: String, token: String?): List<String> =
+        client.get()
+            .uri(path)
+            .apply { if (token != null) header(HttpHeaders.AUTHORIZATION, "Bearer $token") }
+            .retrieve()
+            .toEntity(stringListType)
             .body!!
 
     private fun distinct(table: String, column: String): List<String> =
