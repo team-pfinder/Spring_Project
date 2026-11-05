@@ -37,6 +37,11 @@ lookation:
   encryption:
     key: ${LOOKATION_ENCRYPTION_KEY}
   upload-dir: ${LOOKATION_UPLOAD_DIR:./uploads}
+  html:
+    # 배포(HTTPS)에서는 true. 로컬 HTTP에서는 false여야 브라우저가 쿠키를 저장한다.
+    secure-cookie: ${LOOKATION_SECURE_COOKIE:false}
+    # 두 탭이 동시에 refresh할 때 family를 폐기하지 않는 유예 시간.
+    reuse-grace: 10s
   admin:
     email: ${LOOKATION_ADMIN_EMAIL:}
     password: ${LOOKATION_ADMIN_PASSWORD:}

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = ["com.lookation.controller"])
 class ApiExceptionHandler {
 
     @ExceptionHandler(ApiException::class)

@@ -62,4 +62,12 @@ class RefreshTokenRepository(private val dsl: DSLContext) {
             .and(REFRESH_TOKENS.REVOKED_AT.isNull)
             .execute()
     }
+
+    fun hasActiveInFamily(familyId: UUID): Boolean =
+        dsl.fetchExists(
+            dsl.selectOne()
+                .from(REFRESH_TOKENS)
+                .where(REFRESH_TOKENS.FAMILY_ID.eq(familyId))
+                .and(REFRESH_TOKENS.REVOKED_AT.isNull),
+        )
 }
