@@ -53,6 +53,7 @@ class MiscSeed(private val dsl: DSLContext) : SeedStep {
                 .set(EMAIL_VERIFICATIONS.CODE_HASH, "0".repeat(64))
                 .set(EMAIL_VERIFICATIONS.PURPOSE, seed.purpose.name)
                 .set(EMAIL_VERIFICATIONS.ATTEMPTS, 0)
+                .set(EMAIL_VERIFICATIONS.CREATED_AT, now.minusHours(1))
                 .set(EMAIL_VERIFICATIONS.EXPIRES_AT, now.plusDays(1))
                 .execute()
             inserted++

@@ -4,12 +4,11 @@ import com.lookation.repository.JobRunRepository
 import com.lookation.domain.JobStatus
 import com.lookation.domain.ReservationStatus
 import com.lookation.repository.ReservationRepository
+import com.lookation.domain.SettlementPolicy
 import com.lookation.repository.SettlementRepository
 import com.lookation.repository.WalletRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.time.OffsetDateTime
 import java.time.ZoneId
 
@@ -81,11 +80,8 @@ class ReservationBatchService(
             var processed = 0
             reservationRepository.findSettleable(cutoff).forEach { reservation ->
                 if (settlementRepository.existsByReservation(reservation.id)) return@forEach
-                val fee = BigDecimal.valueOf(reservation.price)
-                    .multiply(FEE_RATE)
-                    .setScale(0, RoundingMode.DOWN)
-                    .toLong()
-                val net = reservation.price - fee
+                val fee = SettlementPolicy.fee(reservation.price)
+                val net = SettlementPolicy.net(reservation.price)
                 settlementRepository.insert(reservation.id, reservation.hostId, reservation.price, fee, net)
                 walletRepository.ensureWallet(reservation.hostId)
                 walletRepository.deposit(reservation.hostId, net)
@@ -102,7 +98,6 @@ class ReservationBatchService(
 
     companion object {
         private const val APPROVAL_WINDOW_HOURS = 24L
-        private val FEE_RATE = BigDecimal("0.10")
         private val KST = ZoneId.of("Asia/Seoul")
     }
 }

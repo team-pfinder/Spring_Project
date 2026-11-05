@@ -19,7 +19,10 @@ import java.time.OffsetDateTime
 /** Seeds reviews, Q&As, messages, reports, notices and helps. */
 @Component
 @Order(ContentSeed.ORDER)
-class ContentSeed(private val dsl: DSLContext) : SeedStep {
+class ContentSeed(
+    private val dsl: DSLContext,
+    private val seedAdmin: SeedAdmin,
+) : SeedStep {
 
     override val name = "리뷰·문의·메시지·신고·공지·도움말"
 
@@ -33,7 +36,7 @@ class ContentSeed(private val dsl: DSLContext) : SeedStep {
         val spaceId = dsl.spaceId("시드 파티룸")
         val memberId = dsl.accountId("seed-member-1@lookation.local")
         val hostId = dsl.accountId("seed-host-1@lookation.local")
-        val adminId = dsl.accountId("admin@lookation.local")
+        val adminId = seedAdmin.id()
 
         val reviewId = dsl.select(REVIEWS.ID)
             .from(REVIEWS)

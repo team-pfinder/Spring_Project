@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 class AccountSeed(
     private val accounts: AccountRepository,
     private val passwordEncoder: PasswordEncoder,
+    private val seedAdmin: SeedAdmin,
 ) : SeedStep {
 
     override val name = "계정"
@@ -27,7 +28,7 @@ class AccountSeed(
         var inserted = 0
         var skipped = 0
 
-        SEED_ACCOUNTS.forEach { seed ->
+        (SEED_ACCOUNTS + SeedAccount(seedAdmin.email, "Admin", "admin", AccountStatus.ACTIVE, listOf("ADMIN"))).forEach { seed ->
             if (accounts.existsByEmail(seed.email)) {
                 skipped++
                 return@forEach
@@ -64,7 +65,6 @@ class AccountSeed(
             SeedAccount("seed-member-3@lookation.local", "시드회원3", "seed-member-3", AccountStatus.WITHDRAWN, listOf("MEMBER")),
             SeedAccount("seed-host-1@lookation.local", "시드호스트1", "seed-host-1", AccountStatus.ACTIVE, listOf("MEMBER", "HOST")),
             SeedAccount("seed-host-2@lookation.local", "시드호스트2", "seed-host-2", AccountStatus.ACTIVE, listOf("MEMBER", "HOST")),
-            SeedAccount("admin@lookation.local", "Admin", "admin", AccountStatus.ACTIVE, listOf("ADMIN")),
         )
     }
 }

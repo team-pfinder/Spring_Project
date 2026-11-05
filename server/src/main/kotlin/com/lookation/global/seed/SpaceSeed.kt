@@ -21,7 +21,10 @@ import java.time.OffsetDateTime
  */
 @Component
 @Order(SpaceSeed.ORDER)
-class SpaceSeed(private val dsl: DSLContext) : SeedStep {
+class SpaceSeed(
+    private val dsl: DSLContext,
+    private val seedAdmin: SeedAdmin,
+) : SeedStep {
 
     override val name = "공간·편의시설·가격·검수"
 
@@ -50,7 +53,7 @@ class SpaceSeed(private val dsl: DSLContext) : SeedStep {
                 .set(SPACES.SPACE_TYPE, seed.type.name)
                 .set(SPACES.MIN_CAPACITY, seed.minCapacity.toShort())
                 .set(SPACES.MAX_CAPACITY, seed.maxCapacity.toShort())
-                .set(SPACES.USE_HOURS, "10:00~22:00")
+                .set(SPACES.USE_HOURS, USE_HOURS)
                 .set(SPACES.CAUTION, "시드 데이터입니다.")
                 .set(SPACES.CONTACT_EMAIL, seed.hostEmail)
                 .set(SPACES.CONTACT_PHONE, "010-0000-0000")
@@ -89,7 +92,7 @@ class SpaceSeed(private val dsl: DSLContext) : SeedStep {
                     .set(INSPECTIONS.SPACE_ID, spaceId)
                     .set(INSPECTIONS.STATUS, inspection.name)
                     .set(INSPECTIONS.REASON, if (inspection == InspectionStatus.INSPECTION_REJECTED) "시드 반려 사유" else null)
-                    .set(INSPECTIONS.ADMIN_ID, dsl.accountId("admin@lookation.local"))
+                    .set(INSPECTIONS.ADMIN_ID, seedAdmin.id())
                     .set(INSPECTIONS.REQUESTED_AT, OffsetDateTime.now().minusDays(30))
                     .set(
                         INSPECTIONS.PROCESSED_AT,
@@ -125,6 +128,7 @@ class SpaceSeed(private val dsl: DSLContext) : SeedStep {
 
     private companion object {
         const val ORDER = 30
+        const val USE_HOURS = "18:00~22:00"
         val HOUR_START: LocalTime = LocalTime.of(18, 0)
         val HOUR_END: LocalTime = LocalTime.of(22, 0)
 

@@ -135,6 +135,26 @@ class SeedDatasetTest {
     }
 
     @Test
+    fun `seeded booking hours match the hourly price rule`() {
+        InitializeService(steps).seed()
+
+        val rows = dsl.resultQuery(
+            """
+            select s.use_hours, p.start_time, p.end_time
+            from spaces s join price_rules p on p.space_id = s.id
+            where s.name like '시드 %' and p.unit = 'HOUR'
+            """.trimIndent(),
+        ).fetch()
+
+        assertThat(rows).isNotEmpty
+        rows.forEach { row ->
+            assertThat(row.get("use_hours", String::class.java)).isEqualTo("18:00~22:00")
+            assertThat(row.get("start_time", java.time.LocalTime::class.java)).isEqualTo(java.time.LocalTime.of(18, 0))
+            assertThat(row.get("end_time", java.time.LocalTime::class.java)).isEqualTo(java.time.LocalTime.of(22, 0))
+        }
+    }
+
+    @Test
     fun `attachment rows point at files that exist on disk`() {
         InitializeService(steps).seed()
 
@@ -218,6 +238,15 @@ class SeedDatasetTest {
         InitializeService(steps).seed()
 
         val memberToken = login("seed-member-1@lookation.local", SEED_PASSWORD)
+
+        // 시드 인증 코드 행이 최신이면 429가 난다. 과거 시각으로 넣었는지 확인한다.
+        val verification = client.post()
+            .uri("/api/v1/auth/email-verifications")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(mapOf("email" to "seed-member-1@lookation.local", "purpose" to "SIGNUP"))
+            .retrieve()
+            .toBodilessEntity()
+        assertThat(verification.statusCode.value()).isEqualTo(204)
         val hostToken = login("seed-host-1@lookation.local", SEED_PASSWORD)
         val adminToken = login("admin@lookation.local", ADMIN_PASSWORD)
 

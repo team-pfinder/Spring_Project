@@ -15,6 +15,7 @@ import java.time.OffsetDateTime
 class HostSeed(
     private val dsl: DSLContext,
     private val cryptoService: CryptoService,
+    private val seedAdmin: SeedAdmin,
 ) : SeedStep {
 
     override val name = "호스트 프로필·제재"
@@ -57,7 +58,7 @@ class HostSeed(
                 .set(SANCTIONS.STARTS_AT, now.minusDays(30))
                 .set(SANCTIONS.ENDS_AT, penalty.endsAt?.let { now.plusDays(it) })
                 .set(SANCTIONS.REVOKED_AT, if (penalty.revoked) now.minusDays(1) else null)
-                .set(SANCTIONS.ADMIN_ID, dsl.accountId("admin@lookation.local"))
+                .set(SANCTIONS.ADMIN_ID, seedAdmin.id())
                 .execute()
             inserted++
         }

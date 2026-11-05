@@ -18,7 +18,10 @@ import java.time.temporal.ChronoUnit
  */
 @Component
 @Order(ReservationSeed.ORDER)
-class ReservationSeed(private val dsl: DSLContext) : SeedStep {
+class ReservationSeed(
+    private val dsl: DSLContext,
+    private val seedAdmin: SeedAdmin,
+) : SeedStep {
 
     override val name = "예약·상태 이력"
 
@@ -66,7 +69,7 @@ class ReservationSeed(private val dsl: DSLContext) : SeedStep {
                         when (event.actorType) {
                             "MEMBER" -> memberId
                             "HOST" -> spaceHostId
-                            "ADMIN" -> dsl.accountId("admin@lookation.local")
+                            "ADMIN" -> seedAdmin.id()
                             else -> null
                         },
                     )

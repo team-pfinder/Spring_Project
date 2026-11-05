@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled
 @EnableScheduling
 class SchedulingConfig
 
+// 테스트에서는 스케줄러를 끈다. 매분 도는 expire 작업이 시드 데이터를 바꿔 테스트를 흔들지 않게 한다.
 @Configuration
 @Profile("!test")
 class ReservationScheduler(private val reservationBatchService: com.lookation.service.ReservationBatchService) {

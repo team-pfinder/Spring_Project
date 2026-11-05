@@ -1,6 +1,7 @@
 package com.lookation.global.seed
 
 import com.lookation.domain.ChargeStatus
+import com.lookation.domain.SettlementPolicy
 import com.lookation.domain.WithdrawalStatus
 import com.lookation.global.crypto.CryptoService
 import com.lookation.jooq.tables.Charges.CHARGES
@@ -26,6 +27,7 @@ import java.time.OffsetDateTime
 class WalletSeed(
     private val dsl: DSLContext,
     private val cryptoService: CryptoService,
+    private val seedAdmin: SeedAdmin,
 ) : SeedStep {
 
     override val name = "지갑·원장·충전·정산·출금"
@@ -51,7 +53,7 @@ class WalletSeed(
                     .set(CHARGES.AMOUNT, seed.amount)
                     .set(CHARGES.DEPOSITOR_NAME, seed.depositorName)
                     .set(CHARGES.STATUS, seed.status.name)
-                    .set(CHARGES.ADMIN_ID, if (seed.status == ChargeStatus.REQUESTED) null else dsl.accountId("admin@lookation.local"))
+                    .set(CHARGES.ADMIN_ID, if (seed.status == ChargeStatus.REQUESTED) null else seedAdmin.id())
                     .set(CHARGES.CREATED_AT, now.minusDays(3))
                     .set(CHARGES.PROCESSED_AT, if (seed.status == ChargeStatus.REQUESTED) null else now.minusDays(2))
                     .returningResult(CHARGES.ID)
@@ -79,7 +81,7 @@ class WalletSeed(
                     .set(WITHDRAWALS.ACCOUNT_NUMBER_ENC, cryptoService.encrypt("12345678901234"))
                     .set(WITHDRAWALS.ACCOUNT_HOLDER_ENC, cryptoService.encrypt("시드예금주"))
                     .set(WITHDRAWALS.STATUS, seed.status.name)
-                    .set(WITHDRAWALS.ADMIN_ID, if (seed.status == WithdrawalStatus.REQUESTED) null else dsl.accountId("admin@lookation.local"))
+                    .set(WITHDRAWALS.ADMIN_ID, if (seed.status == WithdrawalStatus.REQUESTED) null else seedAdmin.id())
                     .set(WITHDRAWALS.CREATED_AT, now.minusDays(3))
                     .set(WITHDRAWALS.PROCESSED_AT, if (seed.status == WithdrawalStatus.REQUESTED) null else now.minusDays(2))
                     .returningResult(WITHDRAWALS.ID)
@@ -124,9 +126,9 @@ class WalletSeed(
             dsl.insertInto(SETTLEMENTS)
                 .set(SETTLEMENTS.RESERVATION_ID, completedId)
                 .set(SETTLEMENTS.HOST_ID, dsl.accountId("seed-host-1@lookation.local"))
-                .set(SETTLEMENTS.GROSS_AMOUNT, 40000)
-                .set(SETTLEMENTS.FEE_AMOUNT, 4000)
-                .set(SETTLEMENTS.NET_AMOUNT, 36000)
+                .set(SETTLEMENTS.GROSS_AMOUNT, SETTLED_PRICE)
+                .set(SETTLEMENTS.FEE_AMOUNT, SettlementPolicy.fee(SETTLED_PRICE))
+                .set(SETTLEMENTS.NET_AMOUNT, SettlementPolicy.net(SETTLED_PRICE))
                 .set(SETTLEMENTS.SETTLED_AT, now.minusDays(9))
                 .execute()
             inserted++
@@ -165,6 +167,7 @@ class WalletSeed(
 
     private companion object {
         const val ORDER = 50
+        const val SETTLED_PRICE = 40000L
 
         val CHARGES_SEED = listOf(
             SeedCharge("seed-member-1@lookation.local", 200000, "시드충전회원1", ChargeStatus.APPROVED),
