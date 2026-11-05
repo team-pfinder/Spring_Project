@@ -3,10 +3,12 @@ package com.lookation.global.security
 import com.lookation.repository.AccountRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.core.annotation.Order
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
+@Order(AdminSeeder.ORDER)
 class AdminSeeder(
     private val properties: AdminProperties,
     private val accountRepository: AccountRepository,
@@ -24,5 +26,10 @@ class AdminSeeder(
             nickname = "admin",
         )
         accountRepository.addRole(accountId, "ADMIN")
+    }
+
+    companion object {
+        /** Runs before other startup seeders ([com.lookation.global.seed.InitializeService]). */
+        const val ORDER = 0
     }
 }

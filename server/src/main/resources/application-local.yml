@@ -19,3 +19,5 @@ lookation:
   upload-dir: ./uploads
   admin:
     email: admin@lookation.local
+  seed:
+    enabled: true

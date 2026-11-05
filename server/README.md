@@ -33,6 +33,10 @@ cd server && ./gradlew bootRun
 - `local` 프로필은 `src/main/resources/application-local.yml`에 있고, `application.yml`의 `spring.profiles.default: local` 덕분에 프로필을 지정하지 않으면 자동으로 적용된다. 민감 값은 MiniStack의 시크릿 `lookation/local`에서 기동 시 주입된다(`SecretsEnvironmentPostProcessor`). `deploy/ministack/ready.d/01-lookation-secrets.sh`가 시드한다.
 - 배포 환경은 `SPRING_PROFILES_ACTIVE`를 **반드시** 지정한다. 빠뜨리면 기본값 `local`이 적용되어 `localhost:14566`(MiniStack) 연결을 시도하고 기동에 실패한다.
 - 기본 관리자: `admin@lookation.local` / `lookation-admin1!` (시크릿의 `adminPassword`).
+- 시드 데이터: `local` 프로필에서 `lookation.seed.enabled=true`(`application-local.yml` 기본값)면 기동 시 `InitializeService`가 계정을 insert-if-absent로 넣는다. 재기동해도 중복·갱신이 없다. 고정 비밀번호는 `lookation1234!`다.
+  - 이용자: `seed-member-1@lookation.local` (`MEMBER`)
+  - 관리자: `admin@lookation.local` — `AdminSeeder`가 먼저 만들면 그 비밀번호를 유지하고 시드는 건너뛴다.
+  - 현재는 실행 계약 검증용 계정 2개만 시드한다. 나머지 계정·공간·예약 데이터셋은 후속 시드 단계에서 추가한다.
 - **`SPRING_PROFILES_ACTIVE=local`을 셸에 export하지 않는다.** 이 프로필은 환경변수가 설정 파일보다 우선하므로 테스트에서도 `test` 프로필을 덮어쓴다. DB는 여전히 Testcontainers를 쓰지만(`@ServiceConnection`), `SecretsEnvironmentPostProcessor`가 MiniStack을 요구해 MiniStack이 없는 CI에서 테스트가 실패한다.
 - 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 기본값 `local`을 끈다.
 - 데이터 리셋: `docker compose down -v`.

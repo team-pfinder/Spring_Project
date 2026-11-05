@@ -9,7 +9,7 @@ com.lookation
 ├── repository
 ├── domain
 ├── dto
-└── global/{security, error, mail, batch, config, crypto, file}
+└── global/{security, error, mail, batch, config, crypto, file, seed}
 ```
 
 - 기능별 하위 패키지는 두지 않는다. 대부분의 기능이 단일 파일이라 계층 안에서 평면으로 두고 클래스 이름으로 구분한다.
