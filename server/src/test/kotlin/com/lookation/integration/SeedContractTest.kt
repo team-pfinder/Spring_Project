@@ -63,8 +63,8 @@ class SeedContractTest {
         val first = service.seed()
         val second = service.seed()
 
-        assertThat(first).isEqualTo(SeedResult(inserted = 1, skipped = 1))
-        assertThat(second).isEqualTo(SeedResult(inserted = 0, skipped = 2))
+        assertThat(first).isEqualTo(SeedResult(inserted = 5, skipped = 1))
+        assertThat(second).isEqualTo(SeedResult(inserted = 0, skipped = 6))
 
         listOf(ADMIN_EMAIL, MEMBER_EMAIL).forEach { email ->
             assertThat(accountCount(email)).describedAs(email).isEqualTo(1)
