@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.jooq.tables.ReviewReplies.REVIEW_REPLIES
@@ -73,29 +74,18 @@ class ReviewRepository(private val dsl: DSLContext) {
     fun countImages(reviewId: Long): Int =
         dsl.fetchCount(
             ATTACHMENTS,
-            ATTACHMENTS.OWNER_TYPE.eq("REVIEW").and(ATTACHMENTS.OWNER_ID.eq(reviewId)),
+            ATTACHMENTS.OWNER_TYPE.eq(AttachmentOwnerType.REVIEW.name).and(ATTACHMENTS.OWNER_ID.eq(reviewId)),
         )
 
     fun imageKeys(reviewIds: List<Long>): Map<Long, List<String>> {
         if (reviewIds.isEmpty()) return emptyMap()
         return dsl.select(ATTACHMENTS.OWNER_ID, ATTACHMENTS.STORAGE_KEY)
             .from(ATTACHMENTS)
-            .where(ATTACHMENTS.OWNER_TYPE.eq("REVIEW"))
+            .where(ATTACHMENTS.OWNER_TYPE.eq(AttachmentOwnerType.REVIEW.name))
             .and(ATTACHMENTS.OWNER_ID.`in`(reviewIds))
-            .orderBy(ATTACHMENTS.ID)
+            .orderBy(ATTACHMENTS.SORT_ORDER, ATTACHMENTS.ID)
             .fetch()
             .groupBy({ it.value1() }, { it.value2() })
-    }
-
-    fun addImage(reviewId: Long, key: String, originalName: String, contentType: String, size: Long) {
-        dsl.insertInto(ATTACHMENTS)
-            .set(ATTACHMENTS.OWNER_TYPE, "REVIEW")
-            .set(ATTACHMENTS.OWNER_ID, reviewId)
-            .set(ATTACHMENTS.STORAGE_KEY, key)
-            .set(ATTACHMENTS.ORIGINAL_NAME, originalName)
-            .set(ATTACHMENTS.CONTENT_TYPE, contentType)
-            .set(ATTACHMENTS.SIZE_BYTES, size)
-            .execute()
     }
 
     private fun baseQuery() =

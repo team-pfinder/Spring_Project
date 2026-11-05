@@ -8,7 +8,9 @@ import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.global.file.FileStorage
+import com.lookation.repository.AttachmentRepository
 import com.lookation.repository.ReservationRepository
 import com.lookation.repository.ReviewRepository
 import com.lookation.repository.ReviewRow
@@ -24,6 +26,7 @@ class ReviewService(
     private val reviewRepository: ReviewRepository,
     private val reservationRepository: ReservationRepository,
     private val spaceRepository: SpaceRepository,
+    private val attachmentRepository: AttachmentRepository,
     private val fileStorage: FileStorage,
     private val sanctionService: com.lookation.service.SanctionService,
 ) {
@@ -109,7 +112,14 @@ class ReviewService(
             throw ConflictException("리뷰 이미지는 ${MAX_IMAGES}장까지 가능합니다")
         }
         val stored = fileStorage.store(file)
-        reviewRepository.addImage(reviewId, stored.key, stored.originalName, stored.contentType, stored.size)
+        attachmentRepository.insert(
+            ownerType = AttachmentOwnerType.REVIEW,
+            ownerId = reviewId,
+            storageKey = stored.key,
+            originalName = stored.originalName,
+            contentType = stored.contentType,
+            size = stored.size,
+        )
         return "/uploads/${stored.key}"
     }
 

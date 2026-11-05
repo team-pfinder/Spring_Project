@@ -39,6 +39,7 @@ Lookation의 업무 용어와 코드 표기를 하나로 고정한다. 이슈·A
 | 검수 반려 | `INSPECTION_REJECTED` | 관리자가 등록을 거부한 상태 | 검수 기각 |
 | 검수 중단 | `SUSPENDED` | 게시 후 관리자가 노출을 중단한 상태 | 블라인드(공간) |
 | 블라인드 | `blind`, `loc_blind_code` | 게시물을 목록·상세에서 숨기되 데이터는 남기는 처리 | 숨김, 비공개 |
+| 지역 | `sido`, `sigungu` | 공간 소재지의 시/도·시/군/구. 검색 필터와 같은 값을 쓴다. 주소 문자열에서 파싱하지 않고 호스트가 입력한다 | 지역구분, area |
 | 가격 규칙 | `price_rule` | 공간에서 판매하는 시간대별 가격표(시작·종료 시각, 가격) | 패키지, 상품, 요금제 |
 
 확정: 검수 상태는 `DRAFT`, `PENDING_INSPECTION`, `INSPECTION_REJECTED`, `PUBLISHED`, `SUSPENDED`, `CLOSED` 6개다. 반려 후 재신청은 허용하고, 재신청마다 `inspections` 새 행을 남긴다. 공간유형은 6종으로 고정한다.
@@ -84,9 +85,12 @@ Lookation의 업무 용어와 코드 표기를 하나로 고정한다. 이슈·A
 
 | 대상 | 상태 |
 | --- | --- |
-| 계정 | `active`, `withdrawn` (활성 제재는 `sanctions`로 표현) |
+| 계정 | `ACTIVE`, `WITHDRAWN` (활성 제재는 `sanctions`로 표현) |
 | 검수 | `DRAFT`, `PENDING_INSPECTION`, `INSPECTION_REJECTED`, `PUBLISHED`, `SUSPENDED`, `CLOSED` |
 | 예약 | `PENDING_APPROVAL`, `PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`, `CANCELLED`, `REFUNDED`, `REJECTED`, `EXPIRED` |
 | 제재 | `active`, `expired`, `revoked` (`ends_at IS NULL` = 영구) |
+| 충전 | `REQUESTED`, `APPROVED`, `REJECTED` |
+| 출금 | `REQUESTED`, `APPROVED`, `PAID`, `REJECTED` |
+| 신고 | `RECEIVED`, `ACCEPTED`, `REJECTED` |
 
-미정: 충전·출금 신청 상태, 신고 처리 상태, 게시물 노출 상태. 확정 전에는 구현하지 않는다.
+미정: 게시물 노출 상태. 확정 전에는 구현하지 않는다.

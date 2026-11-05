@@ -216,7 +216,7 @@
 | 근거·출처 | `[p.5]`, `[p.19]`, `[정책 §호스트 8]` |
 | 권장 조치 | 신청·처리중·완료·실패 상태를 저장할지 확정한다. |
 | 담당 | 개발 |
-| 상태 | open |
+| 상태 | resolved — 출금 상태를 `withdrawals_status_check`의 `REQUESTED`/`APPROVED`/`PAID`/`REJECTED`로 저장한다. `GLOSSARY.md` 상태 값 표에 반영 |
 | 관련 | [P-DOMAIN-MILEAGE-EXCHANGE-01](processes.md#p-domain-mileage-exchange-01), [F-DOMAIN-MILEAGE-EXCHANGE-01](flows.md#f-domain-mileage-exchange-01) |
 
 #### V-DOMAIN-MILEAGE-SETTLE-01

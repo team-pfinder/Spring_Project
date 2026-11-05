@@ -19,6 +19,10 @@ data class SpaceDto(
     val address: String,
     @field:Schema(description = "상세 주소. 등록하지 않았으면 null입니다.", example = "3층")
     val addressDetail: String?,
+    @field:Schema(description = "시/도 지역. 등록하지 않았으면 null입니다.", example = "서울")
+    val sido: String?,
+    @field:Schema(description = "시/군/구 지역. 등록하지 않았으면 null입니다.", example = "마포구")
+    val sigungu: String?,
     @field:Schema(
         description = "공간 유형. `PARTY_ROOM`, `EMPTY_SPACE`, `ROOFTOP`, `BRIDAL_SHOWER`, `CLUB`, `WORKSHOP` 중 하나입니다.",
         example = "PARTY_ROOM",

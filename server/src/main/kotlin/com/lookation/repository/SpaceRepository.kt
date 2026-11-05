@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.jooq.tables.Inspections.INSPECTIONS
 import com.lookation.jooq.tables.PriceRules.PRICE_RULES
@@ -23,6 +24,8 @@ data class SpaceRow(
     val description: String?,
     val address: String,
     val addressDetail: String?,
+    val sido: String?,
+    val sigungu: String?,
     val spaceType: String,
     val minCapacity: Int,
     val maxCapacity: Int,
@@ -69,6 +72,8 @@ class SpaceRepository(private val dsl: DSLContext) {
         description: String?,
         address: String,
         addressDetail: String?,
+        sido: String?,
+        sigungu: String?,
         spaceType: String,
         minCapacity: Int,
         maxCapacity: Int,
@@ -86,6 +91,8 @@ class SpaceRepository(private val dsl: DSLContext) {
             .set(SPACES.DESCRIPTION, description)
             .set(SPACES.ADDRESS, address)
             .set(SPACES.ADDRESS_DETAIL, addressDetail)
+            .set(SPACES.SIDO, sido)
+            .set(SPACES.SIGUNGU, sigungu)
             .set(SPACES.SPACE_TYPE, spaceType)
             .set(SPACES.MIN_CAPACITY, minCapacity.toShort())
             .set(SPACES.MAX_CAPACITY, maxCapacity.toShort())
@@ -106,6 +113,8 @@ class SpaceRepository(private val dsl: DSLContext) {
         description: String?,
         address: String,
         addressDetail: String?,
+        sido: String?,
+        sigungu: String?,
         spaceType: String,
         minCapacity: Int,
         maxCapacity: Int,
@@ -122,6 +131,8 @@ class SpaceRepository(private val dsl: DSLContext) {
             .set(SPACES.DESCRIPTION, description)
             .set(SPACES.ADDRESS, address)
             .set(SPACES.ADDRESS_DETAIL, addressDetail)
+            .set(SPACES.SIDO, sido)
+            .set(SPACES.SIGUNGU, sigungu)
             .set(SPACES.SPACE_TYPE, spaceType)
             .set(SPACES.MIN_CAPACITY, minCapacity.toShort())
             .set(SPACES.MAX_CAPACITY, maxCapacity.toShort())
@@ -151,6 +162,8 @@ class SpaceRepository(private val dsl: DSLContext) {
     fun search(
         type: String?,
         keyword: String?,
+        sido: String?,
+        sigungu: String?,
         guests: Int?,
         minPrice: Long?,
         maxPrice: Long?,
@@ -167,6 +180,12 @@ class SpaceRepository(private val dsl: DSLContext) {
             condition = condition.and(
                 SPACES.NAME.containsIgnoreCase(keyword).or(SPACES.ADDRESS.containsIgnoreCase(keyword)),
             )
+        }
+        if (sido != null) {
+            condition = condition.and(SPACES.SIDO.eq(sido))
+        }
+        if (sigungu != null) {
+            condition = condition.and(SPACES.SIGUNGU.eq(sigungu))
         }
         if (guests != null) {
             condition = condition
@@ -262,16 +281,16 @@ class SpaceRepository(private val dsl: DSLContext) {
     fun imageKeys(spaceId: Long): List<String> =
         dsl.select(ATTACHMENTS.STORAGE_KEY)
             .from(ATTACHMENTS)
-            .where(ATTACHMENTS.OWNER_TYPE.eq("SPACE"))
+            .where(ATTACHMENTS.OWNER_TYPE.eq(AttachmentOwnerType.SPACE.name))
             .and(ATTACHMENTS.OWNER_ID.eq(spaceId))
             .and(ATTACHMENTS.CONTENT_TYPE.startsWith("image/"))
-            .orderBy(ATTACHMENTS.ID)
+            .orderBy(ATTACHMENTS.SORT_ORDER, ATTACHMENTS.ID)
             .fetch(ATTACHMENTS.STORAGE_KEY)
 
     fun countImages(spaceId: Long): Int =
         dsl.fetchCount(
             ATTACHMENTS,
-            ATTACHMENTS.OWNER_TYPE.eq("SPACE")
+            ATTACHMENTS.OWNER_TYPE.eq(AttachmentOwnerType.SPACE.name)
                 .and(ATTACHMENTS.OWNER_ID.eq(spaceId))
                 .and(ATTACHMENTS.CONTENT_TYPE.startsWith("image/")),
         )
@@ -358,6 +377,8 @@ class SpaceRepository(private val dsl: DSLContext) {
         description = get(SPACES.DESCRIPTION),
         address = get(SPACES.ADDRESS),
         addressDetail = get(SPACES.ADDRESS_DETAIL),
+        sido = get(SPACES.SIDO),
+        sigungu = get(SPACES.SIGUNGU),
         spaceType = get(SPACES.SPACE_TYPE),
         minCapacity = get(SPACES.MIN_CAPACITY).toInt(),
         maxCapacity = get(SPACES.MAX_CAPACITY).toInt(),

@@ -41,7 +41,7 @@ class SpaceController(
 
     @Operation(
         summary = "공간 검색",
-        description = "게시(`PUBLISHED`)되었고 삭제되지 않은 공간만 커서 페이징으로 조회합니다. 인증은 필요 없습니다. `minPrice`/`maxPrice`는 가격 규칙에 해당 범위의 규칙이 하나라도 있는 공간을 찾고, `from`/`to`를 주면 그 요일의 가격 규칙이 있으면서 해당 시간대에 겹치는 예약(신청·결제 대기·확정)이 없는 공간만 남습니다. 응답의 `nextCursor`를 다음 요청의 `cursor`로 넘기며, `nextCursor`는 이번 응답이 `limit`만큼 찼을 때만 채워집니다. 공간 ID 내림차순으로 정렬됩니다. `limit`이 1~50을 벗어나거나 `from`/`to`를 하나만 주거나 `to`가 `from` 이후가 아니면 400입니다.",
+        description = "게시(`PUBLISHED`)되었고 삭제되지 않은 공간만 커서 페이징으로 조회합니다. 인증은 필요 없습니다. `sido`/`sigungu`를 주면 해당 지역 공간만 남고, `minPrice`/`maxPrice`는 가격 규칙에 해당 범위의 규칙이 하나라도 있는 공간을 찾고, `from`/`to`를 주면 그 요일의 가격 규칙이 있으면서 해당 시간대에 겹치는 예약(신청·결제 대기·확정)이 없는 공간만 남습니다. 응답의 `nextCursor`를 다음 요청의 `cursor`로 넘기며, `nextCursor`는 이번 응답이 `limit`만큼 찼을 때만 채워집니다. 공간 ID 내림차순으로 정렬됩니다. `limit`이 1~50을 벗어나거나 `from`/`to`를 하나만 주거나 `to`가 `from` 이후가 아니면 400입니다.",
     )
     @GetMapping
     fun search(
@@ -49,6 +49,10 @@ class SpaceController(
         @RequestParam(required = false) type: String?,
         @Parameter(description = "공간명 또는 주소에 대한 부분 일치 검색어입니다.", example = "루프탑")
         @RequestParam(required = false) keyword: String?,
+        @Parameter(description = "시/도 지역입니다. 지정하면 해당 지역 공간만 조회합니다.", example = "서울")
+        @RequestParam(required = false) sido: String?,
+        @Parameter(description = "시/군/구 지역입니다. 지정하면 해당 지역 공간만 조회합니다.", example = "마포구")
+        @RequestParam(required = false) sigungu: String?,
         @Parameter(description = "이용 인원입니다. 최소 인원 이상·최대 인원 이하인 공간만 조회합니다.", example = "8")
         @RequestParam(required = false) guests: Int?,
         @Parameter(description = "가격 규칙 금액의 하한입니다(KRW). 이 금액 이상인 규칙이 하나라도 있는 공간을 조회합니다.", example = "120000")
@@ -66,6 +70,8 @@ class SpaceController(
     ): SpaceSearchDto = spaceService.search(
         type = type,
         keyword = keyword,
+        sido = sido,
+        sigungu = sigungu,
         guests = guests,
         minPrice = minPrice,
         maxPrice = maxPrice,
