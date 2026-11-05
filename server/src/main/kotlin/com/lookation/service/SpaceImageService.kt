@@ -4,6 +4,7 @@ import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.domain.SpaceStatus
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.global.file.FileStorage
 import com.lookation.repository.AttachmentRepository
 import com.lookation.repository.SpaceRepository
@@ -33,7 +34,7 @@ class SpaceImageService(
         }
         val stored = fileStorage.store(file)
         attachmentRepository.insert(
-            ownerType = "SPACE",
+            ownerType = AttachmentOwnerType.SPACE,
             ownerId = spaceId,
             storageKey = stored.key,
             originalName = stored.originalName,

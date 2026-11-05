@@ -75,3 +75,8 @@ enum class SpaceType {
     CLUB,
     WORKSHOP,
 }
+
+enum class AttachmentOwnerType {
+    SPACE,
+    REVIEW,
+}

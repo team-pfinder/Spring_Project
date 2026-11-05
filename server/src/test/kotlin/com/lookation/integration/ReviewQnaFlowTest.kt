@@ -1,6 +1,7 @@
 package com.lookation.integration
 
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
+import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
 import com.lookation.jooq.tables.Spaces.SPACES
 import org.assertj.core.api.Assertions.assertThat
@@ -148,8 +149,13 @@ class ReviewQnaFlowTest {
             response.body!!["key"] as String
         }
 
+        dsl.update(ATTACHMENTS)
+            .set(ATTACHMENTS.SORT_ORDER, 99.toShort())
+            .where(ATTACHMENTS.STORAGE_KEY.eq(uploaded.first().removePrefix("/uploads/")))
+            .execute()
+
         val listed = getMap("/api/v1/spaces/$spaceId/reviews", null).body!!["items"] as List<*>
-        assertThat((listed.first() as Map<*, *>)["images"]).isEqualTo(uploaded)
+        assertThat((listed.first() as Map<*, *>)["images"]).isEqualTo(listOf(uploaded[1], uploaded[0]))
     }
 
     private fun uploadReviewImage(reviewId: Long, token: String): ApiResponse {

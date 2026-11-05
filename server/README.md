@@ -92,7 +92,7 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 | POST | `/api/v1/admin/inspections/{spaceId}/decision` | ADMIN |
 | GET/PUT | `/api/v1/spaces/{id}/prices` | 공개 조회 / HOST 수정 |
 | GET | `/api/v1/hosts/reservations` | HOST (CONFIRMED 이후 예약자 연락처 노출) |
-| GET | `/api/v1/spaces?type=&keyword=&guests=&minPrice=&maxPrice=&from=&to=&cursor=&limit=` | 공개 |
+| GET | `/api/v1/spaces?type=&keyword=&sido=&sigungu=&guests=&minPrice=&maxPrice=&from=&to=&cursor=&limit=` | 공개 |
 | POST | `/api/v1/reservations` | 인증 |
 | POST | `/api/v1/reservations/{id}/approve`, `/reject`, `/pay` | HOST / HOST / 예약자 |
 | POST | `/api/v1/reservations/{id}/cancel` | 당사자 |

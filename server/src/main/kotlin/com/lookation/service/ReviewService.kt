@@ -8,6 +8,7 @@ import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
+import com.lookation.domain.AttachmentOwnerType
 import com.lookation.global.file.FileStorage
 import com.lookation.repository.AttachmentRepository
 import com.lookation.repository.ReservationRepository
@@ -112,7 +113,7 @@ class ReviewService(
         }
         val stored = fileStorage.store(file)
         attachmentRepository.insert(
-            ownerType = "REVIEW",
+            ownerType = AttachmentOwnerType.REVIEW,
             ownerId = reviewId,
             storageKey = stored.key,
             originalName = stored.originalName,

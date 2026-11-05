@@ -1,6 +1,7 @@
 package com.lookation.integration
 
 import com.lookation.jooq.tables.AccountRoles.ACCOUNT_ROLES
+import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.HostProfiles.HOST_PROFILES
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
@@ -298,7 +299,13 @@ class SpaceFlowTest {
             response.body!!["key"] as String
         }
 
-        assertThat(getList("/api/v1/spaces/$spaceId/images")).isEqualTo(uploaded)
+        dsl.update(ATTACHMENTS)
+            .set(ATTACHMENTS.SORT_ORDER, 99.toShort())
+            .where(ATTACHMENTS.STORAGE_KEY.eq(uploaded.first().removePrefix("/uploads/")))
+            .execute()
+
+        assertThat(getList("/api/v1/spaces/$spaceId/images"))
+            .isEqualTo(listOf(uploaded[1], uploaded[2], uploaded[0]))
     }
 
     private fun getList(path: String): List<String> {

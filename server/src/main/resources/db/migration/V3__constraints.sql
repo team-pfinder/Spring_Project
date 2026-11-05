@@ -158,6 +158,7 @@ create index helps_category_idx on helps (category, id desc);
 create index spaces_name_trgm_idx on spaces using gin (name gin_trgm_ops);
 create index spaces_address_trgm_idx on spaces using gin (address gin_trgm_ops);
 create index spaces_region_idx on spaces (sido, sigungu, id desc) where deleted_at is null;
+create index spaces_sigungu_idx on spaces (sigungu, id desc) where deleted_at is null;
 create index reservations_status_end_idx on reservations (status, end_at);
 create index reservations_status_created_idx on reservations (status, created_at);
 create index reservations_status_due_idx on reservations (status, payment_due_at);
