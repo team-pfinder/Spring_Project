@@ -55,7 +55,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 
 ## 신규 백엔드 (server/)
 
-레거시 `Lookation/`은 동결했고, 재작성은 `server/`에서 진행한다. 결정 근거는 `docs/adr/0001`~`0008`, 레거시→신규 대응표는 `docs/rewrite/parity-checklist.md`(184행)다.
+레거시 `Lookation/`은 동결했고, 재작성은 `server/`에서 진행한다. 결정 근거는 `docs/adr/0001`~`0010`, 레거시→신규 대응표는 `docs/rewrite/parity-checklist.md`(184행)다.
 
 | 항목 | 값 |
 |---|---|
@@ -64,13 +64,17 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | 프레임워크 | Spring Boot 4.1.2 (Spring Security 7, JWT) |
 | DB | PostgreSQL + Flyway |
 | SQL | jOOQ 3.21 (Flyway DDL에서 코드 생성) |
-| 테스트 | Testcontainers PostgreSQL |
+| 뷰 | Thymeleaf SSR — 이용자 5화면만. JSP는 쓰지 않는다 |
+| 테스트 | Testcontainers PostgreSQL + MockMvc |
 
 - 빌드: `cd server && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
 - 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `25432`, Mailpit `21025`/`28025`, MiniStack `24566`(시크릿 `lookation/local`). 앱은 `cd server && ./gradlew bootRun` — `application.yml`의 `spring.profiles.default: local`로 프로필을 붙이지 않아도 `local`이 적용된다. 배포 환경은 `SPRING_PROFILES_ACTIVE`를 반드시 지정한다(빠뜨리면 MiniStack을 찾다가 기동 실패). 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 `local`을 끈다. `SPRING_PROFILES_ACTIVE=local`을 export하면 이 `test` 프로필까지 덮어써 MiniStack 없는 CI에서 테스트가 실패한다.
 - 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
 - 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`, `SPRING_MAIL_*`(없으면 코드 로그 출력).
-- 패키지: `com.lookation.<layer>` — `controller`, `service`, `repository`, `domain`, `dto`, `global`. 기능별 하위 패키지는 두지 않는다 (ADR 0009).
+- 패키지: `com.lookation.<layer>` — `controller`, `view`, `service`, `repository`, `domain`, `dto`, `global`. 기능별 하위 패키지는 두지 않는다 (ADR 0009).
+- 보안 체인 두 개(ADR 0010): `/api/**`는 `Authorization: Bearer` 헤더 전용·CSRF 없음, 나머지는 `access_token` 쿠키 + CSRF(`XSRF-TOKEN`)·`/login` 리다이렉트. 둘 다 `STATELESS`다.
+- HTML 컨트롤러는 `view` 패키지에 둔다. `ApiExceptionHandler`는 `controller` 패키지에만 적용되어 HTML 예외를 JSON으로 바꾸지 않는다. springdoc에 노출하지 않으려면 `@Hidden`을 붙인다.
+- 로컬·배포 쿠키: 배포 HTTPS에서는 `LOOKATION_SECURE_COOKIE=true`를 준다. 로컬 HTTP 기본값은 false다.
 - 요청 Form은 `controller/form`, 상태·구분 enum은 `domain/Enums.kt`에 모은다. DB에는 enum 이름을 저장한다.
 - 요청은 `XxxForm`, 응답은 `XxxResponse`. 오류는 RFC 9457 `ProblemDetail`.
 
