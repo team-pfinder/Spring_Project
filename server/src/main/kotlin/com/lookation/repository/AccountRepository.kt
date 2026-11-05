@@ -15,12 +15,19 @@ class AccountRepository(private val dsl: DSLContext) {
     fun existsByEmail(email: String): Boolean =
         dsl.fetchCount(ACCOUNTS, ACCOUNTS.EMAIL.equalIgnoreCase(email)) > 0
 
-    fun insert(email: String, passwordHash: String, name: String, nickname: String): Long =
+    fun insert(
+        email: String,
+        passwordHash: String,
+        name: String,
+        nickname: String,
+        status: AccountStatus = AccountStatus.ACTIVE,
+    ): Long =
         dsl.insertInto(ACCOUNTS)
             .set(ACCOUNTS.EMAIL, email)
             .set(ACCOUNTS.PASSWORD_HASH, passwordHash)
             .set(ACCOUNTS.NAME, name)
             .set(ACCOUNTS.NICKNAME, nickname)
+            .set(ACCOUNTS.STATUS, status.name)
             .returningResult(ACCOUNTS.ID)
             .fetchOne()!!
             .value1()

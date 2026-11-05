@@ -31,7 +31,7 @@ class OpenApiConfig {
                     공간 대여·예약 서비스 Lookation의 백엔드 API입니다.
 
                     ## 사용 순서
-                    1. `POST /api/v1/auth/email-verifications`로 인증 코드를 요청하고 메일함(로컬은 Mailpit `http://localhost:18025`)에서 6자리 코드를 확인합니다.
+                    1. `POST /api/v1/auth/email-verifications`로 인증 코드를 요청하고 메일함(로컬은 Mailpit `http://localhost:28025`)에서 6자리 코드를 확인합니다.
                     2. `POST /api/v1/auth/signup`으로 가입하거나 `POST /api/v1/auth/login`으로 로그인해 `accessToken`을 받습니다.
                     3. 오른쪽 위 **Authorize** 버튼을 누르고 `accessToken`만 입력합니다. `Bearer ` 접두사는 붙이지 않습니다.
                     4. 토큰 수명은 15분입니다. 만료되면 `POST /api/v1/auth/refresh`로 재발급합니다.

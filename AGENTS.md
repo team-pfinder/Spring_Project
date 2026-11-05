@@ -67,7 +67,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | 테스트 | Testcontainers PostgreSQL |
 
 - 빌드: `cd server && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
-- 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `15432`, Mailpit `11025`/`18025`, MiniStack `14566`(시크릿 `lookation/local`). 앱은 `cd server && ./gradlew bootRun` — `application.yml`의 `spring.profiles.default: local`로 프로필을 붙이지 않아도 `local`이 적용된다. 배포 환경은 `SPRING_PROFILES_ACTIVE`를 반드시 지정한다(빠뜨리면 MiniStack을 찾다가 기동 실패). 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 `local`을 끈다. `SPRING_PROFILES_ACTIVE=local`을 export하면 이 `test` 프로필까지 덮어써 MiniStack 없는 CI에서 테스트가 실패한다.
+- 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `25432`, Mailpit `21025`/`28025`, MiniStack `24566`(시크릿 `lookation/local`). 앱은 `cd server && ./gradlew bootRun` — `application.yml`의 `spring.profiles.default: local`로 프로필을 붙이지 않아도 `local`이 적용된다. 배포 환경은 `SPRING_PROFILES_ACTIVE`를 반드시 지정한다(빠뜨리면 MiniStack을 찾다가 기동 실패). 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 `local`을 끈다. `SPRING_PROFILES_ACTIVE=local`을 export하면 이 `test` 프로필까지 덮어써 MiniStack 없는 CI에서 테스트가 실패한다.
 - 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
 - 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`, `SPRING_MAIL_*`(없으면 코드 로그 출력).
 - 패키지: `com.lookation.<layer>` — `controller`, `service`, `repository`, `domain`, `dto`, `global`. 기능별 하위 패키지는 두지 않는다 (ADR 0009).

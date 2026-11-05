@@ -51,7 +51,7 @@ class AuthController(private val authService: AuthService) {
 
     @Operation(
         summary = "이메일 인증 코드 발송",
-        description = "6자리 인증 코드를 메일로 보냅니다. `purpose`는 `SIGNUP` 또는 `PASSWORD_RESET`입니다. 성공 시 204를 돌려주고, 응답 본문은 없습니다. 로컬에서는 Mailpit(`http://localhost:18025`)에서 확인합니다.",
+        description = "6자리 인증 코드를 메일로 보냅니다. `purpose`는 `SIGNUP` 또는 `PASSWORD_RESET`입니다. 성공 시 204를 돌려주고, 응답 본문은 없습니다. 로컬에서는 Mailpit(`http://localhost:28025`)에서 확인합니다.",
     )
     @PostMapping("/email-verifications")
     fun requestVerification(@Valid @RequestBody form: EmailVerificationForm): ResponseEntity<Void> {
