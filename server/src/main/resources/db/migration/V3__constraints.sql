@@ -31,6 +31,13 @@ alter table space_facilities add constraint space_facilities_code_check
 alter table attachments add constraint attachments_size_check
     check (size_bytes >= 0);
 
+alter table attachments add constraint attachments_owner_type_check
+    check (owner_type in ('SPACE', 'REVIEW'));
+
+-- 정렬 순서가 곧 조회 순서다. 유니크 제약이 만드는 인덱스가 (owner_type, owner_id) 조회도 처리한다.
+alter table attachments add constraint attachments_owner_sort_key
+    unique (owner_type, owner_id, sort_order);
+
 alter table price_rules add constraint price_rules_day_check
     check (day_of_week between 1 and 7);
 
@@ -105,7 +112,6 @@ create index refresh_tokens_account_idx on refresh_tokens (account_id);
 create index email_verifications_email_idx on email_verifications (email, purpose);
 create index sanctions_account_idx on sanctions (account_id, starts_at desc);
 create index spaces_host_idx on spaces (host_id);
-create index attachments_owner_idx on attachments (owner_type, owner_id);
 create index price_rules_space_idx on price_rules (space_id);
 create index reservations_member_idx on reservations (member_id, start_at desc);
 create index reservations_host_idx on reservations (host_id, start_at desc);
@@ -147,3 +153,14 @@ create index qnas_space_idx on qnas (space_id, id desc);
 create index qnas_member_idx on qnas (member_id, id desc);
 create index notices_created_idx on notices (important desc, id desc);
 create index helps_category_idx on helps (category, id desc);
+
+-- 실제 조회 형태에 맞춘 인덱스. 근거 없는 인덱스는 넣지 않는다.
+create index spaces_name_trgm_idx on spaces using gin (name gin_trgm_ops);
+create index spaces_address_trgm_idx on spaces using gin (address gin_trgm_ops);
+create index spaces_region_idx on spaces (sido, sigungu, id desc) where deleted_at is null;
+create index reservations_status_end_idx on reservations (status, end_at);
+create index reservations_status_created_idx on reservations (status, created_at);
+create index reservations_status_due_idx on reservations (status, payment_due_at);
+create index reservations_host_id_idx on reservations (host_id, id desc);
+create index inspections_status_idx on inspections (status, requested_at);
+create index reports_status_idx on reports (status, id desc);

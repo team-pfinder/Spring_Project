@@ -5,9 +5,8 @@ import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.domain.SpaceStatus
 import com.lookation.global.file.FileStorage
-import com.lookation.jooq.tables.Attachments.ATTACHMENTS
+import com.lookation.repository.AttachmentRepository
 import com.lookation.repository.SpaceRepository
-import org.jooq.DSLContext
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -15,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 class SpaceImageService(
     private val spaceRepository: SpaceRepository,
-    private val dsl: DSLContext,
+    private val attachmentRepository: AttachmentRepository,
     private val fileStorage: FileStorage,
 ) {
 
@@ -33,14 +32,14 @@ class SpaceImageService(
             throw ConflictException("이미지는 공간당 ${MAX_IMAGES}장까지 가능합니다")
         }
         val stored = fileStorage.store(file)
-        dsl.insertInto(ATTACHMENTS)
-            .set(ATTACHMENTS.OWNER_TYPE, "SPACE")
-            .set(ATTACHMENTS.OWNER_ID, spaceId)
-            .set(ATTACHMENTS.STORAGE_KEY, stored.key)
-            .set(ATTACHMENTS.ORIGINAL_NAME, stored.originalName)
-            .set(ATTACHMENTS.CONTENT_TYPE, stored.contentType)
-            .set(ATTACHMENTS.SIZE_BYTES, stored.size)
-            .execute()
+        attachmentRepository.insert(
+            ownerType = "SPACE",
+            ownerId = spaceId,
+            storageKey = stored.key,
+            originalName = stored.originalName,
+            contentType = stored.contentType,
+            size = stored.size,
+        )
 
         return "/uploads/${stored.key}"
     }

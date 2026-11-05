@@ -151,6 +151,8 @@ class SpaceRepository(private val dsl: DSLContext) {
     fun search(
         type: String?,
         keyword: String?,
+        sido: String?,
+        sigungu: String?,
         guests: Int?,
         minPrice: Long?,
         maxPrice: Long?,
@@ -167,6 +169,12 @@ class SpaceRepository(private val dsl: DSLContext) {
             condition = condition.and(
                 SPACES.NAME.containsIgnoreCase(keyword).or(SPACES.ADDRESS.containsIgnoreCase(keyword)),
             )
+        }
+        if (sido != null) {
+            condition = condition.and(SPACES.SIDO.eq(sido))
+        }
+        if (sigungu != null) {
+            condition = condition.and(SPACES.SIGUNGU.eq(sigungu))
         }
         if (guests != null) {
             condition = condition
@@ -265,7 +273,7 @@ class SpaceRepository(private val dsl: DSLContext) {
             .where(ATTACHMENTS.OWNER_TYPE.eq("SPACE"))
             .and(ATTACHMENTS.OWNER_ID.eq(spaceId))
             .and(ATTACHMENTS.CONTENT_TYPE.startsWith("image/"))
-            .orderBy(ATTACHMENTS.ID)
+            .orderBy(ATTACHMENTS.SORT_ORDER, ATTACHMENTS.ID)
             .fetch(ATTACHMENTS.STORAGE_KEY)
 
     fun countImages(spaceId: Long): Int =

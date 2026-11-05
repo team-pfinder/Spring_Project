@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
 import org.springframework.core.ParameterizedTypeReference
+import org.springframework.core.io.ByteArrayResource
+import org.springframework.http.client.MultipartBodyBuilder
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -126,6 +128,48 @@ class ReviewQnaFlowTest {
     }
 
     private data class TestUser(val id: Long, val access: String, val refresh: String)
+
+    @Test
+    fun `review images keep upload order`() {
+        val hostId = account("host")
+        val spaceId = publishedSpace(hostId)
+        val member = signup()
+        val reservationId = reservation(member.id, hostId, spaceId, "COMPLETED", OffsetDateTime.now().minusDays(1))
+        val created = postMap(
+            "/api/v1/reviews",
+            mapOf("reservationId" to reservationId, "rating" to 5, "content" to "좋았습니다"),
+            member.access,
+        )
+        val reviewId = (created.body!!["id"] as Number).toLong()
+
+        val uploaded = (1..2).map {
+            val response = uploadReviewImage(reviewId, member.access)
+            assertThat(response.status.value()).isEqualTo(HttpStatus.OK.value())
+            response.body!!["key"] as String
+        }
+
+        val listed = getMap("/api/v1/spaces/$spaceId/reviews", null).body!!["items"] as List<*>
+        assertThat((listed.first() as Map<*, *>)["images"]).isEqualTo(uploaded)
+    }
+
+    private fun uploadReviewImage(reviewId: Long, token: String): ApiResponse {
+        val builder = MultipartBodyBuilder()
+        builder.part("file", ByteArrayResource(ByteArray(32) { 1 }))
+            .filename("test.png")
+            .contentType(MediaType.IMAGE_PNG)
+        return try {
+            val entity = client.post()
+                .uri("/api/v1/reviews/$reviewId/images")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer $token")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(builder.build())
+                .retrieve()
+                .toEntity(String::class.java)
+            ApiResponse(entity.statusCode, mapOf("key" to (entity.body ?: "")))
+        } catch (exception: RestClientResponseException) {
+            ApiResponse(exception.statusCode, null, exception.responseBodyAsString)
+        }
+    }
 
     private fun signup(): TestUser {
         val email = "review-${UUID.randomUUID()}@lookation.test"

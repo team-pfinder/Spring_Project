@@ -82,20 +82,9 @@ class ReviewRepository(private val dsl: DSLContext) {
             .from(ATTACHMENTS)
             .where(ATTACHMENTS.OWNER_TYPE.eq("REVIEW"))
             .and(ATTACHMENTS.OWNER_ID.`in`(reviewIds))
-            .orderBy(ATTACHMENTS.ID)
+            .orderBy(ATTACHMENTS.SORT_ORDER, ATTACHMENTS.ID)
             .fetch()
             .groupBy({ it.value1() }, { it.value2() })
-    }
-
-    fun addImage(reviewId: Long, key: String, originalName: String, contentType: String, size: Long) {
-        dsl.insertInto(ATTACHMENTS)
-            .set(ATTACHMENTS.OWNER_TYPE, "REVIEW")
-            .set(ATTACHMENTS.OWNER_ID, reviewId)
-            .set(ATTACHMENTS.STORAGE_KEY, key)
-            .set(ATTACHMENTS.ORIGINAL_NAME, originalName)
-            .set(ATTACHMENTS.CONTENT_TYPE, contentType)
-            .set(ATTACHMENTS.SIZE_BYTES, size)
-            .execute()
     }
 
     private fun baseQuery() =

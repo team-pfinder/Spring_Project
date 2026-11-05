@@ -72,6 +72,8 @@ create table spaces (
     description    text,
     address        varchar(200) not null,
     address_detail varchar(200),
+    sido           varchar(20),
+    sigungu        varchar(30),
     space_type     varchar(30)  not null,
     min_capacity   smallint     not null default 1,
     max_capacity   smallint     not null,
@@ -101,6 +103,7 @@ create table attachments (
     original_name varchar(255) not null,
     content_type  varchar(100) not null,
     size_bytes    bigint       not null,
+    sort_order    smallint     not null default 0,
     created_at    timestamptz  not null default now()
 );
 

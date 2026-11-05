@@ -26,6 +26,7 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
+import org.springframework.web.util.UriComponentsBuilder
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -202,7 +203,7 @@ class SpaceFlowTest {
         val closed = post("/api/v1/spaces/$spaceId/close", emptyMap(), hostToken)
         assertThat(closed.body!!["status"]).isEqualTo("CLOSED")
         assertThat(get("/api/v1/spaces/$spaceId").status.value()).isEqualTo(HttpStatus.NOT_FOUND.value())
-        assertThat(searchNames(name)).doesNotContain(name)
+        assertThat(searchNames(mapOf("keyword" to name))).doesNotContain(name)
 
         val reopened = post("/api/v1/spaces/$spaceId/reopen", emptyMap(), hostToken)
         assertThat(reopened.body!!["status"]).isEqualTo("DRAFT")
@@ -242,14 +243,84 @@ class SpaceFlowTest {
             .isEqualTo(HttpStatus.NO_CONTENT.value())
         assertThat(get("/api/v1/spaces/$spaceId", hostToken).status.value())
             .isEqualTo(HttpStatus.NOT_FOUND.value())
-        assertThat(searchNames(name)).doesNotContain(name)
+        assertThat(searchNames(mapOf("keyword" to name))).doesNotContain(name)
     }
 
-    private fun searchNames(keyword: String): List<Any?> {
-        val result = get("/api/v1/spaces?keyword=$keyword")
+    @Test
+    fun `region filters narrow the public search`() {
+        val hostId = dsl.insertInto(ACCOUNTS)
+            .set(ACCOUNTS.EMAIL, "region-${UUID.randomUUID()}@lookation.test")
+            .set(ACCOUNTS.PASSWORD_HASH, "unused")
+            .set(ACCOUNTS.NAME, "Region Host")
+            .set(ACCOUNTS.NICKNAME, "region")
+            .returningResult(ACCOUNTS.ID)
+            .fetchOne()!!
+            .value1()
+        val prefix = "region-${UUID.randomUUID()}"
+        fun insertSpace(name: String, sido: String?, sigungu: String?) {
+            dsl.insertInto(SPACES)
+                .set(SPACES.HOST_ID, hostId)
+                .set(SPACES.NAME, name)
+                .set(SPACES.ADDRESS, "서울 마포구 양화로 45")
+                .set(SPACES.SPACE_TYPE, "PARTY_ROOM")
+                .set(SPACES.MIN_CAPACITY, 2.toShort())
+                .set(SPACES.MAX_CAPACITY, 10.toShort())
+                .set(SPACES.SIDO, sido)
+                .set(SPACES.SIGUNGU, sigungu)
+                .set(SPACES.STATUS, "PUBLISHED")
+                .execute()
+        }
+        insertSpace("$prefix-seoul", "서울", "마포구")
+        insertSpace("$prefix-seoul-2", "서울", "강남구")
+        insertSpace("$prefix-busan", "부산", "해운대구")
+        insertSpace("$prefix-unknown", null, null)
+
+        assertThat(searchNames(mapOf("keyword" to prefix, "sido" to "서울")))
+            .containsExactlyInAnyOrder("$prefix-seoul", "$prefix-seoul-2")
+        assertThat(searchNames(mapOf("keyword" to prefix, "sido" to "서울", "sigungu" to "마포구")))
+            .containsExactly("$prefix-seoul")
+        assertThat(searchNames(mapOf("keyword" to prefix, "sigungu" to "해운대구")))
+            .containsExactly("$prefix-busan")
+        assertThat(searchNames(mapOf("keyword" to prefix)))
+            .containsExactlyInAnyOrder("$prefix-seoul", "$prefix-seoul-2", "$prefix-busan", "$prefix-unknown")
+    }
+
+    @Test
+    fun `space images keep upload order`() {
+        val host = signup()
+        post("/api/v1/hosts/apply", hostForm(), host.access)
+        val hostToken = refresh(host)
+        val spaceId = (post("/api/v1/spaces", spaceForm(), hostToken).body!!["id"] as Number).toLong()
+
+        val uploaded = (1..3).map {
+            val response = upload(spaceId, hostToken)
+            assertThat(response.status.value()).isEqualTo(HttpStatus.OK.value())
+            response.body!!["key"] as String
+        }
+
+        assertThat(getList("/api/v1/spaces/$spaceId/images")).isEqualTo(uploaded)
+    }
+
+    private fun getList(path: String): List<String> {
+        val type = object : ParameterizedTypeReference<List<String>>() {}
+        return client.get().uri(path).retrieve().toEntity(type).body!!
+    }
+
+    private fun searchNames(params: Map<String, String>): List<Any?> {
+        var builder = UriComponentsBuilder.fromPath("/api/v1/spaces")
+        params.forEach { (name, value) -> builder = builder.queryParam(name, value) }
+        val result = getUri(builder.build().encode().toUri())
         val items = result.body!!["items"] as List<*>
         return items.map { (it as Map<*, *>)["name"] }
     }
+
+    private fun getUri(uri: java.net.URI): ApiResponse =
+        try {
+            val entity = client.get().uri(uri).retrieve().toEntity(mapType)
+            ApiResponse(entity.statusCode, entity.body)
+        } catch (exception: RestClientResponseException) {
+            ApiResponse(exception.statusCode, null, exception.responseBodyAsString)
+        }
 
     private fun delete(path: String, token: String): ApiResponse =
         try {

@@ -1,12 +1,15 @@
 package com.lookation.integration
 
+import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.jooq.DSLContext
 import org.jooq.impl.DSL
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
+import org.springframework.dao.DataAccessException
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 import org.testcontainers.junit.jupiter.Container
@@ -48,6 +51,29 @@ class SchemaSmokeTest {
             "select conname from pg_constraint where conname = 'reservations_no_overlap'"
         ).fetch(0, String::class.java)
         assertThat(constraints).containsExactly("reservations_no_overlap")
+    }
+
+    @Test
+    fun `attachments reject unknown owner types and duplicate sort order`() {
+        fun insert(ownerType: String, ownerId: Long, sortOrder: Short) {
+            dsl.insertInto(ATTACHMENTS)
+                .set(ATTACHMENTS.OWNER_TYPE, ownerType)
+                .set(ATTACHMENTS.OWNER_ID, ownerId)
+                .set(ATTACHMENTS.STORAGE_KEY, "smoke/$ownerId-$sortOrder.png")
+                .set(ATTACHMENTS.ORIGINAL_NAME, "smoke.png")
+                .set(ATTACHMENTS.CONTENT_TYPE, "image/png")
+                .set(ATTACHMENTS.SIZE_BYTES, 10L)
+                .set(ATTACHMENTS.SORT_ORDER, sortOrder)
+                .execute()
+        }
+
+        val ownerId = System.nanoTime()
+        insert("SPACE", ownerId, 0)
+
+        assertThatThrownBy { insert("SPACE", ownerId, 0) }
+            .isInstanceOf(DataAccessException::class.java)
+        assertThatThrownBy { insert("QNA", ownerId, 1) }
+            .isInstanceOf(DataAccessException::class.java)
     }
 
     @Test

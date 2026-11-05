@@ -140,6 +140,8 @@ class SpaceService(
     fun search(
         type: String?,
         keyword: String?,
+        sido: String?,
+        sigungu: String?,
         guests: Int?,
         minPrice: Long?,
         maxPrice: Long?,
@@ -156,6 +158,8 @@ class SpaceService(
         val rows = spaceRepository.search(
             type = type,
             keyword = keyword,
+            sido = sido,
+            sigungu = sigungu,
             guests = guests,
             minPrice = minPrice,
             maxPrice = maxPrice,

@@ -84,9 +84,12 @@ Lookation의 업무 용어와 코드 표기를 하나로 고정한다. 이슈·A
 
 | 대상 | 상태 |
 | --- | --- |
-| 계정 | `active`, `withdrawn` (활성 제재는 `sanctions`로 표현) |
+| 계정 | `ACTIVE`, `WITHDRAWN` (활성 제재는 `sanctions`로 표현) |
 | 검수 | `DRAFT`, `PENDING_INSPECTION`, `INSPECTION_REJECTED`, `PUBLISHED`, `SUSPENDED`, `CLOSED` |
 | 예약 | `PENDING_APPROVAL`, `PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`, `CANCELLED`, `REFUNDED`, `REJECTED`, `EXPIRED` |
 | 제재 | `active`, `expired`, `revoked` (`ends_at IS NULL` = 영구) |
+| 충전 | `REQUESTED`, `APPROVED`, `REJECTED` |
+| 출금 | `REQUESTED`, `APPROVED`, `PAID`, `REJECTED` |
+| 신고 | `RECEIVED`, `ACCEPTED`, `REJECTED` |
 
-미정: 충전·출금 신청 상태, 신고 처리 상태, 게시물 노출 상태. 확정 전에는 구현하지 않는다.
+미정: 게시물 노출 상태. 확정 전에는 구현하지 않는다.
