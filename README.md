@@ -56,7 +56,7 @@ Swagger UI: <http://localhost:8080/swagger-ui/index.html>
 
 | 구성원 | 주요 기여 |
 | --- | --- |
-| 김승범 (NoPainNoDev) | 팀장, 일정·업무 관리, Spring·MyBatis 구성, 회원·공통 기능, 예약 패키지 |
+| 김승범 (rootmyself) | 팀장, 일정·업무 관리, Spring·MyBatis 구성, 회원·공통 기능, 예약 패키지 |
 | 김일웅 (ILWOONGKIM) | 문서 정리, 공간 등록·수정 |
 | 권소윤 (helloSyun) | 신고·콘텐츠 관리, 정책, 검색 |
 | 조윤상 (YunsandCho) | 마일리지·마이페이지·예약, 지도 검색 |
