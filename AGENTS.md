@@ -27,9 +27,8 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | [`docs/spec/lookation/index.md`](docs/spec/lookation/index.md) | 기획서 분석 인덱스, finding 35건, **blocker 6건** | 기능 요구를 해석할 때 |
 | [`docs/spec/lookation/validation.md`](docs/spec/lookation/validation.md) | 요구사항 충돌·누락·질문 | 구현 전 결정 확인 |
 | [`docs/db/table-spec.md`](docs/db/table-spec.md) | 테이블 78개, 컬럼 294, DDL 기준 FK 78 | SQL·DTO를 만질 때 |
-| [`docs/reviews/2026-11-02-cross-validation.md`](docs/reviews/2026-11-02-cross-validation.md) | 외부 에이전트 3개 교차검증 결과와 반영·기각 내역 | 문서 수치를 신뢰하기 전 |
-| [`docs/security/dependency-scan-2026-11-04.md`](docs/security/dependency-scan-2026-11-04.md) | Kotlin 서버 의존성 CVE 스캔(0건), 스캔 한계, 재현 절차 | 의존성 버전·BOM을 바꿀 때 |
-| [`docs/adr/`](docs/adr/) (0001~0009) | 구조 결정 기록 | 설계를 바꿀 때 |
+| [`docs/security/dependency-scan-2026-11-06.md`](docs/security/dependency-scan-2026-11-06.md) | Kotlin 서버 의존성 CVE 스캔(0건), 스캔 한계, 재현 절차 | 의존성 버전·BOM을 바꿀 때 |
+| [`docs/adr/`](docs/adr/) (0001~0010) | 구조 결정 기록 | 설계를 바꿀 때 |
 
 ## 스택
 
@@ -128,21 +127,6 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
   - 새 테스트는 컨트롤러 요청/응답·DAO 상호작용 같은 외부 행위만 검증한다.
 - 수동 스모크: 해당 `.action` 호출 → JSP 렌더 확인 → DB 반영 확인. 세션 키가 필요한 화면은 로그인 후 확인한다.
 - 기동 확인 없이 "동작한다"고 보고하지 않는다. Oracle·Tomcat이 없으면 그 한계를 명시한다.
-
-## 교차검증
-
-외부 에이전트 교차검증은 Orca에서 실행하고 결과를 `docs/reviews/YYYY-MM-DD-cross-validation.md`에 남긴다.
-
-| 검증자 | 실행 |
-| --- | --- |
-| Gemini | `orca agent launch --agent gemini --worktree path:<repo> --prompt "<brief>"` |
-| Codex | `orca agent launch --agent codex --worktree path:<repo> --model gpt-6.1-sol --effort high --prompt "<brief>"` |
-
-- 기본 모델: Gemini `gemini-3.8-flash`(무료 티어, `~/.gemini/settings.json`의 `model.name`에 고정), Codex `gpt-6.1-sol` + `--effort high`.
-- Orca는 gemini 런치에 `--model`/`--effort`를 지원하지 않는다(`does not support launch-time model selection`). Gemini 모델은 CLI 설정으로만 바꾼다.
-- OpenCode(`muse-spark-1.3`)는 교차검증에서 제외한다(2026-11-05). 호출하지도, 결과에 포함하지도 않는다.
-- 검증자는 읽기 전용으로 두고, 결과 파일은 `/tmp/lookation-review-<agent>.md`에 쓰게 한다.
-- 수치 지적은 반영 전에 직접 재계산한다.
 
 ## 하지 말 것
 
