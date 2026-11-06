@@ -38,8 +38,8 @@
                     <dt>예약일</dt>
                     <dd th:text="${@fmt.dateTime(reservation.createdAt)}"></dd>
                     <dt th:if="${reservation.requestMessage != null}">요청 사항</dt>
-                    <dd th:if="${reservation.requestMessage != null}" class="font-weight-normal"
-                        style="white-space: pre-line;" th:text="${reservation.requestMessage}"></dd>
+                    <dd th:if="${reservation.requestMessage != null}" class="font-weight-normal preline"
+                        th:text="${reservation.requestMessage}"></dd>
                 </dl>
             </div>
 

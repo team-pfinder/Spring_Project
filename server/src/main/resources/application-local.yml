@@ -16,7 +16,7 @@ lookation:
     access-key: test
     secret-key: test
     name: lookation/local
-  upload-dir: ./uploads
+  upload-dir: ${LOOKATION_UPLOAD_DIR:./uploads}
   admin:
     email: admin@lookation.local
   seed:

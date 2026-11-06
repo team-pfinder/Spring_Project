@@ -67,6 +67,7 @@ Lookation/test/build/
 /server/build/
 
 # test uploads
+/uploads/
 /server/uploads/
 /server/build/test-uploads/
 

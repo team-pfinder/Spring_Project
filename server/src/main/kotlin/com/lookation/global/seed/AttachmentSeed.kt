@@ -31,7 +31,7 @@ class AttachmentSeed(
 ) : SeedStep {
 
     private val uploadRoot: Path = Paths.get(uploadDir).toAbsolutePath().normalize()
-    private val sourceRoot: Path = Paths.get(imageSource)
+    private val configuredSource: Path = Paths.get(imageSource)
 
     override val name = "첨부 이미지"
 
@@ -41,7 +41,7 @@ class AttachmentSeed(
         var skipped = 0
 
         seedAttachments().forEach { attachment ->
-            val source = sourceRoot.resolve(attachment.sourceName).normalize()
+            val source = sourceRoot().resolve(attachment.sourceName).normalize()
             if (!Files.isRegularFile(source)) {
                 log.warn("시드 이미지 원본이 없어 건너뜁니다: {}", source)
                 skipped++
@@ -119,6 +119,19 @@ class AttachmentSeed(
         reservationId("seed:reservation:completed")?.let { reservationId ->
             select(REVIEWS.ID).from(REVIEWS).where(REVIEWS.RESERVATION_ID.eq(reservationId)).fetchOne(REVIEWS.ID)
         }
+
+    /**
+     * 원본 이미지 폴더를 찾는다. 기본값 `../Lookation/...`은 작업 디렉토리가 `server/`일 때만 맞고,
+     * IntelliJ처럼 레포 루트에서 실행하면 `./Lookation/...`이 맞으므로, 존재하는 쪽을 쓴다.
+     */
+    private fun sourceRoot(): Path {
+        if (Files.isDirectory(configuredSource)) return configuredSource
+        val fromRoot = configuredSource
+            .takeIf { it.startsWith("..") }
+            ?.let { it.subpath(1, it.nameCount) }
+            ?: Paths.get("Lookation", "WebContent", "images")
+        return if (Files.isDirectory(fromRoot)) fromRoot else configuredSource
+    }
 
     private fun copyIfNeeded(source: Path, target: Path) {
         if (Files.isRegularFile(target) && Files.size(target) == Files.size(source)) return

@@ -84,7 +84,8 @@
                 <div class="space-card">
                     <img class="space-card-image"
                          th:src="${space.thumbnailUrl != null ? space.thumbnailUrl : '/images/main-1.jpg'}"
-                         th:alt="${space.name}">
+                         th:alt="${space.name}"
+                         onerror="this.onerror=null;this.src='/images/main-1.jpg'">
                     <div class="space-card-body">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="space-card-title" th:text="${space.name}">공간 이름</div>
