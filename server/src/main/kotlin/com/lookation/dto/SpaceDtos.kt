@@ -59,6 +59,10 @@ data class SpaceDto(
     val images: List<String>,
     @field:Schema(description = "예약 승인 필요 여부입니다.", example = "false")
     val approvalRequired: Boolean,
+    @field:Schema(description = "공개 리뷰 평점 평균. 리뷰가 없으면 null입니다.", example = "4.5")
+    val rating: Double?,
+    @field:Schema(description = "공개 리뷰 수입니다.", example = "12")
+    val reviewCount: Int,
 )
 
 @Schema(description = "공간 검색 결과 한 건")
@@ -76,20 +80,53 @@ data class SpaceSummaryDto(
     val spaceType: String,
     @field:Schema(description = "기본 주소입니다.", example = "서울 마포구 양화로 45")
     val address: String,
+    @field:Schema(description = "시/도 지역. 등록하지 않았으면 null입니다.", example = "서울")
+    val sido: String?,
+    @field:Schema(description = "시/군/구 지역. 등록하지 않았으면 null입니다.", example = "마포구")
+    val sigungu: String?,
     @field:Schema(description = "최소 수용 인원입니다.", example = "4")
     val minCapacity: Int,
     @field:Schema(description = "최대 수용 인원입니다.", example = "20")
     val maxCapacity: Int,
     @field:Schema(description = "가장 낮은 가격 규칙의 금액. 가격 규칙이 없으면 null입니다.", example = "120000")
     val minPrice: Long?,
+    @field:Schema(description = "첫 이미지 URL. 이미지가 없으면 null입니다.", example = "/uploads/seed/space-1-0.jpg")
+    val thumbnailUrl: String?,
+    @field:Schema(description = "공개 리뷰 평점 평균. 리뷰가 없으면 null입니다.", example = "4.5")
+    val rating: Double?,
+    @field:Schema(description = "공개 리뷰 수입니다.", example = "12")
+    val reviewCount: Int,
 )
 
 @Schema(description = "공간 검색 커서 페이징 응답")
 data class SpaceSearchDto(
     @field:ArraySchema(arraySchema = Schema(description = "공간 요약 목록입니다."))
     val items: List<SpaceSummaryDto>,
-    @field:Schema(description = "다음 페이지 커서. 마지막 페이지면 null입니다.", example = "102")
-    val nextCursor: Long?,
+    @field:Schema(
+        description = "다음 페이지 커서. 마지막 페이지면 null입니다. 정렬 기준과 마지막 항목을 함께 담은 불투명 문자열입니다.",
+        example = "bGF0ZXN0fDEwMnwxMDI",
+    )
+    val nextCursor: String?,
+)
+
+@Schema(description = "예약 점유 구간 한 건. 예약자 정보는 포함하지 않습니다.")
+data class OccupiedIntervalDto(
+    @field:Schema(description = "점유 시작 일시입니다.", example = "2026-11-20T18:00:00+09:00")
+    val startAt: OffsetDateTime,
+    @field:Schema(description = "점유 종료 일시입니다.", example = "2026-11-20T22:00:00+09:00")
+    val endAt: OffsetDateTime,
+)
+
+@Schema(description = "공간의 예약 점유 구간 조회 결과")
+data class SpaceAvailabilityDto(
+    @field:Schema(description = "공간 식별자입니다.", example = "42")
+    val spaceId: Long,
+    @field:Schema(description = "조회 시작 일시입니다.", example = "2026-11-20T00:00:00+09:00")
+    val from: OffsetDateTime,
+    @field:Schema(description = "조회 종료 일시입니다.", example = "2026-11-21T00:00:00+09:00")
+    val to: OffsetDateTime,
+    @field:ArraySchema(arraySchema = Schema(description = "해당 구간과 겹치는 점유 구간입니다. 비어 있으면 예약 가능합니다."))
+    val occupied: List<OccupiedIntervalDto>,
 )
 
 @Schema(description = "가격 규칙 한 건")

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>내 예약 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="page-head d-flex flex-wrap justify-content-between align-items-end">
+        <div>
+            <h1>내 예약</h1>
+            <p>예약 상태와 결제·취소 내역을 확인할 수 있어요.</p>
+        </div>
+        <a class="btn btn-outline-dark mt-3 mt-md-0" th:href="@{/spaces}">공간 더 찾아보기</a>
+    </div>
+
+    <div class="mb-4">
+        <a class="btn btn-sm mr-1 mb-1"
+           th:classappend="${statusFilter == ''} ? ' btn-dark' : ' btn-outline-dark'"
+           th:href="@{/mypage/reservations}">전체</a>
+        <a class="btn btn-sm mr-1 mb-1" th:each="status : ${statuses}"
+           th:classappend="${statusFilter == status} ? ' btn-dark' : ' btn-outline-dark'"
+           th:href="@{/mypage/reservations(status=${status})}"
+           th:text="${@fmt.status(status)}">상태</a>
+    </div>
+
+    <div th:if="${reservations.isEmpty()}" class="empty-state">
+        <h2 class="h5 font-weight-bold mb-2">아직 예약이 없습니다</h2>
+        <p class="mb-3">마음에 드는 공간을 찾아 첫 예약을 시작해 보세요.</p>
+        <a class="btn btn-warning font-weight-bold" th:href="@{/spaces}">공간 둘러보기</a>
+    </div>
+
+    <div th:each="reservation : ${reservations}" class="reservation-item">
+        <div class="d-flex flex-wrap justify-content-between align-items-start">
+            <div class="mb-2">
+                <a class="h5 font-weight-bold text-dark text-decoration-none"
+                   th:href="@{/mypage/reservations/{id}(id=${reservation.id})}"
+                   th:text="${reservation.spaceName}">공간 이름</a>
+                <div class="small text-muted mt-1">
+                    <span th:text="|${@fmt.dateTime(reservation.startAt)} ~ ${@fmt.dateTime(reservation.endAt)}|"></span>
+                    <span class="mx-1">·</span>
+                    <span th:text="|${reservation.guestCount}명|"></span>
+                </div>
+            </div>
+            <span class="badge status-badge"
+                  th:classappend="${@fmt.badgeClass(reservation.status)}"
+                  th:text="${@fmt.status(reservation.status)}">상태</span>
+        </div>
+        <div class="d-flex flex-wrap justify-content-between align-items-end mt-2">
+            <div>
+                <span class="price-line" th:text="${@fmt.won(reservation.price)}">0원</span>
+                <span class="small text-muted ml-2" th:if="${reservation.status == 'PENDING_PAYMENT'}"
+                      th:text="|결제 시한 ${@fmt.dateTime(reservation.paymentDueAt)}|"></span>
+                <span class="small text-danger ml-2" th:if="${reservation.refundedAmount != null}"
+                      th:text="|환불 ${@fmt.won(reservation.refundedAmount)}|"></span>
+            </div>
+            <div class="mt-2">
+                <a class="btn btn-sm btn-outline-dark" th:href="@{/mypage/reservations/{id}(id=${reservation.id})}">상세 보기</a>
+                <a class="btn btn-sm btn-warning font-weight-bold ml-1"
+                   th:if="${reservation.status == 'PENDING_PAYMENT'}"
+                   th:href="@{/reservations/{id}/pay(id=${reservation.id})}">결제하기</a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

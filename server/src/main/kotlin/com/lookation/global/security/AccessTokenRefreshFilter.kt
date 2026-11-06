@@ -52,6 +52,11 @@ class AccessTokenRefreshFilter(
             tokenService.rotate(refreshToken, htmlProperties.reuseGrace)
         } catch (exception: UnauthorizedException) {
             authCookies.clear(response)
+            // 공개 화면은 쿠키가 깨졌어도 그대로 보여 준다. 보호 화면만 로그인으로 보낸다.
+            if (isPublicPage(request)) {
+                filterChain.doFilter(request, response)
+                return
+            }
             response.sendRedirect("/login?expired=1")
             return
         }
@@ -69,8 +74,15 @@ class AccessTokenRefreshFilter(
             true
         }
 
+    private fun isPublicPage(request: HttpServletRequest): Boolean {
+        if (request.method != "GET") return false
+        val path = request.requestURI
+        return path == "/" || path == "/spaces" || PUBLIC_SPACE_PATH.matches(path)
+    }
+
     companion object {
         private val EXPIRY_SKEW = java.time.Duration.ofSeconds(30)
+        private val PUBLIC_SPACE_PATH = Regex("^/spaces/\\d+$")
 
         /** 정적 자산과 인증 화면은 갱신 대상이 아니다. */
         private val SKIP_PREFIXES = listOf(

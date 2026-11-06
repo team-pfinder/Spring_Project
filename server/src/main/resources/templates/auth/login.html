@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>로그인 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="auth-wrap">
+        <div class="page-head text-center">
+            <h1>다시 만나서 반가워요</h1>
+            <p>로그인하고 공간을 예약해 보세요.</p>
+        </div>
+        <div class="auth-card">
+            <form th:action="@{/login}" th:object="${form}" method="post" novalidate>
+                <input type="hidden" th:field="*{next}">
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" class="form-control" id="email" th:field="*{email}"
+                           placeholder="you@example.com" autocomplete="email">
+                    <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}"
+                           placeholder="비밀번호" autocomplete="current-password">
+                    <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                </div>
+                <button type="submit" class="btn btn-warning btn-block font-weight-bold">로그인</button>
+            </form>
+            <div class="d-flex justify-content-between auth-links mt-4">
+                <a th:href="@{/signup}">회원가입</a>
+                <a th:href="@{/password-reset}">비밀번호를 잊으셨나요?</a>
+            </div>
+        </div>
+        <div class="text-center mt-3 small text-muted">
+            시드 계정: seed-member-1@lookation.local / lookation1234!
+        </div>
+    </div>
+</section>
+</body>
+</html>

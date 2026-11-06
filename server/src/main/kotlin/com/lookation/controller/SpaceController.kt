@@ -1,6 +1,8 @@
 package com.lookation.controller
 
+import com.lookation.dto.SpaceAvailabilityDto
 import com.lookation.global.error.UnauthorizedException
+import com.lookation.service.AvailabilityService
 import com.lookation.service.SpaceImageService
 import com.lookation.service.SpaceService
 import jakarta.validation.Valid
@@ -37,11 +39,12 @@ class SpaceController(
     private val spaceService: SpaceService,
     private val imageService: SpaceImageService,
     private val priceRuleService: com.lookation.service.PriceRuleService,
+    private val availabilityService: AvailabilityService,
 ) {
 
     @Operation(
         summary = "공간 검색",
-        description = "게시(`PUBLISHED`)되었고 삭제되지 않은 공간만 커서 페이징으로 조회합니다. 인증은 필요 없습니다. `sido`/`sigungu`를 주면 해당 지역 공간만 남고, `minPrice`/`maxPrice`는 가격 규칙에 해당 범위의 규칙이 하나라도 있는 공간을 찾고, `from`/`to`를 주면 그 요일의 가격 규칙이 있으면서 해당 시간대에 겹치는 예약(신청·결제 대기·확정)이 없는 공간만 남습니다. 응답의 `nextCursor`를 다음 요청의 `cursor`로 넘기며, `nextCursor`는 이번 응답이 `limit`만큼 찼을 때만 채워집니다. 공간 ID 내림차순으로 정렬됩니다. `limit`이 1~50을 벗어나거나 `from`/`to`를 하나만 주거나 `to`가 `from` 이후가 아니면 400입니다.",
+        description = "게시(`PUBLISHED`)되었고 삭제되지 않은 공간만 커서 페이징으로 조회합니다. 인증은 필요 없습니다. `sido`/`sigungu`를 주면 해당 지역 공간만 남고, `minPrice`/`maxPrice`는 가격 규칙에 해당 범위의 규칙이 하나라도 있는 공간을 찾고, `from`/`to`를 주면 그 요일의 가격 규칙이 있으면서 해당 시간대에 겹치는 예약(신청·결제 대기·확정)이 없는 공간만 남습니다. 응답의 `nextCursor`를 다음 요청의 `cursor`로 넘기며, `nextCursor`는 이번 응답이 `limit`만큼 찼을 때만 채워집니다. `sort`는 `latest`(기본, 최신 등록순), `price_asc`, `price_desc`, `rating` 중 하나이고, 동률이면 공간 ID 내림차순입니다. `limit`이 1~50을 벗어나거나 `sort`가 목록에 없거나 `from`/`to`를 하나만 주거나 `to`가 `from` 이후가 아니면 400입니다.",
     )
     @GetMapping
     fun search(
@@ -63,8 +66,10 @@ class SpaceController(
         @RequestParam(required = false) from: java.time.OffsetDateTime?,
         @Parameter(description = "이용 종료 일시입니다. `from`보다 뒤여야 하고, 이 구간과 겹치는 활성 예약이 있는 공간은 제외됩니다.", example = "2026-11-20T22:00:00+09:00")
         @RequestParam(required = false) to: java.time.OffsetDateTime?,
-        @Parameter(description = "다음 페이지 조회용 커서입니다. 직전 응답의 `nextCursor`를 그대로 넣습니다.", example = "42")
-        @RequestParam(required = false) cursor: Long?,
+        @Parameter(description = "정렬 기준입니다. `latest`(기본), `price_asc`, `price_desc`, `rating` 중 하나입니다.", example = "price_asc")
+        @RequestParam(required = false) sort: String?,
+        @Parameter(description = "다음 페이지 조회용 커서입니다. 직전 응답의 `nextCursor`를 그대로 넣습니다.", example = "bGF0ZXN0fHwxMDI")
+        @RequestParam(required = false) cursor: String?,
         @Parameter(description = "페이지 크기입니다. 1~50만 허용하며 기본값은 20입니다.", example = "20")
         @RequestParam(defaultValue = "20") limit: Int,
     ): SpaceSearchDto = spaceService.search(
@@ -77,6 +82,7 @@ class SpaceController(
         maxPrice = maxPrice,
         from = from,
         to = to,
+        sort = sort,
         cursor = cursor,
         limit = limit,
     )
@@ -113,6 +119,21 @@ class SpaceController(
         @Parameter(description = "공간 ID입니다.", example = "1")
         @PathVariable id: Long,
     ): SpaceDto = spaceService.get(jwt?.accountIdOrNull(), id)
+
+    @Operation(
+        summary = "공간 예약 점유 구간 조회",
+        description = "인증 없이 호출할 수 있습니다. `from`~`to`와 겹치는 예약 점유 구간만 반환하며 예약자 정보는 포함하지 않습니다. 점유 상태는 `PENDING_APPROVAL`, `PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`이고 구간은 `[start, end)`입니다. 게시되지 않은 공간은 소유자만 조회할 수 있고, 그 외에는 404입니다. `to`가 `from` 이전이거나 조회 기간이 92일을 넘으면 400입니다.",
+    )
+    @GetMapping("/{id}/availability")
+    fun availability(
+        @AuthenticationPrincipal jwt: Jwt?,
+        @Parameter(description = "공간 ID입니다.", example = "1")
+        @PathVariable id: Long,
+        @Parameter(description = "조회 시작 일시입니다.", example = "2026-11-20T00:00:00+09:00")
+        @RequestParam from: java.time.OffsetDateTime,
+        @Parameter(description = "조회 종료 일시입니다.", example = "2026-11-21T00:00:00+09:00")
+        @RequestParam to: java.time.OffsetDateTime,
+    ): SpaceAvailabilityDto = availabilityService.availability(jwt?.accountIdOrNull(), id, from, to)
 
     @Operation(
         summary = "공간 운영 중단",

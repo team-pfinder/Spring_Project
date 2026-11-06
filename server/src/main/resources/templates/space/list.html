@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>공간 찾기 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="page-head d-flex flex-wrap justify-content-between align-items-end">
+        <div>
+            <h1>어떤 공간을 찾고 있나요?</h1>
+            <p>지역, 날짜, 인원, 가격으로 원하는 공간을 골라보세요.</p>
+        </div>
+        <div class="text-muted small mt-3 mt-md-0" th:text="|${resultCount}개의 공간|">0개의 공간</div>
+    </div>
+
+    <form class="search-panel" th:action="@{/spaces}" method="get">
+        <div class="form-row">
+            <div class="form-group col-lg-4">
+                <label for="keyword">검색어</label>
+                <input type="text" class="form-control" id="keyword" name="keyword"
+                       th:value="${filters.keyword}" placeholder="공간 이름 또는 주소">
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="sido">시/도</label>
+                <select class="form-control" id="sido" name="sido">
+                    <option value="">전체</option>
+                    <option th:each="option : ${sidoOptions}" th:value="${option}" th:text="${option}"
+                            th:selected="${filters.sido == option}"></option>
+                </select>
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="sigungu">시/군/구</label>
+                <input type="text" class="form-control" id="sigungu" name="sigungu"
+                       th:value="${filters.sigungu}" placeholder="예: 마포구">
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="type">공간 유형</label>
+                <select class="form-control" id="type" name="type">
+                    <option value="">전체</option>
+                    <option th:each="option : ${spaceTypes}" th:value="${option}"
+                            th:text="${@fmt.spaceType(option)}" th:selected="${filters.type == option}"></option>
+                </select>
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="guests">인원</label>
+                <input type="number" min="1" class="form-control" id="guests" name="guests"
+                       th:value="${filters.guests}" placeholder="인원">
+            </div>
+        </div>
+        <div class="form-row align-items-end">
+            <div class="form-group col-6 col-lg-2">
+                <label for="date">이용 날짜</label>
+                <input type="date" class="form-control" id="date" name="date" th:value="${filters.date}">
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="minPrice">최소 가격</label>
+                <input type="number" min="0" class="form-control" id="minPrice" name="minPrice"
+                       th:value="${filters.minPrice}" placeholder="원">
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="maxPrice">최대 가격</label>
+                <input type="number" min="0" class="form-control" id="maxPrice" name="maxPrice"
+                       th:value="${filters.maxPrice}" placeholder="원">
+            </div>
+            <div class="form-group col-6 col-lg-2">
+                <label for="sort">정렬</label>
+                <select class="form-control" id="sort" name="sort">
+                    <option value="latest" th:selected="${filters.sort == null or filters.sort == 'latest'}">최신순</option>
+                    <option value="price_asc" th:selected="${filters.sort == 'price_asc'}">낮은 가격순</option>
+                    <option value="price_desc" th:selected="${filters.sort == 'price_desc'}">높은 가격순</option>
+                    <option value="rating" th:selected="${filters.sort == 'rating'}">평점순</option>
+                </select>
+            </div>
+            <div class="form-group col-lg-4 text-lg-right">
+                <button type="submit" class="btn btn-warning btn-block font-weight-bold">공간 검색</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row" th:if="${!spaces.isEmpty()}">
+        <div class="col-md-6 col-xl-4 mb-4" th:each="space : ${spaces}">
+            <a class="text-decoration-none" th:href="@{/spaces/{id}(id=${space.id})}">
+                <div class="space-card">
+                    <img class="space-card-image"
+                         th:src="${space.thumbnailUrl != null ? space.thumbnailUrl : '/images/main-1.jpg'}"
+                         th:alt="${space.name}">
+                    <div class="space-card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="space-card-title" th:text="${space.name}">공간 이름</div>
+                            <div class="rating-line">
+                                ★ <span th:text="${@fmt.rating(space.rating)}">신규</span>
+                                <span class="text-muted" th:if="${space.reviewCount > 0}" th:text="|(${space.reviewCount})|"></span>
+                            </div>
+                        </div>
+                        <div class="space-card-meta">
+                            <span th:text="${@fmt.spaceType(space.spaceType)}">유형</span>
+                            <span class="mx-1">·</span>
+                            <span th:text="${space.sido != null ? space.sido + ' ' + space.sigungu : space.address}">지역</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="price-line" th:if="${space.minPrice != null}">
+                                <span th:text="${@fmt.won(space.minPrice)}">0원</span>
+                                <small>부터</small>
+                            </div>
+                            <div class="price-line" th:if="${space.minPrice == null}">가격 문의</div>
+                            <div class="small text-muted" th:text="|최대 ${space.maxCapacity}명|"></div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="empty-state" th:if="${spaces.isEmpty()}">
+        <h2 class="h5 font-weight-bold mb-2">조건에 맞는 공간이 없습니다</h2>
+        <p class="mb-3">검색 조건을 조금 넓혀 다시 찾아보세요.</p>
+        <a class="btn btn-outline-dark" th:href="@{/spaces}">전체 공간 보기</a>
+    </div>
+
+    <div class="text-center mt-4" th:if="${nextUrl != null}">
+        <a class="btn btn-outline-dark px-4" th:href="${nextUrl}">다음 페이지</a>
+    </div>
+</section>
+</body>
+</html>

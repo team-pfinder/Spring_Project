@@ -64,6 +64,8 @@ class SecurityConfig(
                 authorize(HttpMethod.GET, "/api/v1/spaces/*/images", permitAll)
                 authorize(HttpMethod.GET, "/api/v1/spaces/*/reviews", permitAll)
                 authorize(HttpMethod.GET, "/api/v1/spaces/*/qnas", permitAll)
+                authorize(HttpMethod.GET, "/api/v1/spaces/*/prices", permitAll)
+                authorize(HttpMethod.GET, "/api/v1/spaces/*/availability", permitAll)
                 authorize(HttpMethod.GET, "/api/v1/qnas/*", permitAll)
                 authorize(HttpMethod.GET, "/api/v1/notices", permitAll)
                 authorize(HttpMethod.GET, "/api/v1/notices/*", permitAll)
@@ -92,6 +94,9 @@ class SecurityConfig(
             sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
             requestCache { requestCache = NullRequestCache() }
             authorizeHttpRequests {
+                authorize(HttpMethod.GET, "/", permitAll)
+                authorize(HttpMethod.GET, "/spaces", permitAll)
+                authorize(HttpMethod.GET, "/spaces/*", permitAll)
                 authorize(HttpMethod.GET, "/login", permitAll)
                 authorize(HttpMethod.POST, "/login", permitAll)
                 authorize(HttpMethod.GET, "/signup", permitAll)

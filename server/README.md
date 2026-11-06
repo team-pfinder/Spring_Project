@@ -35,13 +35,41 @@ cd server && ./gradlew bootRun
 - 기본 관리자: `admin@lookation.local` / `lookation-admin1!` (시크릿의 `adminPassword`).
 - 시드 데이터: `local` 프로필에서 `lookation.seed.enabled=true`(`application-local.yml` 기본값)면 기동 시 `InitializeService`가 아래 데이터를 insert-if-absent로 넣는다. 재기동해도 중복·갱신이 없다. 고정 비밀번호는 `lookation1234!`다.
   - 계정: 이용자 `seed-member-1`~`3`(`member-3`은 탈퇴 상태), 호스트 `seed-host-1`·`seed-host-2`, 관리자 `admin@lookation.local` — 모두 `@lookation.local` 도메인이다.
-  - 데이터: 호스트 프로필 2·제재 3, 공간 6(유형·상태 각 6종)·시설·시간/일 가격 규칙·검수 4상태, 예약 10(8상태 + 배치용 2)·상태 이력, 지갑·원장·충전 3상태·출금 4상태·정산, 리뷰·문의·메시지·신고 3상태·공지·도움말, 배치 이력 3상태·인증 코드 2목적.
+  - 데이터: 호스트 프로필 2·제재 3, 공간 9(유형·상태 각 6종, 게시 4개)·시설·시간/일 가격 규칙·검수 4상태, 예약 10(8상태 + 배치용 2)·상태 이력, 지갑·원장·충전 3상태·출금 4상태·정산, 리뷰·문의·메시지·신고 3상태·공지·도움말, 배치 이력 3상태·인증 코드 2목적.
   - 관리자는 `lookation.admin.email`(기본 `admin@lookation.local`) 기준이다. `AdminSeeder`가 먼저 만들면 그 비밀번호(`lookation-admin1!`)를 유지하고 시드는 건너뛴다.
   - 첨부: 레거시 `Lookation/WebContent/images`의 이미지를 `lookation.upload-dir` 아래 `seed/...` 결정적 키로 복사하고 `attachments` 행을 넣는다. 기존 행은 삭제·갱신하지 않는다. 단, 시드가 만든 `seed/...` 파일이 없거나 크기가 바뀌면 다시 복사하고 `size_bytes`만 맞춘다. 원본이 없으면 경고 후 건너뛴다(`lookation.seed.image-source`로 경로 변경).
 - **`SPRING_PROFILES_ACTIVE=local`을 셸에 export하지 않는다.** 이 프로필은 환경변수가 설정 파일보다 우선하므로 테스트에서도 `test` 프로필을 덮어쓴다. DB는 여전히 Testcontainers를 쓰지만(`@ServiceConnection`), `SecretsEnvironmentPostProcessor`가 MiniStack을 요구해 MiniStack이 없는 CI에서 테스트가 실패한다.
 - 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 기본값 `local`을 끈다.
 - `test` 프로필에서는 `ReservationScheduler`를 등록하지 않는다. 스케줄러가 시드 데이터를 배치로 바꾸면 테스트가 시간에 따라 흔들리기 때문이다.
 - 데이터 리셋: `docker compose down -v`.
+
+## HTML 화면 (Thymeleaf SSR)
+
+브라우저용 화면은 같은 앱의 HTML 체인에서 렌더한다. 인증은 `access_token`/`refresh_token` 쿠키(HttpOnly)로 하고, POST는 CSRF 토큰을 요구한다. API 체인(`/api/**`)은 계속 헤더 JWT 전용이다.
+
+| 메서드 | 경로 | 인증 | 템플릿 |
+|---|---|---|---|
+| GET | `/` | 공개 | 302 → `/spaces` |
+| GET/POST | `/login` | 공개 | `auth/login.html` |
+| POST | `/logout` | 필수 | 쿠키 삭제 후 302 → `/login` |
+| GET/POST | `/signup` | 공개 | `auth/signup.html` |
+| POST | `/signup/email-verification` | 공개 | 인증 코드 발송 후 같은 화면 |
+| GET/POST | `/password-reset` | 공개 | `auth/password-reset.html` |
+| POST | `/password-reset/confirm` | 공개 | 비밀번호 변경 후 302 → `/login` |
+| GET | `/spaces` | 공개 | `space/list.html` |
+| GET | `/spaces/{id}` | 공개(게시 공간) | `space/detail.html` |
+| GET | `/spaces/{id}/reservations/new` | 필수 | `reservation/form.html` |
+| POST | `/spaces/{id}/reservations` | 필수 | 302 → 결제 화면 또는 예약 상세 |
+| GET/POST | `/reservations/{id}/pay` | 필수 | `reservation/pay.html` |
+| GET | `/mypage` | 필수 | 302 → `/mypage/reservations` |
+| GET | `/mypage/reservations` | 필수 | `mypage/reservations.html` |
+| GET | `/mypage/reservations/{id}` | 필수 | `mypage/reservation.html` |
+| POST | `/mypage/reservations/{id}/cancel` | 필수 | 302 → 예약 상세 |
+
+- 레이아웃은 `templates/fragments/layout.html` 하나를 쓰고, 정적 자산은 `static/{css,js,images}`에 있다.
+- 예약 폼은 날짜와 가격 규칙 슬롯을 선택한다. 서버가 KST 기준 `startAt`/`endAt`을 계산하고 `ReservationService`가 가격·점유를 다시 검증한다.
+- 공간 상세의 예약 불가 표시는 `GET /api/v1/spaces/{id}/availability`와 같은 점유 상태 4종(`PENDING_APPROVAL`, `PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`)을 쓴다.
+- 비공개·삭제 공간은 404, 타인 예약 접근은 403을 HTML 오류 화면으로 렌더한다.
 
 ## API 문서 (Swagger UI)
 
@@ -98,7 +126,8 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 | POST | `/api/v1/admin/inspections/{spaceId}/decision` | ADMIN |
 | GET/PUT | `/api/v1/spaces/{id}/prices` | 공개 조회 / HOST 수정 |
 | GET | `/api/v1/hosts/reservations` | HOST (CONFIRMED 이후 예약자 연락처 노출) |
-| GET | `/api/v1/spaces?type=&keyword=&sido=&sigungu=&guests=&minPrice=&maxPrice=&from=&to=&cursor=&limit=` | 공개 |
+| GET | `/api/v1/spaces?type=&keyword=&sido=&sigungu=&guests=&minPrice=&maxPrice=&from=&to=&sort=&cursor=&limit=` | 공개 |
+| GET | `/api/v1/spaces/{id}/availability?from=&to=` | 공개 |
 | POST | `/api/v1/reservations` | 인증 |
 | POST | `/api/v1/reservations/{id}/approve`, `/reject`, `/pay` | HOST / HOST / 예약자 |
 | POST | `/api/v1/reservations/{id}/cancel` | 당사자 |
@@ -124,4 +153,4 @@ jOOQ OSS 파서가 CHECK 제약을 읽지 못하므로 구조(V2)와 제약(V3)�
 
 ## 패키지
 
-`com.lookation.<layer>` — `controller`, `service`, `repository`, `domain`, `dto`, 공통은 `global`. 기능별 하위 패키지는 두지 않는다. 요청 Form은 `controller/form`, 응답은 `dto`, 상태 enum은 `domain/Enums.kt`.
+`com.lookation.<layer>` — `controller`, `view`, `service`, `repository`, `domain`, `dto`, 공통은 `global`. 기능별 하위 패키지는 두지 않는다. 요청 Form은 `controller/form`, 응답은 `dto`, 상태 enum은 `domain/Enums.kt`. HTML 컨트롤러는 `view`, HTML 폼은 `view/form`에 둔다.

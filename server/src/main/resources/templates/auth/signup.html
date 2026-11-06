@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>회원가입 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="auth-wrap">
+        <div class="page-head text-center">
+            <h1>Lookation 시작하기</h1>
+            <p>이메일 인증 후 바로 공간을 둘러볼 수 있어요.</p>
+        </div>
+
+        <div class="auth-card mb-3">
+            <h2 class="h5 font-weight-bold mb-3">1. 이메일 인증</h2>
+            <form th:action="@{/signup/email-verification}" th:object="${emailForm}" method="post" class="form-inline" novalidate>
+                <input type="email" class="form-control mr-2 flex-grow-1" th:field="*{email}"
+                       placeholder="you@example.com" autocomplete="email">
+                <button type="submit" class="btn btn-outline-dark">인증 코드 받기</button>
+                <small class="text-danger w-100 mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+            </form>
+            <p class="small text-muted mt-3 mb-0">메일로 받은 6자리 코드를 아래에 입력해 주세요. 로컬은 Mailpit(28025)에서 확인할 수 있습니다.</p>
+        </div>
+
+        <div class="auth-card">
+            <h2 class="h5 font-weight-bold mb-3">2. 계정 만들기</h2>
+            <form th:action="@{/signup}" th:object="${form}" method="post" novalidate>
+                <div class="form-group">
+                    <label for="signup-email">이메일</label>
+                    <input type="email" class="form-control" id="signup-email" th:field="*{email}" autocomplete="email">
+                    <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}" autocomplete="name">
+                        <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="nickname">닉네임</label>
+                        <input type="text" class="form-control" id="nickname" th:field="*{nickname}">
+                        <small class="text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">비밀번호</label>
+                    <input type="password" class="form-control" id="signup-password" th:field="*{password}"
+                           autocomplete="new-password">
+                    <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                </div>
+                <div class="form-group">
+                    <label for="code">인증 코드</label>
+                    <input type="text" class="form-control" id="code" th:field="*{code}" inputmode="numeric"
+                           maxlength="6" placeholder="123456">
+                    <small class="text-danger" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></small>
+                </div>
+                <button type="submit" class="btn btn-warning btn-block font-weight-bold">가입하고 시작하기</button>
+            </form>
+            <div class="text-center auth-links mt-4">
+                이미 계정이 있나요? <a th:href="@{/login}">로그인</a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

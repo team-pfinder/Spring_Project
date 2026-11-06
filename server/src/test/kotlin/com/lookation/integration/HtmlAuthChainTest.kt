@@ -74,9 +74,9 @@ class HtmlAuthChainTest {
 
     @Test
     fun `비로그인 HTML 요청은 로그인으로 리다이렉트된다`() {
-        val result = mockMvc.perform(get("/"))
+        val result = mockMvc.perform(get("/mypage/reservations"))
             .andExpect(status().isFound)
-            .andExpect(header().string("Location", "/login?next=%2F"))
+            .andExpect(header().string("Location", "/login?next=%2Fmypage%2Freservations"))
             .andReturn()
 
         assertThat(result.response.getCookie("JSESSIONID")).isNull()
@@ -98,8 +98,8 @@ class HtmlAuthChainTest {
     fun `HTML 체인은 쿠키 토큰을 인정한다`() {
         val pair = tokenService.issue(memberId(), listOf("MEMBER"))
 
-        mockMvc.perform(get("/").cookie(Cookie(AuthCookies.ACCESS_COOKIE, pair.accessToken)))
-            .andExpect(status().isNotFound)
+        mockMvc.perform(get("/mypage/reservations").cookie(Cookie(AuthCookies.ACCESS_COOKIE, pair.accessToken)))
+            .andExpect(status().isOk)
     }
 
     @Test
@@ -139,13 +139,13 @@ class HtmlAuthChainTest {
         val expiredAccess = expiredAccessToken()
 
         val result = mockMvc.perform(
-            get("/")
+            get("/mypage/reservations")
                 .cookie(
                     Cookie(AuthCookies.ACCESS_COOKIE, expiredAccess),
                     Cookie(AuthCookies.REFRESH_COOKIE, pair.refreshToken),
                 ),
         )
-            .andExpect(status().isNotFound)
+            .andExpect(status().isOk)
             .andReturn()
 
         assertThat(result.response.getHeaders("Set-Cookie"))

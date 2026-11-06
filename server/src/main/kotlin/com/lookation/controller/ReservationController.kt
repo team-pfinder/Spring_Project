@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import com.lookation.dto.ReservationDto
 import com.lookation.controller.form.RejectReservationForm
@@ -38,11 +39,15 @@ class ReservationController(private val reservationService: ReservationService) 
 
     @Operation(
         summary = "내 예약 목록 조회",
-        description = "내가 예약자인 예약을 이용 시작 시각 내림차순으로 모두 반환합니다. 이 응답의 `refundedAmount`는 항상 `null`이며, 취소로 실제 환불된 금액은 취소 응답에서만 확인할 수 있습니다.",
+        description = "내가 예약자인 예약을 이용 시작 시각 내림차순으로 반환합니다. `status`를 주면 해당 상태만 남습니다. 응답에는 공간 이름·인원·요청 사항·결제 시한·취소 가능 여부와 원장에 기록된 환불 금액이 포함됩니다.",
     )
     @GetMapping
-    fun listMine(@AuthenticationPrincipal jwt: Jwt): List<ReservationDto> =
-        reservationService.listMine(jwt.accountId())
+    fun listMine(
+        @AuthenticationPrincipal jwt: Jwt,
+        @Parameter(description = "예약 상태 필터입니다. 생략하면 전체를 반환합니다.", example = "CONFIRMED")
+        @RequestParam(required = false) status: String?,
+    ): List<ReservationDto> =
+        reservationService.listMine(jwt.accountId(), status)
 
     @Operation(
         summary = "예약 단건 조회",

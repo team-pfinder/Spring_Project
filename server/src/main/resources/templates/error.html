@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>오류 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="text-center py-5">
+        <div class="error-code mb-3" th:text="${status ?: 500}">500</div>
+        <h1 class="h3 font-weight-bold" th:text="${errorTitle ?: '문제가 발생했습니다'}">문제가 발생했습니다</h1>
+        <p class="text-muted mb-4" th:text="${message ?: '요청을 처리하지 못했습니다. 잠시 후 다시 시도해 주세요.'}"></p>
+        <a class="btn btn-warning font-weight-bold" th:href="@{/spaces}">공간 찾기로 돌아가기</a>
+    </div>
+</section>
+</body>
+</html>

@@ -32,9 +32,31 @@ data class ReservationRow(
     val spaceId: Long,
     val startAt: OffsetDateTime,
     val endAt: OffsetDateTime,
+    val guestCount: Int,
     val price: Long,
     val status: ReservationStatus,
+    val requestMessage: String?,
     val paymentDueAt: OffsetDateTime?,
+    val createdAt: OffsetDateTime,
+)
+
+data class MemberReservationRow(
+    val id: Long,
+    val spaceId: Long,
+    val spaceName: String,
+    val startAt: OffsetDateTime,
+    val endAt: OffsetDateTime,
+    val guestCount: Int,
+    val price: Long,
+    val status: ReservationStatus,
+    val requestMessage: String?,
+    val paymentDueAt: OffsetDateTime?,
+    val createdAt: OffsetDateTime,
+)
+
+data class OccupiedIntervalRow(
+    val startAt: OffsetDateTime,
+    val endAt: OffsetDateTime,
 )
 
 @Repository
@@ -185,12 +207,59 @@ class ReservationRepository(private val dsl: DSLContext) {
             }
     }
 
-    fun findByMember(memberId: Long): List<ReservationRow> =
-        dsl.selectFrom(RESERVATIONS)
-            .where(RESERVATIONS.MEMBER_ID.eq(memberId))
+    fun findByMember(memberId: Long, status: ReservationStatus? = null): List<MemberReservationRow> {
+        var condition = RESERVATIONS.MEMBER_ID.eq(memberId)
+        if (status != null) condition = condition.and(RESERVATIONS.STATUS.eq(status.name))
+        return dsl.select(
+            RESERVATIONS.ID,
+            RESERVATIONS.SPACE_ID,
+            SPACES.NAME,
+            RESERVATIONS.START_AT,
+            RESERVATIONS.END_AT,
+            RESERVATIONS.GUEST_COUNT,
+            RESERVATIONS.PRICE,
+            RESERVATIONS.STATUS,
+            RESERVATIONS.REQUEST_MESSAGE,
+            RESERVATIONS.PAYMENT_DUE_AT,
+            RESERVATIONS.CREATED_AT,
+        )
+            .from(RESERVATIONS)
+            .join(SPACES).on(SPACES.ID.eq(RESERVATIONS.SPACE_ID))
+            .where(condition)
             .orderBy(RESERVATIONS.START_AT.desc())
             .fetch()
-            .map { it.toRow() }
+            .map {
+                MemberReservationRow(
+                    id = it.value1(),
+                    spaceId = it.value2(),
+                    spaceName = it.value3(),
+                    startAt = it.value4(),
+                    endAt = it.value5(),
+                    guestCount = it.value6().toInt(),
+                    price = it.value7(),
+                    status = ReservationStatus.valueOf(it.value8()),
+                    requestMessage = it.value9(),
+                    paymentDueAt = it.value10(),
+                    createdAt = it.value11(),
+                )
+            }
+    }
+
+    fun findOccupied(spaceId: Long, from: OffsetDateTime, to: OffsetDateTime): List<OccupiedIntervalRow> =
+        dsl.select(RESERVATIONS.START_AT, RESERVATIONS.END_AT)
+            .from(RESERVATIONS)
+            .where(RESERVATIONS.SPACE_ID.eq(spaceId))
+            .and(RESERVATIONS.STATUS.`in`(OCCUPYING_STATUSES.map { it.name }))
+            .and(
+                DSL.condition(
+                    "tstzrange(reservations.start_at, reservations.end_at, '[)') && tstzrange({0}, {1}, '[)')",
+                    from,
+                    to,
+                ),
+            )
+            .orderBy(RESERVATIONS.START_AT)
+            .fetch()
+            .map { OccupiedIntervalRow(it.value1(), it.value2()) }
 
     private fun org.jooq.Record.toRow(): ReservationRow = ReservationRow(
         id = get(RESERVATIONS.ID),
@@ -199,8 +268,24 @@ class ReservationRepository(private val dsl: DSLContext) {
         spaceId = get(RESERVATIONS.SPACE_ID),
         startAt = get(RESERVATIONS.START_AT),
         endAt = get(RESERVATIONS.END_AT),
+        guestCount = get(RESERVATIONS.GUEST_COUNT).toInt(),
         price = get(RESERVATIONS.PRICE),
         status = ReservationStatus.valueOf(get(RESERVATIONS.STATUS)),
+        requestMessage = get(RESERVATIONS.REQUEST_MESSAGE),
         paymentDueAt = get(RESERVATIONS.PAYMENT_DUE_AT),
+        createdAt = get(RESERVATIONS.CREATED_AT),
     )
+
+    companion object {
+        /**
+         * DB exclusion constraint와 같은 점유 상태 집합. 목록에 이 상태가 빠지면 화면이
+         * 예약 가능하다고 표시한 구간이 409로 실패한다.
+         */
+        val OCCUPYING_STATUSES = listOf(
+            ReservationStatus.PENDING_APPROVAL,
+            ReservationStatus.PENDING_PAYMENT,
+            ReservationStatus.CONFIRMED,
+            ReservationStatus.COMPLETED,
+        )
+    }
 }

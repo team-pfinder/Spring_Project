@@ -48,4 +48,12 @@ class WalletRepository(private val dsl: DSLContext) {
             .from(WALLETS)
             .where(WALLETS.ACCOUNT_ID.eq(accountId))
             .fetchOne(WALLETS.BALANCE) ?: 0L
+
+    fun refundedAmount(reservationId: Long): Long? =
+        dsl.select(org.jooq.impl.DSL.sum(WALLET_ENTRIES.AMOUNT))
+            .from(WALLET_ENTRIES)
+            .where(WALLET_ENTRIES.ENTRY_TYPE.eq("REFUND"))
+            .and(WALLET_ENTRIES.REF_TYPE.eq("RESERVATION"))
+            .and(WALLET_ENTRIES.REF_ID.eq(reservationId))
+            .fetchOne(0, Long::class.javaObjectType)
 }

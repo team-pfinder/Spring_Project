@@ -149,6 +149,9 @@ class AttachmentSeed(
 
         val SPACE_IMAGES = linkedMapOf(
             "시드 파티룸" to listOf("main-1.jpg", "main-2.jpg"),
+            "시드 한강 루프탑" to listOf("main-2.jpg"),
+            "시드 부산 파티룸" to listOf("main-host-1.jpg"),
+            "시드 판교 워크샵" to listOf("bg_3.jpg"),
             "시드 빈 공간" to listOf("main-3.jpg"),
             "시드 루프탑" to listOf("main-host-1.jpg"),
             "시드 브라이덜샤워" to listOf("main-host-2.jpg"),

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="|${space.name} · Lookation|">공간 상세 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="page-head d-flex flex-wrap justify-content-between align-items-end">
+        <div>
+            <div class="small text-muted mb-2" th:text="${@fmt.spaceType(space.spaceType)}">유형</div>
+            <h1 th:text="${space.name}">공간 이름</h1>
+            <p>
+                <span th:text="${space.address}">주소</span>
+                <span th:if="${space.addressDetail != null}" th:text="| ${space.addressDetail}|"></span>
+            </p>
+        </div>
+        <div class="rating-line mt-3 mt-md-0">
+            ★ <strong th:text="${@fmt.rating(space.rating)}">신규</strong>
+            <span class="text-muted" th:text="|리뷰 ${space.reviewCount}개|"></span>
+        </div>
+    </div>
+
+    <div id="spaceCarousel" class="carousel slide mb-4" data-ride="carousel" th:if="${!space.images.isEmpty()}">
+        <div class="carousel-inner rounded overflow-hidden">
+            <div class="carousel-item" th:each="image, stat : ${space.images}"
+                 th:classappend="${stat.first} ? ' active'">
+                <img class="d-block w-100" style="height: 430px; object-fit: cover;"
+                     th:src="${image}" th:alt="${space.name}">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#spaceCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">이전</span>
+        </a>
+        <a class="carousel-control-next" href="#spaceCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">다음</span>
+        </a>
+    </div>
+    <div class="mb-4" th:if="${space.images.isEmpty()}">
+        <img class="d-block w-100 rounded" style="height: 360px; object-fit: cover;"
+             th:src="@{/images/main-1.jpg}" th:alt="${space.name}">
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="mb-4">
+                <h2 class="section-title">공간 소개</h2>
+                <p class="text-muted" th:text="${space.shortIntro ?: '등록된 한 줄 소개가 없습니다.'}"></p>
+                <p style="white-space: pre-line;" th:text="${space.description ?: '등록된 상세 설명이 없습니다.'}"></p>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h2 class="section-title">이용 정보</h2>
+                    <dl class="detail-list mb-0">
+                        <dt>수용 인원</dt>
+                        <dd th:text="|${space.minCapacity}명 ~ ${space.maxCapacity}명|"></dd>
+                        <dt>이용 가능 시간</dt>
+                        <dd th:text="${space.useHours ?: '공간에 문의해 주세요'}"></dd>
+                        <dt>예약 방식</dt>
+                        <dd th:text="${space.approvalRequired ? '호스트 승인 후 결제' : '즉시 예약'}"></dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="section-title">시설</h2>
+                    <div th:if="${!space.facilities.isEmpty()}">
+                        <span class="badge badge-light border mr-1 mb-1 p-2"
+                              th:each="facility : ${space.facilities}"
+                              th:text="${@fmt.facility(facility)}"></span>
+                    </div>
+                    <p class="text-muted" th:if="${space.facilities.isEmpty()}">등록된 시설 정보가 없습니다.</p>
+                </div>
+            </div>
+
+            <div class="mb-4" th:if="${space.caution != null}">
+                <h2 class="section-title">주의 사항</h2>
+                <div class="alert alert-light border" th:text="${space.caution}"></div>
+            </div>
+
+            <div class="mb-4" th:if="${space.contactEmail != null or space.contactPhone != null}">
+                <h2 class="section-title">호스트 문의</h2>
+                <p class="mb-1" th:if="${space.contactEmail != null}" th:text="|이메일 ${space.contactEmail}|"></p>
+                <p class="mb-0" th:if="${space.contactPhone != null}" th:text="|전화 ${space.contactPhone}|"></p>
+            </div>
+
+            <div class="mb-4">
+                <h2 class="section-title">리뷰 <span class="text-muted small" th:text="|${reviews.items.size}개 표시|"></span></h2>
+                <div th:if="${reviews.items.isEmpty()}" class="text-muted">아직 리뷰가 없습니다.</div>
+                <div th:each="review : ${reviews.items}" class="review-item">
+                    <div class="d-flex justify-content-between">
+                        <strong th:text="${review.nickname}">작성자</strong>
+                        <span class="rating-line">★ <span th:text="${review.rating}">5</span></span>
+                    </div>
+                    <p class="mb-1 mt-2" style="white-space: pre-line;" th:text="${review.content}"></p>
+                    <div class="small text-muted" th:text="${@fmt.dateTime(review.createdAt)}"></div>
+                    <div class="alert alert-light border mt-2 mb-0" th:if="${review.reply != null}">
+                        <strong class="d-block mb-1">호스트 답변</strong>
+                        <span style="white-space: pre-line;" th:text="${review.reply}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h2 class="section-title">Q&amp;A</h2>
+                <div th:if="${qnas.items.isEmpty()}" class="text-muted">아직 문의가 없습니다.</div>
+                <div th:each="qna : ${qnas.items}" class="qna-item">
+                    <div class="d-flex justify-content-between">
+                        <strong th:text="${qna.title}">문의 제목</strong>
+                        <span class="badge badge-light border" th:text="${qna.status == 'ANSWERED' ? '답변 완료' : '답변 대기'}"></span>
+                    </div>
+                    <div class="small text-muted mt-1" th:text="|${qna.nickname} · ${@fmt.dateTime(qna.createdAt)}|"></div>
+                    <p class="mb-1 mt-2" style="white-space: pre-line;" th:text="${qna.content}"></p>
+                    <div class="alert alert-light border mt-2 mb-0" th:if="${qna.reply != null}">
+                        <strong class="d-block mb-1">호스트 답변</strong>
+                        <span style="white-space: pre-line;" th:text="${qna.reply}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="info-card sticky-booking">
+                <h2 class="h5 font-weight-bold mb-3">예약 가능 시간</h2>
+                <form method="get" th:action="@{/spaces/{id}(id=${space.id})}" class="form-inline mb-3">
+                    <label class="sr-only" for="date">날짜</label>
+                    <input type="date" class="form-control mr-2 flex-grow-1" id="date" name="date"
+                           th:value="${date}" th:min="${minDate}">
+                    <button type="submit" class="btn btn-outline-dark">조회</button>
+                </form>
+                <div class="text-muted small mb-3" th:text="|${@fmt.date(date)} 기준|"></div>
+
+                <div class="slot-list" th:if="${!slots.isEmpty()}">
+                    <div class="slot-option" th:each="slot : ${slots}"
+                         th:classappend="${!slot.available} ? ' is-unavailable'">
+                        <div>
+                            <div class="font-weight-bold" th:text="${slot.label}">18:00 ~ 22:00</div>
+                            <div class="small" th:text="${@fmt.won(slot.price)}">0원</div>
+                        </div>
+                        <a class="btn btn-sm btn-warning font-weight-bold"
+                           th:if="${slot.available}"
+                           th:href="@{/spaces/{id}/reservations/new(id=${space.id},date=${date},priceRuleId=${slot.priceRuleId})}">예약</a>
+                        <span class="small" th:if="${!slot.available}">예약 불가</span>
+                    </div>
+                </div>
+                <div class="text-muted" th:if="${slots.isEmpty()}">선택한 날짜에 등록된 가격 규칙이 없습니다.</div>
+
+                <hr>
+                <a class="btn btn-dark btn-block" th:href="@{/spaces/{id}/reservations/new(id=${space.id},date=${date})}">
+                    예약 신청하기
+                </a>
+                <p class="small text-muted mt-2 mb-0" th:if="${viewer == null}">
+                    예약하려면 로그인이 필요합니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

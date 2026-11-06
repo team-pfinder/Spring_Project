@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:replace="${title}">Lookation</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</head>
+<body class="app-body">
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+    <div class="container">
+        <a class="navbar-brand app-brand" th:href="@{/spaces}">Look<span>ation.</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#appNav"
+                aria-controls="appNav" aria-expanded="false" aria-label="메뉴">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="appNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/spaces}">공간 찾기</a>
+                </li>
+                <li class="nav-item" th:if="${viewer != null}">
+                    <a class="nav-link" th:href="@{/mypage/reservations}">내 예약</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav align-items-lg-center">
+                <li class="nav-item" th:if="${viewer == null}">
+                    <a class="nav-link" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item" th:if="${viewer == null}">
+                    <a class="nav-link" th:href="@{/signup}">회원가입</a>
+                </li>
+                <li class="nav-item" th:if="${viewer != null}">
+                    <span class="navbar-text mr-lg-3" th:text="${viewer.nickname} + '님'">회원님</span>
+                </li>
+                <li class="nav-item" th:if="${viewer != null}">
+                    <form th:action="@{/logout}" method="post" class="form-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-warning">로그아웃</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="app-main">
+    <div class="container">
+        <div class="alert alert-info app-alert" role="alert" th:if="${notice}" th:text="${notice}"></div>
+        <div class="alert alert-danger app-alert" role="alert" th:if="${error}" th:text="${error}"></div>
+        <div th:insert="${content}"></div>
+    </div>
+</main>
+
+<footer class="app-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <p class="mb-1"><strong>Lookation.</strong> 공간을 발견하고 예약하는 가장 쉬운 방법.</p>
+                <p class="small mb-0">룩케이션은 통신판매중개자이며 통신판매 당사자가 아닙니다.</p>
+            </div>
+            <div class="col-md-5 text-md-right small">
+                <span>Team pFinder</span>
+                <span class="mx-2">·</span>
+                <span>lookation.notice@gmail.com</span>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

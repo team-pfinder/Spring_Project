@@ -107,7 +107,7 @@ class ReservationService(
             walletRepository.addEntry(memberId, "HOLD", -price, "RESERVATION", reservationId)
         }
         reservationRepository.addEvent(reservationId, null, initialStatus, "MEMBER", memberId)
-        return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
+        return response(reservationId)
     }
 
     @Transactional
@@ -129,7 +129,7 @@ class ReservationService(
             throw ConflictException("승인할 수 없는 상태입니다")
         }
         reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.PENDING_PAYMENT, "HOST", hostId)
-        return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
+        return response(reservationId)
     }
 
     @Transactional
@@ -143,7 +143,7 @@ class ReservationService(
             throw ConflictException("거절할 수 없는 상태입니다")
         }
         reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.REJECTED, "HOST", hostId, reason)
-        return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
+        return response(reservationId)
     }
 
     @Transactional
@@ -175,7 +175,7 @@ class ReservationService(
         }
         walletRepository.addEntry(memberId, "HOLD", -reservation.price, "RESERVATION", reservationId)
         reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_PAYMENT, ReservationStatus.CONFIRMED, "MEMBER", memberId)
-        return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
+        return response(reservationId)
     }
 
     @Transactional
@@ -204,7 +204,7 @@ class ReservationService(
                 if (reservation.hostId == accountId) "HOST" else "MEMBER",
                 accountId,
             )
-            return requireNotNull(reservationRepository.findById(reservationId)).toResponse()
+            return response(reservationId, walletRepository.refundedAmount(reservationId))
         }
 
         val rate = if (isHost) {
@@ -230,8 +230,7 @@ class ReservationService(
             actorId = accountId,
         )
 
-        return requireNotNull(reservationRepository.findById(reservation.id))
-            .toResponse(refundedAmount = refund)
+        return response(reservation.id, refund)
     }
 
     @Transactional(readOnly = true)
@@ -241,7 +240,27 @@ class ReservationService(
         if (reservation.memberId != accountId && reservation.hostId != accountId) {
             throw ForbiddenException("예약 당사자만 조회할 수 있습니다")
         }
-        return reservation.toResponse()
+        return response(reservation)
+    }
+
+    @Transactional(readOnly = true)
+    fun getMine(memberId: Long, reservationId: Long): ReservationDto {
+        val reservation = reservationRepository.findById(reservationId)
+            ?: throw NotFoundException("예약을 찾을 수 없습니다")
+        if (reservation.memberId != memberId) {
+            throw ForbiddenException("본인 예약만 조회할 수 있습니다")
+        }
+        return response(reservation)
+    }
+
+    @Transactional
+    fun cancelMine(memberId: Long, reservationId: Long): ReservationDto {
+        val reservation = reservationRepository.findById(reservationId)
+            ?: throw NotFoundException("예약을 찾을 수 없습니다")
+        if (reservation.memberId != memberId) {
+            throw ForbiddenException("본인 예약만 취소할 수 있습니다")
+        }
+        return cancel(memberId, reservationId)
     }
 
     @Transactional(readOnly = true)
@@ -278,18 +297,57 @@ class ReservationService(
     }
 
     @Transactional(readOnly = true)
-    fun listMine(memberId: Long): List<ReservationDto> =
-        reservationRepository.findByMember(memberId).map { it.toResponse() }
+    fun listMine(memberId: Long, status: String? = null): List<ReservationDto> {
+        val statusFilter = status?.takeIf { it.isNotBlank() }?.let {
+            try {
+                ReservationStatus.valueOf(it)
+            } catch (_: IllegalArgumentException) {
+                throw BadRequestException("알 수 없는 예약 상태입니다")
+            }
+        }
+        return reservationRepository.findByMember(memberId, statusFilter).map {
+            ReservationDto(
+                id = it.id,
+                spaceId = it.spaceId,
+                spaceName = it.spaceName,
+                startAt = it.startAt,
+                endAt = it.endAt,
+                guestCount = it.guestCount,
+                price = it.price,
+                status = it.status.name,
+                requestMessage = it.requestMessage,
+                paymentDueAt = it.paymentDueAt,
+                createdAt = it.createdAt,
+                canCancel = canCancel(it.status, it.startAt),
+                refundedAmount = walletRepository.refundedAmount(it.id),
+            )
+        }
+    }
 
-    private fun ReservationRow.toResponse(refundedAmount: Long? = null) = ReservationDto(
-        id = id,
-        spaceId = spaceId,
-        startAt = startAt,
-        endAt = endAt,
-        price = price,
-        status = status.name,
-        refundedAmount = refundedAmount,
-    )
+    private fun response(reservationId: Long, refundedAmount: Long? = null): ReservationDto =
+        response(requireNotNull(reservationRepository.findById(reservationId)), refundedAmount)
+
+    private fun response(reservation: ReservationRow, refundedAmount: Long? = null): ReservationDto {
+        val spaceName = spaceRepository.findById(reservation.spaceId)?.name ?: ""
+        return ReservationDto(
+            id = reservation.id,
+            spaceId = reservation.spaceId,
+            spaceName = spaceName,
+            startAt = reservation.startAt,
+            endAt = reservation.endAt,
+            guestCount = reservation.guestCount,
+            price = reservation.price,
+            status = reservation.status.name,
+            requestMessage = reservation.requestMessage,
+            paymentDueAt = reservation.paymentDueAt,
+            createdAt = reservation.createdAt,
+            canCancel = canCancel(reservation.status, reservation.startAt),
+            refundedAmount = refundedAmount ?: walletRepository.refundedAmount(reservation.id),
+        )
+    }
+
+    private fun canCancel(status: ReservationStatus, startAt: OffsetDateTime): Boolean =
+        status in CANCELLABLE_STATUSES && OffsetDateTime.now().isBefore(startAt)
 
     companion object {
         private const val MAX_ADVANCE_DAYS = 90L

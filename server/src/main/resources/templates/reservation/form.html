@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="|${space.name} 예약 · Lookation|">예약 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="page-head">
+        <div class="small text-muted mb-2">예약 신청</div>
+        <h1 th:text="${space.name}">공간 이름</h1>
+        <p th:text="|${space.address} · ${@fmt.spaceType(space.spaceType)}|">주소</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="info-card mb-4">
+                <h2 class="h5 font-weight-bold mb-3">이용 날짜</h2>
+                <form method="get" th:action="@{/spaces/{id}/reservations/new(id=${space.id})}" class="form-inline">
+                    <input type="date" class="form-control mr-2" name="date" th:value="${date}" th:min="${minDate}">
+                    <button type="submit" class="btn btn-outline-dark">날짜 확인</button>
+                </form>
+            </div>
+
+            <form th:action="@{/spaces/{id}/reservations(id=${space.id})}" th:object="${form}" method="post" novalidate>
+                <input type="hidden" th:field="*{date}">
+                <div class="info-card mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">이용 시간</h2>
+                    <div class="slot-list" th:if="${!slots.isEmpty()}">
+                        <label class="slot-option" th:each="slot : ${slots}"
+                               th:classappend="${!slot.available} ? ' is-unavailable'">
+                            <span>
+                                <input type="radio" th:field="*{priceRuleId}" th:value="${slot.priceRuleId}"
+                                       th:disabled="${!slot.available}">
+                                <span class="font-weight-bold" th:text="${slot.label}">18:00 ~ 22:00</span>
+                            </span>
+                            <span th:text="${@fmt.won(slot.price)}">0원</span>
+                        </label>
+                    </div>
+                    <div class="text-muted" th:if="${slots.isEmpty()}">선택한 날짜에 예약 가능한 시간이 없습니다. 다른 날짜를 선택해 주세요.</div>
+                    <small class="text-danger" th:if="${#fields.hasErrors('priceRuleId')}" th:errors="*{priceRuleId}"></small>
+                </div>
+
+                <div class="info-card mb-4">
+                    <h2 class="h5 font-weight-bold mb-3">예약 정보</h2>
+                    <div class="form-group">
+                        <label for="guestCount">이용 인원</label>
+                        <input type="number" class="form-control" id="guestCount" th:field="*{guestCount}"
+                               th:min="${space.minCapacity}" th:max="${space.maxCapacity}">
+                        <small class="text-muted" th:text="|${space.minCapacity}명 ~ ${space.maxCapacity}명|"></small>
+                        <small class="text-danger d-block" th:if="${#fields.hasErrors('guestCount')}" th:errors="*{guestCount}"></small>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label for="requestMessage">호스트에게 전달할 요청 사항 <span class="text-muted">(선택)</span></label>
+                        <textarea class="form-control" id="requestMessage" th:field="*{requestMessage}" rows="4"
+                                  maxlength="300" placeholder="예: 늦게 도착합니다. 조명 세팅 부탁드려요."></textarea>
+                        <small class="text-danger" th:if="${#fields.hasErrors('requestMessage')}" th:errors="*{requestMessage}"></small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-warning btn-block font-weight-bold py-3">예약 신청하기</button>
+            </form>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="info-card sticky-booking">
+                <h2 class="h5 font-weight-bold mb-3">예약 안내</h2>
+                <dl class="detail-list mb-0">
+                    <dt>공간</dt>
+                    <dd th:text="${space.name}"></dd>
+                    <dt>날짜</dt>
+                    <dd th:text="${@fmt.date(date)}"></dd>
+                    <dt>예약 방식</dt>
+                    <dd th:text="${space.approvalRequired ? '호스트 승인 후 1시간 안에 결제' : '예약과 동시에 마일리지 결제'}"></dd>
+                    <dt>취소 규정</dt>
+                    <dd class="font-weight-normal small text-muted">이용 7일 전 100%, 3일 전 70%, 1일 전 50% 환불</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

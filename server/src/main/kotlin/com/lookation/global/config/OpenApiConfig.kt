@@ -90,6 +90,8 @@ class OpenApiConfig {
             "/api/v1/spaces/{}/images",
             "/api/v1/spaces/{}/reviews",
             "/api/v1/spaces/{}/qnas",
+            "/api/v1/spaces/{}/prices",
+            "/api/v1/spaces/{}/availability",
             "/api/v1/qnas/{}",
             "/api/v1/notices",
             "/api/v1/notices/{}",

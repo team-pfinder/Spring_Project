@@ -13,10 +13,18 @@ import com.lookation.dto.SpaceDto
 import com.lookation.domain.InspectionStatus
 import com.lookation.domain.SpaceStatus
 import com.lookation.domain.SpaceType
+import com.lookation.repository.SORT_LATEST
+import com.lookation.repository.SORT_PRICE_ASC
+import com.lookation.repository.SORT_PRICE_DESC
+import com.lookation.repository.SORT_RATING
+import com.lookation.repository.SpaceCursor
 import com.lookation.repository.SpaceRepository
 import com.lookation.repository.SpaceRow
+import com.lookation.repository.SpaceSummary
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 
 @Service
 class SpaceService(
@@ -151,13 +159,18 @@ class SpaceService(
         maxPrice: Long?,
         from: java.time.OffsetDateTime?,
         to: java.time.OffsetDateTime?,
-        cursor: Long?,
+        sort: String?,
+        cursor: String?,
         limit: Int,
     ): SpaceSearchDto {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
         if ((from == null) != (to == null)) throw BadRequestException("from과 to는 함께 지정해야 합니다")
         if (from != null && to != null && !to.isAfter(from)) {
             throw BadRequestException("to는 from 이후여야 합니다")
+        }
+        val normalizedSort = sort?.takeIf { it.isNotBlank() } ?: SORT_LATEST
+        if (normalizedSort !in SORTS) {
+            throw BadRequestException("sort는 latest, price_asc, price_desc, rating 중 하나입니다")
         }
         val rows = spaceRepository.search(
             type = type,
@@ -169,7 +182,8 @@ class SpaceService(
             maxPrice = maxPrice,
             from = from,
             to = to,
-            cursor = cursor,
+            sort = normalizedSort,
+            cursor = decodeCursor(cursor, normalizedSort),
             limit = limit,
         )
         return SpaceSearchDto(
@@ -180,13 +194,49 @@ class SpaceService(
                     shortIntro = it.shortIntro,
                     spaceType = it.spaceType,
                     address = it.address,
+                    sido = it.sido,
+                    sigungu = it.sigungu,
                     minCapacity = it.minCapacity,
                     maxCapacity = it.maxCapacity,
                     minPrice = it.minPrice,
+                    thumbnailUrl = it.thumbnailUrl,
+                    rating = it.rating,
+                    reviewCount = it.reviewCount,
                 )
             },
-            nextCursor = if (rows.size == limit) rows.last().id else null,
+            nextCursor = if (rows.size == limit) encodeCursor(normalizedSort, rows.last()) else null,
         )
+    }
+
+    private fun encodeCursor(sort: String, row: SpaceSummary): String {
+        val value = when (sort) {
+            SORT_PRICE_ASC, SORT_PRICE_DESC -> row.minPrice?.toString().orEmpty()
+            SORT_RATING -> row.rating?.toString().orEmpty()
+            else -> ""
+        }
+        val raw = "$sort|$value|${row.id}"
+        return Base64.getUrlEncoder().withoutPadding()
+            .encodeToString(raw.toByteArray(StandardCharsets.UTF_8))
+    }
+
+    private fun decodeCursor(raw: String?, sort: String): SpaceCursor? {
+        if (raw.isNullOrBlank()) return null
+        // 기존 숫자 커서(id)도 최신순에서는 계속 받는다.
+        raw.toLongOrNull()?.let {
+            if (sort != SORT_LATEST) throw BadRequestException("커서가 올바르지 않습니다")
+            return SpaceCursor(sort, null, it)
+        }
+        val decoded = try {
+            String(Base64.getUrlDecoder().decode(raw), StandardCharsets.UTF_8)
+        } catch (_: IllegalArgumentException) {
+            throw BadRequestException("커서가 올바르지 않습니다")
+        }
+        val parts = decoded.split("|")
+        if (parts.size != 3 || parts[0] != sort) {
+            throw BadRequestException("커서가 올바르지 않습니다")
+        }
+        val id = parts[2].toLongOrNull() ?: throw BadRequestException("커서가 올바르지 않습니다")
+        return SpaceCursor(sort, parts[1].ifBlank { null }, id)
     }
 
     @Transactional(readOnly = true)
@@ -244,7 +294,9 @@ class SpaceService(
     private fun response(spaceId: Long): SpaceDto =
         response(requireNotNull(spaceRepository.findById(spaceId)))
 
-    private fun response(space: SpaceRow) = SpaceDto(
+    private fun response(space: SpaceRow): SpaceDto {
+        val rating = spaceRepository.ratingSummary(space.id)
+        return SpaceDto(
         id = space.id,
         name = space.name,
         shortIntro = space.shortIntro,
@@ -265,9 +317,13 @@ class SpaceService(
         facilities = spaceRepository.facilities(space.id),
         images = spaceRepository.imageKeys(space.id).map { "/uploads/$it" },
         approvalRequired = space.approvalRequired,
-    )
+        rating = rating.rating,
+        reviewCount = rating.reviewCount,
+        )
+    }
 
     companion object {
         private val EDITABLE_STATUSES = setOf(SpaceStatus.DRAFT, SpaceStatus.INSPECTION_REJECTED)
+        private val SORTS = setOf(SORT_LATEST, SORT_PRICE_ASC, SORT_PRICE_DESC, SORT_RATING)
     }
 }

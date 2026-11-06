@@ -28,11 +28,13 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.web.client.RestClient
+import org.springframework.web.util.UriComponentsBuilder
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.postgresql.PostgreSQLContainer
 import org.testcontainers.utility.DockerImageName
 import java.math.BigDecimal
+import java.time.OffsetDateTime
 import java.math.RoundingMode
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -94,9 +96,9 @@ class SeedDatasetTest {
 
         val counts = tableCounts()
         assertThat(counts["accounts"]).isEqualTo(6)
-        assertThat(counts["spaces"]).isEqualTo(6)
+        assertThat(counts["spaces"]).isEqualTo(9)
         assertThat(counts["reservations"]).isEqualTo(10)
-        assertThat(counts["attachments"]).isEqualTo(8)
+        assertThat(counts["attachments"]).isEqualTo(11)
 
         assertThat(service.seed().inserted).isZero()
         assertThat(tableCounts()).isEqualTo(counts)
@@ -172,7 +174,7 @@ class SeedDatasetTest {
         val spaceOwners = rows.filter { it.get(ATTACHMENTS.OWNER_TYPE) == "SPACE" }
             .map { it.get(ATTACHMENTS.OWNER_ID) }
             .toSet()
-        assertThat(spaceOwners).hasSize(6)
+        assertThat(spaceOwners).hasSize(9)
 
         rows.groupBy { it.get(ATTACHMENTS.OWNER_TYPE) to it.get(ATTACHMENTS.OWNER_ID) }
             .forEach { (owner, ownerRows) ->
@@ -197,11 +199,11 @@ class SeedDatasetTest {
         val result = InitializeService(listOf(missing)).seed()
 
         assertThat(result.inserted).isZero()
-        assertThat(result.skipped).isEqualTo(8)
+        assertThat(result.skipped).isEqualTo(11)
         assertThat(dsl.fetchCount(ATTACHMENTS)).isZero()
 
         InitializeService(steps).seed()
-        assertThat(dsl.fetchCount(ATTACHMENTS)).isEqualTo(8)
+        assertThat(dsl.fetchCount(ATTACHMENTS)).isEqualTo(11)
     }
 
     @Test
@@ -253,7 +255,9 @@ class SeedDatasetTest {
         // 1. 공간 검색·상세
         val spaceItems = get("/api/v1/spaces", null)["items"] as List<*>
         assertThat(spaceItems).isNotEmpty
-        val searchHit = spaceItems.first() as Map<*, *>
+        val searchHit = spaceItems
+            .map { it as Map<*, *> }
+            .first { it["name"] == "시드 파티룸" }
         val spaceId = (searchHit["id"] as Number).toLong()
         val detail = get("/api/v1/spaces/$spaceId", null)
         assertThat(detail["name"]).isNotNull
@@ -291,6 +295,62 @@ class SeedDatasetTest {
         assertThat(reviewImage.statusCode.value()).isEqualTo(200)
         assertThat(reviewImage.body!!.size).isGreaterThan(0)
         assertThat(get("/api/v1/spaces/$spaceId/qnas", null)["items"] as List<*>).isNotEmpty
+    }
+
+    @Test
+    fun `search exposes thumbnails ratings and sortable prices and availability hides reservation details`() {
+        InitializeService(steps).seed()
+
+        val ratingSorted = get("/api/v1/spaces?sort=rating", null)["items"] as List<*>
+        assertThat((ratingSorted.first() as Map<*, *>)["name"]).isEqualTo("시드 파티룸")
+
+        val priceSorted = get("/api/v1/spaces?sort=price_asc", null)["items"] as List<*>
+        val prices = priceSorted.map { ((it as Map<*, *>)["minPrice"] as Number).toLong() }
+        assertThat(prices).isSorted()
+
+        val first = priceSorted.first() as Map<*, *>
+        assertThat(first["thumbnailUrl"]).isNotNull
+        assertThat(first["reviewCount"]).isNotNull
+        assertThat(first["sido"]).isNotNull
+        assertThat(first["sigungu"]).isNotNull
+
+        val firstPage = get("/api/v1/spaces?sort=price_asc&limit=2", null)
+        val firstNames = (firstPage["items"] as List<*>).map { (it as Map<*, *>)["name"] }
+        val cursor = firstPage["nextCursor"] as String
+        val secondUri = UriComponentsBuilder.fromPath("/api/v1/spaces")
+            .queryParam("sort", "price_asc")
+            .queryParam("limit", "2")
+            .queryParam("cursor", cursor)
+            .build()
+            .encode()
+            .toUri()
+        val secondPage = client.get().uri(secondUri).retrieve().toEntity(mapType).body!!
+        val secondNames = (secondPage["items"] as List<*>).map { (it as Map<*, *>)["name"] }
+        assertThat(secondNames).doesNotContainAnyElementsOf(firstNames)
+
+        val spaceId = (ratingSorted.first() as Map<*, *>)["id"] as Number
+        val detail = get("/api/v1/spaces/${spaceId.toLong()}", null)
+        assertThat((detail["rating"] as Number).toDouble()).isEqualTo(5.0)
+        assertThat((detail["reviewCount"] as Number).toInt()).isEqualTo(1)
+
+        val priceRules = client.get()
+            .uri("/api/v1/spaces/${spaceId.toLong()}/prices")
+            .retrieve()
+            .toEntity(listType)
+            .body!!
+        assertThat(priceRules).isNotEmpty
+
+        val from = OffsetDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.HOURS).plusDays(5)
+        val uri = UriComponentsBuilder.fromPath("/api/v1/spaces/${spaceId.toLong()}/availability")
+            .queryParam("from", from.toString().replace("+", "%2B"))
+            .queryParam("to", from.plusDays(1).toString().replace("+", "%2B"))
+            .build(true)
+            .toUri()
+        val availability = client.get().uri(uri).retrieve().toEntity(mapType).body!!
+        val occupied = availability["occupied"] as List<*>
+        assertThat(occupied).isNotEmpty
+        val slot = occupied.first() as Map<*, *>
+        assertThat(slot.keys).containsExactlyInAnyOrder("startAt", "endAt")
     }
 
     private fun login(email: String, password: String): String {

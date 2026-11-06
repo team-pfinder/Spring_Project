@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>예약 결제 · Lookation</title>
+</head>
+<body>
+<section>
+    <div class="page-head">
+        <div class="small text-muted mb-2">예약 결제</div>
+        <h1 th:text="${reservation.spaceName}">공간 이름</h1>
+        <p>마일리지로 예약 대금을 결제합니다.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="info-card mb-4">
+                <h2 class="h5 font-weight-bold mb-3">예약 정보</h2>
+                <dl class="detail-list mb-0">
+                    <dt>이용 일시</dt>
+                    <dd th:text="|${@fmt.dateTime(reservation.startAt)} ~ ${@fmt.dateTime(reservation.endAt)}|"></dd>
+                    <dt>이용 인원</dt>
+                    <dd th:text="|${reservation.guestCount}명|"></dd>
+                    <dt>결제 금액</dt>
+                    <dd class="text-danger" th:text="${@fmt.won(reservation.price)}"></dd>
+                    <dt>결제 시한</dt>
+                    <dd th:text="${@fmt.dateTime(reservation.paymentDueAt)}"></dd>
+                    <dt>현재 잔액</dt>
+                    <dd th:text="${@fmt.won(balance)}"></dd>
+                </dl>
+            </div>
+
+            <div th:if="${reservation.status == 'PENDING_PAYMENT'}">
+                <form th:action="@{/reservations/{id}/pay(id=${reservation.id})}" method="post">
+                    <button type="submit" class="btn btn-warning btn-block font-weight-bold py-3">
+                        <span th:text="|${@fmt.won(reservation.price)} 결제하기|">결제하기</span>
+                    </button>
+                </form>
+                <p class="small text-muted mt-3">결제와 동시에 예약이 확정됩니다. 잔액이 부족하면 충전 후 다시 시도해 주세요.</p>
+            </div>
+            <div class="alert alert-secondary" th:if="${reservation.status != 'PENDING_PAYMENT'}">
+                현재 예약 상태는 <strong th:text="${@fmt.status(reservation.status)}"></strong>입니다. 결제할 수 있는 상태가 아닙니다.
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="info-card">
+                <h2 class="h5 font-weight-bold mb-3">결제 안내</h2>
+                <p class="text-muted mb-2">결제 금액은 마일리지에서 차감됩니다.</p>
+                <p class="small text-muted mb-0">취소 시 이용 시작일까지 남은 기간에 따라 환불됩니다. 자세한 내용은 예약 상세에서 확인할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
