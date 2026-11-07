@@ -1,5 +1,6 @@
 package com.lookation.dto
 
+import com.lookation.domain.QnaStatus
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime
@@ -17,7 +18,7 @@ data class QnaDto(
     @field:Schema(description = "문의 본문입니다.", example = "차량 2대를 가져갈 예정인데 주차가 가능할까요?")
     val content: String,
     @field:Schema(description = "문의 상태. `OPEN` 또는 `ANSWERED`입니다.", example = "OPEN")
-    val status: String,
+    val status: QnaStatus,
     @field:Schema(description = "호스트 답변. 아직 답변이 없으면 null입니다.", example = "건물 지하 1층에 2대까지 주차할 수 있습니다.")
     val reply: String?,
     @field:Schema(description = "작성 일시입니다.", example = "2026-11-20T18:00:00+09:00")

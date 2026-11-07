@@ -1,6 +1,7 @@
 package com.lookation.repository
 
 import com.lookation.domain.ReportStatus
+import com.lookation.domain.ReportTarget
 import com.lookation.jooq.tables.Reports.REPORTS
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -9,7 +10,7 @@ import java.time.OffsetDateTime
 data class ReportRow(
     val id: Long,
     val reporterId: Long,
-    val targetType: String,
+    val targetType: ReportTarget,
     val targetId: Long,
     val reason: String,
     val status: ReportStatus,
@@ -19,10 +20,10 @@ data class ReportRow(
 @Repository
 class ReportRepository(private val dsl: DSLContext) {
 
-    fun insert(reporterId: Long, targetType: String, targetId: Long, reason: String): Long =
+    fun insert(reporterId: Long, targetType: ReportTarget, targetId: Long, reason: String): Long =
         dsl.insertInto(REPORTS)
             .set(REPORTS.REPORTER_ID, reporterId)
-            .set(REPORTS.TARGET_TYPE, targetType)
+            .set(REPORTS.TARGET_TYPE, targetType.name)
             .set(REPORTS.TARGET_ID, targetId)
             .set(REPORTS.REASON, reason)
             .returningResult(REPORTS.ID)
@@ -32,7 +33,7 @@ class ReportRepository(private val dsl: DSLContext) {
     fun findById(id: Long): ReportRow? =
         dsl.selectFrom(REPORTS).where(REPORTS.ID.eq(id)).fetchOne()?.let {
             ReportRow(
-                it.get(REPORTS.ID), it.get(REPORTS.REPORTER_ID), it.get(REPORTS.TARGET_TYPE),
+                it.get(REPORTS.ID), it.get(REPORTS.REPORTER_ID), ReportTarget.valueOf(it.get(REPORTS.TARGET_TYPE)),
                 it.get(REPORTS.TARGET_ID), it.get(REPORTS.REASON), ReportStatus.valueOf(it.get(REPORTS.STATUS)), it.get(REPORTS.CREATED_AT),
             )
         }
@@ -48,7 +49,7 @@ class ReportRepository(private val dsl: DSLContext) {
             .fetch()
             .map {
                 ReportRow(
-                    it.get(REPORTS.ID), it.get(REPORTS.REPORTER_ID), it.get(REPORTS.TARGET_TYPE),
+                    it.get(REPORTS.ID), it.get(REPORTS.REPORTER_ID), ReportTarget.valueOf(it.get(REPORTS.TARGET_TYPE)),
                     it.get(REPORTS.TARGET_ID), it.get(REPORTS.REASON), ReportStatus.valueOf(it.get(REPORTS.STATUS)), it.get(REPORTS.CREATED_AT),
                 )
             }

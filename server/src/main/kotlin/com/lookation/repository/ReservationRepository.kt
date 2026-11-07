@@ -1,6 +1,7 @@
 package com.lookation.repository
 
 import com.lookation.jooq.tables.ReservationEvents.RESERVATION_EVENTS
+import com.lookation.domain.ActorType
 import com.lookation.domain.ReservationStatus
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
@@ -121,7 +122,7 @@ class ReservationRepository(private val dsl: DSLContext) {
         reservationId: Long,
         fromStatus: ReservationStatus?,
         toStatus: ReservationStatus,
-        actorType: String,
+        actorType: ActorType,
         actorId: Long?,
         reason: String? = null,
     ) {
@@ -129,7 +130,7 @@ class ReservationRepository(private val dsl: DSLContext) {
             .set(RESERVATION_EVENTS.RESERVATION_ID, reservationId)
             .set(RESERVATION_EVENTS.FROM_STATUS, fromStatus?.name)
             .set(RESERVATION_EVENTS.TO_STATUS, toStatus.name)
-            .set(RESERVATION_EVENTS.ACTOR_TYPE, actorType)
+            .set(RESERVATION_EVENTS.ACTOR_TYPE, actorType.name)
             .set(RESERVATION_EVENTS.ACTOR_ID, actorId)
             .set(RESERVATION_EVENTS.REASON, reason)
             .execute()

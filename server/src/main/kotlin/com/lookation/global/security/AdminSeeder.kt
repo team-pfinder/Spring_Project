@@ -1,5 +1,6 @@
 package com.lookation.global.security
 
+import com.lookation.domain.AccountRole
 import com.lookation.repository.AccountRepository
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -25,7 +26,7 @@ class AdminSeeder(
             name = "Admin",
             nickname = "admin",
         )
-        accountRepository.addRole(accountId, "ADMIN")
+        accountRepository.addRole(accountId, AccountRole.ADMIN)
     }
 
     companion object {

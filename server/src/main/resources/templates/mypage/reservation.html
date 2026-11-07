@@ -30,8 +30,8 @@
                     <dd th:text="|${reservation.guestCount}명|"></dd>
                     <dt>결제 금액</dt>
                     <dd th:text="${@fmt.won(reservation.price)}"></dd>
-                    <dt th:if="${reservation.status == 'PENDING_PAYMENT'}">결제 시한</dt>
-                    <dd th:if="${reservation.status == 'PENDING_PAYMENT'}" th:text="${@fmt.dateTime(reservation.paymentDueAt)}"></dd>
+                    <dt th:if="${reservation.status.name == 'PENDING_PAYMENT'}">결제 시한</dt>
+                    <dd th:if="${reservation.status.name == 'PENDING_PAYMENT'}" th:text="${@fmt.dateTime(reservation.paymentDueAt)}"></dd>
                     <dt th:if="${reservation.refundedAmount != null}">환불 금액</dt>
                     <dd th:if="${reservation.refundedAmount != null}" class="text-danger"
                         th:text="${@fmt.won(reservation.refundedAmount)}"></dd>
@@ -45,17 +45,17 @@
 
             <div class="info-card">
                 <h2 class="h5 font-weight-bold mb-3">다음 할 일</h2>
-                <div th:if="${reservation.status == 'PENDING_PAYMENT'}">
+                <div th:if="${reservation.status.name == 'PENDING_PAYMENT'}">
                     <p class="text-muted">호스트가 예약을 승인했습니다. 결제 시한 안에 결제해 주세요.</p>
                     <a class="btn btn-warning font-weight-bold" th:href="@{/reservations/{id}/pay(id=${reservation.id})}">결제하기</a>
                 </div>
-                <div th:if="${reservation.status == 'PENDING_APPROVAL'}">
+                <div th:if="${reservation.status.name == 'PENDING_APPROVAL'}">
                     <p class="text-muted mb-0">호스트의 승인을 기다리고 있습니다. 승인되면 결제할 수 있어요.</p>
                 </div>
-                <div th:if="${reservation.status == 'CONFIRMED'}">
+                <div th:if="${reservation.status.name == 'CONFIRMED'}">
                     <p class="text-muted mb-0">예약이 확정되었습니다. 이용일에 공간에서 만나요!</p>
                 </div>
-                <div th:if="${reservation.status == 'COMPLETED'}">
+                <div th:if="${reservation.status.name == 'COMPLETED'}">
                     <p class="text-muted mb-0">이용이 완료된 예약입니다. 리뷰를 남겨 주세요.</p>
                 </div>
                 <div th:if="${reservation.canCancel}">

@@ -1,5 +1,6 @@
 package com.lookation.dto
 
+import com.lookation.domain.AccountRole
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -17,5 +18,5 @@ data class AccountDto(
         schema = Schema(example = "MEMBER"),
         arraySchema = Schema(description = "계정 역할 목록. `MEMBER`, `HOST`, `ADMIN` 중 하나 이상입니다."),
     )
-    val roles: List<String>,
+    val roles: List<AccountRole>,
 )

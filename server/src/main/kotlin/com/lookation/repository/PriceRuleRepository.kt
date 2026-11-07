@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.PriceUnit
 import com.lookation.jooq.tables.PriceRules.PRICE_RULES
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -8,7 +9,7 @@ import java.time.LocalTime
 data class PriceRuleRow(
     val id: Long,
     val dayOfWeek: Int,
-    val unit: String,
+    val unit: PriceUnit,
     val startTime: LocalTime?,
     val endTime: LocalTime?,
     val price: Long,
@@ -16,7 +17,7 @@ data class PriceRuleRow(
 
 data class NewPriceRule(
     val dayOfWeek: Int,
-    val unit: String,
+    val unit: PriceUnit,
     val startTime: LocalTime?,
     val endTime: LocalTime?,
     val price: Long,
@@ -34,7 +35,7 @@ class PriceRuleRepository(private val dsl: DSLContext) {
                 PriceRuleRow(
                     id = it.get(PRICE_RULES.ID),
                     dayOfWeek = it.get(PRICE_RULES.DAY_OF_WEEK).toInt(),
-                    unit = it.get(PRICE_RULES.UNIT),
+                    unit = PriceUnit.valueOf(it.get(PRICE_RULES.UNIT)),
                     startTime = it.get(PRICE_RULES.START_TIME),
                     endTime = it.get(PRICE_RULES.END_TIME),
                     price = it.get(PRICE_RULES.PRICE),
@@ -52,7 +53,7 @@ class PriceRuleRepository(private val dsl: DSLContext) {
                 dsl.insertInto(PRICE_RULES)
                     .set(PRICE_RULES.SPACE_ID, spaceId)
                     .set(PRICE_RULES.DAY_OF_WEEK, rule.dayOfWeek.toShort())
-                    .set(PRICE_RULES.UNIT, rule.unit)
+                    .set(PRICE_RULES.UNIT, rule.unit.name)
                     .set(PRICE_RULES.START_TIME, rule.startTime)
                     .set(PRICE_RULES.END_TIME, rule.endTime)
                     .set(PRICE_RULES.PRICE, rule.price)

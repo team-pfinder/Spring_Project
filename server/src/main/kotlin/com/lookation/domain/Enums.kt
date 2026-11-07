@@ -5,6 +5,42 @@ enum class AccountStatus {
     WITHDRAWN,
 }
 
+enum class AccountRole {
+    MEMBER,
+    HOST,
+    ADMIN,
+}
+
+enum class ActorType {
+    MEMBER,
+    HOST,
+    ADMIN,
+    SYSTEM,
+}
+
+enum class WalletEntryType {
+    CHARGE,
+    HOLD,
+    RELEASE,
+    REFUND,
+    SETTLE,
+    FEE,
+    WITHDRAWAL,
+}
+
+enum class PriceUnit {
+    HOUR,
+    DAY,
+}
+
+enum class ReportTarget {
+    SPACE,
+    RESERVATION,
+    REVIEW,
+    QNA,
+    ACCOUNT,
+}
+
 enum class SpaceStatus {
     DRAFT,
     PENDING_INSPECTION,

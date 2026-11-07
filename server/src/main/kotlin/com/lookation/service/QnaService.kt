@@ -89,7 +89,7 @@ class QnaService(
         nickname = nickname,
         title = title,
         content = content,
-        status = status.name,
+        status = status,
         reply = reply,
         createdAt = createdAt,
     )

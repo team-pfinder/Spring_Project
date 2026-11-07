@@ -1,5 +1,6 @@
 package com.lookation.dto
 
+import com.lookation.domain.ReservationStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime
 
@@ -29,7 +30,7 @@ data class HostReservationDto(
         description = "예약 상태. `PENDING_APPROVAL`, `PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`, `CANCELLED`, `REFUNDED`, `REJECTED`, `EXPIRED` 중 하나입니다.",
         example = "CONFIRMED",
     )
-    val status: String,
+    val status: ReservationStatus,
 )
 
 @Schema(description = "회원이 조회하는 예약 한 건")
@@ -52,7 +53,7 @@ data class ReservationDto(
         description = "예약 상태. `PENDING_APPROVAL`, `PENDING_PAYMENT`, `CONFIRMED`, `COMPLETED`, `CANCELLED`, `REFUNDED`, `REJECTED`, `EXPIRED` 중 하나입니다.",
         example = "CONFIRMED",
     )
-    val status: String,
+    val status: ReservationStatus,
     @field:Schema(description = "호스트에게 전달한 요청 사항입니다.", example = "늦게 도착합니다.")
     val requestMessage: String?,
     @field:Schema(description = "결제 시한. 결제 대기 상태가 아니면 null입니다.", example = "2026-11-20T18:00:00+09:00")

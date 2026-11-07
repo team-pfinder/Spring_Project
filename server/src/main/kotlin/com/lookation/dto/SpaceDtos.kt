@@ -1,5 +1,8 @@
 package com.lookation.dto
 
+import com.lookation.domain.PriceUnit
+import com.lookation.domain.SpaceStatus
+import com.lookation.domain.SpaceType
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalTime
@@ -27,7 +30,7 @@ data class SpaceDto(
         description = "공간 유형. `PARTY_ROOM`, `EMPTY_SPACE`, `ROOFTOP`, `BRIDAL_SHOWER`, `CLUB`, `WORKSHOP` 중 하나입니다.",
         example = "PARTY_ROOM",
     )
-    val spaceType: String,
+    val spaceType: SpaceType,
     @field:Schema(description = "최소 수용 인원입니다.", example = "4")
     val minCapacity: Int,
     @field:Schema(description = "최대 수용 인원입니다.", example = "20")
@@ -46,7 +49,7 @@ data class SpaceDto(
         description = "공간 상태. `DRAFT`, `PENDING_INSPECTION`, `INSPECTION_REJECTED`, `PUBLISHED`, `SUSPENDED`, `CLOSED` 중 하나입니다.",
         example = "PUBLISHED",
     )
-    val status: String,
+    val status: SpaceStatus,
     @field:ArraySchema(
         schema = Schema(example = "WIFI"),
         arraySchema = Schema(description = "제공 시설 코드 목록입니다."),
@@ -77,7 +80,7 @@ data class SpaceSummaryDto(
         description = "공간 유형. `PARTY_ROOM`, `EMPTY_SPACE`, `ROOFTOP`, `BRIDAL_SHOWER`, `CLUB`, `WORKSHOP` 중 하나입니다.",
         example = "PARTY_ROOM",
     )
-    val spaceType: String,
+    val spaceType: SpaceType,
     @field:Schema(description = "기본 주소입니다.", example = "서울 마포구 양화로 45")
     val address: String,
     @field:Schema(description = "시/도 지역. 등록하지 않았으면 null입니다.", example = "서울")
@@ -136,7 +139,7 @@ data class PriceRuleDto(
     @field:Schema(description = "요일. 1=월요일부터 7=일요일까지입니다.", example = "5")
     val dayOfWeek: Int,
     @field:Schema(description = "가격 단위. `HOUR` 또는 `DAY`입니다.", example = "HOUR")
-    val unit: String,
+    val unit: PriceUnit,
     @field:Schema(description = "시작 시각. `DAY` 단위 규칙이면 null입니다.", example = "18:00:00")
     val startTime: LocalTime?,
     @field:Schema(description = "종료 시각. `DAY` 단위 규칙이면 null입니다.", example = "22:00:00")

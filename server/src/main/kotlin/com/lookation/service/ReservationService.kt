@@ -7,7 +7,9 @@ import com.lookation.global.error.NotFoundException
 import com.lookation.controller.form.CreateReservationForm
 import com.lookation.dto.ReservationDto
 import com.lookation.domain.CancellationPolicy
+import com.lookation.domain.ActorType
 import com.lookation.domain.ReservationStatus
+import com.lookation.domain.WalletEntryType
 import com.lookation.repository.ReservationRepository
 import com.lookation.repository.ReservationRow
 import com.lookation.repository.SpaceRepository
@@ -104,9 +106,9 @@ class ReservationService(
         }
 
         if (!requiresApproval) {
-            walletRepository.addEntry(memberId, "HOLD", -price, "RESERVATION", reservationId)
+            walletRepository.addEntry(memberId, WalletEntryType.HOLD, -price, "RESERVATION", reservationId)
         }
-        reservationRepository.addEvent(reservationId, null, initialStatus, "MEMBER", memberId)
+        reservationRepository.addEvent(reservationId, null, initialStatus, ActorType.MEMBER, memberId)
         return response(reservationId)
     }
 
@@ -128,7 +130,7 @@ class ReservationService(
         ) {
             throw ConflictException("승인할 수 없는 상태입니다")
         }
-        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.PENDING_PAYMENT, "HOST", hostId)
+        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.PENDING_PAYMENT, ActorType.HOST, hostId)
         return response(reservationId)
     }
 
@@ -142,7 +144,7 @@ class ReservationService(
         if (reservationRepository.updateStatus(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.REJECTED) != 1) {
             throw ConflictException("거절할 수 없는 상태입니다")
         }
-        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.REJECTED, "HOST", hostId, reason)
+        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_APPROVAL, ReservationStatus.REJECTED, ActorType.HOST, hostId, reason)
         return response(reservationId)
     }
 
@@ -173,8 +175,8 @@ class ReservationService(
         ) {
             throw ConflictException("이미 처리된 예약입니다")
         }
-        walletRepository.addEntry(memberId, "HOLD", -reservation.price, "RESERVATION", reservationId)
-        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_PAYMENT, ReservationStatus.CONFIRMED, "MEMBER", memberId)
+        walletRepository.addEntry(memberId, WalletEntryType.HOLD, -reservation.price, "RESERVATION", reservationId)
+        reservationRepository.addEvent(reservationId, ReservationStatus.PENDING_PAYMENT, ReservationStatus.CONFIRMED, ActorType.MEMBER, memberId)
         return response(reservationId)
     }
 
@@ -201,7 +203,7 @@ class ReservationService(
                 reservationId,
                 reservation.status,
                 ReservationStatus.CANCELLED,
-                if (reservation.hostId == accountId) "HOST" else "MEMBER",
+                if (reservation.hostId == accountId) ActorType.HOST else ActorType.MEMBER,
                 accountId,
             )
             return response(reservationId, walletRepository.refundedAmount(reservationId))
@@ -220,13 +222,13 @@ class ReservationService(
         if (refund > 0) {
             walletRepository.ensureWallet(reservation.memberId)
             walletRepository.deposit(reservation.memberId, refund)
-            walletRepository.addEntry(reservation.memberId, "REFUND", refund, "RESERVATION", reservation.id)
+            walletRepository.addEntry(reservation.memberId, WalletEntryType.REFUND, refund, "RESERVATION", reservation.id)
         }
         reservationRepository.addEvent(
             reservationId = reservation.id,
             fromStatus = ReservationStatus.CONFIRMED,
             toStatus = ReservationStatus.CANCELLED,
-            actorType = if (isHost) "HOST" else "MEMBER",
+            actorType = if (isHost) ActorType.HOST else ActorType.MEMBER,
             actorId = accountId,
         )
 
@@ -291,7 +293,7 @@ class ReservationService(
                 endAt = row.endAt,
                 guestCount = row.guestCount,
                 price = row.price,
-                status = row.status.name,
+                status = row.status,
             )
         }
     }
@@ -314,7 +316,7 @@ class ReservationService(
                 endAt = it.endAt,
                 guestCount = it.guestCount,
                 price = it.price,
-                status = it.status.name,
+                status = it.status,
                 requestMessage = it.requestMessage,
                 paymentDueAt = it.paymentDueAt,
                 createdAt = it.createdAt,
@@ -337,7 +339,7 @@ class ReservationService(
             endAt = reservation.endAt,
             guestCount = reservation.guestCount,
             price = reservation.price,
-            status = reservation.status.name,
+            status = reservation.status,
             requestMessage = reservation.requestMessage,
             paymentDueAt = reservation.paymentDueAt,
             createdAt = reservation.createdAt,

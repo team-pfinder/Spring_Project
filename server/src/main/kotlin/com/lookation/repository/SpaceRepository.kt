@@ -8,6 +8,7 @@ import com.lookation.jooq.tables.Reservations.RESERVATIONS
 import com.lookation.jooq.tables.Reviews.REVIEWS
 import com.lookation.jooq.tables.SpaceFacilities.SPACE_FACILITIES
 import com.lookation.domain.InspectionStatus
+import com.lookation.domain.PriceUnit
 import com.lookation.domain.ReservationStatus
 import com.lookation.domain.SpaceStatus
 import com.lookation.jooq.tables.Spaces.SPACES
@@ -438,7 +439,7 @@ class SpaceRepository(private val dsl: DSLContext) {
         dsl.select(PRICE_RULES.ID, PRICE_RULES.PRICE)
             .from(PRICE_RULES)
             .where(PRICE_RULES.SPACE_ID.eq(spaceId))
-            .and(PRICE_RULES.UNIT.eq("HOUR"))
+            .and(PRICE_RULES.UNIT.eq(PriceUnit.HOUR.name))
             .and(PRICE_RULES.DAY_OF_WEEK.eq(dayOfWeek.toShort()))
             .and(PRICE_RULES.START_TIME.eq(startTime))
             .and(PRICE_RULES.END_TIME.eq(endTime))
@@ -449,7 +450,7 @@ class SpaceRepository(private val dsl: DSLContext) {
         dsl.select(PRICE_RULES.ID, PRICE_RULES.PRICE)
             .from(PRICE_RULES)
             .where(PRICE_RULES.SPACE_ID.eq(spaceId))
-            .and(PRICE_RULES.UNIT.eq("DAY"))
+            .and(PRICE_RULES.UNIT.eq(PriceUnit.DAY.name))
             .and(PRICE_RULES.DAY_OF_WEEK.eq(dayOfWeek.toShort()))
             .fetchOne()
             ?.let { PriceLookup(it.value1(), it.value2()) }

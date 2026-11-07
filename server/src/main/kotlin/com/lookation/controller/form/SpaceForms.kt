@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import com.lookation.domain.PriceUnit
 import java.time.LocalTime
 
 @Schema(description = "공간 등록·수정 요청")
@@ -60,7 +61,7 @@ data class PriceRuleForm(
     @field:Schema(description = "요일. 1=월요일부터 7=일요일까지입니다.", example = "5")
     val dayOfWeek: Int,
     @field:Schema(description = "가격 단위. `HOUR` 또는 `DAY`입니다.", example = "HOUR")
-    val unit: String,
+    val unit: PriceUnit,
     @field:Schema(description = "시작 시각. `HOUR` 단위일 때 필수이며 `DAY` 단위에서는 지정할 수 없습니다.", example = "18:00:00")
     val startTime: LocalTime? = null,
     @field:Schema(description = "종료 시각. `HOUR` 단위일 때 필수이며 시작 시각보다 뒤여야 합니다.", example = "22:00:00")

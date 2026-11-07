@@ -1,5 +1,7 @@
 package com.lookation.view
 
+import com.lookation.domain.AccountRole
+import com.lookation.domain.PriceUnit
 import com.lookation.domain.ReservationStatus
 import com.lookation.dto.OccupiedIntervalDto
 import com.lookation.dto.PriceRuleDto
@@ -16,7 +18,7 @@ val KST: ZoneId = ZoneId.of("Asia/Seoul")
 data class Viewer(
     val id: Long,
     val nickname: String,
-    val roles: List<String>,
+    val roles: List<AccountRole>,
 )
 
 /**
@@ -62,7 +64,7 @@ fun bookingSlots(
             val startAt: OffsetDateTime
             val endAt: OffsetDateTime
             val label: String
-            if (rule.unit == "DAY") {
+            if (rule.unit == PriceUnit.DAY) {
                 startAt = date.atStartOfDay(KST).toOffsetDateTime()
                 endAt = date.plusDays(1).atStartOfDay(KST).toOffsetDateTime()
                 label = "종일 (00:00 ~ 다음 날 00:00)"

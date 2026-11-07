@@ -75,7 +75,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 - HTML 컨트롤러는 `view` 패키지에 둔다. `ApiExceptionHandler`는 `controller` 패키지에만 적용되어 HTML 예외를 JSON으로 바꾸지 않는다. springdoc에 노출하지 않으려면 `@Hidden`을 붙인다.
 - 로컬·배포 쿠키: 배포 HTTPS에서는 `LOOKATION_SECURE_COOKIE=true`를 준다. 로컬 HTTP 기본값은 false다.
 - 요청 Form은 `controller/form`, 상태·구분 enum은 `domain/Enums.kt`에 모은다. DB에는 enum 이름을 저장한다.
-- 요청은 `XxxForm`, 응답은 `XxxResponse`. 오류는 RFC 9457 `ProblemDetail`.
+- 요청은 `XxxForm`, 응답은 `XxxDto`. 오류는 RFC 9457 `ProblemDetail`.
 
 ## 코드 규칙
 

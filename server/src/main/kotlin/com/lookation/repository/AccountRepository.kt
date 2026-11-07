@@ -1,6 +1,7 @@
 package com.lookation.repository
 
 import com.lookation.domain.Account
+import com.lookation.domain.AccountRole
 import com.lookation.domain.AccountStatus
 import com.lookation.jooq.tables.AccountRoles.ACCOUNT_ROLES
 import com.lookation.jooq.tables.Accounts.ACCOUNTS
@@ -32,10 +33,10 @@ class AccountRepository(private val dsl: DSLContext) {
             .fetchOne()!!
             .value1()
 
-    fun addRole(accountId: Long, role: String) {
+    fun addRole(accountId: Long, role: AccountRole) {
         dsl.insertInto(ACCOUNT_ROLES)
             .set(ACCOUNT_ROLES.ACCOUNT_ID, accountId)
-            .set(ACCOUNT_ROLES.ROLE, role)
+            .set(ACCOUNT_ROLES.ROLE, role.name)
             .execute()
     }
 
@@ -59,11 +60,12 @@ class AccountRepository(private val dsl: DSLContext) {
             .execute()
     }
 
-    fun roles(accountId: Long): List<String> =
+    fun roles(accountId: Long): List<AccountRole> =
         dsl.select(ACCOUNT_ROLES.ROLE)
             .from(ACCOUNT_ROLES)
             .where(ACCOUNT_ROLES.ACCOUNT_ID.eq(accountId))
             .fetch(ACCOUNT_ROLES.ROLE)
+            .map { AccountRole.valueOf(it) }
 
     private fun Record.toAccount(): Account = Account(
         id = get(ACCOUNTS.ID),

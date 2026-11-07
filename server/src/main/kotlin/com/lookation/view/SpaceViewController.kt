@@ -1,6 +1,7 @@
 package com.lookation.view
 
 import com.lookation.controller.form.CreateReservationForm
+import com.lookation.domain.ReservationStatus
 import com.lookation.domain.SpaceType
 import com.lookation.global.error.ApiException
 import com.lookation.service.AvailabilityService
@@ -171,7 +172,7 @@ class SpaceViewController(
                     requestMessage = form.requestMessage?.takeIf { it.isNotBlank() },
                 ),
             )
-            val destination = if (reservation.status == "PENDING_PAYMENT") {
+            val destination = if (reservation.status == ReservationStatus.PENDING_PAYMENT) {
                 "/reservations/${reservation.id}/pay"
             } else {
                 "/mypage/reservations/${reservation.id}?created=1"

@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.WalletEntryType
 import com.lookation.jooq.tables.WalletEntries.WALLET_ENTRIES
 import com.lookation.jooq.tables.Wallets.WALLETS
 import org.jooq.DSLContext
@@ -33,10 +34,10 @@ class WalletRepository(private val dsl: DSLContext) {
             .execute()
     }
 
-    fun addEntry(accountId: Long, type: String, amount: Long, refType: String?, refId: Long?) {
+    fun addEntry(accountId: Long, type: WalletEntryType, amount: Long, refType: String?, refId: Long?) {
         dsl.insertInto(WALLET_ENTRIES)
             .set(WALLET_ENTRIES.ACCOUNT_ID, accountId)
-            .set(WALLET_ENTRIES.ENTRY_TYPE, type)
+            .set(WALLET_ENTRIES.ENTRY_TYPE, type.name)
             .set(WALLET_ENTRIES.AMOUNT, amount)
             .set(WALLET_ENTRIES.REF_TYPE, refType)
             .set(WALLET_ENTRIES.REF_ID, refId)
@@ -52,7 +53,7 @@ class WalletRepository(private val dsl: DSLContext) {
     fun refundedAmount(reservationId: Long): Long? =
         dsl.select(org.jooq.impl.DSL.sum(WALLET_ENTRIES.AMOUNT))
             .from(WALLET_ENTRIES)
-            .where(WALLET_ENTRIES.ENTRY_TYPE.eq("REFUND"))
+            .where(WALLET_ENTRIES.ENTRY_TYPE.eq(WalletEntryType.REFUND.name))
             .and(WALLET_ENTRIES.REF_TYPE.eq("RESERVATION"))
             .and(WALLET_ENTRIES.REF_ID.eq(reservationId))
             .fetchOne(0, Long::class.javaObjectType)

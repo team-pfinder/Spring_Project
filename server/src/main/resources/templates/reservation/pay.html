@@ -30,7 +30,7 @@
                 </dl>
             </div>
 
-            <div th:if="${reservation.status == 'PENDING_PAYMENT'}">
+            <div th:if="${reservation.status.name == 'PENDING_PAYMENT'}">
                 <form th:action="@{/reservations/{id}/pay(id=${reservation.id})}" method="post">
                     <button type="submit" class="btn btn-warning btn-block font-weight-bold py-3">
                         <span th:text="|${@fmt.won(reservation.price)} 결제하기|">결제하기</span>
@@ -38,7 +38,7 @@
                 </form>
                 <p class="small text-muted mt-3">결제와 동시에 예약이 확정됩니다. 잔액이 부족하면 충전 후 다시 시도해 주세요.</p>
             </div>
-            <div class="alert alert-secondary" th:if="${reservation.status != 'PENDING_PAYMENT'}">
+            <div class="alert alert-secondary" th:if="${reservation.status.name != 'PENDING_PAYMENT'}">
                 현재 예약 상태는 <strong th:text="${@fmt.status(reservation.status)}"></strong>입니다. 결제할 수 있는 상태가 아닙니다.
             </div>
         </div>

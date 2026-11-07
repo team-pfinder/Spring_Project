@@ -1,5 +1,6 @@
 package com.lookation.service
 
+import com.lookation.domain.AccountRole
 import com.lookation.domain.AccountStatus
 import com.lookation.repository.AccountRepository
 import com.lookation.repository.RefreshTokenRepository
@@ -35,7 +36,7 @@ class TokenService(
     private val revocations: RefreshTokenRevocationService,
 ) {
 
-    fun issue(accountId: Long, roles: List<String>): TokenPair = create(accountId, roles, UUID.randomUUID())
+    fun issue(accountId: Long, roles: List<AccountRole>): TokenPair = create(accountId, roles, UUID.randomUUID())
 
     @Transactional
     fun rotate(rawRefreshToken: String, grace: Duration = Duration.ZERO): TokenPair {
@@ -94,7 +95,7 @@ class TokenService(
         throw UnauthorizedException(message)
     }
 
-    private fun create(accountId: Long, roles: List<String>, familyId: UUID): TokenPair {
+    private fun create(accountId: Long, roles: List<AccountRole>, familyId: UUID): TokenPair {
         val rawRefreshToken = generateRefreshToken()
         refreshTokenRepository.save(
             accountId = accountId,
@@ -109,14 +110,14 @@ class TokenService(
         )
     }
 
-    private fun issueAccessToken(accountId: Long, roles: List<String>): String {
+    private fun issueAccessToken(accountId: Long, roles: List<AccountRole>): String {
         val now = Instant.now()
         val claims = JwtClaimsSet.builder()
             .issuer(jwtProperties.issuer)
             .subject(accountId.toString())
             .issuedAt(now)
             .expiresAt(now.plus(jwtProperties.accessTtl))
-            .claim("roles", roles)
+            .claim("roles", roles.map { it.name })
             .build()
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).tokenValue
     }

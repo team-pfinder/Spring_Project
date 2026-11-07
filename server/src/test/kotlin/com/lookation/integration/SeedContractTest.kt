@@ -1,5 +1,6 @@
 package com.lookation.integration
 
+import com.lookation.domain.AccountRole
 import com.lookation.domain.AccountStatus
 import com.lookation.global.seed.AccountSeed
 import com.lookation.global.seed.InitializeService
@@ -71,9 +72,9 @@ class SeedContractTest {
         }
 
         assertThat(accountRepository.roles(accountRepository.findByEmail(ADMIN_EMAIL)!!.id))
-            .containsExactly("ADMIN")
+            .containsExactly(AccountRole.ADMIN)
         assertThat(accountRepository.roles(accountRepository.findByEmail(MEMBER_EMAIL)!!.id))
-            .containsExactly("MEMBER")
+            .containsExactly(AccountRole.MEMBER)
 
         val member = accountRepository.findByEmail(MEMBER_EMAIL)!!
         assertThat(member.status).isEqualTo(AccountStatus.ACTIVE)

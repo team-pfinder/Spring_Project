@@ -9,6 +9,7 @@ import com.lookation.dto.ChargeDto
 import com.lookation.controller.form.WithdrawalRequestForm
 import com.lookation.dto.WithdrawalDto
 import com.lookation.domain.ChargeStatus
+import com.lookation.domain.WalletEntryType
 import com.lookation.domain.WithdrawalStatus
 import com.lookation.repository.ChargeRepository
 import com.lookation.repository.WalletRepository
@@ -47,7 +48,7 @@ class WalletService(
         if (approved) {
             walletRepository.ensureWallet(charge.accountId)
             walletRepository.deposit(charge.accountId, charge.amount)
-            walletRepository.addEntry(charge.accountId, "CHARGE", charge.amount, "CHARGE", chargeId)
+            walletRepository.addEntry(charge.accountId, WalletEntryType.CHARGE, charge.amount, "CHARGE", chargeId)
         }
         return requireNotNull(chargeRepository.findById(chargeId)).toResponse()
     }
@@ -68,7 +69,7 @@ class WalletService(
             throw ConflictException("출금 가능한 잔액이 부족합니다")
         }
         val id = withdrawalRepository.insert(accountId, form.amount, bankName, accountNumberEnc, accountHolderEnc)
-        walletRepository.addEntry(accountId, "WITHDRAWAL", -form.amount, "WITHDRAWAL", id)
+        walletRepository.addEntry(accountId, WalletEntryType.WITHDRAWAL, -form.amount, "WITHDRAWAL", id)
         return requireNotNull(withdrawalRepository.findById(id)).toResponse()
     }
 
@@ -88,7 +89,7 @@ class WalletService(
             walletRepository.deposit(withdrawal.accountId, withdrawal.amount)
             walletRepository.addEntry(
                 withdrawal.accountId,
-                "WITHDRAWAL",
+                WalletEntryType.WITHDRAWAL,
                 withdrawal.amount,
                 "WITHDRAWAL",
                 withdrawal.id,
@@ -101,12 +102,12 @@ class WalletService(
         id = id,
         amount = amount,
         depositorName = depositorName,
-        status = status.name,
+        status = status,
     )
 
     private fun com.lookation.repository.WithdrawalRow.toResponse() = WithdrawalDto(
         id = id,
         amount = amount,
-        status = status.name,
+        status = status,
     )
 }

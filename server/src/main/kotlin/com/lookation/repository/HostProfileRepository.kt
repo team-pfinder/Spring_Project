@@ -1,5 +1,6 @@
 package com.lookation.repository
 
+import com.lookation.domain.InspectionStatus
 import com.lookation.jooq.tables.HostProfiles.HOST_PROFILES
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
@@ -12,7 +13,7 @@ data class HostProfileRow(
     val bankName: String?,
     val bankAccountNumberEnc: ByteArray?,
     val bankAccountHolderEnc: ByteArray?,
-    val status: String,
+    val status: InspectionStatus,
 )
 
 @Repository
@@ -54,7 +55,7 @@ class HostProfileRepository(private val dsl: DSLContext) {
                     bankName = it.get(HOST_PROFILES.BANK_NAME),
                     bankAccountNumberEnc = it.get(HOST_PROFILES.BANK_ACCOUNT_NUMBER_ENC),
                     bankAccountHolderEnc = it.get(HOST_PROFILES.BANK_ACCOUNT_HOLDER_ENC),
-                    status = it.get(HOST_PROFILES.STATUS),
+                    status = InspectionStatus.valueOf(it.get(HOST_PROFILES.STATUS)),
                 )
             }
 }

@@ -1,5 +1,6 @@
 package com.lookation.integration
 
+import com.lookation.domain.AccountRole
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.global.seed.InitializeService
 import com.lookation.global.seed.SeedStep
@@ -84,7 +85,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `API 체인은 쿠키 토큰을 인정하지 않는다`() {
-        val pair = tokenService.issue(memberId(), listOf("MEMBER"))
+        val pair = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
 
         mockMvc.perform(get("/api/v1/me").cookie(Cookie(AuthCookies.ACCESS_COOKIE, pair.accessToken)))
             .andExpect(status().isUnauthorized)
@@ -96,7 +97,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `HTML 체인은 쿠키 토큰을 인정한다`() {
-        val pair = tokenService.issue(memberId(), listOf("MEMBER"))
+        val pair = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
 
         mockMvc.perform(get("/mypage/reservations").cookie(Cookie(AuthCookies.ACCESS_COOKIE, pair.accessToken)))
             .andExpect(status().isOk)
@@ -104,7 +105,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `CSRF 토큰이 없는 HTML POST는 403이다`() {
-        val pair = tokenService.issue(memberId(), listOf("MEMBER"))
+        val pair = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
 
         mockMvc.perform(
             post("/logout").cookie(Cookie(AuthCookies.REFRESH_COOKIE, pair.refreshToken)),
@@ -113,7 +114,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `CSRF 토큰이 있으면 로그아웃되고 refresh family가 폐기된다`() {
-        val pair = tokenService.issue(memberId(), listOf("MEMBER"))
+        val pair = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
 
         val result = mockMvc.perform(
             post("/logout")
@@ -135,7 +136,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `access가 만료되면 refresh 쿠키로 새 쿠키를 발급한다`() {
-        val pair = tokenService.issue(memberId(), listOf("MEMBER"))
+        val pair = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
         val expiredAccess = expiredAccessToken()
 
         val result = mockMvc.perform(
@@ -154,7 +155,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `두 탭이 같은 refresh로 동시에 갱신해도 family가 유지된다`() {
-        val first = tokenService.issue(memberId(), listOf("MEMBER"))
+        val first = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
         val second = tokenService.rotate(first.refreshToken)
         val third = tokenService.rotate(first.refreshToken, Duration.ofSeconds(10))
 
@@ -164,7 +165,7 @@ class HtmlAuthChainTest {
 
     @Test
     fun `로그아웃으로 폐기된 refresh는 유예 없이 실패한다`() {
-        val pair = tokenService.issue(memberId(), listOf("MEMBER"))
+        val pair = tokenService.issue(memberId(), listOf(AccountRole.MEMBER))
         tokenService.revokeFamily(pair.refreshToken)
 
         assertThatThrownBy { tokenService.rotate(pair.refreshToken) }
@@ -181,7 +182,7 @@ class HtmlAuthChainTest {
             .subject(memberId().toString())
             .issuedAt(now.minusSeconds(3600))
             .expiresAt(now.minusSeconds(60))
-            .claim("roles", listOf("MEMBER"))
+            .claim("roles", listOf(AccountRole.MEMBER))
             .build()
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).tokenValue
     }

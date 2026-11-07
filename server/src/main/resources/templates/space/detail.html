@@ -109,7 +109,7 @@
                 <div th:each="qna : ${qnas.items}" class="qna-item">
                     <div class="d-flex justify-content-between">
                         <strong th:text="${qna.title}">문의 제목</strong>
-                        <span class="badge badge-light border" th:text="${qna.status == 'ANSWERED' ? '답변 완료' : '답변 대기'}"></span>
+                        <span class="badge badge-light border" th:text="${qna.status.name == 'ANSWERED' ? '답변 완료' : '답변 대기'}"></span>
                     </div>
                     <div class="small text-muted mt-1" th:text="|${qna.nickname} · ${@fmt.dateTime(qna.createdAt)}|"></div>
                     <p class="mb-1 mt-2 preline" th:text="${qna.content}"></p>

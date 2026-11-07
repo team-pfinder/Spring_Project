@@ -9,6 +9,7 @@ import com.lookation.global.error.NotFoundException
 import com.lookation.repository.AccountRepository
 import com.lookation.repository.QnaRepository
 import com.lookation.domain.ReportStatus
+import com.lookation.domain.ReportTarget
 import com.lookation.repository.ReportRepository
 import com.lookation.repository.ReportRow
 import com.lookation.repository.ReservationRepository
@@ -67,13 +68,12 @@ class ReportService(
         return requireNotNull(reportRepository.findById(reportId)).toResponse()
     }
 
-    private fun targetExists(type: String, id: Long): Boolean = when (type) {
-        "SPACE" -> spaceRepository.findById(id) != null
-        "RESERVATION" -> reservationRepository.findById(id) != null
-        "REVIEW" -> reviewRepository.findById(id) != null
-        "QNA" -> qnaRepository.findById(id) != null
-        "ACCOUNT" -> accountRepository.findById(id) != null
-        else -> false
+    private fun targetExists(type: ReportTarget, id: Long): Boolean = when (type) {
+        ReportTarget.SPACE -> spaceRepository.findById(id) != null
+        ReportTarget.RESERVATION -> reservationRepository.findById(id) != null
+        ReportTarget.REVIEW -> reviewRepository.findById(id) != null
+        ReportTarget.QNA -> qnaRepository.findById(id) != null
+        ReportTarget.ACCOUNT -> accountRepository.findById(id) != null
     }
 
     private fun ReportRow.toResponse() = ReportDto(
@@ -82,7 +82,7 @@ class ReportService(
         targetType = targetType,
         targetId = targetId,
         reason = reason,
-        status = status.name,
+        status = status,
         createdAt = createdAt,
     )
 }

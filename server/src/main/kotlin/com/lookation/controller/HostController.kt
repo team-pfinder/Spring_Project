@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import com.lookation.domain.AccountRole
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.dto.HostProfileDto
 import com.lookation.controller.form.HostApplyForm
@@ -52,8 +53,8 @@ class HostController(
             bankAccountNumberEnc = form.bankAccountNumber?.let(cryptoService::encrypt),
             bankAccountHolderEnc = form.bankAccountHolder?.let(cryptoService::encrypt),
         )
-        if (!accountRepository.roles(accountId).contains("HOST")) {
-            accountRepository.addRole(accountId, "HOST")
+        if (!accountRepository.roles(accountId).contains(AccountRole.HOST)) {
+            accountRepository.addRole(accountId, AccountRole.HOST)
         }
         return requireNotNull(hostProfileRepository.findByAccountId(accountId)).toResponse()
     }

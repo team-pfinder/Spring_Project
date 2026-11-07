@@ -1,5 +1,6 @@
 package com.lookation.global.seed
 
+import com.lookation.domain.AccountRole
 import com.lookation.domain.AccountStatus
 import com.lookation.repository.AccountRepository
 import org.springframework.core.annotation.Order
@@ -40,7 +41,7 @@ class AccountSeed(
                 nickname = seed.nickname,
                 status = seed.status,
             )
-            seed.roles.forEach { accounts.addRole(accountId, it) }
+            seed.roles.forEach { accounts.addRole(accountId, AccountRole.valueOf(it)) }
             inserted++
         }
 

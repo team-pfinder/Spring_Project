@@ -317,7 +317,7 @@ class ThymeleafViewFlowTest {
         val memberId = accountId(MEMBER_EMAIL)
         walletRepository.ensureWallet(memberId)
         walletRepository.deposit(memberId, amount)
-        walletRepository.addEntry(memberId, "CHARGE", amount, "CHARGE", null)
+        walletRepository.addEntry(memberId, com.lookation.domain.WalletEntryType.CHARGE, amount, "CHARGE", null)
     }
 
     private fun accountId(email: String): Long =

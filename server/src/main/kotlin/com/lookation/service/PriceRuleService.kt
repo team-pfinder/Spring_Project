@@ -1,5 +1,6 @@
 package com.lookation.service
 
+import com.lookation.domain.PriceUnit
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
@@ -59,18 +60,17 @@ class PriceRuleService(
             if (rule.dayOfWeek !in 1..7) throw BadRequestException("요일은 1~7이어야 합니다")
             if (rule.price < 0) throw BadRequestException("가격은 0 이상이어야 합니다")
             when (rule.unit) {
-                "HOUR" -> {
+                PriceUnit.HOUR -> {
                     val start = rule.startTime ?: throw BadRequestException("시간 단위 규칙에는 시작 시각이 필요합니다")
                     val end = rule.endTime ?: throw BadRequestException("시간 단위 규칙에는 종료 시각이 필요합니다")
                     if (!end.isAfter(start)) throw BadRequestException("종료 시각은 시작 시각 이후여야 합니다")
                 }
-                "DAY" -> if (rule.startTime != null || rule.endTime != null) {
+                PriceUnit.DAY -> if (rule.startTime != null || rule.endTime != null) {
                     throw BadRequestException("일 단위 규칙에는 시각을 지정할 수 없습니다")
                 }
-                else -> throw BadRequestException("알 수 없는 가격 단위입니다")
             }
         }
-        rules.filter { it.unit == "HOUR" }
+        rules.filter { it.unit == PriceUnit.HOUR }
             .groupBy { it.dayOfWeek }
             .forEach { (_, dayRules) ->
                 val sorted = dayRules.sortedBy { it.startTime }

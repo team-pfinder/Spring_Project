@@ -2,7 +2,9 @@ package com.lookation.service
 
 import com.lookation.repository.JobRunRepository
 import com.lookation.domain.JobStatus
+import com.lookation.domain.ActorType
 import com.lookation.domain.ReservationStatus
+import com.lookation.domain.WalletEntryType
 import com.lookation.repository.ReservationRepository
 import com.lookation.domain.SettlementPolicy
 import com.lookation.repository.SettlementRepository
@@ -32,7 +34,7 @@ class ReservationBatchService(
                         completedAt = now,
                     ) == 1
                 ) {
-                    reservationRepository.addEvent(reservation.id, ReservationStatus.CONFIRMED, ReservationStatus.COMPLETED, "SYSTEM", null)
+                    reservationRepository.addEvent(reservation.id, ReservationStatus.CONFIRMED, ReservationStatus.COMPLETED, ActorType.SYSTEM, null)
                     true
                 } else {
                     false
@@ -54,13 +56,13 @@ class ReservationBatchService(
             reservationRepository.findPendingApprovalCreatedBefore(now.minusHours(APPROVAL_WINDOW_HOURS))
                 .forEach { reservation ->
                     if (reservationRepository.updateStatus(reservation.id, ReservationStatus.PENDING_APPROVAL, ReservationStatus.EXPIRED) == 1) {
-                        reservationRepository.addEvent(reservation.id, ReservationStatus.PENDING_APPROVAL, ReservationStatus.EXPIRED, "SYSTEM", null)
+                        reservationRepository.addEvent(reservation.id, ReservationStatus.PENDING_APPROVAL, ReservationStatus.EXPIRED, ActorType.SYSTEM, null)
                         processed++
                     }
                 }
             reservationRepository.findPaymentOverdue(now).forEach { reservation ->
                 if (reservationRepository.updateStatus(reservation.id, ReservationStatus.PENDING_PAYMENT, ReservationStatus.EXPIRED) == 1) {
-                    reservationRepository.addEvent(reservation.id, ReservationStatus.PENDING_PAYMENT, ReservationStatus.EXPIRED, "SYSTEM", null)
+                    reservationRepository.addEvent(reservation.id, ReservationStatus.PENDING_PAYMENT, ReservationStatus.EXPIRED, ActorType.SYSTEM, null)
                     processed++
                 }
             }
@@ -85,7 +87,7 @@ class ReservationBatchService(
                 settlementRepository.insert(reservation.id, reservation.hostId, reservation.price, fee, net)
                 walletRepository.ensureWallet(reservation.hostId)
                 walletRepository.deposit(reservation.hostId, net)
-                walletRepository.addEntry(reservation.hostId, "SETTLE", net, "RESERVATION", reservation.id)
+                walletRepository.addEntry(reservation.hostId, WalletEntryType.SETTLE, net, "RESERVATION", reservation.id)
                 processed++
             }
             jobRunRepository.finish(runId, JobStatus.SUCCESS, processed)

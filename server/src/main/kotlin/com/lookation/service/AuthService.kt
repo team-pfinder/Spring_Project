@@ -1,5 +1,6 @@
 package com.lookation.service
 
+import com.lookation.domain.AccountRole
 import com.lookation.domain.AccountStatus
 import com.lookation.domain.VerificationPurpose
 import com.lookation.repository.AccountRepository
@@ -46,8 +47,8 @@ class AuthService(
         } catch (_: DuplicateKeyException) {
             throw ConflictException("이미 가입된 이메일입니다")
         }
-        accountRepository.addRole(accountId, "MEMBER")
-        return tokenService.issue(accountId, listOf("MEMBER"))
+        accountRepository.addRole(accountId, AccountRole.MEMBER)
+        return tokenService.issue(accountId, listOf(AccountRole.MEMBER))
     }
 
     @Transactional

@@ -1,5 +1,7 @@
 package com.lookation.view
 
+import com.lookation.domain.ReservationStatus
+import com.lookation.domain.SpaceType
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.LocalTime
@@ -76,6 +78,12 @@ class ViewFormat {
             "CANCELLED", "REJECTED", "EXPIRED", "REFUNDED" -> "badge-secondary"
             else -> "badge-light"
         }
+
+    fun status(value: ReservationStatus?): String = status(value?.name)
+
+    fun spaceType(value: SpaceType?): String = spaceType(value?.name)
+
+    fun badgeClass(status: ReservationStatus?): String = badgeClass(status?.name)
 
     private companion object {
         val DATE: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
