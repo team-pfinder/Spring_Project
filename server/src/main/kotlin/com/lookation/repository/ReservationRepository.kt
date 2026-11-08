@@ -73,6 +73,7 @@ class ReservationRepository(private val dsl: DSLContext) {
         price: Long,
         status: ReservationStatus,
         requestMessage: String?,
+        paymentDueAt: OffsetDateTime? = null,
     ): Long =
         dsl.insertInto(RESERVATIONS)
             .set(RESERVATIONS.MEMBER_ID, memberId)
@@ -83,6 +84,7 @@ class ReservationRepository(private val dsl: DSLContext) {
             .set(RESERVATIONS.GUEST_COUNT, guestCount.toShort())
             .set(RESERVATIONS.PRICE, price)
             .set(RESERVATIONS.STATUS, status.name)
+            .set(RESERVATIONS.PAYMENT_DUE_AT, paymentDueAt)
             .set(RESERVATIONS.REQUEST_MESSAGE, requestMessage)
             .returningResult(RESERVATIONS.ID)
             .fetchOne()!!

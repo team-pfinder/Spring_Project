@@ -9,6 +9,7 @@ import com.lookation.dto.ReservationDto
 import com.lookation.domain.CancellationPolicy
 import com.lookation.domain.ActorType
 import com.lookation.domain.ReservationStatus
+import com.lookation.domain.isPubliclyVisible
 import com.lookation.domain.WalletEntryType
 import com.lookation.repository.ReservationRepository
 import com.lookation.repository.ReservationRow
@@ -47,7 +48,7 @@ class ReservationService(
 
         val space = spaceRepository.findById(form.spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != com.lookation.domain.SpaceStatus.PUBLISHED) {
+        if (!space.status.isPubliclyVisible) {
             throw ConflictException("예약할 수 없는 공간입니다")
         }
         if (form.guestCount < space.minCapacity || form.guestCount > space.maxCapacity) {
@@ -80,15 +81,10 @@ class ReservationService(
             price = dayRule.price
         }
 
+        // 즉시 예약도 create->pay->confirm 2단계(스펙 #35): 생성은 PENDING_PAYMENT, 홀드는 pay 시점.
         val requiresApproval = space.approvalRequired
-        if (!requiresApproval) {
-            walletRepository.ensureWallet(memberId)
-            if (!walletRepository.hold(memberId, price)) {
-                throw ConflictException("마일리지 잔액이 부족합니다")
-            }
-        }
-
-        val initialStatus = if (requiresApproval) ReservationStatus.PENDING_APPROVAL else ReservationStatus.CONFIRMED
+        val initialStatus = if (requiresApproval) ReservationStatus.PENDING_APPROVAL else ReservationStatus.PENDING_PAYMENT
+        val paymentDueAt = if (requiresApproval) null else now.plusHours(PAYMENT_WINDOW_HOURS)
         val reservationId = try {
             reservationRepository.insert(
                 memberId = memberId,
@@ -100,13 +96,10 @@ class ReservationService(
                 price = price,
                 status = initialStatus,
                 requestMessage = form.requestMessage,
+                paymentDueAt = paymentDueAt,
             )
         } catch (_: DataIntegrityViolationException) {
             throw ConflictException("이미 예약된 시간대입니다")
-        }
-
-        if (!requiresApproval) {
-            walletRepository.addEntry(memberId, WalletEntryType.HOLD, -price, "RESERVATION", reservationId)
         }
         reservationRepository.addEvent(reservationId, null, initialStatus, ActorType.MEMBER, memberId)
         return response(reservationId)

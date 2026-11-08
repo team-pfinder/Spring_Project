@@ -50,6 +50,14 @@ enum class SpaceStatus {
     CLOSED,
 }
 
+/**
+ * 공간 공개 범위. [PUBLISHED]만 검색·상세에 공개되고, 나머지는 소유한 호스트 본인에게만 보인다.
+ * [SUSPENDED]/[CLOSED]는 게시 중단을 뜻해 비공개이며, 신규 상태가 추가돼도 공개 집합에
+ * 명시적으로 넣지 않는 한 비공개로 둔다.
+ */
+val SpaceStatus.isPubliclyVisible: Boolean
+    get() = this == SpaceStatus.PUBLISHED
+
 enum class ReservationStatus {
     PENDING_APPROVAL,
     PENDING_PAYMENT,

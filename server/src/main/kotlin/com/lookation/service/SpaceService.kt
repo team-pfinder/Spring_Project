@@ -11,6 +11,7 @@ import com.lookation.dto.SpaceSearchDto
 import com.lookation.dto.SpaceSummaryDto
 import com.lookation.dto.SpaceDto
 import com.lookation.domain.SpaceStatus
+import com.lookation.domain.isPubliclyVisible
 import com.lookation.domain.SpaceType
 import com.lookation.domain.SpaceSort
 import com.lookation.repository.SpaceCursor
@@ -89,7 +90,7 @@ class SpaceService(
     fun get(accountId: Long?, spaceId: Long): SpaceDto {
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != SpaceStatus.PUBLISHED && space.hostId != accountId) {
+        if (!space.status.isPubliclyVisible && space.hostId != accountId) {
             throw NotFoundException("공간을 찾을 수 없습니다")
         }
         return response(space)

@@ -9,6 +9,7 @@ import com.lookation.global.error.ConflictException
 import com.lookation.global.error.ForbiddenException
 import com.lookation.global.error.NotFoundException
 import com.lookation.domain.QnaStatus
+import com.lookation.domain.isPubliclyVisible
 import com.lookation.repository.QnaRepository
 import com.lookation.repository.QnaRow
 import com.lookation.repository.SpaceRepository
@@ -27,7 +28,7 @@ class QnaService(
         sanctionService.checkWritable(memberId)
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != com.lookation.domain.SpaceStatus.PUBLISHED) {
+        if (!space.status.isPubliclyVisible) {
             throw ConflictException("게시된 공간에만 질문할 수 있습니다")
         }
         val qnaId = qnaRepository.insert(spaceId, memberId, form.title, form.content)

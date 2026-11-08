@@ -105,17 +105,11 @@ class ThymeleafViewFlowTest {
     @Test
     fun `잔액 부족 예약 실패는 오류 메시지를 렌더한다`() {
         val cookies = login(MEMBER_EMAIL)
-        // 시드 잔액을 0으로 만든 뒤 즉시예약을 시도하면 ConflictException이 form에 렌더돼야 한다.
-        val memberId = accountId(MEMBER_EMAIL)
-        dsl.update(com.lookation.jooq.tables.Wallets.WALLETS)
-            .set(com.lookation.jooq.tables.Wallets.WALLETS.BALANCE, 0L)
-            .where(com.lookation.jooq.tables.Wallets.WALLETS.ACCOUNT_ID.eq(memberId))
-            .execute()
+        // 즉시 예약은 create→pay→confirm이므로, 생성은 통과하고 결제 시점에 잔액 부족이 렌더돼야 한다.
         val spaceId = spaceId("시드 파티룸")
-        val date = LocalDate.now(KST).plusDays(10)
+        val date = LocalDate.now(KST).plusDays(12)
         val ruleId = priceRuleId(spaceId, date.dayOfWeek.value)
-
-        mockMvc.perform(
+        val created = mockMvc.perform(
             post("/spaces/$spaceId/reservations")
                 .with(csrf())
                 .cookie(*cookies)
@@ -124,6 +118,18 @@ class ThymeleafViewFlowTest {
                 .param("guestCount", "10")
                 .param("requestMessage", "잔액 부족 테스트"),
         )
+            .andExpect(status().isFound)
+            .andReturn()
+        val reservationId = reservationIdFrom(created.response.getRedirectedUrl())
+        assertThat(statusOf(reservationId)).isEqualTo("PENDING_PAYMENT")
+
+        val memberId = accountId(MEMBER_EMAIL)
+        dsl.update(com.lookation.jooq.tables.Wallets.WALLETS)
+            .set(com.lookation.jooq.tables.Wallets.WALLETS.BALANCE, 0L)
+            .where(com.lookation.jooq.tables.Wallets.WALLETS.ACCOUNT_ID.eq(memberId))
+            .execute()
+
+        mockMvc.perform(post("/reservations/$reservationId/pay").with(csrf()).cookie(*cookies))
             .andExpect(status().isOk)
             .andExpect(content().string(org.hamcrest.Matchers.containsString("마일리지 잔액이 부족합니다")))
     }
@@ -220,7 +226,7 @@ class ThymeleafViewFlowTest {
     }
 
     @Test
-    fun `즉시 예약은 생성 직후 확정되고 상세 화면에서 취소할 수 있다`() {
+    fun `즉시 예약은 결제 후 확정되고 상세 화면에서 취소할 수 있다`() {
         val cookies = login(MEMBER_EMAIL)
         deposit(200_000)
         val spaceId = spaceId("시드 파티룸")
@@ -249,9 +255,13 @@ class ThymeleafViewFlowTest {
             .andReturn()
 
         val reservationId = reservationIdFrom(created.response.getRedirectedUrl())
-        val status = dsl.select(RESERVATIONS.STATUS).from(RESERVATIONS)
-            .where(RESERVATIONS.ID.eq(reservationId)).fetchOne(RESERVATIONS.STATUS)
-        assertThat(status).isEqualTo("CONFIRMED")
+        // 즉시 예약도 create→pay→confirm 2단계: 생성 직후는 결제 대기이고 결제 화면으로 간다.
+        assertThat(statusOf(reservationId)).isEqualTo("PENDING_PAYMENT")
+        assertThat(created.response.getRedirectedUrl()).contains("/pay")
+
+        mockMvc.perform(post("/reservations/$reservationId/pay").with(csrf()).cookie(*cookies))
+            .andExpect(status().isFound)
+        assertThat(statusOf(reservationId)).isEqualTo("CONFIRMED")
 
         mockMvc.perform(get("/mypage/reservations/$reservationId").cookie(*cookies))
             .andExpect(status().isOk)
@@ -367,8 +377,12 @@ class ThymeleafViewFlowTest {
             .and(PRICE_RULES.UNIT.eq("HOUR"))
             .fetchOne(PRICE_RULES.ID)!!
 
-    private fun reservationIdFrom(url: String?): Long =
-        requireNotNull(url).substringAfterLast("/").substringBefore("?").toLong()
+    private fun reservationIdFrom(url: String?): Long {
+        val path = requireNotNull(url).substringBefore("?")
+        val parts = path.split("/")
+        // ".../reservations/{id}" 또는 ".../reservations/{id}/pay" 모두에서 id 추출
+        return parts[parts.indexOf("reservations") + 1].toLong()
+    }
 
     private fun statusOf(reservationId: Long): String? =
         dsl.select(RESERVATIONS.STATUS).from(RESERVATIONS)

@@ -1,6 +1,7 @@
 package com.lookation.service
 
 import com.lookation.domain.SpaceStatus
+import com.lookation.domain.isPubliclyVisible
 import com.lookation.dto.OccupiedIntervalDto
 import com.lookation.dto.SpaceAvailabilityDto
 import com.lookation.global.error.BadRequestException
@@ -41,7 +42,7 @@ class AvailabilityService(
         }
         val space = spaceRepository.findById(spaceId)
             ?: throw NotFoundException("공간을 찾을 수 없습니다")
-        if (space.status != SpaceStatus.PUBLISHED && space.hostId != accountId) {
+        if (!space.status.isPubliclyVisible && space.hostId != accountId) {
             throw NotFoundException("공간을 찾을 수 없습니다")
         }
         return SpaceAvailabilityDto(

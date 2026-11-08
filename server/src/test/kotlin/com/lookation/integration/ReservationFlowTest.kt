@@ -94,8 +94,15 @@ class ReservationFlowTest {
             token,
         )
         assertThat(created.status.value()).isEqualTo(HttpStatus.OK.value())
-        assertThat(created.body!!["status"]).isEqualTo("CONFIRMED")
+        assertThat(created.body!!["status"]).isEqualTo("PENDING_PAYMENT")
         assertThat(created.body["price"]).isEqualTo(100_000)
+        // 즉시 예약도 결제한 뒤 확정되므로, 생성 시점에는 잔액이 홀드되지 않는다.
+        assertThat(balance(memberId)).isEqualTo(300_000)
+
+        val reservationId = (created.body["id"] as Number).toLong()
+        val paid = post("/api/v1/reservations/$reservationId/pay", emptyMap(), token)
+        assertThat(paid.status.value()).isEqualTo(HttpStatus.OK.value())
+        assertThat(paid.body!!["status"]).isEqualTo("CONFIRMED")
         assertThat(balance(memberId)).isEqualTo(200_000)
 
         val overlap = post(
@@ -160,7 +167,11 @@ class ReservationFlowTest {
             token,
         )
 
-        assertThat(result.status.value()).isEqualTo(HttpStatus.CONFLICT.value())
+        // 잔액 부족은 결제한 뒤에 드러난다.
+        assertThat(result.status.value()).isEqualTo(HttpStatus.OK.value())
+        val id = (result.body!!["id"] as Number).toLong()
+        val pay = post("/api/v1/reservations/$id/pay", emptyMap(), token)
+        assertThat(pay.status.value()).isEqualTo(HttpStatus.CONFLICT.value())
         assertThat(balance(memberId)).isEqualTo(10_000)
     }
 
@@ -220,7 +231,11 @@ class ReservationFlowTest {
         )
 
         assertThat(result.status.value()).isEqualTo(HttpStatus.OK.value())
-        assertThat(result.body!!["price"]).isEqualTo(150_000)
+        assertThat(result.body!!["status"]).isEqualTo("PENDING_PAYMENT")
+        assertThat(result.body["price"]).isEqualTo(150_000)
+        assertThat(balance(memberId)).isEqualTo(200_000)
+        val dayId = (result.body["id"] as Number).toLong()
+        assertThat(post("/api/v1/reservations/$dayId/pay", emptyMap(), token).status.value()).isEqualTo(HttpStatus.OK.value())
         assertThat(balance(memberId)).isEqualTo(50_000)
     }
 
@@ -511,7 +526,11 @@ class ReservationFlowTest {
             ),
             token,
         )
-        return (response.body!!["id"] as Number).toLong()
+        val id = (response.body!!["id"] as Number).toLong()
+        // 즉시 예약도 create→pay→confirm이므로 결제한 뒤 확정 상태로 돌린다.
+        val paid = post("/api/v1/reservations/$id/pay", emptyMap(), token)
+        assertThat(paid.status.value()).isEqualTo(HttpStatus.OK.value())
+        return id
     }
 
     private fun getList(path: String, token: String): List<Any> =
