@@ -19,6 +19,8 @@
         <a class="btn btn-outline-dark mt-3 mt-md-0" th:href="@{/mypage/reservations}">목록으로</a>
     </div>
 
+    <div id="reservation-error" class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}"></div>
+
     <div class="row">
         <div class="col-lg-7">
             <div class="info-card mb-4">

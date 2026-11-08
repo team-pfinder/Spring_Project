@@ -67,6 +67,7 @@ class ReservationViewController(
         } catch (exception: ApiException) {
             model.addAttribute("reservation", reservationService.getMine(memberId, id))
             model.addAttribute("error", exception.message)
+            model.addAttribute("renderedErrorLocally", true)
             "mypage/reservation"
         }
     }
@@ -97,6 +98,7 @@ class ReservationViewController(
             model.addAttribute("reservation", reservationService.getMine(memberId, id))
             model.addAttribute("balance", walletRepository.balance(memberId))
             model.addAttribute("error", exception.message)
+            model.addAttribute("renderedErrorLocally", true)
             "reservation/pay"
         }
     }

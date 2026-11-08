@@ -95,6 +95,40 @@ class ThymeleafViewFlowTest {
     }
 
     @Test
+    fun `검색 화면은 로딩 상태를 렌더한다`() {
+        mockMvc.perform(get("/spaces"))
+            .andExpect(status().isOk)
+            .andExpect(content().string(org.hamcrest.Matchers.containsString("로딩 중")))
+            .andExpect(content().string(org.hamcrest.Matchers.containsString("loading-state")))
+    }
+
+    @Test
+    fun `잔액 부족 예약 실패는 오류 메시지를 렌더한다`() {
+        val cookies = login(MEMBER_EMAIL)
+        // 시드 잔액을 0으로 만든 뒤 즉시예약을 시도하면 ConflictException이 form에 렌더돼야 한다.
+        val memberId = accountId(MEMBER_EMAIL)
+        dsl.update(com.lookation.jooq.tables.Wallets.WALLETS)
+            .set(com.lookation.jooq.tables.Wallets.WALLETS.BALANCE, 0L)
+            .where(com.lookation.jooq.tables.Wallets.WALLETS.ACCOUNT_ID.eq(memberId))
+            .execute()
+        val spaceId = spaceId("시드 파티룸")
+        val date = LocalDate.now(KST).plusDays(10)
+        val ruleId = priceRuleId(spaceId, date.dayOfWeek.value)
+
+        mockMvc.perform(
+            post("/spaces/$spaceId/reservations")
+                .with(csrf())
+                .cookie(*cookies)
+                .param("date", date.toString())
+                .param("priceRuleId", ruleId.toString())
+                .param("guestCount", "10")
+                .param("requestMessage", "잔액 부족 테스트"),
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().string(org.hamcrest.Matchers.containsString("마일리지 잔액이 부족합니다")))
+    }
+
+    @Test
     fun `상세 화면은 이미지 순서와 예약 슬롯을 렌더한다`() {
         val spaceId = spaceId("시드 파티룸")
         val keys = dsl.select(ATTACHMENTS.STORAGE_KEY)

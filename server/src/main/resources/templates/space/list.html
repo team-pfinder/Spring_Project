@@ -14,7 +14,12 @@
         <div class="text-muted small mt-3 mt-md-0" th:text="|${resultCount}개의 공간|">0개의 공간</div>
     </div>
 
-    <form class="search-panel" th:action="@{/spaces}" method="get">
+    <div id="loading-state" class="loading-state text-center py-3" hidden role="status" aria-live="polite">
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <span class="ml-2">로딩 중...</span>
+    </div>
+
+    <form class="search-panel" id="search-form" th:action="@{/spaces}" method="get">
         <div class="form-row">
             <div class="form-group col-lg-4">
                 <label for="keyword">검색어</label>
@@ -120,8 +125,21 @@
     </div>
 
     <div class="text-center mt-4" th:if="${nextUrl != null}">
-        <a class="btn btn-outline-dark px-4" th:href="${nextUrl}">다음 페이지</a>
+        <a id="next-page-link" class="btn btn-outline-dark px-4" th:href="${nextUrl}">다음 페이지</a>
     </div>
+
+    <script>
+    (function () {
+        function showLoading() {
+            var el = document.getElementById('loading-state');
+            if (el) el.hidden = false;
+        }
+        var form = document.getElementById('search-form');
+        if (form) form.addEventListener('submit', showLoading);
+        var nextLink = document.getElementById('next-page-link');
+        if (nextLink) nextLink.addEventListener('click', showLoading);
+    })();
+    </script>
 </section>
 </body>
 </html>

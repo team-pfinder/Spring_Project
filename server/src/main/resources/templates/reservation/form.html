@@ -12,6 +12,8 @@
         <p th:text="|${space.address} · ${@fmt.spaceType(space.spaceType)}|">주소</p>
     </div>
 
+    <div id="reservation-error" class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}"></div>
+
     <div class="row">
         <div class="col-lg-7">
             <div class="info-card mb-4">

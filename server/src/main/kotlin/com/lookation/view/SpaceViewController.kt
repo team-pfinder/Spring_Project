@@ -180,6 +180,7 @@ class SpaceViewController(
             return "redirect:$destination"
         } catch (exception: ApiException) {
             model.addAttribute("error", exception.message)
+            model.addAttribute("renderedErrorLocally", true)
             renderReservationForm(
                 accountId = accountId,
                 spaceId = id,

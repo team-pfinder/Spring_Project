@@ -12,6 +12,8 @@
         <p>마일리지로 예약 대금을 결제합니다.</p>
     </div>
 
+    <div id="reservation-error" class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}"></div>
+
     <div class="row">
         <div class="col-lg-7">
             <div class="info-card mb-4">
