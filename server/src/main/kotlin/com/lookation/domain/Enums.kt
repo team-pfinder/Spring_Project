@@ -50,13 +50,6 @@ enum class SpaceStatus {
     CLOSED,
 }
 
-enum class InspectionStatus {
-    PENDING_INSPECTION,
-    INSPECTION_REJECTED,
-    PUBLISHED,
-    SUSPENDED,
-}
-
 enum class ReservationStatus {
     PENDING_APPROVAL,
     PENDING_PAYMENT,
@@ -115,4 +108,35 @@ enum class SpaceType {
 enum class AttachmentOwnerType {
     SPACE,
     REVIEW,
+}
+
+enum class FacilityCode {
+    PARKING,
+    WIFI,
+    PROJECTOR,
+    SOUND,
+    KITCHEN,
+    REFRIGERATOR,
+    MICROWAVE,
+    AIR_CONDITIONER,
+    TABLE,
+    CHAIR,
+    BATHROOM,
+    ELEVATOR,
+}
+
+enum class SpaceSort(val key: String) {
+    LATEST("latest"),
+    PRICE_ASC("price_asc"),
+    PRICE_DESC("price_desc"),
+    RATING("rating"),
+    ;
+
+    companion object {
+        fun parse(raw: String?): SpaceSort {
+            if (raw.isNullOrBlank()) return LATEST
+            return entries.firstOrNull { it.key == raw }
+                ?: throw IllegalArgumentException("sort는 latest, price_asc, price_desc, rating 중 하나입니다")
+        }
+    }
 }

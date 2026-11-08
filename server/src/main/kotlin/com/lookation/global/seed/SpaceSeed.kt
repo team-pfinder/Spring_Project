@@ -1,6 +1,6 @@
 package com.lookation.global.seed
 
-import com.lookation.domain.InspectionStatus
+import com.lookation.domain.FacilityCode
 import com.lookation.domain.SpaceStatus
 import com.lookation.domain.SpaceType
 import com.lookation.jooq.tables.Inspections.INSPECTIONS
@@ -16,7 +16,7 @@ import java.time.OffsetDateTime
 
 /**
  * Seeds six spaces, one per [SpaceType] and one per [SpaceStatus], plus their facilities,
- * hourly/daily price rules and inspection history (all four [InspectionStatus] values).
+ * hourly/daily price rules and inspection history (all four [SpaceStatus] values).
  * Images are owned by the follow-up attachment seed.
  */
 @Component
@@ -66,7 +66,7 @@ class SpaceSeed(
             seed.facilities.forEach { code ->
                 dsl.insertInto(SPACE_FACILITIES)
                     .set(SPACE_FACILITIES.SPACE_ID, spaceId)
-                    .set(SPACE_FACILITIES.FACILITY_CODE, code)
+                    .set(SPACE_FACILITIES.FACILITY_CODE, code.name)
                     .execute()
             }
 
@@ -91,12 +91,12 @@ class SpaceSeed(
                 dsl.insertInto(INSPECTIONS)
                     .set(INSPECTIONS.SPACE_ID, spaceId)
                     .set(INSPECTIONS.STATUS, inspection.name)
-                    .set(INSPECTIONS.REASON, if (inspection == InspectionStatus.INSPECTION_REJECTED) "시드 반려 사유" else null)
+                    .set(INSPECTIONS.REASON, if (inspection == SpaceStatus.INSPECTION_REJECTED) "시드 반려 사유" else null)
                     .set(INSPECTIONS.ADMIN_ID, seedAdmin.id())
                     .set(INSPECTIONS.REQUESTED_AT, OffsetDateTime.now().minusDays(30))
                     .set(
                         INSPECTIONS.PROCESSED_AT,
-                        if (inspection == InspectionStatus.PENDING_INSPECTION) null else OffsetDateTime.now().minusDays(29),
+                        if (inspection == SpaceStatus.PENDING_INSPECTION) null else OffsetDateTime.now().minusDays(29),
                     )
                     .execute()
             }
@@ -122,8 +122,8 @@ class SpaceSeed(
         val maxCapacity: Int,
         val approvalRequired: Boolean,
         val hourPrice: Long,
-        val facilities: List<String>,
-        val inspection: InspectionStatus?,
+        val facilities: List<FacilityCode>,
+        val inspection: SpaceStatus?,
     )
 
     private companion object {
@@ -148,8 +148,8 @@ class SpaceSeed(
                 maxCapacity = 30,
                 approvalRequired = false,
                 hourPrice = 60000,
-                facilities = listOf("PARKING", "WIFI", "PROJECTOR", "AIR_CONDITIONER"),
-                inspection = InspectionStatus.PUBLISHED,
+                facilities = listOf(FacilityCode.PARKING, FacilityCode.WIFI, FacilityCode.PROJECTOR, FacilityCode.AIR_CONDITIONER),
+                inspection = SpaceStatus.PUBLISHED,
             ),
             SeedSpace(
                 name = "시드 한강 루프탑",
@@ -166,8 +166,8 @@ class SpaceSeed(
                 maxCapacity = 12,
                 approvalRequired = false,
                 hourPrice = 45000,
-                facilities = listOf("WIFI", "SOUND", "TABLE"),
-                inspection = InspectionStatus.PUBLISHED,
+                facilities = listOf(FacilityCode.WIFI, FacilityCode.SOUND, FacilityCode.TABLE),
+                inspection = SpaceStatus.PUBLISHED,
             ),
             SeedSpace(
                 name = "시드 부산 파티룸",
@@ -184,8 +184,8 @@ class SpaceSeed(
                 maxCapacity = 24,
                 approvalRequired = true,
                 hourPrice = 70000,
-                facilities = listOf("PARKING", "WIFI", "PROJECTOR", "REFRIGERATOR"),
-                inspection = InspectionStatus.PUBLISHED,
+                facilities = listOf(FacilityCode.PARKING, FacilityCode.WIFI, FacilityCode.PROJECTOR, FacilityCode.REFRIGERATOR),
+                inspection = SpaceStatus.PUBLISHED,
             ),
             SeedSpace(
                 name = "시드 판교 워크샵",
@@ -202,8 +202,8 @@ class SpaceSeed(
                 maxCapacity = 10,
                 approvalRequired = false,
                 hourPrice = 25000,
-                facilities = listOf("WIFI", "PROJECTOR", "KITCHEN", "CHAIR"),
-                inspection = InspectionStatus.PUBLISHED,
+                facilities = listOf(FacilityCode.WIFI, FacilityCode.PROJECTOR, FacilityCode.KITCHEN, FacilityCode.CHAIR),
+                inspection = SpaceStatus.PUBLISHED,
             ),
             SeedSpace(
                 name = "시드 빈 공간",
@@ -220,7 +220,7 @@ class SpaceSeed(
                 maxCapacity = 10,
                 approvalRequired = false,
                 hourPrice = 30000,
-                facilities = listOf("WIFI", "TABLE", "CHAIR"),
+                facilities = listOf(FacilityCode.WIFI, FacilityCode.TABLE, FacilityCode.CHAIR),
                 inspection = null,
             ),
             SeedSpace(
@@ -238,8 +238,8 @@ class SpaceSeed(
                 maxCapacity = 20,
                 approvalRequired = true,
                 hourPrice = 80000,
-                facilities = listOf("PARKING", "SOUND", "BATHROOM"),
-                inspection = InspectionStatus.PENDING_INSPECTION,
+                facilities = listOf(FacilityCode.PARKING, FacilityCode.SOUND, FacilityCode.BATHROOM),
+                inspection = SpaceStatus.PENDING_INSPECTION,
             ),
             SeedSpace(
                 name = "시드 브라이덜샤워",
@@ -256,8 +256,8 @@ class SpaceSeed(
                 maxCapacity = 8,
                 approvalRequired = false,
                 hourPrice = 40000,
-                facilities = listOf("AIR_CONDITIONER", "REFRIGERATOR", "MICROWAVE"),
-                inspection = InspectionStatus.INSPECTION_REJECTED,
+                facilities = listOf(FacilityCode.AIR_CONDITIONER, FacilityCode.REFRIGERATOR, FacilityCode.MICROWAVE),
+                inspection = SpaceStatus.INSPECTION_REJECTED,
             ),
             SeedSpace(
                 name = "시드 클럽",
@@ -274,8 +274,8 @@ class SpaceSeed(
                 maxCapacity = 80,
                 approvalRequired = true,
                 hourPrice = 90000,
-                facilities = listOf("SOUND", "PROJECTOR", "ELEVATOR"),
-                inspection = InspectionStatus.SUSPENDED,
+                facilities = listOf(FacilityCode.SOUND, FacilityCode.PROJECTOR, FacilityCode.ELEVATOR),
+                inspection = SpaceStatus.SUSPENDED,
             ),
             SeedSpace(
                 name = "시드 워크샵",
@@ -292,7 +292,7 @@ class SpaceSeed(
                 maxCapacity = 16,
                 approvalRequired = false,
                 hourPrice = 35000,
-                facilities = listOf("WIFI", "KITCHEN", "TABLE"),
+                facilities = listOf(FacilityCode.WIFI, FacilityCode.KITCHEN, FacilityCode.TABLE),
                 inspection = null,
             ),
         )

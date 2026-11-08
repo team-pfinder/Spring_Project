@@ -1,7 +1,6 @@
 package com.lookation.dto
 
 import com.lookation.domain.QnaStatus
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime
 
@@ -25,10 +24,3 @@ data class QnaDto(
     val createdAt: OffsetDateTime,
 )
 
-@Schema(description = "공간 문의 커서 페이징 응답")
-data class QnaListDto(
-    @field:ArraySchema(arraySchema = Schema(description = "문의 목록. 최신순입니다."))
-    val items: List<QnaDto>,
-    @field:Schema(description = "다음 페이지 커서. 마지막 페이지면 null입니다.", example = "102")
-    val nextCursor: Long?,
-)

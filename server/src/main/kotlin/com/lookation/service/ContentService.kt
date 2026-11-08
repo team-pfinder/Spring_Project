@@ -2,10 +2,9 @@ package com.lookation.service
 
 import com.lookation.controller.form.HelpForm
 import com.lookation.controller.form.NoticeForm
-import com.lookation.dto.HelpListDto
 import com.lookation.dto.HelpDto
-import com.lookation.dto.NoticeListDto
 import com.lookation.dto.NoticeDto
+import com.lookation.dto.PagedDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.NotFoundException
 import com.lookation.repository.ContentRepository
@@ -18,10 +17,10 @@ import org.springframework.transaction.annotation.Transactional
 class ContentService(private val contentRepository: ContentRepository) {
 
     @Transactional(readOnly = true)
-    fun notices(cursor: Long?, limit: Int): NoticeListDto {
+    fun notices(cursor: Long?, limit: Int): PagedDto<NoticeDto> {
         validateLimit(limit)
         val rows = contentRepository.listNotices(cursor, limit)
-        return NoticeListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
+        return PagedDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
     @Transactional(readOnly = true)
@@ -46,10 +45,10 @@ class ContentService(private val contentRepository: ContentRepository) {
     }
 
     @Transactional(readOnly = true)
-    fun helps(category: String?, cursor: Long?, limit: Int): HelpListDto {
+    fun helps(category: String?, cursor: Long?, limit: Int): PagedDto<HelpDto> {
         validateLimit(limit)
         val rows = contentRepository.listHelps(category, cursor, limit)
-        return HelpListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
+        return PagedDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
     @Transactional(readOnly = true)

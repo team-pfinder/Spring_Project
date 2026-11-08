@@ -2,7 +2,7 @@ package com.lookation.service
 
 import com.lookation.controller.form.CreateReviewForm
 import com.lookation.controller.form.ReviewReplyForm
-import com.lookation.dto.ReviewListDto
+import com.lookation.dto.PagedDto
 import com.lookation.dto.ReviewDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
@@ -57,11 +57,11 @@ class ReviewService(
     }
 
     @Transactional(readOnly = true)
-    fun list(spaceId: Long, cursor: Long?, limit: Int): ReviewListDto {
+    fun list(spaceId: Long, cursor: Long?, limit: Int): PagedDto<ReviewDto> {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
         val rows = reviewRepository.listBySpace(spaceId, cursor, limit)
         val images = reviewRepository.imageKeys(rows.map { it.id })
-        return ReviewListDto(
+        return PagedDto(
             items = rows.map { it.toResponse(images[it.id].orEmpty()) },
             nextCursor = if (rows.size == limit) rows.last().id else null,
         )

@@ -1,14 +1,15 @@
 package com.lookation.repository
 
 import com.lookation.domain.AttachmentOwnerType
+import com.lookation.domain.FacilityCode
 import com.lookation.jooq.tables.Attachments.ATTACHMENTS
 import com.lookation.jooq.tables.Inspections.INSPECTIONS
 import com.lookation.jooq.tables.PriceRules.PRICE_RULES
 import com.lookation.jooq.tables.Reservations.RESERVATIONS
 import com.lookation.jooq.tables.Reviews.REVIEWS
 import com.lookation.jooq.tables.SpaceFacilities.SPACE_FACILITIES
-import com.lookation.domain.InspectionStatus
 import com.lookation.domain.PriceUnit
+import com.lookation.domain.SpaceSort
 import com.lookation.domain.ReservationStatus
 import com.lookation.domain.SpaceStatus
 import com.lookation.jooq.tables.Spaces.SPACES
@@ -71,7 +72,7 @@ data class SpaceSummary(
  * - `rating`: value는 마지막 항목의 평균 평점
  */
 data class SpaceCursor(
-    val sort: String,
+    val sort: SpaceSort,
     val value: String?,
     val id: Long,
 )
@@ -81,15 +82,10 @@ data class RatingSummary(
     val reviewCount: Int,
 )
 
-const val SORT_LATEST = "latest"
-const val SORT_PRICE_ASC = "price_asc"
-const val SORT_PRICE_DESC = "price_desc"
-const val SORT_RATING = "rating"
-
 data class InspectionRow(
     val id: Long,
     val spaceId: Long,
-    val status: InspectionStatus,
+    val status: SpaceStatus,
     val reason: String?,
     val requestedAt: OffsetDateTime,
 )
@@ -201,7 +197,7 @@ class SpaceRepository(private val dsl: DSLContext) {
         maxPrice: Long?,
         from: OffsetDateTime?,
         to: OffsetDateTime?,
-        sort: String,
+        sort: SpaceSort,
         cursor: SpaceCursor?,
         limit: Int,
     ): List<SpaceSummary> {
@@ -288,10 +284,10 @@ class SpaceRepository(private val dsl: DSLContext) {
         }
 
         val orderFields: List<org.jooq.OrderField<*>> = when (sort) {
-            SORT_PRICE_ASC -> listOf(minPriceField.asc().nullsLast(), SPACES.ID.desc())
-            SORT_PRICE_DESC -> listOf(minPriceField.desc().nullsLast(), SPACES.ID.desc())
-            SORT_RATING -> listOf(ratingField.desc().nullsLast(), SPACES.ID.desc())
-            else -> listOf(SPACES.ID.desc())
+            SpaceSort.PRICE_ASC -> listOf(minPriceField.asc().nullsLast(), SPACES.ID.desc())
+            SpaceSort.PRICE_DESC -> listOf(minPriceField.desc().nullsLast(), SPACES.ID.desc())
+            SpaceSort.RATING -> listOf(ratingField.desc().nullsLast(), SPACES.ID.desc())
+            SpaceSort.LATEST -> listOf(SPACES.ID.desc())
         }
 
         return dsl.select(
@@ -336,12 +332,12 @@ class SpaceRepository(private val dsl: DSLContext) {
     }
 
     private fun cursorCondition(
-        sort: String,
+        sort: SpaceSort,
         cursor: SpaceCursor,
         minPriceField: org.jooq.Field<Long?>,
         ratingField: org.jooq.Field<BigDecimal?>,
     ): org.jooq.Condition = when (sort) {
-        SORT_PRICE_ASC -> {
+        SpaceSort.PRICE_ASC -> {
             val price = cursor.value?.toLongOrNull()
             if (price == null) {
                 minPriceField.isNull.and(SPACES.ID.lt(cursor.id))
@@ -351,7 +347,7 @@ class SpaceRepository(private val dsl: DSLContext) {
                     .or(minPriceField.eq(price).and(SPACES.ID.lt(cursor.id)))
             }
         }
-        SORT_PRICE_DESC -> {
+        SpaceSort.PRICE_DESC -> {
             val price = cursor.value?.toLongOrNull()
             if (price == null) {
                 minPriceField.isNull.and(SPACES.ID.lt(cursor.id))
@@ -361,7 +357,7 @@ class SpaceRepository(private val dsl: DSLContext) {
                     .or(minPriceField.eq(price).and(SPACES.ID.lt(cursor.id)))
             }
         }
-        SORT_RATING -> {
+        SpaceSort.RATING -> {
             val rating = cursor.value?.let(::BigDecimal)
             if (rating == null) {
                 ratingField.isNull.and(SPACES.ID.lt(cursor.id))
@@ -371,7 +367,7 @@ class SpaceRepository(private val dsl: DSLContext) {
                     .or(ratingField.eq(rating).and(SPACES.ID.lt(cursor.id)))
             }
         }
-        else -> SPACES.ID.lt(cursor.id)
+        SpaceSort.LATEST -> SPACES.ID.lt(cursor.id)
     }
 
     fun ratingSummary(spaceId: Long): RatingSummary {
@@ -400,23 +396,24 @@ class SpaceRepository(private val dsl: DSLContext) {
             .limit(1)
             .fetchOne(ATTACHMENTS.STORAGE_KEY)
 
-    fun replaceFacilities(spaceId: Long, facilities: Set<String>) {
+    fun replaceFacilities(spaceId: Long, facilities: Set<FacilityCode>) {
         dsl.deleteFrom(SPACE_FACILITIES).where(SPACE_FACILITIES.SPACE_ID.eq(spaceId)).execute()
         if (facilities.isEmpty()) return
         dsl.batch(
             facilities.map { code ->
                 dsl.insertInto(SPACE_FACILITIES)
                     .set(SPACE_FACILITIES.SPACE_ID, spaceId)
-                    .set(SPACE_FACILITIES.FACILITY_CODE, code)
+                    .set(SPACE_FACILITIES.FACILITY_CODE, code.name)
             },
         ).execute()
     }
 
-    fun facilities(spaceId: Long): List<String> =
+    fun facilities(spaceId: Long): List<FacilityCode> =
         dsl.select(SPACE_FACILITIES.FACILITY_CODE)
             .from(SPACE_FACILITIES)
             .where(SPACE_FACILITIES.SPACE_ID.eq(spaceId))
             .fetch(SPACE_FACILITIES.FACILITY_CODE)
+            .map { FacilityCode.valueOf(it) }
 
     fun imageKeys(spaceId: Long): List<String> =
         dsl.select(ATTACHMENTS.STORAGE_KEY)
@@ -478,7 +475,7 @@ class SpaceRepository(private val dsl: DSLContext) {
             .execute()
     }
 
-    fun insertInspection(spaceId: Long, status: InspectionStatus, reason: String?, adminId: Long?) {
+    fun insertInspection(spaceId: Long, status: SpaceStatus, reason: String?, adminId: Long?) {
         dsl.insertInto(INSPECTIONS)
             .set(INSPECTIONS.SPACE_ID, spaceId)
             .set(INSPECTIONS.STATUS, status.name)
@@ -490,14 +487,14 @@ class SpaceRepository(private val dsl: DSLContext) {
 
     fun pendingInspections(): List<InspectionRow> =
         dsl.selectFrom(INSPECTIONS)
-            .where(INSPECTIONS.STATUS.eq(InspectionStatus.PENDING_INSPECTION.name))
+            .where(INSPECTIONS.STATUS.eq(SpaceStatus.PENDING_INSPECTION.name))
             .orderBy(INSPECTIONS.REQUESTED_AT)
             .fetch()
             .map {
                 InspectionRow(
                     id = it.get(INSPECTIONS.ID),
                     spaceId = it.get(INSPECTIONS.SPACE_ID),
-                    status = InspectionStatus.valueOf(it.get(INSPECTIONS.STATUS)),
+                    status = SpaceStatus.valueOf(it.get(INSPECTIONS.STATUS)),
                     reason = it.get(INSPECTIONS.REASON),
                     requestedAt = it.get(INSPECTIONS.REQUESTED_AT),
                 )

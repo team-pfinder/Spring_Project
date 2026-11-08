@@ -1,6 +1,6 @@
 package com.lookation.controller
 
-import com.lookation.dto.ReviewListDto
+import com.lookation.dto.PagedDto
 import com.lookation.dto.ReviewDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.ReviewService
@@ -42,7 +42,7 @@ class ReviewController(private val reviewService: ReviewService) {
         @RequestParam(required = false) cursor: Long?,
         @Parameter(description = "페이지 크기 (1~50)", example = "20")
         @RequestParam(defaultValue = "20") limit: Int,
-    ): ReviewListDto = reviewService.list(spaceId, cursor, limit)
+    ): PagedDto<ReviewDto> = reviewService.list(spaceId, cursor, limit)
 
     @Operation(
         summary = "리뷰 작성",

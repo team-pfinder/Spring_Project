@@ -3,7 +3,6 @@ package com.lookation.integration
 import com.lookation.domain.AccountStatus
 import com.lookation.domain.AttachmentOwnerType
 import com.lookation.domain.ChargeStatus
-import com.lookation.domain.InspectionStatus
 import com.lookation.domain.JobStatus
 import com.lookation.domain.QnaStatus
 import com.lookation.domain.ReportStatus
@@ -115,7 +114,12 @@ class SeedDatasetTest {
         assertThat(distinct("spaces", "status"))
             .containsExactlyInAnyOrderElementsOf(SpaceStatus.entries.map { it.name })
         assertThat(distinct("inspections", "status"))
-            .containsExactlyInAnyOrderElementsOf(InspectionStatus.entries.map { it.name })
+            .containsExactlyInAnyOrder(
+                SpaceStatus.PENDING_INSPECTION.name,
+                SpaceStatus.INSPECTION_REJECTED.name,
+                SpaceStatus.PUBLISHED.name,
+                SpaceStatus.SUSPENDED.name,
+            )
         assertThat(distinct("reservations", "status"))
             .containsExactlyInAnyOrderElementsOf(ReservationStatus.entries.map { it.name })
         assertThat(distinct("qnas", "status"))

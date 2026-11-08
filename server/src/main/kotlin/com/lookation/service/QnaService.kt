@@ -2,7 +2,7 @@ package com.lookation.service
 
 import com.lookation.controller.form.AskQnaForm
 import com.lookation.controller.form.QnaAnswerForm
-import com.lookation.dto.QnaListDto
+import com.lookation.dto.PagedDto
 import com.lookation.dto.QnaDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
@@ -35,10 +35,10 @@ class QnaService(
     }
 
     @Transactional(readOnly = true)
-    fun list(spaceId: Long, cursor: Long?, limit: Int): QnaListDto {
+    fun list(spaceId: Long, cursor: Long?, limit: Int): PagedDto<QnaDto> {
         if (limit !in 1..50) throw BadRequestException("limit은 1~50입니다")
         val rows = qnaRepository.listBySpace(spaceId, cursor, limit)
-        return QnaListDto(
+        return PagedDto(
             items = rows.map { it.toResponse() },
             nextCursor = if (rows.size == limit) rows.last().id else null,
         )

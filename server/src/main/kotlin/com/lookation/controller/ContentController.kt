@@ -1,9 +1,8 @@
 package com.lookation.controller
 
-import com.lookation.dto.HelpListDto
 import com.lookation.dto.HelpDto
-import com.lookation.dto.NoticeListDto
 import com.lookation.dto.NoticeDto
+import com.lookation.dto.PagedDto
 import com.lookation.service.ContentService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -41,7 +40,7 @@ class ContentController(private val contentService: ContentService) {
         @RequestParam(required = false) cursor: Long?,
         @Parameter(description = "한 페이지에 담을 항목 수입니다. 1~50 사이여야 합니다.", example = "20")
         @RequestParam(defaultValue = "20") limit: Int,
-    ): NoticeListDto =
+    ): PagedDto<NoticeDto> =
         contentService.notices(cursor, limit)
 
     @Operation(
@@ -66,7 +65,7 @@ class ContentController(private val contentService: ContentService) {
         @RequestParam(required = false) cursor: Long?,
         @Parameter(description = "한 페이지에 담을 항목 수입니다. 1~50 사이여야 합니다.", example = "20")
         @RequestParam(defaultValue = "20") limit: Int,
-    ): HelpListDto = contentService.helps(category, cursor, limit)
+    ): PagedDto<HelpDto> = contentService.helps(category, cursor, limit)
 
     @Operation(
         summary = "도움말 상세 조회",

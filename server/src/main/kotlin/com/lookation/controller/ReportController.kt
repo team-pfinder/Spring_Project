@@ -1,6 +1,6 @@
 package com.lookation.controller
 
-import com.lookation.dto.ReportListDto
+import com.lookation.dto.PagedDto
 import com.lookation.dto.ReportDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.ReportService
@@ -52,7 +52,7 @@ class ReportController(private val reportService: ReportService) {
         @RequestParam(required = false) cursor: Long?,
         @Parameter(description = "페이지 크기 (1~100)", example = "20")
         @RequestParam(defaultValue = "20") limit: Int,
-    ): ReportListDto = reportService.list(status, cursor, limit)
+    ): PagedDto<ReportDto> = reportService.list(status, cursor, limit)
 
     @Operation(
         summary = "신고 심사",

@@ -2,7 +2,6 @@ package com.lookation.dto
 
 import com.lookation.domain.ReportStatus
 import com.lookation.domain.ReportTarget
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime
 
@@ -27,10 +26,3 @@ data class ReportDto(
     val createdAt: OffsetDateTime,
 )
 
-@Schema(description = "신고 커서 페이징 응답")
-data class ReportListDto(
-    @field:ArraySchema(arraySchema = Schema(description = "신고 목록. 최신순입니다."))
-    val items: List<ReportDto>,
-    @field:Schema(description = "다음 페이지 커서. 마지막 페이지면 null입니다.", example = "102")
-    val nextCursor: Long?,
-)

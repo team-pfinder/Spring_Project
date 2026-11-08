@@ -1,5 +1,6 @@
 package com.lookation.dto
 
+import com.lookation.domain.FacilityCode
 import com.lookation.domain.PriceUnit
 import com.lookation.domain.SpaceStatus
 import com.lookation.domain.SpaceType
@@ -54,7 +55,7 @@ data class SpaceDto(
         schema = Schema(example = "WIFI"),
         arraySchema = Schema(description = "제공 시설 코드 목록입니다."),
     )
-    val facilities: List<String>,
+    val facilities: List<FacilityCode>,
     @field:ArraySchema(
         schema = Schema(example = "/uploads/spaces/1.jpg"),
         arraySchema = Schema(description = "공간 이미지 경로 목록입니다."),

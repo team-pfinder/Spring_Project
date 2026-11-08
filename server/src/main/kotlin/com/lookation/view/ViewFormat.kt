@@ -1,5 +1,6 @@
 package com.lookation.view
 
+import com.lookation.domain.FacilityCode
 import com.lookation.domain.ReservationStatus
 import com.lookation.domain.SpaceType
 import org.springframework.stereotype.Component
@@ -53,6 +54,8 @@ class ViewFormat {
             "WORKSHOP" -> "워크샵"
             else -> value ?: "-"
         }
+
+    fun facility(value: FacilityCode?): String = facility(value?.name)
 
     fun facility(value: String?): String =
         when (value) {

@@ -10,13 +10,9 @@ import com.lookation.controller.form.SpaceForm
 import com.lookation.dto.SpaceSearchDto
 import com.lookation.dto.SpaceSummaryDto
 import com.lookation.dto.SpaceDto
-import com.lookation.domain.InspectionStatus
 import com.lookation.domain.SpaceStatus
 import com.lookation.domain.SpaceType
-import com.lookation.repository.SORT_LATEST
-import com.lookation.repository.SORT_PRICE_ASC
-import com.lookation.repository.SORT_PRICE_DESC
-import com.lookation.repository.SORT_RATING
+import com.lookation.domain.SpaceSort
 import com.lookation.repository.SpaceCursor
 import com.lookation.repository.SpaceRepository
 import com.lookation.repository.SpaceRow
@@ -144,7 +140,7 @@ class SpaceService(
             throw ConflictException("검수 신청에는 가격 규칙이 최소 1개 필요합니다")
         }
         spaceRepository.updateStatus(spaceId, space.status, SpaceStatus.PENDING_INSPECTION)
-        spaceRepository.insertInspection(spaceId, InspectionStatus.PENDING_INSPECTION, null, null)
+        spaceRepository.insertInspection(spaceId, SpaceStatus.PENDING_INSPECTION, null, null)
         return response(spaceId)
     }
 
@@ -168,8 +164,9 @@ class SpaceService(
         if (from != null && to != null && !to.isAfter(from)) {
             throw BadRequestException("to는 from 이후여야 합니다")
         }
-        val normalizedSort = sort?.takeIf { it.isNotBlank() } ?: SORT_LATEST
-        if (normalizedSort !in SORTS) {
+        val normalizedSort = try {
+            SpaceSort.parse(sort)
+        } catch (_: IllegalArgumentException) {
             throw BadRequestException("sort는 latest, price_asc, price_desc, rating 중 하나입니다")
         }
         val rows = spaceRepository.search(
@@ -208,22 +205,22 @@ class SpaceService(
         )
     }
 
-    private fun encodeCursor(sort: String, row: SpaceSummary): String {
+    private fun encodeCursor(sort: SpaceSort, row: SpaceSummary): String {
         val value = when (sort) {
-            SORT_PRICE_ASC, SORT_PRICE_DESC -> row.minPrice?.toString().orEmpty()
-            SORT_RATING -> row.rating?.toString().orEmpty()
-            else -> ""
+            SpaceSort.PRICE_ASC, SpaceSort.PRICE_DESC -> row.minPrice?.toString().orEmpty()
+            SpaceSort.RATING -> row.rating?.toString().orEmpty()
+            SpaceSort.LATEST -> ""
         }
-        val raw = "$sort|$value|${row.id}"
+        val raw = "${sort.key}|$value|${row.id}"
         return Base64.getUrlEncoder().withoutPadding()
             .encodeToString(raw.toByteArray(StandardCharsets.UTF_8))
     }
 
-    private fun decodeCursor(raw: String?, sort: String): SpaceCursor? {
+    private fun decodeCursor(raw: String?, sort: SpaceSort): SpaceCursor? {
         if (raw.isNullOrBlank()) return null
         // 기존 숫자 커서(id)도 최신순에서는 계속 받는다.
         raw.toLongOrNull()?.let {
-            if (sort != SORT_LATEST) throw BadRequestException("커서가 올바르지 않습니다")
+            if (sort != SpaceSort.LATEST) throw BadRequestException("커서가 올바르지 않습니다")
             return SpaceCursor(sort, null, it)
         }
         val decoded = try {
@@ -232,7 +229,7 @@ class SpaceService(
             throw BadRequestException("커서가 올바르지 않습니다")
         }
         val parts = decoded.split("|")
-        if (parts.size != 3 || parts[0] != sort) {
+        if (parts.size != 3 || parts[0] != sort.key) {
             throw BadRequestException("커서가 올바르지 않습니다")
         }
         val id = parts[2].toLongOrNull() ?: throw BadRequestException("커서가 올바르지 않습니다")
@@ -266,7 +263,7 @@ class SpaceService(
         spaceRepository.updateStatus(spaceId, SpaceStatus.PENDING_INSPECTION, nextStatus)
         spaceRepository.insertInspection(
             spaceId,
-            if (approved) InspectionStatus.PUBLISHED else InspectionStatus.INSPECTION_REJECTED,
+            if (approved) SpaceStatus.PUBLISHED else SpaceStatus.INSPECTION_REJECTED,
             reason,
             adminId,
         )
@@ -324,6 +321,5 @@ class SpaceService(
 
     companion object {
         private val EDITABLE_STATUSES = setOf(SpaceStatus.DRAFT, SpaceStatus.INSPECTION_REJECTED)
-        private val SORTS = setOf(SORT_LATEST, SORT_PRICE_ASC, SORT_PRICE_DESC, SORT_RATING)
     }
 }

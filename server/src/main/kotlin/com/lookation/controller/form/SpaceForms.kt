@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import com.lookation.domain.FacilityCode
 import com.lookation.domain.PriceUnit
 import java.time.LocalTime
 
@@ -48,7 +49,7 @@ data class SpaceForm(
         schema = Schema(example = "WIFI"),
         arraySchema = Schema(description = "제공 시설 코드 목록. `PARKING`, `WIFI`, `PROJECTOR`, `SOUND`, `KITCHEN`, `REFRIGERATOR`, `MICROWAVE`, `AIR_CONDITIONER`, `TABLE`, `CHAIR`, `BATHROOM`, `ELEVATOR` 중에서 고릅니다."),
     )
-    val facilities: List<String> = emptyList(),
+    val facilities: List<FacilityCode> = emptyList(),
     @field:Schema(description = "예약 승인 필요 여부. `true`이면 예약이 호스트 승인 후 결제 대기로 진행됩니다.", example = "false")
     val approvalRequired: Boolean = false,
 )

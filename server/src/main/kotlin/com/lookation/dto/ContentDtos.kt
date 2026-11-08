@@ -1,6 +1,5 @@
 package com.lookation.dto
 
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime
 
@@ -20,13 +19,6 @@ data class NoticeDto(
     val updatedAt: OffsetDateTime,
 )
 
-@Schema(description = "공지사항 커서 페이징 응답")
-data class NoticeListDto(
-    @field:ArraySchema(arraySchema = Schema(description = "공지사항 목록. 중요 공지가 먼저 오고 그다음 최신순입니다."))
-    val items: List<NoticeDto>,
-    @field:Schema(description = "다음 페이지 커서. 마지막 페이지면 null입니다.", example = "102")
-    val nextCursor: Long?,
-)
 
 @Schema(description = "도움말 한 건")
 data class HelpDto(
@@ -44,10 +36,3 @@ data class HelpDto(
     val updatedAt: OffsetDateTime,
 )
 
-@Schema(description = "도움말 커서 페이징 응답")
-data class HelpListDto(
-    @field:ArraySchema(arraySchema = Schema(description = "도움말 목록. 최신순입니다."))
-    val items: List<HelpDto>,
-    @field:Schema(description = "다음 페이지 커서. 마지막 페이지면 null입니다.", example = "102")
-    val nextCursor: Long?,
-)

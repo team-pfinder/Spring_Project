@@ -1,6 +1,6 @@
 package com.lookation.dto
 
-import com.lookation.domain.InspectionStatus
+import com.lookation.domain.SpaceStatus
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "호스트 프로필")
@@ -19,5 +19,5 @@ data class HostProfileDto(
         description = "호스트 인증 상태. `PENDING_INSPECTION`, `INSPECTION_REJECTED`, `PUBLISHED`, `SUSPENDED` 중 하나입니다.",
         example = "PUBLISHED",
     )
-    val status: InspectionStatus,
+    val status: SpaceStatus,
 )

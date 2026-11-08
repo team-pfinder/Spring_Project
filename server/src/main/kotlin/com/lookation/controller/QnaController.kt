@@ -1,6 +1,6 @@
 package com.lookation.controller
 
-import com.lookation.dto.QnaListDto
+import com.lookation.dto.PagedDto
 import com.lookation.dto.QnaDto
 import com.lookation.global.error.UnauthorizedException
 import com.lookation.service.QnaService
@@ -43,7 +43,7 @@ class QnaController(private val qnaService: QnaService) {
         @RequestParam(required = false) cursor: Long?,
         @Parameter(description = "한 페이지에 담을 항목 수입니다. 1~50 사이여야 합니다.", example = "20")
         @RequestParam(defaultValue = "20") limit: Int,
-    ): QnaListDto = qnaService.list(spaceId, cursor, limit)
+    ): PagedDto<QnaDto> = qnaService.list(spaceId, cursor, limit)
 
     @Operation(
         summary = "공간 문의 작성",

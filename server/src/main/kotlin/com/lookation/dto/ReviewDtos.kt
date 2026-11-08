@@ -27,10 +27,3 @@ data class ReviewDto(
     val createdAt: OffsetDateTime,
 )
 
-@Schema(description = "리뷰 커서 페이징 응답")
-data class ReviewListDto(
-    @field:ArraySchema(arraySchema = Schema(description = "리뷰 목록. 최신순입니다."))
-    val items: List<ReviewDto>,
-    @field:Schema(description = "다음 페이지 커서. 마지막 페이지면 null입니다.", example = "102")
-    val nextCursor: Long?,
-)

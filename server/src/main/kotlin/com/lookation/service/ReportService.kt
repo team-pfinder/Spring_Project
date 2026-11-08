@@ -1,7 +1,7 @@
 package com.lookation.service
 
 import com.lookation.controller.form.CreateReportForm
-import com.lookation.dto.ReportListDto
+import com.lookation.dto.PagedDto
 import com.lookation.dto.ReportDto
 import com.lookation.global.error.BadRequestException
 import com.lookation.global.error.ConflictException
@@ -46,7 +46,7 @@ class ReportService(
     }
 
     @Transactional(readOnly = true)
-    fun list(status: String?, cursor: Long?, limit: Int): ReportListDto {
+    fun list(status: String?, cursor: Long?, limit: Int): PagedDto<ReportDto> {
         if (limit !in 1..100) throw BadRequestException("limit은 1~100입니다")
         val statusFilter = status?.let {
             try {
@@ -56,7 +56,7 @@ class ReportService(
             }
         }
         val rows = reportRepository.list(statusFilter, cursor, limit)
-        return ReportListDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
+        return PagedDto(rows.map { it.toResponse() }, if (rows.size == limit) rows.last().id else null)
     }
 
     @Transactional
