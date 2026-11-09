@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
  * Seeds the fixed local accounts: three members (one withdrawn), two hosts and the admin email
  * shared with `AdminSeeder`. Existing rows are skipped as-is, so the admin keeps its credential.
  *
- * Every seeded account uses the fixed password [SEED_PASSWORD] (documented in `server/README.md`).
+ * Every seeded account uses the fixed password [SEED_PASSWORD] (documented in `service-new/README.md`).
  */
 @Component
 @Order(AccountSeed.ORDER)

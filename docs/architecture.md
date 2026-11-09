@@ -1,8 +1,8 @@
 # Lookation 아키텍처
 
 > AI 에이전트가 이 저장소를 처음 열었을 때 **재탐색 없이** 올바른 위치를 고치기 위한 지도.
-> 모든 경로는 저장소 루트(`/Users/npnl/Documents/work/Spring_Project`) 기준이며, `파일:줄` 형식으로 근거를 남긴다.
-> 애플리케이션 루트는 `Lookation/` (Eclipse Dynamic Web Project). 웹 컨텍스트는 배포 방식에 따라 `Lookation` 또는 `/`(ROOT).
+> 모든 경로는 저장소 루트(`/Users/npnl/Documents/work/lookation`) 기준이며, `파일:줄` 형식으로 근거를 남긴다.
+> 애플리케이션 루트는 `service-old/` (Eclipse Dynamic Web Project). 웹 컨텍스트는 배포 방식에 따라 `service-old` 또는 `/`(ROOT).
 
 ---
 
@@ -13,7 +13,7 @@
    - ② 어노테이션 방식: `@Controller` + `@RequestMapping` (37개 클래스, 패키지 이름은 `com.lookation.mybatis` — **이름과 달리 컨트롤러 패키지다**).
    - 총 **180개 매핑**(활성 어노테이션 160 + XML 빈 20), **고유 URL 경로 179개**. `/actions/profile.action` 1개가 양쪽에 겹치며, XML 쪽 빈은 존재하지 않는 클래스를 참조해 실제 핸들러가 없다(§6-1, `docs/screens.md` §7.2). 주석 처리된 `modifyform.action`은 활성 매핑에서 제외했다.
 2. **데이터 접근도 두 체계다.** MyBatis 매퍼 인터페이스(`com.lookation.dao.I*DAO` + `src/com/lookation/mybatis/mapper/*.xml`, 34개)와 손으로 쓴 JDBC DAO 8개(같은 `dao` 패키지의 클래스)가 공존한다. 서로 다른 인터페이스를 구현하므로 충돌은 없지만, 같은 테이블을 두 경로로 만진다.
-3. **`dispatcher-servlet.xml`은 저장소에 없다.** `.gitignore:60`이 의도적으로 제외한다. 기동하려면 `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `Lookation/WebContent/WEB-INF/`로 복사해야 한다. 단, 이 사본은 배포본(`중요파일/00. export/호스팅용/ROOT.war` 내부)과 내용이 다르고 **존재하지 않는 클래스를 참조**한다(§6-1).
+3. **`dispatcher-servlet.xml`은 저장소에 없다.** `.gitignore:60`이 의도적으로 제외한다. 기동하려면 `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `service-old/WebContent/WEB-INF/`로 복사해야 한다. 단, 이 사본은 배포본(`중요파일/00. export/호스팅용/ROOT.war` 내부)과 내용이 다르고 **존재하지 않는 클래스를 참조**한다(§6-1).
 4. **빌드 도구가 없다.** `pom.xml`/`build.gradle` 없음. Eclipse + `WEB-INF/lib` 수동 jar + WAR export가 빌드다.
 5. **인증/인가는 필터도 인터셉터도 아니다.** 필터는 인코딩과 CSRF 두 개이고, 로그인 검사는 각 액션 메서드 첫머리에 복붙된 세션 확인 코드다. 업로드 파일은 `/uploads/*` 서블릿이 제공한다.
 
@@ -34,19 +34,19 @@
 | 항목 | 값 | 근거 |
 |---|---|---|
 | 언어/타깃 | **Java 8 (JDK 1.8)** | `README.md` "JDK 1.8"; 배포 클래스 파일 major version `0x34`(52 = Java 8) — `중요파일/00. export/호스팅용/ROOT.war` 내 `WEB-INF/classes/.../AdminLoginController.class` |
-| 웹 프레임워크 | **Spring MVC 3.0.2.RELEASE** | `Lookation/WebContent/WEB-INF/lib/org.springframework.web.servlet-3.0.2.RELEASE.jar` |
-| 설정 방식 | XML 중심. `applicationContext.xml`은 **빈 파일**(루트 컨텍스트에 빈 없음), 모든 빈은 `dispatcher-servlet.xml`에 | `Lookation/WebContent/WEB-INF/applicationContext.xml:1-11` |
+| 웹 프레임워크 | **Spring MVC 3.0.2.RELEASE** | `service-old/WebContent/WEB-INF/lib/org.springframework.web.servlet-3.0.2.RELEASE.jar` |
+| 설정 방식 | XML 중심. `applicationContext.xml`은 **빈 파일**(루트 컨텍스트에 빈 없음), 모든 빈은 `dispatcher-servlet.xml`에 | `service-old/WebContent/WEB-INF/applicationContext.xml:1-11` |
 | ORM/SQL 매퍼 | **MyBatis 3.5.1** + **mybatis-spring 1.3.2** | `WEB-INF/lib/mybatis-3.5.1.jar`, `mybatis-spring-1.3.2.jar` |
 | DB | **Oracle** (JDBC thin, SID `xe`) | `dispatcher-servlet.xml` 의 `jdbc:oracle:thin:@localhost:1521:xe`, `@34.64.215.203:1521:xe` |
 | JDBC 드라이버 | **ojdbc6** (11g용) | `WEB-INF/lib/ojdbc6.jar`; `중요파일/01. sql/lookation_sys_init.sql` 주석의 `11.2.0` 경로 |
-| WAS | **Tomcat** (Servlet 3.1 필요 → Tomcat 8.0+) | `Lookation/WebContent/WEB-INF/web.xml:3` `version="3.1"`; `README.md` "WAS : Apache Tomcat" |
+| WAS | **Tomcat** (Servlet 3.1 필요 → Tomcat 8.0+) | `service-old/WebContent/WEB-INF/web.xml:3` `version="3.1"`; `README.md` "WAS : Apache Tomcat" |
 | 뷰 | **JSP + JSTL**(`c`, `fmt`, `fn`) + EL. 템플릿 엔진 없음 | `views/**` 117개 JSP에서 `taglib prefix="c"` 117회 |
-| 프론트 | jQuery 3.2.1, Bootstrap 4 계열, Owl Carousel, Magnific Popup, CKEditor 4, SB Admin 2 | `Lookation/WebContent/js/`, `css/`, `ckeditor/`, `vendor/` |
+| 프론트 | jQuery 3.2.1, Bootstrap 4 계열, Owl Carousel, Magnific Popup, CKEditor 4, SB Admin 2 | `service-old/WebContent/js/`, `css/`, `ckeditor/`, `vendor/` |
 | 파일 업로드 | **cos.jar** (`com.oreilly.servlet.MultipartRequest`) | `src/com/lookation/util/FileManager.java:20` |
 | 메일 | **javax.mail 1.5.6** + Spring `JavaMailSenderImpl`(spring-context-support) | `WEB-INF/lib/javax.mail-1.5.6.jar`, `spring-context-support-3.0.2.RELEASE.jar` |
 | 빌드 | **없음** (Eclipse 수동 빌드) | `pom.xml`/`build.gradle` 부재; `.gitignore:53` "무빌드 서블릿 프로젝트" |
 
-### 의존 JAR 전체 목록 (`Lookation/WebContent/WEB-INF/lib`, 26개)
+### 의존 JAR 전체 목록 (`service-old/WebContent/WEB-INF/lib`, 26개)
 
 | 용도 | 파일 |
 |---|---|
@@ -67,8 +67,8 @@
 ## 2. 디렉터리 지도
 
 ```
-Spring_Project/
-├── Lookation/                        ← 애플리케이션 루트 (Eclipse 프로젝트)
+lookation/
+├── service-old/                        ← 애플리케이션 루트 (Eclipse 프로젝트)
 │   ├── src/com/lookation/            ← Java 소스 148개
 │   │   ├── controller/   (22)        ← XML 방식 컨트롤러 (implements Controller)
 │   │   ├── dao/          (49)        ← I*DAO 인터페이스 41 + JDBC DAO 클래스 8
@@ -152,7 +152,7 @@ JSP 레이아웃 관례: 각 JSP가 `<c:import url="${cp}/includes/...">`로 조
 
 ```
 [Browser]
-   │  GET /Lookation/actions/booklist.action?identify=member
+   │  GET /service-old/actions/booklist.action?identify=member
    ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ Tomcat                                                                   │
@@ -296,18 +296,18 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 
 - `pom.xml`, `build.gradle`, `Makefile` **없음** (저장소 전체 검색 결과 0).
 - `.classpath`, `.project`, `.settings/`도 **저장소에 없다** — `.gitignore:24-26`이 제외한다. 즉 이 저장소만 clone해서는 Eclipse 프로젝트 메타데이터가 없다.
-- 의존성은 `Lookation/WebContent/WEB-INF/lib/*.jar` 26개를 Eclipse의 `Web App Libraries`로 그대로 쓰는 방식이다 (`.gitignore:53` 주석: "무빌드 서블릿 프로젝트라 수동 관리").
-- 컴파일 산출물은 `Lookation/WebContent/WEB-INF/classes/`로 나가고(`.gitignore:34`), `src` 아래의 `*.xml`(매퍼)도 같은 곳으로 복사된다. 그래서 `mapperLocations="classpath:com/lookation/mybatis/mapper/*.xml"`이 동작한다(`dispatcher-servlet.xml:60`).
+- 의존성은 `service-old/WebContent/WEB-INF/lib/*.jar` 26개를 Eclipse의 `Web App Libraries`로 그대로 쓰는 방식이다 (`.gitignore:53` 주석: "무빌드 서블릿 프로젝트라 수동 관리").
+- 컴파일 산출물은 `service-old/WebContent/WEB-INF/classes/`로 나가고(`.gitignore:34`), `src` 아래의 `*.xml`(매퍼)도 같은 곳으로 복사된다. 그래서 `mapperLocations="classpath:com/lookation/mybatis/mapper/*.xml"`이 동작한다(`dispatcher-servlet.xml:60`).
 
 ### 5.2 로컬 기동 절차
 
 1. Eclipse에서 **File → New → Dynamic Web Project**, 이름 `Lookation`, 컨텍스트 루트는 `Lookation` 또는 `/`.
-2. `Lookation/src`를 소스 폴더로, `Lookation/WebContent`를 웹 콘텐츠 루트로 지정. Target runtime은 Tomcat 8.0 이상(Servlet 3.1).
-3. `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `Lookation/WebContent/WEB-INF/`로 **복사**한다(저장소에 없음).
+2. `service-old/src`를 소스 폴더로, `service-old/WebContent`를 웹 콘텐츠 루트로 지정. Target runtime은 Tomcat 8.0 이상(Servlet 3.1).
+3. `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `service-old/WebContent/WEB-INF/`로 **복사**한다(저장소에 없음).
    - 이 사본은 `localDataSource`(`localhost:1521:xe`, `lookation_local`)를 쓰고, `sqlSessionFactory`도 local을 본다(`:33-35`, `:57-60`).
    - **그대로는 기동 실패한다**: `:190-192`가 존재하지 않는 `com.lookation.controller.ProfileFormController`를 참조한다. 해당 `<bean>`을 지우거나 `mybatis/Account.java`의 `@RequestMapping("/actions/profile.action")`과 중복되지 않게 정리해야 한다.
 4. Oracle XE에 §5.4 순서로 스키마를 만든다.
-5. Tomcat에 publish → `http://localhost:8080/Lookation/actions/membermain.action`.
+5. Tomcat에 publish → `http://localhost:8080/service-old/actions/membermain.action`.
 
 ### 5.3 WAR export
 
@@ -362,9 +362,9 @@ XML 방식 컨트롤러는 `ModelAndView.setViewName(...)`으로 같은 문자�
 | 10 | **등록되지 않은 컨트롤러 2개 + 유령 클래스 참조 1개** | 소스는 있으나 미등록: `controller/MypageFormController.java`(뷰도 `mypageUser.jsp`로 미존재, `:40`), `controller/LocationPackageAjaxController.java`. 소스 자체가 없음: XML 사본의 `ProfileFormController` | 삭제하거나 매핑 추가. 유령 빈은 기동 전에 제거 |
 | 11 | **존재하지 않는 뷰 참조 7건** | `../WEB-INF/views/FormImage.jsp`, `FormDownload.jsp`, `View.jsp`, `ViewDownload.jsp`, `admin/loginAdmin.jsp`, `sample.jsp`, `user/mypageUser.jsp` | 화면 작업 시 실제 파일명 확인. `admin`은 `loginFormAdmin.jsp`가 실제 파일 |
 | 12 | **끊긴 링크** — 매핑 없는 `.action` 호출 4건 | `includes/mypage_Sidebar(user).jsp:46`(`checkifhavebankinfo.action`), `views/user/bookApply.jsp:251`(`home.action`) 외 2건(`adminlogout.action`, 배포본에만 있음) | AJAX는 404를 조용히 삼킨다. 화면 수정 시 함께 정리 |
-| 13 | **빈 `*.action` 파일 56개** | `Lookation/WebContent/actions/*.action` (전부 0바이트) | 서블릿 매핑이 선점하므로 무해하지만, "여기에 파일을 만들면 매핑된다"는 오해를 유발한다 |
+| 13 | **빈 `*.action` 파일 56개** | `service-old/WebContent/actions/*.action` (전부 0바이트) | 서블릿 매핑이 선점하므로 무해하지만, "여기에 파일을 만들면 매핑된다"는 오해를 유발한다 |
 | 14 | **God class** — 한 파일에 17개 엔드포인트 | `mybatis/Location.java` 1,180줄 / 17 매핑 / `getMapper` 31회, `mybatis/Account.java` 481줄 | 수정 범위를 좁히고, 새 기능은 별도 클래스로 |
-| 15 | **테스트 커버리지 없음** | `Lookation/test/run-tests.sh`로 JUnit4+Mockito 단위 테스트 계층을 추가했다. 현재는 계정 로그인 등 일부 경로만 덮는다 | 새 수정은 컨트롤러 경계 테스트를 함께 추가한다 |
+| 15 | **테스트 커버리지 없음** | `service-old/test/run-tests.sh`로 JUnit4+Mockito 단위 테스트 계층을 추가했다. 현재는 계정 로그인 등 일부 경로만 덮는다 | 새 수정은 컨트롤러 경계 테스트를 함께 추가한다 |
 | 16 | **뷰 이름에 쿼리스트링** | `mybatis/Account.java:59`, `controller/BankInfoManageController.java:72` | 뷰 이름을 파싱/검증하는 도구를 붙이면 깨진다 |
 | 17 | **업로드 파일은 웹루트 밖에 저장되어 재배포에도 유지** | `util/FileManager.java:30` `getRealPath(saveFolderName)` — 호출측이 `"images"`를 넘겨 WAR 내부 경로에 저장(`mybatis/Location.java:238`) | 파일 저장 위치를 바꾸려면 `FileManager`만 고치면 되지만, 기존 경로 문자열(`"images"`)이 8개 컨트롤러에 흩어져 있다 |
 | 18 | **파일 다운로드 헤더 인코딩 핵** | `util/FileManager.java:65` `EUC-KR → 8859_1` 재인코딩 | 한글 파일명이 깨지면 여기다. RFC 5987(`filename*=UTF-8''`)로 바꾸는 것이 정답 |

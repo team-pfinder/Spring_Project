@@ -7,7 +7,7 @@
 
 ### Issue tracker
 
-Issues live in GitHub Issues (`team-pfinder/Spring_Project`) via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues (`team-pfinder/lookation`) via the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
@@ -44,17 +44,17 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 
 ## 실행
 
-1. Eclipse에서 Dynamic Web Project `Lookation` 생성. 소스 `Lookation/src`, 웹 루트 `Lookation/WebContent`, Target runtime Tomcat 8+.
-2. `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `Lookation/WebContent/WEB-INF/`로 복사한다. **그대로는 기동 실패**: `:190`의 존재하지 않는 `com.lookation.controller.ProfileFormController` 빈을 지운다.
+1. Eclipse에서 Dynamic Web Project `service-old` 생성. 소스 `service-old/src`, 웹 루트 `service-old/WebContent`, Target runtime Tomcat 8+.
+2. `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`을 `service-old/WebContent/WEB-INF/`로 복사한다. **그대로는 기동 실패**: `:190`의 존재하지 않는 `com.lookation.controller.ProfileFormController` 빈을 지운다.
 3. Oracle에 `중요파일/01. sql/※sql 실행순서.txt` 순서로 스키마를 만든다. SQL 파일은 EUC-KR이다.
-4. Tomcat publish 후 `http://localhost:8080/Lookation/actions/membermain.action`.
+4. Tomcat publish 후 `http://localhost:8080/service-old/actions/membermain.action`.
 5. `/`는 404다(welcome-file 전부 없음). 진입은 항상 `/actions/*.action`.
 
 배포본은 `중요파일/00. export/호스팅용/ROOT.war`(컨텍스트 `/`), 소스 배포본은 `소스용/Lookation.war`다. 두 WAR의 `dispatcher-servlet.xml`은 저장소 사본과 내용이 다르다.
 
-## 신규 백엔드 (server/)
+## 신규 백엔드 (service-new/)
 
-레거시 `Lookation/`은 동결했고, 재작성은 `server/`에서 진행한다. 결정 근거는 `docs/adr/0001`~`0010`, 레거시→신규 대응표는 `docs/rewrite/parity-checklist.md`(184행)다.
+레거시 `service-old/`는 동결했고, 재작성은 `service-new/`에서 진행한다. 결정 근거는 `docs/adr/0001`~`0010`, 레거시→신규 대응표는 `docs/rewrite/parity-checklist.md`(184행)다.
 
 | 항목 | 값 |
 |---|---|
@@ -66,8 +66,8 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | 뷰 | Thymeleaf SSR — 이용자 5화면만. JSP는 쓰지 않는다 |
 | 테스트 | Testcontainers PostgreSQL + MockMvc |
 
-- 빌드: `cd server && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
-- 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `25432`, Mailpit `21025`/`28025`, MiniStack `24566`(시크릿 `lookation/local`). 앱은 `cd server && ./gradlew bootRun` — `application.yml`의 `spring.profiles.default: local`로 프로필을 붙이지 않아도 `local`이 적용된다. 배포 환경은 `SPRING_PROFILES_ACTIVE`를 반드시 지정한다(빠뜨리면 MiniStack을 찾다가 기동 실패). 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 `local`을 끈다. `SPRING_PROFILES_ACTIVE=local`을 export하면 이 `test` 프로필까지 덮어써 MiniStack 없는 CI에서 테스트가 실패한다.
+- 빌드: `cd service-new && ./gradlew build`. 통합 테스트 때문에 Docker가 필요하다.
+- 로컬 인프라: 레포 루트 `docker compose up -d --wait` → Postgres `25432`, Mailpit `21025`/`28025`, MiniStack `24566`(시크릿 `lookation/local`). 앱은 `cd service-new && ./gradlew bootRun` — `application.yml`의 `spring.profiles.default: local`로 프로필을 붙이지 않아도 `local`이 적용된다. 배포 환경은 `SPRING_PROFILES_ACTIVE`를 반드시 지정한다(빠뜨리면 MiniStack을 찾다가 기동 실패). 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 `local`을 끈다. `SPRING_PROFILES_ACTIVE=local`을 export하면 이 `test` 프로필까지 덮어써 MiniStack 없는 CI에서 테스트가 실패한다.
 - 스키마: `V1__extensions.sql`, `V2__baseline.sql`(구조, jOOQ 입력), `V3__constraints.sql`(CHECK·제약). jOOQ OSS 파서가 CHECK를 읽지 못해 분리했다.
 - 환경변수: `LOOKATION_DB_URL`, `LOOKATION_DB_USERNAME`, `LOOKATION_DB_PASSWORD`, `LOOKATION_JWT_SECRET`, `LOOKATION_ENCRYPTION_KEY`. 선택: `LOOKATION_UPLOAD_DIR`, `LOOKATION_ADMIN_EMAIL`, `LOOKATION_ADMIN_PASSWORD`, `SPRING_MAIL_*`(없으면 코드 로그 출력).
 - 패키지: `com.lookation.<layer>` — `controller`, `view`, `service`, `repository`, `domain`, `dto`, `global`. 기능별 하위 패키지는 두지 않는다 (ADR 0009).
@@ -121,9 +121,9 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 
 ## 검증
 
-- 단위 테스트: `./Lookation/test/run-tests.sh` (JUnit 4 + Mockito, `Lookation/test/lib`).
+- 단위 테스트: `./service-old/test/run-tests.sh` (JUnit 4 + Mockito, `service-old/test/lib`).
   - 메인 소스를 `--release 8`로 컴파일한 뒤 컨트롤러 경계 테스트를 실행한다. Oracle·Tomcat 불필요.
-  - 테스트 의존성은 `Lookation/test/lib`에만 두고 `WEB-INF/lib`에 넣지 않는다.
+  - 테스트 의존성은 `service-old/test/lib`에만 두고 `WEB-INF/lib`에 넣지 않는다.
   - 새 테스트는 컨트롤러 요청/응답·DAO 상호작용 같은 외부 행위만 검증한다.
 - 수동 스모크: 해당 `.action` 호출 → JSP 렌더 확인 → DB 반영 확인. 세션 키가 필요한 화면은 로그인 후 확인한다.
 - 기동 확인 없이 "동작한다"고 보고하지 않는다. Oracle·Tomcat이 없으면 그 한계를 명시한다.
@@ -160,7 +160,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 | 패키지·요청 흐름·규약 | `docs/architecture.md` |
 | 도메인 용어·상태 값 | `GLOSSARY.md`, 필요 시 `docs/spec/lookation/glossary.md`·`domain.md` |
 | 기획 해석·정책 결정 | `docs/spec/lookation/validation.md`의 finding 상태 |
-| `server/` 의존성 버전·BOM | `docs/security/dependency-scan-YYYY-MM-DD.md` 새로 스캔 |
+| `service-new/` 의존성 버전·BOM | `docs/security/dependency-scan-YYYY-MM-DD.md` 새로 스캔 |
 
 테이블 명세 재생성(원본은 EUC-KR이라 UTF-8 변환 후 실행):
 
@@ -168,7 +168,7 @@ Single-context: `GLOSSARY.md` + `docs/adr/` at the repo root. See `docs/agents/d
 iconv -f EUC-KR -t UTF-8 "중요파일/01. sql/lookation_create_table.sql" > /tmp/lookation_create_table.utf8.sql
 python3 ~/.agents/skills/gorani-table-spec/scripts/table_spec.py \
   --ddl /tmp/lookation_create_table.utf8.sql --dialect oracle \
-  --project Lookation --outdir docs/db --name table-spec \
+  --project service-old --outdir docs/db --name table-spec \
   --formats md,html --sources "중요파일/01. sql/*.sql"
 ```
 

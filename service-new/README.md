@@ -21,7 +21,7 @@
 
 ```bash
 docker compose up -d --wait
-cd server && ./gradlew bootRun
+cd service-new && ./gradlew bootRun
 ```
 
 | 서비스 | 호스트 포트 | 용도 |
@@ -37,7 +37,7 @@ cd server && ./gradlew bootRun
   - 계정: 이용자 `seed-member-1`~`3`(`member-3`은 탈퇴 상태), 호스트 `seed-host-1`·`seed-host-2`, 관리자 `admin@lookation.local` — 모두 `@lookation.local` 도메인이다.
   - 데이터: 호스트 프로필 2·제재 3, 공간 9(유형·상태 각 6종, 게시 4개)·시설·시간/일 가격 규칙·검수 4상태, 예약 10(8상태 + 배치용 2)·상태 이력, 지갑·원장·충전 3상태·출금 4상태·정산, 리뷰·문의·메시지·신고 3상태·공지·도움말, 배치 이력 3상태·인증 코드 2목적.
   - 관리자는 `lookation.admin.email`(기본 `admin@lookation.local`) 기준이다. `AdminSeeder`가 먼저 만들면 그 비밀번호(`lookation-admin1!`)를 유지하고 시드는 건너뛴다.
-  - 첨부: 레거시 `Lookation/WebContent/images`의 이미지를 `lookation.upload-dir` 아래 `seed/...` 결정적 키로 복사하고 `attachments` 행을 넣는다. 기존 행은 삭제·갱신하지 않는다. 단, 시드가 만든 `seed/...` 파일이 없거나 크기가 바뀌면 다시 복사하고 `size_bytes`만 맞춘다. 원본이 없으면 경고 후 건너뛴다(`lookation.seed.image-source`로 경로 변경).
+  - 첨부: 레거시 `service-old/WebContent/images`의 이미지를 `lookation.upload-dir` 아래 `seed/...` 결정적 키로 복사하고 `attachments` 행을 넣는다. 기존 행은 삭제·갱신하지 않는다. 단, 시드가 만든 `seed/...` 파일이 없거나 크기가 바뀌면 다시 복사하고 `size_bytes`만 맞춘다. 원본이 없으면 경고 후 건너뛴다(`lookation.seed.image-source`로 경로 변경).
 - **`SPRING_PROFILES_ACTIVE=local`을 셸에 export하지 않는다.** 이 프로필은 환경변수가 설정 파일보다 우선하므로 테스트에서도 `test` 프로필을 덮어쓴다. DB는 여전히 Testcontainers를 쓰지만(`@ServiceConnection`), `SecretsEnvironmentPostProcessor`가 MiniStack을 요구해 MiniStack이 없는 CI에서 테스트가 실패한다.
 - 통합 테스트는 `src/test/resources/application.properties`의 `spring.profiles.active=test`로 기본값 `local`을 끈다.
 - `test` 프로필에서는 `ReservationScheduler`를 등록하지 않는다. 스케줄러가 시드 데이터를 배치로 바꾸면 테스트가 시간에 따라 흔들리기 때문이다.

@@ -31,7 +31,7 @@ desktop.ini
 Servers/
 bin/
 build/
-/Lookation/WebContent/WEB-INF/classes/
+/service-old/WebContent/WEB-INF/classes/
 
 # ---------- Java ----------
 *.class
@@ -57,21 +57,21 @@ out/
 
 # ---------- 보안 설정 ----------
 # dispatcher-servlet 원본은 웹루트에서 제외 (중요파일/ 사본만 추적)
-/Lookation/WebContent/WEB-INF/dispatcher-servlet.xml
+/service-old/WebContent/WEB-INF/dispatcher-servlet.xml
 
 # ---------- Tests ----------
-Lookation/test/build/
+service-old/test/build/
 
-# ---------- 신규 백엔드 (server/) ----------
-/server/.gradle/
-/server/build/
+# ---------- 신규 백엔드 (service-new/) ----------
+/service-new/.gradle/
+/service-new/build/
 
 # test uploads
 /uploads/
-/server/uploads/
-/server/build/test-uploads/
+/service-new/uploads/
+/service-new/build/test-uploads/
 
 # Kotlin build session data
-/server/.kotlin/
+/service-new/.kotlin/
 
 .security/

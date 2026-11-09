@@ -25,14 +25,14 @@ public class MapperPropertyTest
 	@Test
 	public void signupVerificationInsertPropertiesExistOnDto() throws Exception
 	{
-		assertPropertiesExist("Lookation/src/com/lookation/mybatis/mapper/SignupVerificationDAO.xml",
+		assertPropertiesExist("service-old/src/com/lookation/mybatis/mapper/SignupVerificationDAO.xml",
 				"com.lookation.dto.SignupPendingDTO");
 	}
 
 	@Test
 	public void passwordResetInsertPropertiesExistOnDto() throws Exception
 	{
-		assertPropertiesExist("Lookation/src/com/lookation/mybatis/mapper/PasswordResetDAO.xml",
+		assertPropertiesExist("service-old/src/com/lookation/mybatis/mapper/PasswordResetDAO.xml",
 				"com.lookation.dto.PasswordResetDTO");
 	}
 

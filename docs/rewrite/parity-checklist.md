@@ -1,10 +1,10 @@
 # 레거시 → 신규 API 파리티 체크리스트
 
-레거시 소스(`Lookation/src`)에서 추출한 모든 요청 처리 지점과 신규 Kotlin/Spring Boot 4.1 REST 엔드포인트의 1:1 대응표다. 신규 엔드포인트는 고정된 매핑 규약을 그대로 사용한다.
+레거시 소스(`service-old/src`)에서 추출한 모든 요청 처리 지점과 신규 Kotlin/Spring Boot 4.1 REST 엔드포인트의 1:1 대응표다. 신규 엔드포인트는 고정된 매핑 규약을 그대로 사용한다.
 
 ## 근거
 
-- 어노테이션 핸들러: `Lookation/src/com/lookation/mybatis/*.java`의 `@RequestMapping` **164개** (클래스 레벨 prefix 없음, 전부 메서드 레벨).
+- 어노테이션 핸들러: `service-old/src/com/lookation/mybatis/*.java`의 `@RequestMapping` **164개** (클래스 레벨 prefix 없음, 전부 메서드 레벨).
 - XML 컨트롤러: `implements Controller` 클래스 **20개** / `handleRequest()` 20개. URL은 `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml`의 `<bean name="...">`에서 그대로 옮겼다.
 - `dispatcher-servlet.xml`은 `com.lookation.mybatis` 컴포넌트 스캔 + XML 빈 18개를 함께 등록한다. XML 빈 18개 중 `ProfileFormController`는 소스에 클래스가 없어(빈 정의만 존재) 핸들러 행을 만들지 않고 아래 주석에 남겼다.
 - 총 행 수: 164 + 20 = **184**.

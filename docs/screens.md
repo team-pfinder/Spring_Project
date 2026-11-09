@@ -8,14 +8,14 @@
 
 | 근거 | 경로 | 내용 |
 | --- | --- | --- |
-| 서블릿 매핑 | `Lookation/WebContent/WEB-INF/web.xml:26` | `DispatcherServlet` ← `*.action`. 라우팅은 전부 `.action` 확장자 |
-| 인코딩 필터 | `Lookation/WebContent/WEB-INF/web.xml:38-45` | `CharacterEncodingFilter` UTF-8, `/*` |
+| 서블릿 매핑 | `service-old/WebContent/WEB-INF/web.xml:26` | `DispatcherServlet` ← `*.action`. 라우팅은 전부 `.action` 확장자 |
+| 인코딩 필터 | `service-old/WebContent/WEB-INF/web.xml:38-45` | `CharacterEncodingFilter` UTF-8, `/*` |
 | URL→빈 매핑(저장소 사본) | `중요파일/02. dispatcher-servlet/dispatcher-servlet.xml` | XML 방식 20개. 웹루트 사본은 `.gitignore:60`으로 제외 |
 | URL→빈 매핑(배포본) | `중요파일/00. export/호스팅용/ROOT.war` 내 `WEB-INF/dispatcher-servlet.xml` | 같은 20개지만 `adminlogout`/`profile` 구성이 다르다(§7.2) |
-| 애노테이션 컨트롤러 | `Lookation/src/com/lookation/mybatis/*.java` | 37파일 / `@RequestMapping` 160개. `component-scan base-package="com.lookation.mybatis"`로 스캔 |
-| XML 컨트롤러 | `Lookation/src/com/lookation/controller/*.java` | 22파일 / 등록 20개(`Controller.handleRequest`) |
-| 뷰 | `Lookation/WebContent/WEB-INF/views/**/*.jsp` | 117개 (admin 35, common 32, host 28, user 20, ajax 2) |
-| 공통 조각 | `Lookation/WebContent/includes/*.jsp` | 13개, 뷰 110개가 `<c:import>`로 사용 |
+| 애노테이션 컨트롤러 | `service-old/src/com/lookation/mybatis/*.java` | 37파일 / `@RequestMapping` 160개. `component-scan base-package="com.lookation.mybatis"`로 스캔 |
+| XML 컨트롤러 | `service-old/src/com/lookation/controller/*.java` | 22파일 / 등록 20개(`Controller.handleRequest`) |
+| 뷰 | `service-old/WebContent/WEB-INF/views/**/*.jsp` | 117개 (admin 35, common 32, host 28, user 20, ajax 2) |
+| 공통 조각 | `service-old/WebContent/includes/*.jsp` | 13개, 뷰 110개가 `<c:import>`로 사용 |
 
 ## 1. 30초 요약
 
@@ -296,7 +296,7 @@
 | `user/` | 20 | 이용자(검색, 공간 상세, 예약, 마이페이지) | `header_user.jsp`, `footer_user.jsp`, `mypage_Sidebar(user).jsp` | `user/mainUser.jsp`, `user/locationDetail.jsp` |
 | `ajax/` | 2 | AJAX 응답 본문만 출력(`${result}` / `${data}`) | 없음 | `ajax/AccountAjax.jsp`, `ajax/LocationDetailAjax.jsp` |
 
-### 5.2 공통 include (`Lookation/WebContent/includes/`)
+### 5.2 공통 include (`service-old/WebContent/includes/`)
 
 뷰는 정적 include가 아니라 **JSTL `<c:import url="${cp}/includes/...">`** 로 조각을 끼워 넣는다. `<%@ include file=... %>` 형태는 9곳에 남아 있으나 **전부 `<%-- --%>` 주석 안**이라 실행되지 않는다(예: `views/common/notice.jsp:19`).
 
@@ -421,10 +421,10 @@ JSP/JS가 링크하지만 `@RequestMapping`도 XML 빈도 없다. 클릭하면 D
 
 | 항목 | 내용 | 근거 |
 | --- | --- | --- |
-| 빈 `.action` 파일 56개 | `Lookation/WebContent/actions/*.action`이 전부 0바이트. DispatcherServlet이 `*.action`을 선점하므로 정적 파일로 서빙되지 않는 잔재 | `WebContent/actions/` |
+| 빈 `.action` 파일 56개 | `service-old/WebContent/actions/*.action`이 전부 0바이트. DispatcherServlet이 `*.action`을 선점하므로 정적 파일로 서빙되지 않는 잔재 | `WebContent/actions/` |
 | 매핑 없는 자리표시자 6개 | `adminform`, `basicmodifyform`, `hostmypage`, `membermypage`, `sample`, `sendsignupmail` — 파일만 있고 URL 매핑 없음 | `WebContent/actions/` vs §3 |
 | 웹루트에 `dispatcher-servlet.xml` 없음 | `.gitignore:60`이 `WEB-INF/dispatcher-servlet.xml`을 제외해 저장소에 없다. 복사하지 않으면 기동 불가(추론) | `.gitignore:59-60` |
-| root 진입점 없음 | welcome-file 6종이 모두 없어 `/Lookation/`은 404. 진입은 `/actions/loginform.action` 등 직접 URL | `web.xml:4-11` |
+| root 진입점 없음 | welcome-file 6종이 모두 없어 `/service-old/`은 404. 진입은 `/actions/loginform.action` 등 직접 URL | `web.xml:4-11` |
 | 스캔 잔재 | `component-scan base-package="org.springframework.samples.petclinic.web"`가 남아 있음 | `dispatcher-servlet.xml` |
 | 자격증명 하드코딩 | `localDataSource`/`remoteDataSource`에 Oracle 계정·비밀번호 평문, 원격 IP 노출 | `dispatcher-servlet.xml` |
 

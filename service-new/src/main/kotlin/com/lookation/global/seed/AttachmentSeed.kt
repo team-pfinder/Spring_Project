@@ -15,7 +15,7 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 /**
- * Copies legacy images from `Lookation/WebContent/images` into the upload directory under
+ * Copies legacy images from `service-old/WebContent/images` into the upload directory under
  * deterministic `seed/{ownerType}-{ownerId}-{sortOrder}.{ext}` keys and inserts the matching
  * `attachments` rows.
  *
@@ -27,7 +27,7 @@ import java.nio.file.StandardCopyOption
 class AttachmentSeed(
     private val dsl: DSLContext,
     @Value("\${lookation.upload-dir}") uploadDir: String,
-    @Value("\${lookation.seed.image-source:../Lookation/WebContent/images}") imageSource: String,
+    @Value("\${lookation.seed.image-source:../service-old/WebContent/images}") imageSource: String,
 ) : SeedStep {
 
     private val uploadRoot: Path = Paths.get(uploadDir).toAbsolutePath().normalize()
@@ -121,15 +121,15 @@ class AttachmentSeed(
         }
 
     /**
-     * 원본 이미지 폴더를 찾는다. 기본값 `../Lookation/...`은 작업 디렉토리가 `server/`일 때만 맞고,
-     * IntelliJ처럼 레포 루트에서 실행하면 `./Lookation/...`이 맞으므로, 존재하는 쪽을 쓴다.
+     * 원본 이미지 폴더를 찾는다. 기본값 `../service-old/...`은 작업 디렉토리가 `service-new/`일 때만 맞고,
+     * IntelliJ처럼 레포 루트에서 실행하면 `./service-old/...`이 맞으므로, 존재하는 쪽을 쓴다.
      */
     private fun sourceRoot(): Path {
         if (Files.isDirectory(configuredSource)) return configuredSource
         val fromRoot = configuredSource
             .takeIf { it.startsWith("..") }
             ?.let { it.subpath(1, it.nameCount) }
-            ?: Paths.get("Lookation", "WebContent", "images")
+            ?: Paths.get("service-old", "WebContent", "images")
         return if (Files.isDirectory(fromRoot)) fromRoot else configuredSource
     }
 

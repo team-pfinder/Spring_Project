@@ -15,7 +15,7 @@ ENDPOINT="${AWS_ENDPOINT_URL}"
 NAME="lookation/local"
 
 # Dev-only values. dbPassword must equal POSTGRES_PASSWORD in docker-compose.yml.
-# jwtSecret and encryptionKey match the integration tests (server/src/test/.../SchemaSmokeTest.kt).
+# jwtSecret and encryptionKey match the integration tests (service-new/src/test/.../SchemaSmokeTest.kt).
 SECRET='{"dbPassword":"lookation","jwtSecret":"0123456789abcdef0123456789abcdef","encryptionKey":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=","adminPassword":"lookation-admin1!"}'
 
 if aws --endpoint-url "$ENDPOINT" secretsmanager describe-secret --secret-id "$NAME" >/dev/null 2>&1; then
