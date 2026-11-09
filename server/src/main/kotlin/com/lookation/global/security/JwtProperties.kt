@@ -9,8 +9,12 @@ import java.time.Duration
 @Validated
 @ConfigurationProperties("lookation.jwt")
 data class JwtProperties(
-    @field:NotBlank @field:Size(min = 32) val secret: String,
+    @field:NotBlank @field:Size(min = 32)
+    val secret: String,
+
     val issuer: String = "lookation",
+
     val accessTtl: Duration = Duration.ofMinutes(15),
+
     val refreshTtl: Duration = Duration.ofDays(14),
 )

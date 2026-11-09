@@ -8,15 +8,19 @@ import jakarta.validation.constraints.Size
 @Schema(description = "입금 신청 요청")
 data class ChargeRequestForm(
     @field:Schema(description = "충전 금액. 1 이상이며 원 단위입니다.", example = "120000")
-    @field:Positive val amount: Long,
+    @field:Positive
+    val amount: Long,
+
     @field:Schema(description = "입금자명. 최대 50자입니다.", example = "김하늘")
-    @field:NotBlank @field:Size(max = 50) val depositorName: String,
+    @field:NotBlank @field:Size(max = 50)
+    val depositorName: String,
 )
 
 @Schema(description = "출금 신청 요청")
 data class WithdrawalRequestForm(
     @field:Schema(description = "출금 금액. 1 이상이며 원 단위입니다.", example = "120000")
-    @field:Positive val amount: Long,
+    @field:Positive
+    val amount: Long,
 )
 
 

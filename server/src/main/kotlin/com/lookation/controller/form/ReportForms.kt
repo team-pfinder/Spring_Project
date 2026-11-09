@@ -13,10 +13,14 @@ data class CreateReportForm(
         example = "REVIEW",
     )
     val targetType: ReportTarget,
+
     @field:Schema(description = "신고 대상의 식별자입니다.", example = "42")
-    @field:Positive val targetId: Long,
+    @field:Positive
+    val targetId: Long,
+
     @field:Schema(description = "신고 사유. 최대 500자입니다.", example = "예약과 무관한 광고성 내용이 포함되어 있습니다.")
-    @field:NotBlank @field:Size(max = 500) val reason: String,
+    @field:NotBlank @field:Size(max = 500)
+    val reason: String,
 )
 
 @Schema(description = "신고 처리 결정 요청")
