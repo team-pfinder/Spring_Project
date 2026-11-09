@@ -16,6 +16,7 @@ import com.lookation.domain.SpaceType
 import com.lookation.domain.SpaceSort
 import com.lookation.repository.SpaceCursor
 import com.lookation.repository.SpaceRepository
+import com.lookation.repository.SpaceSearchRepository
 import com.lookation.repository.SpaceRow
 import com.lookation.repository.SpaceSummary
 import org.springframework.stereotype.Service
@@ -26,6 +27,7 @@ import java.util.Base64
 @Service
 class SpaceService(
     private val spaceRepository: SpaceRepository,
+    private val spaceSearchRepository: SpaceSearchRepository,
     private val hostProfileRepository: HostProfileRepository,
     private val priceRuleRepository: com.lookation.repository.PriceRuleRepository,
 ) {
@@ -170,7 +172,7 @@ class SpaceService(
         } catch (_: IllegalArgumentException) {
             throw BadRequestException("sort는 latest, price_asc, price_desc, rating 중 하나입니다")
         }
-        val rows = spaceRepository.search(
+        val rows = spaceSearchRepository.search(
             type = type,
             keyword = keyword,
             sido = sido,

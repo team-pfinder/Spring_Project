@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.time.OffsetDateTime
-import java.time.LocalTime
 import java.time.ZoneId
 import com.lookation.dto.HostReservationDto
 
@@ -28,6 +27,7 @@ import com.lookation.dto.HostReservationDto
 class ReservationService(
     private val reservationRepository: ReservationRepository,
     private val spaceRepository: SpaceRepository,
+    private val priceRuleService: PriceRuleService,
     private val walletRepository: WalletRepository,
     private val sanctionService: com.lookation.service.SanctionService,
 ) {
@@ -55,31 +55,7 @@ class ReservationService(
             throw ConflictException("예약 인원은 ${space.minCapacity}~${space.maxCapacity}명이어야 합니다")
         }
 
-        val kstStart = form.startAt.atZoneSameInstant(KST)
-        val kstEnd = form.endAt.atZoneSameInstant(KST)
-        val hourRule = spaceRepository.findHourRule(
-            spaceId = form.spaceId,
-            dayOfWeek = kstStart.dayOfWeek.value,
-            startTime = kstStart.toLocalTime(),
-            endTime = kstEnd.toLocalTime(),
-        )
-        val price: Long
-        if (hourRule != null) {
-            if (kstStart.toLocalDate() != kstEnd.toLocalDate()) {
-                throw BadRequestException("시간 단위 예약은 같은 날짜 안에서만 가능합니다")
-            }
-            price = hourRule.price
-        } else {
-            val dayRule = spaceRepository.findDayRule(form.spaceId, kstStart.dayOfWeek.value)
-                ?: throw BadRequestException("해당 시간대의 가격 규칙이 없습니다")
-            val isFullDay = kstStart.toLocalTime() == LocalTime.MIDNIGHT &&
-                kstEnd.toLocalTime() == LocalTime.MIDNIGHT &&
-                kstEnd.toLocalDate() == kstStart.toLocalDate().plusDays(1)
-            if (!isFullDay) {
-                throw BadRequestException("일 단위 예약은 00:00부터 다음 날 00:00까지만 가능합니다")
-            }
-            price = dayRule.price
-        }
+        val price = priceRuleService.resolvePrice(form.spaceId, form.startAt, form.endAt)
 
         // 즉시 예약도 create->pay->confirm 2단계(스펙 #35): 생성은 PENDING_PAYMENT, 홀드는 pay 시점.
         val requiresApproval = space.approvalRequired

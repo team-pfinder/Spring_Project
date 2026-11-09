@@ -2,6 +2,8 @@ package com.lookation.repository
 
 import com.lookation.jooq.tables.RefreshTokens.REFRESH_TOKENS
 import org.jooq.DSLContext
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -55,6 +57,10 @@ class RefreshTokenRepository(private val dsl: DSLContext) {
             .execute()
     }
 
+    /**
+     * 계열 폐기는 재사용 탐지 시 401 응답과 함께 커밋돼야 하므로 바깥 트랜잭션과 무관하게 별도 트랜잭션으로 실행한다.
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun revokeFamily(familyId: UUID) {
         dsl.update(REFRESH_TOKENS)
             .set(REFRESH_TOKENS.REVOKED_AT, OffsetDateTime.now())

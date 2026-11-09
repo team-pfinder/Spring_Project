@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 import java.util.concurrent.ConcurrentHashMap
 
-class CapturingMailSender : MailSender {
+class CapturingMailSender : MailSender(null) {
     val codes = ConcurrentHashMap<String, String>()
 
     override fun sendVerificationCode(email: String, code: String, purpose: String) {

@@ -33,7 +33,6 @@ class TokenService(
     private val jwtProperties: JwtProperties,
     private val refreshTokenRepository: RefreshTokenRepository,
     private val accountRepository: AccountRepository,
-    private val revocations: RefreshTokenRevocationService,
 ) {
 
     fun issue(accountId: Long, roles: List<AccountRole>): TokenPair = create(accountId, roles, UUID.randomUUID())
@@ -91,7 +90,7 @@ class TokenService(
         accountRepository.findById(accountId)?.takeIf { it.status == AccountStatus.ACTIVE }
 
     private fun revokeFamilyAndFail(token: RefreshTokenRow, message: String): Nothing {
-        revocations.revokeFamily(token.familyId)
+        refreshTokenRepository.revokeFamily(token.familyId)
         throw UnauthorizedException(message)
     }
 

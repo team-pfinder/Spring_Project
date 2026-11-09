@@ -13,12 +13,41 @@ import com.lookation.repository.SpaceRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneId
 
 @Service
 class PriceRuleService(
     private val priceRuleRepository: PriceRuleRepository,
     private val spaceRepository: SpaceRepository,
 ) {
+
+    @Transactional(readOnly = true)
+    fun resolvePrice(spaceId: Long, startAt: OffsetDateTime, endAt: OffsetDateTime): Long {
+        val kstStart = startAt.atZoneSameInstant(KST)
+        val kstEnd = endAt.atZoneSameInstant(KST)
+        val hourRule = priceRuleRepository.findHourRule(
+            spaceId = spaceId,
+            dayOfWeek = kstStart.dayOfWeek.value,
+            startTime = kstStart.toLocalTime(),
+            endTime = kstEnd.toLocalTime(),
+        )
+        if (hourRule != null) {
+            if (kstStart.toLocalDate() != kstEnd.toLocalDate()) {
+                throw BadRequestException("시간 단위 예약은 같은 날짜 안에서만 가능합니다")
+            }
+            return hourRule.price
+        }
+        val dayRule = priceRuleRepository.findDayRule(spaceId, kstStart.dayOfWeek.value)
+            ?: throw BadRequestException("해당 시간대의 가격 규칙이 없습니다")
+        val isFullDay = kstStart.toLocalTime() == LocalTime.MIDNIGHT &&
+            kstEnd.toLocalTime() == LocalTime.MIDNIGHT &&
+            kstEnd.toLocalDate() == kstStart.toLocalDate().plusDays(1)
+        if (!isFullDay) {
+            throw BadRequestException("일 단위 예약은 00:00부터 다음 날 00:00까지만 가능합니다")
+        }
+        return dayRule.price
+    }
 
     @Transactional(readOnly = true)
     fun list(accountId: Long?, spaceId: Long): List<PriceRuleDto> {
@@ -94,5 +123,6 @@ class PriceRuleService(
 
     companion object {
         private const val MAX_RULES = 50
+        private val KST = ZoneId.of("Asia/Seoul")
     }
 }
